@@ -22,11 +22,6 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
 
-	protected function GivenNodeWithName($node) {
-		$node->name = new NameNode([]);
-		$node->name->value = self::VALID_NAME;
-	}
-
 	public function test_GivenNodeWithNameAndDescription_getDescription_ReturnsCorrectDescription() {
 		$scalarNode = new ScalarTypeDefinitionNode([]);
 		$this->GivenNodeWithName($scalarNode);
@@ -40,5 +35,10 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenNodeWithDescription($node) {
 		$node->description = self::VALID_DESCRIPTION;
+	}
+
+	protected function GivenNodeWithName($node) {
+		$node->name = new NameNode([]);
+		$node->name->value = self::VALID_NAME;
 	}
 }

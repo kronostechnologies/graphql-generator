@@ -30,11 +30,6 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
 
-	protected function GivenNodeWithName($node) {
-		$node->name = new NameNode([]);
-		$node->name->value = self::VALID_NAME;
-	}
-
 	public function test_GivenNodeWithDescription_getDescription_ReturnsCorrectDescription() {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithDescription($enumNode);
@@ -43,10 +38,6 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
-	}
-
-	protected function GivenNodeWithDescription($node) {
-		$node->description = self::VALID_DESCRIPTION;
 	}
 
 	public function test_GivenNodeWithoutEnumValues_getEnumValues_ReturnsEmptyArray() {
@@ -107,31 +98,6 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(3, $interpretedValues);
 	}
 
-	protected function GivenNodeWithMultipleEnumValue($node) {
-		$node->values = [];
-
-		$newEnumValueNode = new EnumValueDefinitionNode([]);
-		$newEnumValueNode->name = new NameNode([]);
-		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
-		$newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
-
-		$node->values[] = $newEnumValueNode;
-
-		$newEnumValueNode = new EnumValueDefinitionNode([]);
-		$newEnumValueNode->name = new NameNode([]);
-		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_2;
-		$newEnumValueNode->description = self::ENUM_VALUE_DESC_2;
-
-		$node->values[] = $newEnumValueNode;
-
-		$newEnumValueNode = new EnumValueDefinitionNode([]);
-		$newEnumValueNode->name = new NameNode([]);
-		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_3;
-		$newEnumValueNode->description = self::ENUM_VALUE_DESC_3;
-
-		$node->values[] = $newEnumValueNode;
-	}
-
 	public function test_GivenMultipleElements_getEnumValues_ReturnsRightElements() {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithMultipleEnumValue($enumNode);
@@ -160,5 +126,39 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 			false,
 			false
 		);
+	}
+
+	protected function GivenNodeWithMultipleEnumValue($node) {
+		$node->values = [];
+
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
+
+		$node->values[] = $newEnumValueNode;
+
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_2;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_2;
+
+		$node->values[] = $newEnumValueNode;
+
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_3;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_3;
+
+		$node->values[] = $newEnumValueNode;
+	}
+
+	protected function GivenNodeWithDescription($node) {
+		$node->description = self::VALID_DESCRIPTION;
+	}
+
+	protected function GivenNodeWithName($node) {
+		$node->name = new NameNode([]);
+		$node->name->value = self::VALID_NAME;
 	}
 }
