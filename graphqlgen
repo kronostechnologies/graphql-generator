@@ -1,0 +1,12 @@
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use GraphQLGen\Commands\DescribeCommand;
+use GraphQLGen\Commands\GenerateClassesCommand;
+use Symfony\Component\Console\Application;
+
+$cli = new Application();
+$cli->add(new GenerateClassesCommand());
+$cli->add(new DescribeCommand());
+$cli->run();

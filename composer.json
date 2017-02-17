@@ -1,0 +1,20 @@
+{
+    "name": "kronostechnologies/graphql-generator",
+    "description": "GraphQL classes generator based on Webonyx library",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Marc-Andre Boily",
+            "email": "maboily@kronostechnologies.com"
+        }
+    ],
+    "require": {
+        "webonyx/graphql-php": "^0.9",
+        "symfony/console": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "GraphQLGen\\": "src/"
+        }
+    }
+}

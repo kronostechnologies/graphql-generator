@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyClass {
+"ConstantsDeclaration";
+    public static function getTypeDefinition() {
+        return $TypeDefinitionDummy;
+    }
+}
