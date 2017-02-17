@@ -5,39 +5,40 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\NameNode;
-use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQLGen\Generator\Interpreters\ObjectTypeInterpreter;
 
-class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
+
+class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
 	const VALID_NAME = 'TestName';
 
 	public function test_GivenNodeWithName_getName_ReturnsCorrectName() {
-		$scalarNode = new ScalarTypeDefinitionNode([]);
-		$this->GivenNodeWithName($scalarNode);
+		$objectTypeNode = new ObjectTypeDefinitionNode([]);
+		$this->GivenNodeWithName($objectTypeNode);
 
-		$interpreter = new ScalarInterpreter($scalarNode);
+		$interpreter = new ObjectTypeInterpreter($objectTypeNode);
 		$interpretedName = $interpreter->getName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
 
 	public function test_GivenNodeWithDescription_getDescription_ReturnsCorrectDescription() {
-		$scalarNode = new ScalarTypeDefinitionNode([]);
-		$this->GivenNodeWithDescription($scalarNode);
+		$objectTypeNode = new ObjectTypeDefinitionNode([]);
+		$this->GivenNodeWithDescription($objectTypeNode);
 
-		$interpreter = new ScalarInterpreter($scalarNode);
+		$interpreter = new ObjectTypeInterpreter($objectTypeNode);
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
 	}
 
-	protected function GivenNodeWithDescription($node) {
-		$node->description = self::VALID_DESCRIPTION;
-	}
-
 	protected function GivenNodeWithName($node) {
 		$node->name = new NameNode([]);
 		$node->name->value = self::VALID_NAME;
+	}
+
+	protected function GivenNodeWithDescription($node) {
+		$node->description = self::VALID_DESCRIPTION;
 	}
 }

@@ -27,16 +27,9 @@ class FieldTypeInterpreter {
 	 * @return FieldType
 	 */
 	public function getFieldType() {
-		if(get_class($this->_astNode) === NonNullTypeNode::class) {
-			$inList = get_class($this->_astNode->type) === ListTypeNode::class;
-			$isNullableList = !$inList;
-			$isNullableObject = $inList ? $this->_astNode->type->type !== NonNullTypeNode::class : false;
-		}
-		else {
-			$inList = get_class($this->_astNode) === ListTypeNode::class;
-			$isNullableList = true;
-			$isNullableObject = $inList ? $this->_astNode->type === NonNullTypeNode::class : true;
-		}
+		$inList = $this->isInList($this->_astNode);
+		$isNullableList = $this->isNullableList($this->_astNode);
+		$isNullableObject = $this->isNullableObject($this->_astNode);
 
 		// Finds name node
 		$nameNode = $this->_astNode;
@@ -53,7 +46,43 @@ class FieldTypeInterpreter {
 	}
 
 	/**
-	 * @param string $nameNode
+	 * @return bool
+	 */
+	public function isInList() {
+		if(get_class($this->_astNode) === NonNullTypeNode::class) {
+			return get_class($this->_astNode->type) === ListTypeNode::class;
+		}
+		else {
+			return get_class($this->_astNode) === ListTypeNode::class;
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isNullableList() {
+		if(get_class($this->_astNode) === NonNullTypeNode::class) {
+			return !get_class($this->_astNode->type) === ListTypeNode::class;
+		}
+		else {
+			return get_class($this->_astNode) === ListTypeNode::class;
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isNullableObject() {
+		if(get_class($this->_astNode) === NonNullTypeNode::class) {
+			return $this->isInList() ? get_class($this->_astNode->type->type) !== NonNullTypeNode::class : false;
+		}
+		else {
+			return $this->isInList() ? get_class($this->_astNode->type) !== NonNullTypeNode::class : true;
+		}
+	}
+
+	/**
+	 * @param NamedTypeNode $nameNode
 	 * @return string
 	 */
 	public function getName($nameNode) {
