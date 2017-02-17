@@ -45,10 +45,18 @@ class FieldTypeInterpreter {
         }
 
         return new FieldType(
-            $nameNode->name->value,
+            $this->getName($nameNode),
             $isNullableObject,
             $inList,
             $isNullableList
         );
+    }
+
+    /**
+     * @param string $nameNode
+     * @return string
+     */
+    public function getName($nameNode) {
+        return $nameNode->name->value;
     }
 }

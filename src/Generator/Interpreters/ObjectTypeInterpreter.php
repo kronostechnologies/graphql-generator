@@ -42,11 +42,25 @@ class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
         }
 
         return new ObjectType(
-            $this->_astNode->name->value,
+            $this->getName(),
             $formatter,
             $fields,
-            $this->_astNode->description
+            $this->getDescription()
         );
         // TODO: Implement getGeneratorType() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->_astNode->name->value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription() {
+        return $this->_astNode->description;
     }
 }

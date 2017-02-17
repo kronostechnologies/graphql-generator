@@ -36,14 +36,14 @@ class ScalarInterpreter implements GeneratorInterpreterInterface {
     /**
      * @return string
      */
-    protected function getName() {
+    public function getName() {
         return $this->_astNode->name->value;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    protected function getDescription() {
+    public function getDescription() {
         return $this->_astNode->description;
     }
 }

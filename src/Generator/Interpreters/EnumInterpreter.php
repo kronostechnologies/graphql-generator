@@ -26,31 +26,45 @@ class EnumInterpreter implements GeneratorInterpreterInterface {
 
     /**
      * @param StubFormatter $formatter
-     * @return GeneratorTypeInterface
+     * @return EnumType
      */
     public function getGeneratorType($formatter)
     {
         return new EnumType(
-            $this->_astNode->name->value,
+            $this->getName(),
             $this->getEnumValues(),
             $formatter,
-            $this->_astNode->description
+            $this->getDescription()
         );
     }
 
     /**
      * @return EnumTypeValue[]
      */
-    protected function getEnumValues() {
+    public function getEnumValues() {
         $enumValues = [];
 
         foreach ($this->_astNode->values as $possibleValue) {
             $enumValues[] = new EnumTypeValue(
-                $possibleValue->name,
+                $possibleValue->name->value,
                 $possibleValue->description
             );
         }
 
         return $enumValues;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->_astNode->name->value;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription() {
+        return $this->_astNode->description;
     }
 }
