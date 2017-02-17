@@ -11,154 +11,154 @@ use GraphQLGen\Generator\Interpreters\EnumInterpreter;
 use GraphQLGen\Generator\Types\EnumTypeValue;
 
 class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
-    const VALID_DESCRIPTION = 'TestDescription';
-    const VALID_NAME = 'TestName';
-    const ENUM_VALUE_NAME_1 = 'ENUM_VAL_1';
-    const ENUM_VALUE_DESC_1 = 'First enumeration value.';
-    const ENUM_VALUE_NAME_2 = 'ENUM_VAL_2';
-    const ENUM_VALUE_DESC_2 = null;
-    const ENUM_VALUE_NAME_3 = 'ENUM_VAL_3';
-    const ENUM_VALUE_DESC_3 = 'The last element.';
+	const VALID_DESCRIPTION = 'TestDescription';
+	const VALID_NAME = 'TestName';
+	const ENUM_VALUE_NAME_1 = 'ENUM_VAL_1';
+	const ENUM_VALUE_DESC_1 = 'First enumeration value.';
+	const ENUM_VALUE_NAME_2 = 'ENUM_VAL_2';
+	const ENUM_VALUE_DESC_2 = null;
+	const ENUM_VALUE_NAME_3 = 'ENUM_VAL_3';
+	const ENUM_VALUE_DESC_3 = 'The last element.';
 
-    public function test_GivenNodeWithName_getName_ReturnsCorrectName() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithName($enumNode);
+	public function test_GivenNodeWithName_getName_ReturnsCorrectName() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithName($enumNode);
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedName = $interpreter->getName();
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedName = $interpreter->getName();
 
-        $this->assertEquals(self::VALID_NAME, $interpretedName);
-    }
+		$this->assertEquals(self::VALID_NAME, $interpretedName);
+	}
 
-    public function test_GivenNodeWithDescription_getDescription_ReturnsCorrectDescription() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithDescription($enumNode);
+	protected function GivenNodeWithName($node) {
+		$node->name = new NameNode([]);
+		$node->name->value = self::VALID_NAME;
+	}
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedDescription = $interpreter->getDescription();
+	public function test_GivenNodeWithDescription_getDescription_ReturnsCorrectDescription() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithDescription($enumNode);
 
-        $this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
-    }
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedDescription = $interpreter->getDescription();
 
-    public function test_GivenNodeWithoutEnumValues_getEnumValues_ReturnsEmptyArray() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithEmptyValues($enumNode);
+		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
+	}
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedValues = $interpreter->getEnumValues();
+	protected function GivenNodeWithDescription($node) {
+		$node->description = self::VALID_DESCRIPTION;
+	}
 
-        $this->assertEmpty($interpretedValues);
-    }
+	public function test_GivenNodeWithoutEnumValues_getEnumValues_ReturnsEmptyArray() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithEmptyValues($enumNode);
 
-    public function test_GivenNodeWithSingleEnumValue_getEnumValues_ReturnsSingleElement() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithSingleEnumValue($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedValues = $interpreter->getEnumValues();
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedValues = $interpreter->getEnumValues();
+		$this->assertEmpty($interpretedValues);
+	}
 
-        $this->assertCount(1, $interpretedValues);
-    }
+	protected function GivenNodeWithEmptyValues($node) {
+		$node->values = [];
+	}
 
-    public function test_GivenNodeWithSingleEnumValue_getEnumValues_ReturnsRightElement() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithSingleEnumValue($enumNode);
+	public function test_GivenNodeWithSingleEnumValue_getEnumValues_ReturnsSingleElement() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithSingleEnumValue($enumNode);
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedValues = $interpreter->getEnumValues();
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedValues = $interpreter->getEnumValues();
 
-        $this->assertContainsOnly(
-            new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
-            $interpretedValues
-        );
-    }
+		$this->assertCount(1, $interpretedValues);
+	}
 
-    public function test_GivenMultipleElements_getEnumValues_ReturnsRightNumberOfElements() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithMultipleEnumValue($enumNode);
+	protected function GivenNodeWithSingleEnumValue($node) {
+		$node->values = [];
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedValues = $interpreter->getEnumValues();
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
 
-        $this->assertCount(3, $interpretedValues);
-    }
+		$node->values[] = $newEnumValueNode;
+	}
 
-    public function test_GivenMultipleElements_getEnumValues_ReturnsRightElements() {
-        $enumNode = new EnumTypeDefinitionNode([]);
-        $this->GivenNodeWithMultipleEnumValue($enumNode);
+	public function test_GivenNodeWithSingleEnumValue_getEnumValues_ReturnsRightElement() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithSingleEnumValue($enumNode);
 
-        $interpreter = new EnumInterpreter($enumNode);
-        $interpretedValues = $interpreter->getEnumValues();
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedValues = $interpreter->getEnumValues();
 
-        $this->assertContains(
-            new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
-            $interpretedValues,
-            '',
-            false,
-            false
-        );
-        $this->assertContains(
-            new EnumTypeValue(self::ENUM_VALUE_NAME_2, self::ENUM_VALUE_DESC_2),
-            $interpretedValues,
-            '',
-            false,
-            false
-        );
-        $this->assertContains(
-            new EnumTypeValue(self::ENUM_VALUE_NAME_3, self::ENUM_VALUE_DESC_3),
-            $interpretedValues,
-            '',
-            false,
-            false
-        );
-    }
+		$this->assertContainsOnly(
+			new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			$interpretedValues
+		);
+	}
 
-    protected function GivenNodeWithName($node) {
-        $node->name = new NameNode([]);
-        $node->name->value = self::VALID_NAME;
-    }
+	public function test_GivenMultipleElements_getEnumValues_ReturnsRightNumberOfElements() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
-    protected function GivenNodeWithDescription($node) {
-        $node->description = self::VALID_DESCRIPTION;
-    }
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedValues = $interpreter->getEnumValues();
 
-    protected function GivenNodeWithEmptyValues($node) {
-        $node->values = [];
-    }
+		$this->assertCount(3, $interpretedValues);
+	}
 
-    protected function GivenNodeWithSingleEnumValue($node) {
-        $node->values = [];
+	protected function GivenNodeWithMultipleEnumValue($node) {
+		$node->values = [];
 
-        $newEnumValueNode = new EnumValueDefinitionNode([]);
-        $newEnumValueNode->name = new NameNode([]);
-        $newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
-        $newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
 
-        $node->values[]  = $newEnumValueNode;
-    }
+		$node->values[] = $newEnumValueNode;
 
-    protected function GivenNodeWithMultipleEnumValue($node) {
-        $node->values = [];
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_2;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_2;
 
-        $newEnumValueNode = new EnumValueDefinitionNode([]);
-        $newEnumValueNode->name = new NameNode([]);
-        $newEnumValueNode->name->value = self::ENUM_VALUE_NAME_1;
-        $newEnumValueNode->description = self::ENUM_VALUE_DESC_1;
+		$node->values[] = $newEnumValueNode;
 
-        $node->values[]  = $newEnumValueNode;
+		$newEnumValueNode = new EnumValueDefinitionNode([]);
+		$newEnumValueNode->name = new NameNode([]);
+		$newEnumValueNode->name->value = self::ENUM_VALUE_NAME_3;
+		$newEnumValueNode->description = self::ENUM_VALUE_DESC_3;
 
-        $newEnumValueNode = new EnumValueDefinitionNode([]);
-        $newEnumValueNode->name = new NameNode([]);
-        $newEnumValueNode->name->value = self::ENUM_VALUE_NAME_2;
-        $newEnumValueNode->description = self::ENUM_VALUE_DESC_2;
+		$node->values[] = $newEnumValueNode;
+	}
 
-        $node->values[]  = $newEnumValueNode;
+	public function test_GivenMultipleElements_getEnumValues_ReturnsRightElements() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
-        $newEnumValueNode = new EnumValueDefinitionNode([]);
-        $newEnumValueNode->name = new NameNode([]);
-        $newEnumValueNode->name->value = self::ENUM_VALUE_NAME_3;
-        $newEnumValueNode->description = self::ENUM_VALUE_DESC_3;
+		$interpreter = new EnumInterpreter($enumNode);
+		$interpretedValues = $interpreter->getEnumValues();
 
-        $node->values[]  = $newEnumValueNode;
-    }
+		$this->assertContains(
+			new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			$interpretedValues,
+			'',
+			false,
+			false
+		);
+		$this->assertContains(
+			new EnumTypeValue(self::ENUM_VALUE_NAME_2, self::ENUM_VALUE_DESC_2),
+			$interpretedValues,
+			'',
+			false,
+			false
+		);
+		$this->assertContains(
+			new EnumTypeValue(self::ENUM_VALUE_NAME_3, self::ENUM_VALUE_DESC_3),
+			$interpretedValues,
+			'',
+			false,
+			false
+		);
+	}
 }

@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Types;
 
 
-class ObjectTypeFieldArgument
-{
+class ObjectTypeFieldArgument {
 
 }

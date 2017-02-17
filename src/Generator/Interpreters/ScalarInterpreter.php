@@ -9,41 +9,41 @@ use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\ScalarType;
 
 class ScalarInterpreter implements GeneratorInterpreterInterface {
-    /**
-     * @var ScalarTypeDefinitionNode
-     */
-    protected $_astNode;
+	/**
+	 * @var ScalarTypeDefinitionNode
+	 */
+	protected $_astNode;
 
-    /**
-     * @param ScalarTypeDefinitionNode $astNode
-     */
-    public function __construct($astNode) {
-        $this->_astNode = $astNode;
-    }
+	/**
+	 * @param ScalarTypeDefinitionNode $astNode
+	 */
+	public function __construct($astNode) {
+		$this->_astNode = $astNode;
+	}
 
-    /**
-     * @param StubFormatter $formatter
-     * @return ScalarType
-     */
-    public function getGeneratorType($formatter) {
-        return new ScalarType(
-            $this->getName(),
-            $formatter,
-            $this->getDescription()
-        );
-    }
+	/**
+	 * @param StubFormatter $formatter
+	 * @return ScalarType
+	 */
+	public function getGeneratorType($formatter) {
+		return new ScalarType(
+			$this->getName(),
+			$formatter,
+			$this->getDescription()
+		);
+	}
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->_astNode->name->value;
-    }
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->_astNode->name->value;
+	}
 
-    /**
-     * @return string|null
-     */
-    public function getDescription() {
-        return $this->_astNode->description;
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getDescription() {
+		return $this->_astNode->description;
+	}
 }

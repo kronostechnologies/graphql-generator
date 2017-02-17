@@ -11,56 +11,64 @@ use GraphQLGen\Generator\Types\ObjectType;
 use GraphQLGen\Generator\Types\ObjectTypeField;
 
 class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
-    /**
-     * @var ObjectTypeDefinitionNode
-     */
-    protected $_astNode;
+	/**
+	 * @var ObjectTypeDefinitionNode
+	 */
+	protected $_astNode;
 
-    /**
-     * @param ObjectTypeDefinitionNode $astNode
-     */
-    public function __construct($astNode) {
-        $this->_astNode = $astNode;
-    }
+	/**
+	 * @param ObjectTypeDefinitionNode $astNode
+	 */
+	public function __construct($astNode) {
+		$this->_astNode = $astNode;
+	}
 
-    /**
-     * @param StubFormatter $formatter
-     * @return GeneratorTypeInterface
-     */
-    public function getGeneratorType($formatter)
-    {
-        $fields = [];
-        foreach ($this->_astNode->fields as $field) {
-            $fieldTypeInterpreter = new FieldTypeInterpreter($field->type);
+	/**
+	 * @param StubFormatter $formatter
+	 * @return GeneratorTypeInterface
+	 */
+	public function getGeneratorType($formatter) {
+		$fields = $this->getFields();
 
-            $newField = new ObjectTypeField();
-            $newField->name = $field->name->value;
-            $newField->description = $field->description;
-            $newField->fieldType = $fieldTypeInterpreter->getFieldType();
+		return new ObjectType(
+			$this->getName(),
+			$formatter,
+			$fields,
+			$this->getDescription()
+		);
+	}
 
-            $fields[] = $newField;
-        }
+	/**
+	 * @return ObjectTypeField[]
+	 */
+	public function getFields() {
+		$fields = [];
 
-        return new ObjectType(
-            $this->getName(),
-            $formatter,
-            $fields,
-            $this->getDescription()
-        );
-        // TODO: Implement getGeneratorType() method.
-    }
+		foreach($this->_astNode->fields as $field) {
+			$fieldTypeInterpreter = new FieldTypeInterpreter($field->type);
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->_astNode->name->value;
-    }
+			$newField = new ObjectTypeField();
+			$newField->name = $field->name->value;
+			$newField->description = $field->description;
+			$newField->fieldType = $fieldTypeInterpreter->getFieldType();
 
-    /**
-     * @return string|null
-     */
-    public function getDescription() {
-        return $this->_astNode->description;
-    }
+			$fields[] = $newField;
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->_astNode->name->value;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getDescription() {
+		return $this->_astNode->description;
+	}
 }

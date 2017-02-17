@@ -5,11 +5,11 @@ namespace GraphQLGen\Generator\Writer;
 
 
 interface GeneratorWriterInterface {
-    public function initialize();
+	public function initialize();
 
-    /**
-     * @param string $classFQN
-     * @param string $classContent
-     */
-    public function writeClass($classFQN, $classContent);
+	/**
+	 * @param string $classFQN
+	 * @param string $classContent
+	 */
+	public function writeClass($classFQN, $classContent);
 }

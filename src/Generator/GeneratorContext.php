@@ -8,23 +8,23 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class GeneratorContext {
-    /**
-     * @var string
-     */
-    public $namespace;
+	/**
+	 * @var string
+	 */
+	public $namespace;
 
-    /**
-     * @var DocumentNode
-     */
-    public $ast;
+	/**
+	 * @var DocumentNode
+	 */
+	public $ast;
 
-    /**
-     * @var GeneratorWriterInterface
-     */
-    public $writer;
+	/**
+	 * @var GeneratorWriterInterface
+	 */
+	public $writer;
 
-    /**
-     * @var StubFormatter
-     */
-    public $formatter;
+	/**
+	 * @var StubFormatter
+	 */
+	public $formatter;
 }

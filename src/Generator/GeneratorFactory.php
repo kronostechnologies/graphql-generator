@@ -11,23 +11,23 @@ use GraphQLGen\Generator\Interpreters\ObjectTypeInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 
 class GeneratorFactory {
-    /**
-     * @param ScalarTypeDefinitionNode $astNode
-     * @return ScalarInterpreter
-     */
-    public function createScalarTypeInterpreter($astNode) {
-        return new ScalarInterpreter($astNode);
-    }
+	/**
+	 * @param ScalarTypeDefinitionNode $astNode
+	 * @return ScalarInterpreter
+	 */
+	public function createScalarTypeInterpreter($astNode) {
+		return new ScalarInterpreter($astNode);
+	}
 
-    /**
-     * @param EnumTypeDefinitionNode $astNode
-     * @return EnumInterpreter
-     */
-    public function createEnumTypeInterpreter($astNode) {
-        return new EnumInterpreter($astNode);
-    }
+	/**
+	 * @param EnumTypeDefinitionNode $astNode
+	 * @return EnumInterpreter
+	 */
+	public function createEnumTypeInterpreter($astNode) {
+		return new EnumInterpreter($astNode);
+	}
 
-    public function createObjectTypeInterpreter($astNode) {
-        return new ObjectTypeInterpreter($astNode);
-    }
+	public function createObjectTypeInterpreter($astNode) {
+		return new ObjectTypeInterpreter($astNode);
+	}
 }
