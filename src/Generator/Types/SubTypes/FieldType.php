@@ -47,36 +47,6 @@ class FieldType {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getFieldTypeDeclaration() {
-		// Primary type check
-		if (in_array($this->typeName, self::$PRIMARY_TYPES_MAPPINGS)) {
-			$typeDeclaration = self::$PRIMARY_TYPES_MAPPINGS[$this->typeName];
-		}
-		else {
-			$typeDeclaration = 'TypeStore::get' . $this->typeName . '()';
-		}
-
-		// Is base object nullable?
-		if(!$this->isTypeNullable) {
-			$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
-		}
-
-		// Is in list?
-		if($this->inList) {
-			$typeDeclaration = 'Type::listOf(' . $typeDeclaration . ')';
-		}
-
-		// Is list nullable?
-		if($this->inList && !$this->isListNullable) {
-			$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
-		}
-
-		return $typeDeclaration;
-	}
-
-	/**
 	 * @return string[]
 	 */
 	public function getDependencies() {
@@ -86,7 +56,7 @@ class FieldType {
 			$dependencies[] = 'Type';
 		}
 		else {
-			$dependencies[] = 'TypeStore';
+			$dependencies[] = $this->typeName;
 		}
 
 		// Is base object nullable?

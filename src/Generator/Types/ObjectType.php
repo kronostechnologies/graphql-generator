@@ -46,13 +46,7 @@ class ObjectType implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		return "
-            [
-                'name' => '{$this->name}',{$this->formatter->getDescriptionLine($this->description)}
-                'fields' => [{$this->getFieldsDefinitions()}
-                ],
-            ]
-        ";
+		return "[ 'name' => '{$this->name}',{$this->formatter->getDescriptionValue($this->description)} 'fields' => [{$this->getFieldsDefinitions()}], ]";
 	}
 
 	/**
@@ -62,12 +56,9 @@ class ObjectType implements BaseTypeGeneratorInterface {
 		$fields = [];
 
 		foreach($this->fields as $field) {
-			$typeDeclaration = $field->fieldType->getFieldTypeDeclaration();
+			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
 
-			$fields[] = "
-                    '{$field->name}' => [
-                        'type' => {$typeDeclaration},{$this->formatter->getDescriptionLine($field->description, 6)}
-                    ],";
+			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$this->formatter->getDescriptionValue($field->description)}],";
 		}
 
 		return implode('', $fields);

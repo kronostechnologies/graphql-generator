@@ -8,6 +8,7 @@ use GraphQL\Language\Parser;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Writer\PSR4\PSR4FieldTypeFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,11 +43,17 @@ class GenerateClassesCommand extends Command {
 		$genContext = new GeneratorContext();
 		$genContext->ast = $ast;
 		$genContext->namespace = 'Test';
-		$genContext->formatter = new StubFormatter();
+		$genContext->formatter = new StubFormatter(
+			true,
+			4,
+			",",
+			new PSR4FieldTypeFormatter()
+		);
 		$genContext->writer = new PSR4Writer(
 			$input->getArgument('output'),
 			$genContext->namespace,
-			true
+			true,
+			$genContext->formatter
 		);
 
 		// Starts work on AST

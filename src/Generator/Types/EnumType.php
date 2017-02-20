@@ -47,16 +47,10 @@ class EnumType implements BaseTypeGeneratorInterface {
 	 */
 	public function generateTypeDefinition() {
 		$escapedName = addslashes($this->name);
-		return "
-            [
-                'name' => '{$escapedName}',{$this->formatter->getDescriptionLine($this->description, 4)}
-                'values' => [{$this->getConstantValuesArray()}
-                ]                
-            ]";
+		return "[ 'name' => '{$escapedName}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ]";
 	}
 
 	protected function getConstantValuesArray() {
-
 		$valuesNames = array_map(function ($value) {
 			return $this->getSingleConstantValueEntry($value);
 		}, $this->values);
@@ -69,10 +63,7 @@ class EnumType implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {
-		return "
-                    '{$value->name}' => [
-                        'value' => self::VAL_{$value->name},{$this->formatter->getDescriptionLine($value->description, 6)}
-                    ],";
+		return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
 	}
 
 	/**
@@ -102,8 +93,7 @@ class EnumType implements BaseTypeGeneratorInterface {
 	public function getConstantsDeclaration() {
 		$constants = "";
 		foreach($this->values as $value) {
-			$constants .=
-				"    const VAL_{$value->name} = '{$value->name}';\n";
+			$constants .= "const VAL_{$value->name} = '{$value->name}';\n";
 		}
 
 		return $constants;

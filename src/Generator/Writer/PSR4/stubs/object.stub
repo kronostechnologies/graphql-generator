@@ -2,11 +2,12 @@
 
 namespace DummyNamespace;
 
-"UsesDeclaration";
+'UsesDeclarations';
 
 class DummyClass {
-"ConstantsDeclaration";
+	'VariablesDeclarations';
+
     public static function getTypeDefinition() {
-        return $TypeDefinitionDummy;
+        return 'TypeDefinitionDeclaration';
     }
 }

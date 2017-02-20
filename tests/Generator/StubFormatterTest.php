@@ -119,4 +119,26 @@ class StubFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expectedString, $retVal);
 	}
+
+	public function test_GivenUnindentedLine_indent_WillIndentTextCorrectly() {
+		$initialString = "unindentedText = 123;";
+		$expectedString = "    unindentedText = 123;";
+
+		$retVal = $this->_formatter->indent($initialString, 1);
+
+		$this->assertEquals($expectedString, $retVal);
+	}
+
+	public function test_GivenUnindentedLines_indent_WillIndentTextCorrectly() {
+		$initialString = "unindentedText = 123;
+unindentedText2 = '333';
+unindentedText3 = 'asbas';";
+		$expectedString = "    unindentedText = 123;
+    unindentedText2 = '333';
+    unindentedText3 = 'asbas';";
+
+		$retVal = $this->_formatter->indent($initialString, 1);
+
+		$this->assertEquals($expectedString, $retVal);
+	}
 }

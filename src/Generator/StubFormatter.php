@@ -4,14 +4,21 @@
 namespace GraphQLGen\Generator;
 
 
+use GraphQLGen\Generator\Types\SubTypes\FieldTypeFormatter;
+
 class StubFormatter {
 	const INDENT_TOKENS = '[{';
 	const UNINDENT_TOKENS = ']';
 	const NEWLINE_AFTER_TOKENS = '[,';
 	const NEWLINE_BEFORE_TOKENS = ']';
 	const STR_CONTEXT_TOKENS = '"\'';
-	const STR_ESCAPE_TOKEN = "\\";
+	const STR_ESCAPE_TOKENS = "\\";
 	const IGNORE_AFTER_NEW_LINE_TOKENS = " ";
+
+	/**
+	 * @var string
+	 */
+	public $descriptionLineMergeChars;
 
 	/**
 	 * @var bool
@@ -24,23 +31,30 @@ class StubFormatter {
 	public $tabSize;
 
 	/**
+	 * @var FieldTypeFormatter
+	 */
+	public $fieldTypeFormatter;
+
+	/**
 	 * @param bool $useSpaces
 	 * @param int $tabSize
+	 * @param string $descriptionLineMergeChars
+	 * @param FieldTypeFormatter|null $fieldTypeFormatter
 	 */
-	public function __construct($useSpaces = true, $tabSize = 4) {
+	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null) {
+		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
 		$this->useSpaces = $useSpaces;
 		$this->tabSize = $tabSize;
+		$this->fieldTypeFormatter = $fieldTypeFormatter;
 	}
 
-	public function getDescriptionLine($description, $tabsCount = 4) {
-		$indent = str_repeat("    ", $tabsCount);
-
+	public function getDescriptionValue($description) {
 		if(!is_null($description)) {
 			$trimmedDescription = trim($description);
-			$singleLineDescription = str_replace("\n", ",", $trimmedDescription);
+			$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
 			$descriptionSlashed = addslashes($singleLineDescription);
 
-			return "\n{$indent}'description' => '{$descriptionSlashed}',";
+			return "\n'description' => '{$descriptionSlashed}',";
 		}
 		else {
 			return "";
@@ -92,7 +106,7 @@ class StubFormatter {
 			}
 
 			// Escape string check
-			if (!$escapeNext && $inStringContext && strrpos(self::STR_ESCAPE_TOKEN, $char) !== false) {
+			if (!$escapeNext && $inStringContext && strrpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
 				$escapeNext = true;
 				$retVal .= $char;
 				continue;
@@ -143,6 +157,23 @@ class StubFormatter {
 		$linesArray = array_filter($linesArray, function ($line) { return !empty($line); });
 
 		return implode("\n", $linesArray);
+	}
+
+	/**
+	 * @param string $line
+	 * @return int
+	 */
+	public function guessIndentsCount($line) {
+		$regCountSpaces = "/^( |\t)/";
+		$countSpacesArr = [];
+		$matchesCount = preg_match($regCountSpaces, $line, $countSpacesArr);
+
+		if ($this->useSpaces) {
+			return intval(count($matchesCount) / $this->tabSize);
+		}
+		else {
+			return count($matchesCount);
+		}
 	}
 
 	/**
