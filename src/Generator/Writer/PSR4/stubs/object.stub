@@ -5,6 +5,7 @@ namespace DummyNamespace;
 "UsesDeclaration";
 
 class DummyClass {
+"ConstantsDeclaration";
     public static function getTypeDefinition() {
         return $TypeDefinitionDummy;
     }

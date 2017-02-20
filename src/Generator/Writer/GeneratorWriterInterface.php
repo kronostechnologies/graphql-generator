@@ -4,12 +4,14 @@
 namespace GraphQLGen\Generator\Writer;
 
 
+use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+
 interface GeneratorWriterInterface {
 	public function initialize();
 
 	/**
-	 * @param string $classFQN
-	 * @param string $classContent
+	 * @param BaseTypeGeneratorInterface $typeGenerator
+	 * @return string
 	 */
-	public function writeClass($classFQN, $classContent);
+	public function generateFileForTypeGenerator($typeGenerator);
 }

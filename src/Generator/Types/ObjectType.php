@@ -5,8 +5,9 @@ namespace GraphQLGen\Generator\Types;
 
 
 use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Types\SubTypes\ObjectTypeField;
 
-class ObjectType implements GeneratorTypeInterface {
+class ObjectType implements BaseTypeGeneratorInterface {
 	/**
 	 * @var string
 	 */
@@ -44,38 +45,24 @@ class ObjectType implements GeneratorTypeInterface {
 	/**
 	 * @return string
 	 */
-	public function GenerateTypeDefinition() {
+	public function generateTypeDefinition() {
 		return "
             [
                 'name' => '{$this->name}',{$this->formatter->getDescriptionLine($this->description)}
-                'fields' => [{$this->getFieldsDefinition()}
+                'fields' => [{$this->getFieldsDefinitions()}
                 ],
             ]
         ";
-		// TODO: Implement GenerateTypeDefinition() method.
-
 	}
 
-	protected function getFieldsDefinition() {
+	/**
+	 * @return string
+	 */
+	protected function getFieldsDefinitions() {
 		$fields = [];
 
 		foreach($this->fields as $field) {
-			$typeDeclaration = 'TypeStore::get' . $field->fieldType->typeName . '()';
-
-			// Is base object nullable?
-			if(!$field->fieldType->isTypeNullable) {
-				$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
-			}
-
-			// Is in list?
-			if($field->fieldType->inList) {
-				$typeDeclaration = 'Type::listOf(' . $typeDeclaration . ')';
-			}
-
-			// Is list nullable?
-			if($field->fieldType->inList && !$field->fieldType->isListNullable) {
-				$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
-			}
+			$typeDeclaration = $field->fieldType->getFieldTypeDeclaration();
 
 			$fields[] = "
                     '{$field->name}' => [
@@ -89,36 +76,41 @@ class ObjectType implements GeneratorTypeInterface {
 	/**
 	 * @return string
 	 */
-	public function GetStubFile() {
-		return __DIR__ . '/stubs/object.stub';
+	public function getStubFileName() {
+		return '/stubs/object.stub';
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDependencyPath() {
+		return ['Types'];
 	}
 
 	/**
 	 * @return string
 	 */
-	public function GetNamespacePart() {
-		return 'Types';
-	}
-
-	/**
-	 * @return string
-	 */
-	public function GetClassName() {
+	public function getName() {
 		return $this->name . 'Type';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function GetConstantsDeclaration() {
+	public function getConstantsDeclaration() {
 		return null;
 	}
 
 	/**
-	 * @return string|null
+	 * @return string[]
 	 */
-	public function GetUsesDeclaration() {
-		// TODO: Implement GetUsesDeclaration() method.
-		return null;
+	public function getDependencies() {
+		$dependencies = [];
+
+		foreach ($this->fields as $field) {
+			$dependencies = array_merge($dependencies, $field->fieldType->getDependencies());
+		}
+
+		return array_unique($dependencies);
 	}
 }

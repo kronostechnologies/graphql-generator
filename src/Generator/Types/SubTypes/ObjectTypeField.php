@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Types;
+namespace GraphQLGen\Generator\Types\SubTypes;
 
 
 class ObjectTypeField {

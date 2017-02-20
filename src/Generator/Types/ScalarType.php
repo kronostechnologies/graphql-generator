@@ -6,7 +6,7 @@ namespace GraphQLGen\Generator\Types;
 
 use GraphQLGen\Generator\StubFormatter;
 
-class ScalarType implements GeneratorTypeInterface {
+class ScalarType implements BaseTypeGeneratorInterface {
 	/**
 	 * @var null|string
 	 */
@@ -37,7 +37,7 @@ class ScalarType implements GeneratorTypeInterface {
 	/**
 	 * @return string
 	 */
-	public function GenerateTypeDefinition() {
+	public function generateTypeDefinition() {
 		$escapedName = addslashes($this->name);
 
 		return "
@@ -52,35 +52,35 @@ class ScalarType implements GeneratorTypeInterface {
 	/**
 	 * @return string
 	 */
-	public function GetStubFile() {
-		return __DIR__ . '/stubs/scalar.stub';
+	public function getStubFileName() {
+		return '/stubs/scalar.stub';
 	}
 
 	/**
-	 * @return string
+	 * @return string[]
 	 */
-	public function GetNamespacePart() {
-		return "Types\\Scalar";
+	public function getDependencyPath() {
+		return ['Types', 'Scalar'];
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function GetClassName() {
+	public function getName() {
 		return $this->name . 'ScalarType';
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function GetConstantsDeclaration() {
+	public function getConstantsDeclaration() {
 		return null;
 	}
 
 	/**
-	 * @return string|null
+	 * @return string[]
 	 */
-	public function GetUsesDeclaration() {
-		return null;
+	public function getDependencies() {
+		return [];
 	}
 }

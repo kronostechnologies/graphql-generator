@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Interpreters;
 use GraphQL\Language\AST\ListTypeNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NonNullTypeNode;
-use GraphQLGen\Generator\Types\FieldType;
+use GraphQLGen\Generator\Types\SubTypes\FieldType;
 
 class FieldTypeInterpreter {
 	/**
@@ -27,9 +27,9 @@ class FieldTypeInterpreter {
 	 * @return FieldType
 	 */
 	public function getFieldType() {
-		$inList = $this->isInList($this->_astNode);
-		$isNullableList = $this->isNullableList($this->_astNode);
-		$isNullableObject = $this->isNullableObject($this->_astNode);
+		$inList = $this->isInList();
+		$isNullableList = $this->isNullableList();
+		$isNullableObject = $this->isNullableObject();
 
 		// Finds name node
 		$nameNode = $this->_astNode;

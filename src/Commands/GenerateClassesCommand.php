@@ -8,7 +8,7 @@ use GraphQL\Language\Parser;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\StubFormatter;
-use GraphQLGen\Generator\Writer\PSR4Writer;
+use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

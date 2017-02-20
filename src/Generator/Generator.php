@@ -9,9 +9,10 @@ use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\TypeDefinitionNode;
 use GraphQLGen\Generator\Interpreters\GeneratorInterpreterInterface;
-use GraphQLGen\Generator\Types\GeneratorTypeInterface;
+use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class Generator {
+
 	/**
 	 * @var GeneratorContext
 	 */
@@ -40,12 +41,7 @@ class Generator {
 			if(!is_null($interpreter)) {
 				$generatorType = $interpreter->getGeneratorType($this->_context->formatter);
 
-				$genNamespace = $generatorType->GetNamespacePart();
-
-				$classFQN = $this->getFullNamespace($genNamespace . '\\' . $generatorType->GetClassName());
-				$classContent = $this->generateClassFromType($generatorType);
-
-				$this->_context->writer->writeClass($classFQN, $classContent);
+				$this->generateClassFromType($generatorType);
 			}
 		}
 	}
@@ -76,25 +72,14 @@ class Generator {
 	}
 
 	/**
-	 * @param GeneratorTypeInterface $generatorType
+	 * @param BaseTypeGeneratorInterface $typeGenerator
 	 * @return string
 	 */
-	protected function generateClassFromType($generatorType) {
-		$genNamespace = $generatorType->GetNamespacePart();
-
-		$stub = file_get_contents($generatorType->GetStubFile());
-		$stub = str_replace('$TypeDefinitionDummy', $generatorType->GenerateTypeDefinition(), $stub);
-		$stub = str_replace('DummyClass', $generatorType->GetClassName(), $stub);
-		$stub = str_replace('DummyNamespace', $this->getFullNamespace($genNamespace), $stub);
-		$stub = str_replace('"ConstantsDeclaration";', $generatorType->GetConstantsDeclaration(), $stub);
-		$stub = str_replace('"UsesDeclaration";', $generatorType->GetUsesDeclaration(), $stub);
-
-		return $stub;
+	protected function generateClassFromType($typeGenerator) {
+		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);
 	}
 
 	protected function resolveUses($currentStub) {
-		$regCurrentNS = "/namespace (.*);/g";
-		$regRequiredNS = "/[A-Za-z_/g";
 
 	}
 }

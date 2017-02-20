@@ -5,8 +5,9 @@ namespace GraphQLGen\Generator\Types;
 
 
 use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
 
-class EnumType implements GeneratorTypeInterface {
+class EnumType implements BaseTypeGeneratorInterface {
 	/**
 	 * @var string
 	 */
@@ -44,7 +45,7 @@ class EnumType implements GeneratorTypeInterface {
 	/**
 	 * @return string
 	 */
-	public function GenerateTypeDefinition() {
+	public function generateTypeDefinition() {
 		$escapedName = addslashes($this->name);
 		return "
             [
@@ -69,49 +70,49 @@ class EnumType implements GeneratorTypeInterface {
 	 */
 	protected function getSingleConstantValueEntry($value) {
 		return "
-                    '{$value->name->value}' => [
-                        'value' => self::VAL_{$value->name->value},{$this->formatter->getDescriptionLine($value->description, 6)}
+                    '{$value->name}' => [
+                        'value' => self::VAL_{$value->name},{$this->formatter->getDescriptionLine($value->description, 6)}
                     ],";
 	}
 
 	/**
 	 * @return string
 	 */
-	public function GetStubFile() {
-		return __DIR__ . '/stubs/enum.stub';
+	public function getStubFileName() {
+		return '/stubs/enum.stub';
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDependencyPath() {
+		return ['Types', 'Enum'];
 	}
 
 	/**
 	 * @return string
 	 */
-	public function GetNamespacePart() {
-		return 'Types\\Enum';
-	}
-
-	/**
-	 * @return string
-	 */
-	public function GetClassName() {
+	public function getName() {
 		return $this->name . 'Enum';
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function GetConstantsDeclaration() {
+	public function getConstantsDeclaration() {
 		$constants = "";
 		foreach($this->values as $value) {
 			$constants .=
-				"    const VAL_{$value->name->value} = '{$value->name->value}';\n";
+				"    const VAL_{$value->name} = '{$value->name}';\n";
 		}
 
 		return $constants;
 	}
 
 	/**
-	 * @return string|null
+	 * @return string[]
 	 */
-	public function GetUsesDeclaration() {
-		return null;
+	public function getDependencies() {
+		return [];
 	}
 }

@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Interpreters;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\EnumType;
-use GraphQLGen\Generator\Types\EnumTypeValue;
+use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
 
 class EnumInterpreter implements GeneratorInterpreterInterface {
 
