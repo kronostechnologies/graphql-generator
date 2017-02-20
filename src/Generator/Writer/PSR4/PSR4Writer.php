@@ -110,7 +110,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$typeDefinitionLine = $stubFile->getTypeDefinitionDeclarationLine();
 		$typeDefinitionIndent = $this->_formatter->guessIndentsCount($typeDefinitionLine);
 		$typeDefinitionUnformatted = $typeGenerator->generateTypeDefinition();
-		$typeDefinitionFormatted = $this->_formatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndent);
+		$typeDefinitionFormatted = ltrim($this->_formatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndent));
 		$stubFile->replaceTextInStub(PSR4StubFile::TYPE_DEFINITION_DECLARATION, $typeDefinitionFormatted);
 
 		$className = $typeGenerator->getName();
@@ -122,7 +122,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$variablesDeclarationLine = $stubFile->getVariablesDeclarationLine();
 		$variablesDeclarationIndent = $this->_formatter->guessIndentsCount($variablesDeclarationLine);
 		$variablesDeclarationNoIndent = $typeGenerator->getConstantsDeclaration();
-		$variablesDeclarationIndented = $this->_formatter->indent($variablesDeclarationNoIndent, $variablesDeclarationIndent);
+		$variablesDeclarationIndented = ltrim($this->_formatter->indent($variablesDeclarationNoIndent, $variablesDeclarationIndent));
 		$stubFile->replaceTextInstub(PSR4StubFile::VARIABLES_DECLARATION, $variablesDeclarationIndented);
 
 		$usesDeclarations = $this->getDependenciesUses($usesDependencies);

@@ -5,7 +5,7 @@ namespace DummyNamespace;
 'UsesDeclarations';
 
 class DummyClass {
-	'VariablesDeclarations';
+    'VariablesDeclarations';
 
     public static function getTypeDefinition() {
         return 'TypeDefinitionDeclaration';

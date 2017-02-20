@@ -141,4 +141,12 @@ unindentedText3 = 'asbas';";
 
 		$this->assertEquals($expectedString, $retVal);
 	}
+
+	public function test_GivenIndentedText_guess_WillGuessNumberOfIndentsCorrectly() {
+		$string = "        testText"; // 2
+
+		$retVal = $this->_formatter->guessIndentsCount($string);
+
+		$this->assertEquals(2, $retVal);
+	}
 }

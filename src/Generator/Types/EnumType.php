@@ -47,7 +47,7 @@ class EnumType implements BaseTypeGeneratorInterface {
 	 */
 	public function generateTypeDefinition() {
 		$escapedName = addslashes($this->name);
-		return "[ 'name' => '{$escapedName}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ]";
+		return "[ 'name' => '{$escapedName}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ];";
 	}
 
 	protected function getConstantValuesArray() {

@@ -40,7 +40,7 @@ class ScalarType implements BaseTypeGeneratorInterface {
 	public function generateTypeDefinition() {
 		$escapedName = addslashes($this->name);
 
-		return "[ 'name' => '{$escapedName}',{$this->formatter->getDescriptionValue($this->description)} 'serialize' => [__CLASS__, 'serialize'], 'parseValue' => [__CLASS__, 'parseValue'], 'parseLiteral' => [__CLASS__, 'parseLiteral']]";
+		return "[ 'name' => '{$escapedName}',{$this->formatter->getDescriptionValue($this->description)} 'serialize' => [__CLASS__, 'serialize'], 'parseValue' => [__CLASS__, 'parseValue'], 'parseLiteral' => [__CLASS__, 'parseLiteral']];";
 	}
 
 	/**

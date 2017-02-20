@@ -54,7 +54,7 @@ class StubFormatter {
 			$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
 			$descriptionSlashed = addslashes($singleLineDescription);
 
-			return "\n'description' => '{$descriptionSlashed}',";
+			return "'description' => '{$descriptionSlashed}',";
 		}
 		else {
 			return "";
@@ -164,15 +164,14 @@ class StubFormatter {
 	 * @return int
 	 */
 	public function guessIndentsCount($line) {
-		$regCountSpaces = "/^( |\t)/";
-		$countSpacesArr = [];
-		$matchesCount = preg_match($regCountSpaces, $line, $countSpacesArr);
+		$regCountSpaces = "/( |\t)/";
+		$countMatches = preg_match_all($regCountSpaces, $line, $countSpacesArr);
 
 		if ($this->useSpaces) {
-			return intval(count($matchesCount) / $this->tabSize);
+			return intval($countMatches / $this->tabSize);
 		}
 		else {
-			return count($matchesCount);
+			return count($countSpacesArr);
 		}
 	}
 
