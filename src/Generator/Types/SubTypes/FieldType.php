@@ -32,6 +32,13 @@ class FieldType {
 	 */
 	public $isListNullable;
 
+	/**
+	 * FieldType constructor.
+	 * @param string $type_name
+	 * @param bool $is_type_nullable
+	 * @param bool $in_list
+	 * @param bool $is_list_nullable
+	 */
 	public function __construct($type_name, $is_type_nullable, $in_list, $is_list_nullable) {
 		$this->typeName = $type_name;
 		$this->isTypeNullable = $is_type_nullable;
@@ -39,6 +46,9 @@ class FieldType {
 		$this->isListNullable = $is_list_nullable;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getFieldTypeDeclaration() {
 		// Primary type check
 		if (in_array($this->typeName, self::$PRIMARY_TYPES_MAPPINGS)) {

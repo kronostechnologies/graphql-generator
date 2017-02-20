@@ -8,7 +8,7 @@ use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\ObjectType;
-use GraphQLGen\Generator\Types\SubTypes\ObjectTypeField;
+use GraphQLGen\Generator\Types\SubTypes\ObjectFieldType;
 
 class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
 	/**
@@ -39,7 +39,7 @@ class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
 	}
 
 	/**
-	 * @return ObjectTypeField[]
+	 * @return ObjectFieldType[]
 	 */
 	public function getFields() {
 		$fields = [];
@@ -47,7 +47,7 @@ class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
 		foreach($this->_astNode->fields as $field) {
 			$fieldTypeInterpreter = new FieldTypeInterpreter($field->type);
 
-			$newField = new ObjectTypeField();
+			$newField = new ObjectFieldType();
 			$newField->name = $field->name->value;
 			$newField->description = $field->description;
 			$newField->fieldType = $fieldTypeInterpreter->getFieldType();

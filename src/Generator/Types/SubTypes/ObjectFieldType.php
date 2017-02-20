@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-class ObjectTypeField {
+class ObjectFieldType {
 	/**
 	 * @var string
 	 */
@@ -21,7 +21,7 @@ class ObjectTypeField {
 	public $fieldType;
 
 	/**
-	 * @var ObjectTypeFieldArgument[]
+	 * @var ObjectFieldTypeArgument[]
 	 */
 	public $arguments = [];
 }
