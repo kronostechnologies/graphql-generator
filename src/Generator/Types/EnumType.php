@@ -63,21 +63,12 @@ class EnumType implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {
-		return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getStubFileName() {
-		return '/stubs/enum.stub';
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencyPath() {
-		return ['Types', 'Enum'];
+		if ($this->formatter->useConstantsForEnums) {
+			return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
+		}
+		else {
+			return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
+		}
 	}
 
 	/**

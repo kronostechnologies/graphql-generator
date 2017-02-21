@@ -36,16 +36,23 @@ class StubFormatter {
 	public $fieldTypeFormatter;
 
 	/**
+	 * @var bool
+	 */
+	public $useConstantsForEnums;
+
+	/**
 	 * @param bool $useSpaces
 	 * @param int $tabSize
 	 * @param string $descriptionLineMergeChars
 	 * @param FieldTypeFormatter|null $fieldTypeFormatter
+	 * @param bool $useConstantsForEnums
 	 */
-	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null) {
+	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $useConstantsForEnums = true) {
 		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
 		$this->useSpaces = $useSpaces;
 		$this->tabSize = $tabSize;
 		$this->fieldTypeFormatter = $fieldTypeFormatter;
+		$this->useConstantsForEnums = $useConstantsForEnums;
 	}
 
 	public function getDescriptionValue($description) {

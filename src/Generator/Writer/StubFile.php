@@ -34,7 +34,6 @@ class StubFile {
 	public function getLineWithText($searchText) {
 		$lines = $this->getLinesWithText($searchText);
 
-		print_r($lines);
 		return !empty($lines) ? array_shift($lines) : null;
 	}
 

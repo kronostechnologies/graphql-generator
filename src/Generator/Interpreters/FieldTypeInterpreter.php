@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Interpreters;
 
 use GraphQL\Language\AST\ListTypeNode;
 use GraphQL\Language\AST\NamedTypeNode;
+use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQLGen\Generator\Types\SubTypes\FieldType;
 
@@ -33,7 +34,7 @@ class FieldTypeInterpreter {
 
 		// Finds name node
 		$nameNode = $this->_astNode;
-		while(get_class($nameNode) !== NamedTypeNode::class) {
+		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
 			$nameNode = $nameNode->type;
 		}
 
@@ -49,11 +50,11 @@ class FieldTypeInterpreter {
 	 * @return bool
 	 */
 	public function isInList() {
-		if(get_class($this->_astNode) === NonNullTypeNode::class) {
-			return get_class($this->_astNode->type) === ListTypeNode::class;
+		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
+			return $this->_astNode->type->kind === NodeKind::LIST_TYPE;
 		}
 		else {
-			return get_class($this->_astNode) === ListTypeNode::class;
+			return $this->_astNode->kind === NodeKind::LIST_TYPE;
 		}
 	}
 
@@ -61,11 +62,14 @@ class FieldTypeInterpreter {
 	 * @return bool
 	 */
 	public function isNullableList() {
-		if(get_class($this->_astNode) === NonNullTypeNode::class) {
-			return !get_class($this->_astNode->type) === ListTypeNode::class;
+		if(!$this->isInList()) {
+			return false;
+		}
+		else if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
+			return $this->_astNode->type->kind !== NodeKind::LIST_TYPE;
 		}
 		else {
-			return get_class($this->_astNode) === ListTypeNode::class;
+			return $this->_astNode->kind === NodeKind::LIST_TYPE;
 		}
 	}
 
@@ -73,11 +77,11 @@ class FieldTypeInterpreter {
 	 * @return bool
 	 */
 	public function isNullableObject() {
-		if(get_class($this->_astNode) === NonNullTypeNode::class) {
-			return $this->isInList() ? get_class($this->_astNode->type->type) !== NonNullTypeNode::class : false;
+		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
+			return $this->isInList() ? $this->_astNode->type->type->kind !== NodeKind::NON_NULL_TYPE : false;
 		}
 		else {
-			return $this->isInList() ? get_class($this->_astNode->type) !== NonNullTypeNode::class : true;
+			return $this->isInList() ? $this->_astNode->type->kind !== NodeKind::NON_NULL_TYPE : true;
 		}
 	}
 

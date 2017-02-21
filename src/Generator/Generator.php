@@ -4,10 +4,8 @@
 namespace GraphQLGen\Generator;
 
 
-use GraphQL\Language\AST\EnumTypeDefinitionNode;
-use GraphQL\Language\AST\ObjectTypeDefinitionNode;
-use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQL\Language\AST\TypeDefinitionNode;
+use GraphQL\Language\AST\Node;
+use GraphQL\Language\AST\NodeKind;
 use GraphQLGen\Generator\Interpreters\GeneratorInterpreterInterface;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
@@ -47,16 +45,16 @@ class Generator {
 	}
 
 	/**
-	 * @param TypeDefinitionNode $astNode
+	 * @param Node $astNode
 	 * @return GeneratorInterpreterInterface
 	 */
 	protected function getCorrectInterpreter($astNode) {
-		switch(get_class($astNode)) {
-			case ScalarTypeDefinitionNode::class:
+		switch($astNode->kind) {
+			case NodeKind::SCALAR_TYPE_DEFINITION:
 				return $this->_factory->createScalarTypeInterpreter($astNode);
-			case EnumTypeDefinitionNode::class:
+			case NodeKind::ENUM_TYPE_DEFINITION:
 				return $this->_factory->createEnumTypeInterpreter($astNode);
-			case ObjectTypeDefinitionNode::class:
+			case NodeKind::OBJECT_TYPE_DEFINITION:
 				return $this->_factory->createObjectTypeInterpreter($astNode);
 			default:
 				return null;
@@ -73,13 +71,8 @@ class Generator {
 
 	/**
 	 * @param BaseTypeGeneratorInterface $typeGenerator
-	 * @return string
 	 */
 	protected function generateClassFromType($typeGenerator) {
 		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);
-	}
-
-	protected function resolveUses($currentStub) {
-
 	}
 }

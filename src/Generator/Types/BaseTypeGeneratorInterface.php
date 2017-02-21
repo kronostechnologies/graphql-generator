@@ -13,16 +13,6 @@ interface BaseTypeGeneratorInterface {
 	/**
 	 * @return string
 	 */
-	public function getStubFileName();
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencyPath();
-
-	/**
-	 * @return string
-	 */
 	public function getName();
 
 	/**

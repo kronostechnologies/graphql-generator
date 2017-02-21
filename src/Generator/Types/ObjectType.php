@@ -67,20 +67,6 @@ class ObjectType implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string
 	 */
-	public function getStubFileName() {
-		return '/stubs/object.stub';
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencyPath() {
-		return ['Types'];
-	}
-
-	/**
-	 * @return string
-	 */
 	public function getName() {
 		return $this->name . 'Type';
 	}

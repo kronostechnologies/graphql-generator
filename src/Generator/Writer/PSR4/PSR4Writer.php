@@ -6,6 +6,9 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\EnumType;
+use GraphQLGen\Generator\Types\ObjectType;
+use GraphQLGen\Generator\Types\ScalarType;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class PSR4Writer implements GeneratorWriterInterface {
@@ -104,7 +107,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$usesDependencies = $typeGenerator->getDependencies();
 		$classFQN = $this->generateNamespace($dependencyPath) . "\\" . $typeGenerator->getName();
 
-		$stub = file_get_contents(__DIR__ . $typeGenerator->getStubFileName());
+		$stub = file_get_contents(__DIR__ . $this->getStubFilename($typeGenerator));
 		$stubFile = new PSR4StubFile($stub);
 
 		$typeDefinitionLine = $stubFile->getTypeDefinitionDeclarationLine();
@@ -119,11 +122,16 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$namespace = $this->generateNamespace($dependencyPath);
 		$stubFile->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespace);
 
-		$variablesDeclarationLine = $stubFile->getVariablesDeclarationLine();
-		$variablesDeclarationIndent = $this->_formatter->guessIndentsCount($variablesDeclarationLine);
-		$variablesDeclarationNoIndent = $typeGenerator->getConstantsDeclaration();
-		$variablesDeclarationIndented = ltrim($this->_formatter->indent($variablesDeclarationNoIndent, $variablesDeclarationIndent));
-		$stubFile->replaceTextInstub(PSR4StubFile::VARIABLES_DECLARATION, $variablesDeclarationIndented);
+		if ($this->_formatter->useConstantsForEnums) {
+			$variablesDeclarationLine = $stubFile->getVariablesDeclarationLine();
+			$variablesDeclarationIndent = $this->_formatter->guessIndentsCount($variablesDeclarationLine);
+			$variablesDeclarationNoIndent = $typeGenerator->getConstantsDeclaration();
+			$variablesDeclarationIndented = ltrim($this->_formatter->indent($variablesDeclarationNoIndent, $variablesDeclarationIndent));
+			$stubFile->replaceTextInStub(PSR4StubFile::VARIABLES_DECLARATION, $variablesDeclarationIndented);
+		}
+		else {
+			$stubFile->replaceTextInStub(PSR4StubFile::VARIABLES_DECLARATION, "");
+		}
 
 		$usesDeclarations = $this->getDependenciesUses($usesDependencies);
 		$stubFile->replaceTextInStub(PSR4StubFile::USES_DECLARATION, $usesDeclarations);
@@ -134,5 +142,20 @@ class PSR4Writer implements GeneratorWriterInterface {
 
 		// Simply create the namespace + .php extension file
 		file_put_contents($this->_targetDir . $relevantFQN . ".php", $stubFile->getContent());
+	}
+
+	/**
+	 * @param BaseTypeGeneratorInterface $generatorType
+	 * @return string
+	 */
+	protected function getStubFilename($generatorType) {
+		switch(get_class($generatorType)) {
+			case EnumType::class:
+				return '/stubs/enum.stub';
+			case ObjectType::class:
+				return '/stubs/object.stub';
+			case ScalarType::class:
+				return '/stubs/scalar.stub';
+		}
 	}
 }

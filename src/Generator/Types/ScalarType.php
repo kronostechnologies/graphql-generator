@@ -44,20 +44,6 @@ class ScalarType implements BaseTypeGeneratorInterface {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getStubFileName() {
-		return '/stubs/scalar.stub';
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencyPath() {
-		return ['Types', 'Scalar'];
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getName() {
