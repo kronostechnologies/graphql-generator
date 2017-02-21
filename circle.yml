@@ -1,10 +1,12 @@
 machine:
   timezone: America/Los_Angeles
+  php:
+    version: 5.5.36
 
 dependencies:
   override:
     - mkdir -p build/logs
-    - composer update --prefer-stable --prefer-lowest --no-interaction
+    - composer install --no-interaction
 
 test:
   override:
