@@ -1,0 +1,10 @@
+dependencies:
+  override:
+    - mkdir -p build/logs
+    - composer update --prefer-stable --prefer-lowest --no-interaction
+
+test:
+  override:
+    - phpunit
+  post:
+    - vendor/bin/coveralls -v --exclude-no-stmt
