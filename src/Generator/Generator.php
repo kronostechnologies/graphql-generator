@@ -6,7 +6,11 @@ namespace GraphQLGen\Generator;
 
 use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
+use GraphQLGen\Generator\Interpreters\EnumTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\FieldTypeInterpreter;
 use GraphQLGen\Generator\Interpreters\GeneratorInterpreterInterface;
+use GraphQLGen\Generator\Interpreters\ObjectTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\ScalarTypeInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class Generator {
@@ -37,8 +41,7 @@ class Generator {
 			$interpreter = $this->getCorrectInterpreter($astDefinition);
 
 			if(!is_null($interpreter)) {
-				$generatorType = $interpreter->getGeneratorType($this->_context->formatter);
-
+				$generatorType = $this->getGeneratorTypeFromInterpreter($interpreter);
 				$this->generateClassFromType($generatorType);
 			}
 		}
@@ -46,7 +49,7 @@ class Generator {
 
 	/**
 	 * @param Node $astNode
-	 * @return GeneratorInterpreterInterface
+	 * @return EnumTypeInterpreter|ObjectTypeInterpreter|ScalarTypeInterpreter|null
 	 */
 	protected function getCorrectInterpreter($astNode) {
 		switch($astNode->kind) {
@@ -56,9 +59,9 @@ class Generator {
 				return $this->_factory->createEnumTypeInterpreter($astNode);
 			case NodeKind::OBJECT_TYPE_DEFINITION:
 				return $this->_factory->createObjectTypeInterpreter($astNode);
-			default:
-				return null;
 		}
+
+		return null;
 	}
 
 	/**
@@ -74,5 +77,24 @@ class Generator {
 	 */
 	protected function generateClassFromType($typeGenerator) {
 		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);
+	}
+
+	/**
+	 * @param $interpreter
+	 * @return Types\EnumType|Types\ObjectType|Types\ScalarType|Types\SubTypes\FieldType|null
+	 */
+	protected function getGeneratorTypeFromInterpreter($interpreter) {
+		switch (get_class($interpreter)) {
+			case EnumTypeInterpreter::class:
+				return $this->_factory->createEnumGeneratorType($interpreter, $this->_context->formatter);
+			case FieldTypeInterpreter::class:
+				return $this->_factory->createFieldTypeGeneratorType($interpreter);
+			case ObjectTypeInterpreter::class:
+				return $this->_factory->createObjectGeneratorType($interpreter, $this->_context->formatter);
+			case ScalarTypeInterpreter::class:
+				return $this->_factory->createScalarGeneratorType($interpreter, $this->_context->formatter);
+		}
+
+		return null;
 	}
 }

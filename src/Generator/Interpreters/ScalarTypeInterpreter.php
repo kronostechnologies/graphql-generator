@@ -5,10 +5,8 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\StubFormatter;
-use GraphQLGen\Generator\Types\ScalarType;
 
-class ScalarInterpreter implements GeneratorInterpreterInterface {
+class ScalarTypeInterpreter {
 	/**
 	 * @var ScalarTypeDefinitionNode
 	 */
@@ -19,18 +17,6 @@ class ScalarInterpreter implements GeneratorInterpreterInterface {
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
-	}
-
-	/**
-	 * @param StubFormatter $formatter
-	 * @return ScalarType
-	 */
-	public function getGeneratorType($formatter) {
-		return new ScalarType(
-			$this->getName(),
-			$formatter,
-			$this->getDescription()
-		);
 	}
 
 	/**

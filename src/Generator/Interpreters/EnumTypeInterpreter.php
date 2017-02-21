@@ -5,11 +5,9 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
-use GraphQLGen\Generator\StubFormatter;
-use GraphQLGen\Generator\Types\EnumType;
 use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
 
-class EnumInterpreter implements GeneratorInterpreterInterface {
+class EnumTypeInterpreter {
 
 	/**
 	 * @var EnumTypeDefinitionNode
@@ -21,19 +19,6 @@ class EnumInterpreter implements GeneratorInterpreterInterface {
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
-	}
-
-	/**
-	 * @param StubFormatter $formatter
-	 * @return EnumType
-	 */
-	public function getGeneratorType($formatter) {
-		return new EnumType(
-			$this->getName(),
-			$this->getEnumValues(),
-			$formatter,
-			$this->getDescription()
-		);
 	}
 
 	/**

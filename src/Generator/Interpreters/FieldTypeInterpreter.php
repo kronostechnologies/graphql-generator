@@ -25,28 +25,6 @@ class FieldTypeInterpreter {
 	}
 
 	/**
-	 * @return FieldType
-	 */
-	public function getFieldType() {
-		$inList = $this->isInList();
-		$isNullableList = $this->isNullableList();
-		$isNullableObject = $this->isNullableObject();
-
-		// Finds name node
-		$nameNode = $this->_astNode;
-		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
-			$nameNode = $nameNode->type;
-		}
-
-		return new FieldType(
-			$this->getName($nameNode),
-			$isNullableObject,
-			$inList,
-			$isNullableList
-		);
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function isInList() {
@@ -86,10 +64,15 @@ class FieldTypeInterpreter {
 	}
 
 	/**
-	 * @param NamedTypeNode $nameNode
 	 * @return string
 	 */
-	public function getName($nameNode) {
+	public function getName() {
+		// Finds name node
+		$nameNode = $this->_astNode;
+		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
+			$nameNode = $nameNode->type;
+		}
+
 		return $nameNode->name->value;
 	}
 }

@@ -6,7 +6,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\ScalarTypeInterpreter;
 
 class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
@@ -16,7 +16,7 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$scalarNode = new ScalarTypeDefinitionNode([]);
 		$this->GivenNodeWithName($scalarNode);
 
-		$interpreter = new ScalarInterpreter($scalarNode);
+		$interpreter = new ScalarTypeInterpreter($scalarNode);
 		$interpretedName = $interpreter->getName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
@@ -26,7 +26,7 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$scalarNode = new ScalarTypeDefinitionNode([]);
 		$this->GivenNodeWithDescription($scalarNode);
 
-		$interpreter = new ScalarInterpreter($scalarNode);
+		$interpreter = new ScalarTypeInterpreter($scalarNode);
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);

@@ -5,12 +5,9 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
-use GraphQLGen\Generator\StubFormatter;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
-use GraphQLGen\Generator\Types\ObjectType;
 use GraphQLGen\Generator\Types\SubTypes\ObjectFieldType;
 
-class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
+class ObjectTypeInterpreter {
 	/**
 	 * @var ObjectTypeDefinitionNode
 	 */
@@ -21,21 +18,6 @@ class ObjectTypeInterpreter implements GeneratorInterpreterInterface {
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
-	}
-
-	/**
-	 * @param StubFormatter $formatter
-	 * @return BaseTypeGeneratorInterface
-	 */
-	public function getGeneratorType($formatter) {
-		$fields = $this->getFields();
-
-		return new ObjectType(
-			$this->getName(),
-			$formatter,
-			$fields,
-			$this->getDescription()
-		);
 	}
 
 	/**
