@@ -27,6 +27,10 @@ class GeneratorFactory {
 		return new EnumInterpreter($astNode);
 	}
 
+	/**
+	 * @param $astNode
+	 * @return ObjectTypeInterpreter
+	 */
 	public function createObjectTypeInterpreter($astNode) {
 		return new ObjectTypeInterpreter($astNode);
 	}

@@ -52,7 +52,7 @@ class FieldType {
 	public function getDependencies() {
 		$dependencies = [];
 
-		if (in_array($this->typeName, self::$PRIMARY_TYPES_MAPPINGS)) {
+		if (isset(self::$PRIMARY_TYPES_MAPPINGS[$this->typeName])) {
 			$dependencies[] = 'Type';
 		}
 		else {
