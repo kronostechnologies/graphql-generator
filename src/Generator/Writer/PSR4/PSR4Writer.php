@@ -4,12 +4,12 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Types\Scalar;
+use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class PSR4Writer implements GeneratorWriterInterface {
@@ -113,7 +113,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$typeDefinitionLine = $stubFile->getTypeDefinitionDeclarationLine();
 		$typeDefinitionIndent = $this->_formatter->guessIndentsCount($typeDefinitionLine);
 		$typeDefinitionUnformatted = $typeGenerator->generateTypeDefinition();
-		$typeDefinitionFormatted = ltrim($this->_formatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndent));
+		$typeDefinitionFormatted = ltrim($this->_formatter->arrayFormatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndent));
 		$stubFile->replaceTextInStub(PSR4StubFile::TYPE_DEFINITION_DECLARATION, $typeDefinitionFormatted);
 
 		$className = $typeGenerator->getName();

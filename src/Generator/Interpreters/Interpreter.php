@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\Node;
-use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 
 abstract class Interpreter {
 	/**

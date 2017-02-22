@@ -47,7 +47,7 @@ class EnumInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\StubFormatter $formatter
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @return Enum
 	 */
 	public function generateType($formatter) {

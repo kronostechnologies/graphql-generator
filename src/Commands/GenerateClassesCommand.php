@@ -5,9 +5,9 @@ namespace GraphQLGen\Commands;
 
 
 use GraphQL\Language\Parser;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
-use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use Symfony\Component\Console\Command\Command;

@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator;
 
 
 use GraphQL\Language\AST\DocumentNode;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class GeneratorContext {

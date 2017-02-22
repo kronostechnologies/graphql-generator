@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types;
 
 
-use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
 class Type implements BaseTypeGeneratorInterface {
@@ -24,14 +24,14 @@ class Type implements BaseTypeGeneratorInterface {
 	public $fields;
 
 	/**
-	 * @var StubFormatter
+	 * @var \GraphQLGen\Generator\Formatters\StubFormatter
 	 */
 	public $formatter;
 
 	/**
 	 * ObjectType constructor.
 	 * @param string $name
-	 * @param StubFormatter $formatter
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @param Field[] $fields
 	 * @param string|null $description
 	 */

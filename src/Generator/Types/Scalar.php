@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types;
 
 
-use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 
 class Scalar implements BaseTypeGeneratorInterface {
 	/**
@@ -13,7 +13,7 @@ class Scalar implements BaseTypeGeneratorInterface {
 	public $description;
 
 	/**
-	 * @var StubFormatter
+	 * @var \GraphQLGen\Generator\Formatters\StubFormatter
 	 */
 	public $formatter;
 
@@ -25,7 +25,7 @@ class Scalar implements BaseTypeGeneratorInterface {
 	/**
 	 * ScalarType constructor.
 	 * @param string $name
-	 * @param StubFormatter $formatter
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @param string|null $description
 	 */
 	public function __construct($name, $formatter, $description = null) {

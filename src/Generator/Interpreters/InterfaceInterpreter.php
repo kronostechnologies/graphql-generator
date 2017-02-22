@@ -42,7 +42,7 @@ class InterfaceInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\StubFormatter $formatter
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @return InterfaceDeclaration
 	 */
 	public function generateType($formatter) {

@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types;
 
 
-use GraphQLGen\Generator\StubFormatter;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class Enum implements BaseTypeGeneratorInterface {

@@ -30,7 +30,7 @@ class ScalarInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\StubFormatter $formatter
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @return Scalar
 	 */
 	public function generateType($formatter) {
