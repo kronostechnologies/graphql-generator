@@ -1,0 +1,13 @@
+<?php
+
+namespace DummyNamespace;
+
+'UsesDeclarations';
+
+class DummyClass {
+    'VariablesDeclarations';
+
+    public static function getTypeDefinition() {
+        return 'TypeDefinitionDeclaration';
+    }
+}

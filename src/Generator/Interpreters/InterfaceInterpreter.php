@@ -4,13 +4,13 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
-use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
+use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\Type;
 
-class TypeDeclarationInterpreter extends Interpreter {
+class InterfaceInterpreter extends Interpreter {
 	/**
-	 * @param ObjectTypeDefinitionNode $astNode
+	 * @param InterfaceTypeDefinitionNode $astNode
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
@@ -43,10 +43,10 @@ class TypeDeclarationInterpreter extends Interpreter {
 
 	/**
 	 * @param \GraphQLGen\Generator\StubFormatter $formatter
-	 * @return Type
+	 * @return InterfaceDeclaration
 	 */
 	public function generateType($formatter) {
-		return new Type(
+		return new InterfaceDeclaration(
 			$this->getName(),
 			$formatter,
 			$this->getFields(),

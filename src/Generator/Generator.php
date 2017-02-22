@@ -8,6 +8,7 @@ use GraphQL\Language\AST\DefinitionNode;
 use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\InterfaceInterpreter;
 use GraphQLGen\Generator\Interpreters\Interpreter;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
@@ -52,6 +53,8 @@ class Generator {
 				return new EnumInterpreter($astNode);
 			case NodeKind::OBJECT_TYPE_DEFINITION:
 				return new TypeDeclarationInterpreter($astNode);
+			case NodeKind::INTERFACE_TYPE_DEFINITION:
+				return new InterfaceInterpreter($astNode);
 		}
 
 		return null;

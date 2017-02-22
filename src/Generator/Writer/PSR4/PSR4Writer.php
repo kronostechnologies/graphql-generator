@@ -7,6 +7,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
@@ -63,11 +64,11 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	/**
-	 * @param string[] $dependencyPath
+	 * @param string $baseNamespace
 	 * @return string
 	 */
-	protected function generateNamespace($dependencyPath) {
-		return $this->_baseNamespace . "\\" . implode("\\", $dependencyPath);
+	protected function generateNamespace($baseNamespace) {
+		return $this->_baseNamespace . "\\" . $baseNamespace;
 	}
 
 	/**
@@ -103,9 +104,9 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 * @param BaseTypeGeneratorInterface $typeGenerator
 	 */
 	public function generateFileForTypeGenerator($typeGenerator) {
-		$dependencyPath = $typeGenerator->getDependencyPath();
+		$baseNamespace = $this->getNamespaceSubpart($typeGenerator);
 		$usesDependencies = $typeGenerator->getDependencies();
-		$classFQN = $this->generateNamespace($dependencyPath) . "\\" . $typeGenerator->getName();
+		$classFQN = $this->generateNamespace($baseNamespace) . "\\" . $typeGenerator->getName();
 
 		$stub = file_get_contents(__DIR__ . $this->getStubFilename($typeGenerator));
 		$stubFile = new PSR4StubFile($stub);
@@ -119,7 +120,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$className = $typeGenerator->getName();
 		$stubFile->replaceTextInStub(PSR4StubFile::DUMMY_CLASSNAME, $className);
 
-		$namespace = $this->generateNamespace($dependencyPath);
+		$namespace = $this->generateNamespace($baseNamespace);
 		$stubFile->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespace);
 
 		if ($this->_formatter->useConstantsForEnums) {
@@ -156,6 +157,21 @@ class PSR4Writer implements GeneratorWriterInterface {
 				return '/stubs/object.stub';
 			case Scalar::class:
 				return '/stubs/scalar.stub';
+			case InterfaceDeclaration::class:
+				return '/stubs/interface.stub';
+		}
+	}
+
+	protected function getNamespaceSubpart($generatorType) {
+		switch(get_class($generatorType)) {
+			case Enum::class:
+				return "Enum\\";
+			case Type::class:
+				return "\\";
+			case Scalar::class:
+				return "Scalar\\";
+			case InterfaceDeclaration::class:
+				return 'Interface\\';
 		}
 	}
 }
