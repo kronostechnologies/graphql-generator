@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-class EnumTypeValue {
+class EnumValue {
 	/**
 	 * @var string
 	 */

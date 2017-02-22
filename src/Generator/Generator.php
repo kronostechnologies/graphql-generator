@@ -4,12 +4,12 @@
 namespace GraphQLGen\Generator;
 
 
+use GraphQL\Language\AST\DefinitionNode;
 use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
-use GraphQLGen\Generator\Interpreters\FieldInterpreter;
-use GraphQLGen\Generator\Interpreters\GeneratorInterpreterInterface;
-use GraphQLGen\Generator\Interpreters\TypeInterpreter;
+use GraphQLGen\Generator\Interpreters\Interpreter;
+use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
@@ -21,17 +21,10 @@ class Generator {
 	protected $_context;
 
 	/**
-	 * @var GeneratorFactory
-	 */
-	protected $_factory;
-
-	/**
 	 * @param GeneratorContext $context
-	 * @param GeneratorFactory|null $factory
 	 */
-	public function __construct($context, $factory = null) {
+	public function __construct($context) {
 		$this->_context = $context;
-		$this->_factory = $factory ?: new GeneratorFactory();
 	}
 
 	public function generateClasses() {
@@ -41,24 +34,24 @@ class Generator {
 			$interpreter = $this->getCorrectInterpreter($astDefinition);
 
 			if(!is_null($interpreter)) {
-				$generatorType = $this->getGeneratorTypeFromInterpreter($interpreter);
+				$generatorType = $interpreter->generateType();
 				$this->generateClassFromType($generatorType);
 			}
 		}
 	}
 
 	/**
-	 * @param Node $astNode
-	 * @return EnumInterpreter|TypeInterpreter|ScalarInterpreter|null
+	 * @param Node|DefinitionNode $astNode
+	 * @return Interpreter
 	 */
 	protected function getCorrectInterpreter($astNode) {
 		switch($astNode->kind) {
 			case NodeKind::SCALAR_TYPE_DEFINITION:
-				return $this->_factory->createScalarTypeInterpreter($astNode);
+				return new ScalarInterpreter($astNode);
 			case NodeKind::ENUM_TYPE_DEFINITION:
-				return $this->_factory->createEnumTypeInterpreter($astNode);
+				return new EnumInterpreter($astNode);
 			case NodeKind::OBJECT_TYPE_DEFINITION:
-				return $this->_factory->createObjectTypeInterpreter($astNode);
+				return new TypeDeclarationInterpreter($astNode);
 		}
 
 		return null;
@@ -77,24 +70,5 @@ class Generator {
 	 */
 	protected function generateClassFromType($typeGenerator) {
 		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);
-	}
-
-	/**
-	 * @param $interpreter
-	 * @return Types\EnumType|Types\ObjectType|Types\ScalarType|Types\SubTypes\FieldType|null
-	 */
-	protected function getGeneratorTypeFromInterpreter($interpreter) {
-		switch (get_class($interpreter)) {
-			case EnumInterpreter::class:
-				return $this->_factory->createEnumGeneratorType($interpreter, $this->_context->formatter);
-			case FieldInterpreter::class:
-				return $this->_factory->createFieldTypeGeneratorType($interpreter);
-			case TypeInterpreter::class:
-				return $this->_factory->createObjectGeneratorType($interpreter, $this->_context->formatter);
-			case ScalarInterpreter::class:
-				return $this->_factory->createScalarGeneratorType($interpreter, $this->_context->formatter);
-		}
-
-		return null;
 	}
 }

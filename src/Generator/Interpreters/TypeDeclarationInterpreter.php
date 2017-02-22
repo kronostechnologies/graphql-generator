@@ -4,12 +4,12 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
-use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Types\Scalar;
+use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQLGen\Generator\Types\Type;
 
-class ScalarInterpreter extends Interpreter {
+class TypeDeclarationInterpreter extends Interpreter {
 	/**
-	 * @param ScalarTypeDefinitionNode $astNode
+	 * @param ObjectTypeDefinitionNode $astNode
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
@@ -29,13 +29,22 @@ class ScalarInterpreter extends Interpreter {
 		return $this->_astNode->description;
 	}
 
+	public function getFields() {
+		return array_map(function ($fieldNode) {
+			$fieldInterpreter = new FieldInterpreter($fieldNode);
+
+			return $fieldInterpreter->generateType();
+		}, $this->_astNode->fields);
+	}
+
 	/**
-	 * @return Scalar
+	 * @return Type
 	 */
 	public function generateType() {
-		return new Scalar(
+		return new Type(
 			$this->getName(),
 			null,
+			$this->getFields(),
 			$this->getDescription()
 		);
 	}

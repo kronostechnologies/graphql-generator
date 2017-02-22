@@ -5,15 +5,10 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
-use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
+use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
-class EnumInterpreter {
-
-	/**
-	 * @var EnumTypeDefinitionNode
-	 */
-	protected $_astNode;
-
+class EnumInterpreter extends Interpreter {
 	/**
 	 * @param EnumTypeDefinitionNode $astNode
 	 */
@@ -29,13 +24,13 @@ class EnumInterpreter {
 	}
 
 	/**
-	 * @return EnumTypeValue[]
+	 * @return EnumValue[]
 	 */
 	public function getEnumValues() {
 		$enumValues = [];
 
 		foreach($this->_astNode->values as $possibleValue) {
-			$enumValues[] = new EnumTypeValue(
+			$enumValues[] = new EnumValue(
 				$possibleValue->name->value,
 				$possibleValue->description
 			);
@@ -49,5 +44,17 @@ class EnumInterpreter {
 	 */
 	public function getDescription() {
 		return $this->_astNode->description;
+	}
+
+	/**
+	 * @return Enum
+	 */
+	public function generateType() {
+		return new Enum(
+			$this->getName(),
+			$this->getEnumValues(),
+			null,
+			$this->getDescription()
+		);
 	}
 }

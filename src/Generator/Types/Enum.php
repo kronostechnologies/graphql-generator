@@ -5,16 +5,16 @@ namespace GraphQLGen\Generator\Types;
 
 
 use GraphQLGen\Generator\StubFormatter;
-use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
+use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
-class EnumType implements BaseTypeGeneratorInterface {
+class Enum implements BaseTypeGeneratorInterface {
 	/**
 	 * @var string
 	 */
 	public $name;
 
 	/**
-	 * @var EnumTypeValue[]
+	 * @var EnumValue[]
 	 */
 	public $values;
 
@@ -31,7 +31,7 @@ class EnumType implements BaseTypeGeneratorInterface {
 	/**
 	 * EnumType constructor.
 	 * @param string $name
-	 * @param EnumTypeValue[] $values
+	 * @param EnumValue[] $values
 	 * @param StubFormatter $formatter
 	 * @param string|null $description
 	 */
@@ -59,7 +59,7 @@ class EnumType implements BaseTypeGeneratorInterface {
 	}
 
 	/**
-	 * @param EnumTypeValue $value
+	 * @param EnumValue $value
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {

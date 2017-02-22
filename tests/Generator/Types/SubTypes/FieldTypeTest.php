@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Types\SubTypes;
 
 
-use GraphQLGen\Generator\Types\SubTypes\FieldType;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	const PRIMARY_FIELD_TYPE = "Bool";
@@ -12,7 +12,7 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	const PRIMARY_TYPE_DEPENDENCY = "Type";
 
 	public function test_WithPrimaryType_getDependencies_ReturnsTypeOnly() {
-		$fieldType = new FieldType(self::PRIMARY_FIELD_TYPE, true, true, true);
+		$fieldType = new TypeUsage(self::PRIMARY_FIELD_TYPE, true, true, true);
 
 		$retVal = $fieldType->getDependencies();
 
@@ -21,7 +21,7 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_WithSecondaryType_getDependencies_ReturnsSecondaryTypeOnly() {
-		$fieldType = new FieldType(self::SECONDARY_FIELD_TYPE, true, false, false);
+		$fieldType = new TypeUsage(self::SECONDARY_FIELD_TYPE, true, false, false);
 
 		$retVal = $fieldType->getDependencies();
 
@@ -30,7 +30,7 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_WithSecondaryTypeAndNonNullable_getDependencies_ReturnsBothTypes() {
-		$fieldType = new FieldType(self::SECONDARY_FIELD_TYPE, false, false, false);
+		$fieldType = new TypeUsage(self::SECONDARY_FIELD_TYPE, false, false, false);
 
 		$retVal = $fieldType->getDependencies();
 
@@ -39,7 +39,7 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_WithSecondaryTypeAndInList_getDependencies_ReturnsBothTypes() {
-		$fieldType = new FieldType(self::SECONDARY_FIELD_TYPE, true, true, true);
+		$fieldType = new TypeUsage(self::SECONDARY_FIELD_TYPE, true, true, true);
 
 		$retVal = $fieldType->getDependencies();
 
@@ -48,7 +48,7 @@ class FieldTypeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_WithSecondaryTypeAndInListNonNullable_getDependencies_ReturnsBothTypes() {
-		$fieldType = new FieldType(self::SECONDARY_FIELD_TYPE, true, true, false);
+		$fieldType = new TypeUsage(self::SECONDARY_FIELD_TYPE, true, true, false);
 
 		$retVal = $fieldType->getDependencies();
 

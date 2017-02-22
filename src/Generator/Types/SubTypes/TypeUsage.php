@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-class FieldType {
+class TypeUsage {
 	public static $PRIMARY_TYPES_MAPPINGS = [
 		'Int' => 'Type::int()',
 		'String' => 'Type::string()',

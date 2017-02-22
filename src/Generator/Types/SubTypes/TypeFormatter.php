@@ -4,15 +4,15 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-abstract class FieldTypeFormatter {
+abstract class TypeFormatter {
 	/**
-	 * @param FieldType $fieldType
+	 * @param TypeUsage $fieldType
 	 * @return string
 	 */
 	public function getFieldTypeDeclaration($fieldType) {
 		// Primary type check
-		if (in_array($fieldType->typeName, FieldType::$PRIMARY_TYPES_MAPPINGS)) {
-			$typeDeclaration = FieldType::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName];
+		if (in_array($fieldType->typeName, TypeUsage::$PRIMARY_TYPES_MAPPINGS)) {
+			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName];
 		}
 		else {
 			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType);
@@ -37,7 +37,7 @@ abstract class FieldTypeFormatter {
 	}
 
 	/**
-	 * @param FieldType $fieldType
+	 * @param TypeUsage $fieldType
 	 * @return string
 	 */
 	abstract public function getFieldTypeDeclarationNonPrimaryType($fieldType);

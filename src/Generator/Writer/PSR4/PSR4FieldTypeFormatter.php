@@ -4,12 +4,12 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\SubTypes\FieldType;
-use GraphQLGen\Generator\Types\SubTypes\FieldTypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
 
-class PSR4FieldTypeFormatter extends FieldTypeFormatter {
+class PSR4TypeFormatter extends TypeFormatter {
 	/**
-	 * @param FieldType $fieldType
+	 * @param TypeUsage $fieldType
 	 * @return string
 	 */
 	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {

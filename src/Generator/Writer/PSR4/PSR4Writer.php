@@ -6,9 +6,9 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\StubFormatter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
-use GraphQLGen\Generator\Types\EnumType;
-use GraphQLGen\Generator\Types\ObjectType;
-use GraphQLGen\Generator\Types\ScalarType;
+use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class PSR4Writer implements GeneratorWriterInterface {
@@ -150,11 +150,11 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 */
 	protected function getStubFilename($generatorType) {
 		switch(get_class($generatorType)) {
-			case EnumType::class:
+			case Enum::class:
 				return '/stubs/enum.stub';
-			case ObjectType::class:
+			case Type::class:
 				return '/stubs/object.stub';
-			case ScalarType::class:
+			case Scalar::class:
 				return '/stubs/scalar.stub';
 		}
 	}

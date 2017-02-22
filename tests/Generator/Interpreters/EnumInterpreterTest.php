@@ -8,7 +8,7 @@ use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
-use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
+use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
@@ -83,7 +83,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertContainsOnly(
-			new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
 			$interpretedValues
 		);
 	}
@@ -106,21 +106,21 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertContains(
-			new EnumTypeValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
 			$interpretedValues,
 			'',
 			false,
 			false
 		);
 		$this->assertContains(
-			new EnumTypeValue(self::ENUM_VALUE_NAME_2, self::ENUM_VALUE_DESC_2),
+			new EnumValue(self::ENUM_VALUE_NAME_2, self::ENUM_VALUE_DESC_2),
 			$interpretedValues,
 			'',
 			false,
 			false
 		);
 		$this->assertContains(
-			new EnumTypeValue(self::ENUM_VALUE_NAME_3, self::ENUM_VALUE_DESC_3),
+			new EnumValue(self::ENUM_VALUE_NAME_3, self::ENUM_VALUE_DESC_3),
 			$interpretedValues,
 			'',
 			false,

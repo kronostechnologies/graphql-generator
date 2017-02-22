@@ -4,75 +4,61 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
-use GraphQL\Language\AST\ListTypeNode;
-use GraphQL\Language\AST\NamedTypeNode;
-use GraphQL\Language\AST\NodeKind;
-use GraphQL\Language\AST\NonNullTypeNode;
-use GraphQL\Language\AST\TypeNode;
+use GraphQL\Language\AST\InputValueDefinitionNode;
+use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
-class FieldInterpreter {
+class FieldInterpreter extends Interpreter {
 	/**
-	 * @var ListTypeNode|NamedTypeNode|NonNullTypeNode
-	 */
-	protected $_astNode;
-
-	/**
-	 * FieldTypeInterpreter constructor.
-	 * @param NonNullTypeNode|ListTypeNode|NamedTypeNode|TypeNode $astNode
+	 * @param InputValueDefinitionNode $astNode
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;
 	}
 
 	/**
-	 * @return bool
+	 * @return FieldArgument[]
 	 */
-	public function isInList() {
-		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
-			return $this->_astNode->type->kind === NodeKind::LIST_TYPE;
-		}
-		else {
-			return $this->_astNode->kind === NodeKind::LIST_TYPE;
-		}
+	public function getArguments() {
+		return array_map(function ($argumentNode) {
+			$argumentInterpreter = new FieldArgumentInterpreter($argumentNode);
+
+			return $argumentInterpreter->generateType();
+		}, $this->_astNode->arguments);
 	}
 
 	/**
-	 * @return bool
+	 * @return string
 	 */
-	public function isNullableList() {
-		if(!$this->isInList()) {
-			return false;
-		}
-		else if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
-			return $this->_astNode->type->kind !== NodeKind::LIST_TYPE;
-		}
-		else {
-			return $this->_astNode->kind === NodeKind::LIST_TYPE;
-		}
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isNullableObject() {
-		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
-			return $this->isInList() ? $this->_astNode->type->type->kind !== NodeKind::NON_NULL_TYPE : false;
-		}
-		else {
-			return $this->isInList() ? $this->_astNode->type->kind !== NodeKind::NON_NULL_TYPE : true;
-		}
+	public function getDescription() {
+		return $this->_astNode->description;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getName() {
-		// Finds name node
-		$nameNode = $this->_astNode;
-		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
-			$nameNode = $nameNode->type;
-		}
+		return $this->_astNode->name->value;
+	}
 
-		return $nameNode->name->value;
+	/**
+	 * @return \GraphQLGen\Generator\Types\SubTypes\TypeUsage
+	 */
+	public function getType() {
+		$typeUsageInterpreter = new TypeUsageInterpreter($this->_astNode->type);
+
+		return $typeUsageInterpreter->generateType();
+	}
+
+	/**
+	 * @return Field
+	 */
+	public function generateType() {
+		return new Field(
+			$this->getName(),
+			$this->getDescription(),
+			$this->getType(),
+			$this->getArguments()
+		);
 	}
 }

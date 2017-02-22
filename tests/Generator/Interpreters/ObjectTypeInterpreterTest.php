@@ -8,7 +8,7 @@ use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\GeneratorFactory;
-use GraphQLGen\Generator\Interpreters\TypeInterpreter;
+use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 
 
 class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -29,7 +29,7 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithName($objectTypeNode);
 
-		$interpreter = new TypeInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
 		$interpretedName = $interpreter->getName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
@@ -39,7 +39,7 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithDescription($objectTypeNode);
 
-		$interpreter = new TypeInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
@@ -49,7 +49,7 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithField($objectTypeNode);
 
-		$interpreter = new TypeInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
 		$this->_factory->expects($this->once())->method('createFieldTypeInterpreter');
 
 		$interpreter->getFields();
@@ -59,7 +59,7 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithField($objectTypeNode);
 
-		$interpreter = new TypeInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
 		$this->_factory->expects($this->once())->method('createFieldTypeGeneratorType');
 
 		$interpreter->getFields();
@@ -69,7 +69,7 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithField($objectTypeNode);
 
-		$interpreter = new TypeInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
 		$retVal = $interpreter->getFields();
 
 		$this->assertCount(1, $retVal);

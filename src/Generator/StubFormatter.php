@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator;
 
 
-use GraphQLGen\Generator\Types\SubTypes\FieldTypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
 
 class StubFormatter {
 	const INDENT_TOKENS = '[{';
@@ -31,7 +31,7 @@ class StubFormatter {
 	public $tabSize;
 
 	/**
-	 * @var FieldTypeFormatter
+	 * @var TypeFormatter
 	 */
 	public $fieldTypeFormatter;
 
@@ -44,7 +44,7 @@ class StubFormatter {
 	 * @param bool $useSpaces
 	 * @param int $tabSize
 	 * @param string $descriptionLineMergeChars
-	 * @param FieldTypeFormatter|null $fieldTypeFormatter
+	 * @param TypeFormatter|null $fieldTypeFormatter
 	 * @param bool $useConstantsForEnums
 	 */
 	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $useConstantsForEnums = true) {
