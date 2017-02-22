@@ -7,7 +7,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
-use GraphQLGen\Generator\Interpreters\EnumTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\EnumInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
 
 class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -24,7 +24,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithName($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedName = $interpreter->getName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
@@ -34,7 +34,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithDescription($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
@@ -44,7 +44,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithEmptyValues($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertEmpty($interpretedValues);
@@ -58,7 +58,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithSingleEnumValue($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertCount(1, $interpretedValues);
@@ -79,7 +79,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithSingleEnumValue($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertContainsOnly(
@@ -92,7 +92,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertCount(3, $interpretedValues);
@@ -102,7 +102,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$enumNode = new EnumTypeDefinitionNode([]);
 		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
-		$interpreter = new EnumTypeInterpreter($enumNode);
+		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->getEnumValues();
 
 		$this->assertContains(

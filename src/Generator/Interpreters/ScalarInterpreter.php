@@ -6,7 +6,7 @@ namespace GraphQLGen\Generator\Interpreters;
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 
-class ScalarTypeInterpreter {
+class ScalarInterpreter {
 	/**
 	 * @var ScalarTypeDefinitionNode
 	 */

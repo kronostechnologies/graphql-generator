@@ -9,9 +9,8 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQL\Language\AST\TypeNode;
-use GraphQLGen\Generator\Types\SubTypes\FieldType;
 
-class FieldTypeInterpreter {
+class FieldInterpreter {
 	/**
 	 * @var ListTypeNode|NamedTypeNode|NonNullTypeNode
 	 */

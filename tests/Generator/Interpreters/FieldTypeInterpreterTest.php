@@ -9,7 +9,7 @@ use GraphQL\Language\AST\ListTypeNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NonNullTypeNode;
-use GraphQLGen\Generator\Interpreters\FieldTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\FieldInterpreter;
 
 class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const NODE_NAME = 'TARGET_NAME';
@@ -18,7 +18,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenNamedTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isInList();
 
 		$this->assertFalse($retVal);
@@ -28,7 +28,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenNamedTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableList();
 
 		$this->assertFalse($retVal);
@@ -38,7 +38,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenNamedTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableObject();
 
 		$this->assertTrue($retVal);
@@ -48,7 +48,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenNamedTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->getName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
@@ -65,7 +65,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenListlessNonNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isInList();
 
 		$this->assertFalse($retVal);
@@ -75,7 +75,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenListlessNonNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableList();
 
 		$this->assertFalse($retVal);
@@ -85,7 +85,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenListlessNonNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableObject();
 
 		$this->assertFalse($retVal);
@@ -95,7 +95,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenListlessNonNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->getName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
@@ -113,7 +113,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithListAllNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isInList();
 
 		$this->assertTrue($retVal);
@@ -123,7 +123,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithListAllNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableList();
 
 		$this->assertTrue($retVal);
@@ -133,7 +133,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithListAllNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableObject();
 
 		$this->assertTrue($retVal);
@@ -143,7 +143,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithListAllNullableTypeNode($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->getName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
@@ -161,7 +161,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithNonNullableListAndNonNullableObject($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isInList();
 
 		$this->assertTrue($retVal);
@@ -171,7 +171,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithNonNullableListAndNonNullableObject($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableList();
 
 		$this->assertFalse($retVal);
@@ -181,7 +181,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithNonNullableListAndNonNullableObject($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->isNullableObject();
 
 		$this->assertFalse($retVal);
@@ -191,7 +191,7 @@ class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node = new FieldDefinitionNode([]);
 		$this->GivenWithNonNullableListAndNonNullableObject($node);
 
-		$interpreter = new FieldTypeInterpreter($node->type);
+		$interpreter = new FieldInterpreter($node->type);
 		$retVal = $interpreter->getName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);

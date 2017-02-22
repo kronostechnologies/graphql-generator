@@ -6,10 +6,10 @@ namespace GraphQLGen\Generator;
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Interpreters\EnumTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\FieldTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\ObjectTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\ScalarTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\FieldInterpreter;
+use GraphQLGen\Generator\Interpreters\TypeInterpreter;
+use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Types\EnumType;
 use GraphQLGen\Generator\Types\ObjectType;
 use GraphQLGen\Generator\Types\ScalarType;
@@ -18,30 +18,30 @@ use GraphQLGen\Generator\Types\SubTypes\FieldType;
 class GeneratorFactory {
 	/**
 	 * @param ScalarTypeDefinitionNode $astNode
-	 * @return ScalarTypeInterpreter
+	 * @return ScalarInterpreter
 	 */
 	public function createScalarTypeInterpreter($astNode) {
-		return new ScalarTypeInterpreter($astNode);
+		return new ScalarInterpreter($astNode);
 	}
 
 	/**
 	 * @param EnumTypeDefinitionNode $astNode
-	 * @return EnumTypeInterpreter
+	 * @return EnumInterpreter
 	 */
 	public function createEnumTypeInterpreter($astNode) {
-		return new EnumTypeInterpreter($astNode);
+		return new EnumInterpreter($astNode);
 	}
 
 	/**
 	 * @param $astNode
-	 * @return ObjectTypeInterpreter
+	 * @return TypeInterpreter
 	 */
 	public function createObjectTypeInterpreter($astNode) {
-		return new ObjectTypeInterpreter($astNode);
+		return new TypeInterpreter($astNode);
 	}
 
 	/**
-	 * @param EnumTypeInterpreter $interpreter
+	 * @param EnumInterpreter $interpreter
 	 * @param StubFormatter $formatter
 	 * @return EnumType
 	 */
@@ -55,7 +55,7 @@ class GeneratorFactory {
 	}
 
 	/**
-	 * @param FieldTypeInterpreter $interpreter
+	 * @param FieldInterpreter $interpreter
 	 * @return FieldType
 	 */
 	public function createFieldTypeGeneratorType($interpreter) {
@@ -68,7 +68,7 @@ class GeneratorFactory {
 	}
 
 	/**
-	 * @param ObjectTypeInterpreter $interpreter
+	 * @param TypeInterpreter $interpreter
 	 * @param StubFormatter $formatter
 	 * @return ObjectType
 	 */
@@ -82,7 +82,7 @@ class GeneratorFactory {
 	}
 
 	/**
-	 * @param ScalarTypeInterpreter $interpreter
+	 * @param ScalarInterpreter $interpreter
 	 * @param StubFormatter $formatter
 	 * @return ScalarType
 	 */
@@ -95,10 +95,10 @@ class GeneratorFactory {
 	}
 
 	/**
-	 * @param FieldTypeInterpreter $type
-	 * @return FieldTypeInterpreter
+	 * @param FieldInterpreter $type
+	 * @return FieldInterpreter
 	 */
 	public function createFieldTypeInterpreter($type) {
-		return new FieldTypeInterpreter($type);
+		return new FieldInterpreter($type);
 	}
 }

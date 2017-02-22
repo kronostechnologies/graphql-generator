@@ -6,11 +6,11 @@ namespace GraphQLGen\Generator;
 
 use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
-use GraphQLGen\Generator\Interpreters\EnumTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\FieldTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\FieldInterpreter;
 use GraphQLGen\Generator\Interpreters\GeneratorInterpreterInterface;
-use GraphQLGen\Generator\Interpreters\ObjectTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\ScalarTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\TypeInterpreter;
+use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class Generator {
@@ -49,7 +49,7 @@ class Generator {
 
 	/**
 	 * @param Node $astNode
-	 * @return EnumTypeInterpreter|ObjectTypeInterpreter|ScalarTypeInterpreter|null
+	 * @return EnumInterpreter|TypeInterpreter|ScalarInterpreter|null
 	 */
 	protected function getCorrectInterpreter($astNode) {
 		switch($astNode->kind) {
@@ -85,13 +85,13 @@ class Generator {
 	 */
 	protected function getGeneratorTypeFromInterpreter($interpreter) {
 		switch (get_class($interpreter)) {
-			case EnumTypeInterpreter::class:
+			case EnumInterpreter::class:
 				return $this->_factory->createEnumGeneratorType($interpreter, $this->_context->formatter);
-			case FieldTypeInterpreter::class:
+			case FieldInterpreter::class:
 				return $this->_factory->createFieldTypeGeneratorType($interpreter);
-			case ObjectTypeInterpreter::class:
+			case TypeInterpreter::class:
 				return $this->_factory->createObjectGeneratorType($interpreter, $this->_context->formatter);
-			case ScalarTypeInterpreter::class:
+			case ScalarInterpreter::class:
 				return $this->_factory->createScalarGeneratorType($interpreter, $this->_context->formatter);
 		}
 

@@ -8,7 +8,7 @@ use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\Types\SubTypes\ObjectFieldType;
 
-class ObjectTypeInterpreter {
+class TypeInterpreter {
 	/**
 	 * @var ObjectTypeDefinitionNode
 	 */

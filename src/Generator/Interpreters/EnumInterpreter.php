@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Interpreters;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQLGen\Generator\Types\SubTypes\EnumTypeValue;
 
-class EnumTypeInterpreter {
+class EnumInterpreter {
 
 	/**
 	 * @var EnumTypeDefinitionNode
