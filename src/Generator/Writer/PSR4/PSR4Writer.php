@@ -59,7 +59,6 @@ class PSR4Writer implements GeneratorWriterInterface {
 			'Types/Enum',
 			'Types/Interface',
 			'Types/Scalar',
-			'Types/Input',
 		];
 	}
 
