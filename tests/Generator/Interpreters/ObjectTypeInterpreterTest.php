@@ -5,31 +5,26 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\FieldDefinitionNode;
+use GraphQL\Language\AST\InputValueDefinitionNode;
+use GraphQL\Language\AST\IntValueNode;
+use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
-use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
+use GraphQLGen\Generator\Types\SubTypes\Field;
 
 
 class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
 	const VALID_NAME = 'TestName';
 
-	/**
-	 * @var GeneratorFactory|\PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $_factory;
 	protected $_interpreter;
-
-	public function setUp() {
-		$this->_factory = $this->createMock(GeneratorFactory::class);
-	}
 
 	public function test_GivenNodeWithName_getName_ReturnsCorrectName() {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithName($objectTypeNode);
 
-		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
 		$interpretedName = $interpreter->getName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
@@ -39,40 +34,21 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithDescription($objectTypeNode);
 
-		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
 	}
 
-	public function test_GivenOneField_getFields_ExpectsFactoryToCreateFieldInterpreter() {
+	public function test_GivenOneField_getFields_ReturnsFieldArray() {
 		$objectTypeNode = new ObjectTypeDefinitionNode([]);
 		$this->GivenNodeWithField($objectTypeNode);
 
-		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
-		$this->_factory->expects($this->once())->method('createFieldTypeInterpreter');
-
-		$interpreter->getFields();
-	}
-
-	public function test_GivenOneField_getFields_ExpectsFactoryToCreateTypeGenerator() {
-		$objectTypeNode = new ObjectTypeDefinitionNode([]);
-		$this->GivenNodeWithField($objectTypeNode);
-
-		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
-		$this->_factory->expects($this->once())->method('createFieldTypeGeneratorType');
-
-		$interpreter->getFields();
-	}
-
-	public function test_GivenOneField_getFields_ReturnsSingleEntry() {
-		$objectTypeNode = new ObjectTypeDefinitionNode([]);
-		$this->GivenNodeWithField($objectTypeNode);
-
-		$interpreter = new TypeDeclarationInterpreter($objectTypeNode, $this->_factory);
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
 		$retVal = $interpreter->getFields();
 
 		$this->assertCount(1, $retVal);
+		$this->assertInstanceOf(Field::class, array_shift($retVal));
 	}
 
 	protected function GivenNodeWithName($node) {
@@ -84,8 +60,26 @@ class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$node->description = self::VALID_DESCRIPTION;
 	}
 
+	/**
+	 * @param $node
+	 */
 	protected function GivenNodeWithField($node) {
+		// ToDo: Mock away from here
 		$node->fields = [];
-		$node->fields[] = new FieldDefinitionNode([]);
+
+		$dummyFieldDefinition = new FieldDefinitionNode([]);
+		$dummyFieldDefinition->name = new NameNode([]);
+		$dummyFieldDefinition->type = new NamedTypeNode([]);
+		$dummyFieldDefinition->type->name = new NameNode([]);
+
+		$dummyDescriptionNode = new InputValueDefinitionNode([]);
+		$dummyDescriptionNode->name = new NameNode([]);
+		$dummyDescriptionNode->defaultValue = new IntValueNode([]);
+		$dummyDescriptionNode->type = new NamedTypeNode([]);
+		$dummyDescriptionNode->type->name = new NameNode([]);
+
+		$dummyFieldDefinition->arguments = [$dummyDescriptionNode];
+
+		$node->fields[] = $dummyFieldDefinition;
 	}
 }

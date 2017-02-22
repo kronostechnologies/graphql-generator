@@ -73,9 +73,10 @@ class TypeUsageInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param null $formatter
 	 * @return TypeUsage
 	 */
-	public function generateType() {
+	public function generateType($formatter = null) {
 		return new TypeUsage(
 			$this->getName(),
 			$this->isNullableObject(),

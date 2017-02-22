@@ -38,12 +38,13 @@ class TypeDeclarationInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param \GraphQLGen\Generator\StubFormatter $formatter
 	 * @return Type
 	 */
-	public function generateType() {
+	public function generateType($formatter) {
 		return new Type(
 			$this->getName(),
-			null,
+			$formatter,
 			$this->getFields(),
 			$this->getDescription()
 		);

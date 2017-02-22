@@ -34,7 +34,7 @@ class Generator {
 			$interpreter = $this->getCorrectInterpreter($astDefinition);
 
 			if(!is_null($interpreter)) {
-				$generatorType = $interpreter->generateType();
+				$generatorType = $interpreter->generateType($this->_context->formatter);
 				$this->generateClassFromType($generatorType);
 			}
 		}

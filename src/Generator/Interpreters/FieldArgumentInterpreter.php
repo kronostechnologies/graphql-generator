@@ -46,9 +46,10 @@ class FieldArgumentInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param null $formatter
 	 * @return FieldArgument
 	 */
-	public function generateType() {
+	public function generateType($formatter = null) {
 		return new FieldArgument(
 			$this->getDescription(),
 			$this->getName(),

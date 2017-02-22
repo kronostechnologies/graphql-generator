@@ -47,13 +47,14 @@ class EnumInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param \GraphQLGen\Generator\StubFormatter $formatter
 	 * @return Enum
 	 */
-	public function generateType() {
+	public function generateType($formatter) {
 		return new Enum(
 			$this->getName(),
 			$this->getEnumValues(),
-			null,
+			$formatter,
 			$this->getDescription()
 		);
 	}

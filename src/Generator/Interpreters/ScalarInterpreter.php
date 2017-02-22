@@ -30,12 +30,13 @@ class ScalarInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param \GraphQLGen\Generator\StubFormatter $formatter
 	 * @return Scalar
 	 */
-	public function generateType() {
+	public function generateType($formatter) {
 		return new Scalar(
 			$this->getName(),
-			null,
+			$formatter,
 			$this->getDescription()
 		);
 	}

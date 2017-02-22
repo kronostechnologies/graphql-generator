@@ -51,9 +51,10 @@ class FieldInterpreter extends Interpreter {
 	}
 
 	/**
+	 * @param null $formatter
 	 * @return Field
 	 */
-	public function generateType() {
+	public function generateType($formatter = null) {
 		return new Field(
 			$this->getName(),
 			$this->getDescription(),
