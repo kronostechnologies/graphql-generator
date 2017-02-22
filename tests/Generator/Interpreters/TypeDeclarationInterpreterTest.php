@@ -12,6 +12,7 @@ use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\Type;
 
 
 class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -49,6 +50,17 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount(1, $retVal);
 		$this->assertInstanceOf(Field::class, array_shift($retVal));
+	}
+
+	public function test_GivenNodeWithName_generateType_WillReturnRightType() {
+		$objectTypeNode = new ObjectTypeDefinitionNode([]);
+		$this->GivenNodeWithName($objectTypeNode);
+		$this->GivenNodeWithField($objectTypeNode);
+
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
+		$retVal = $interpreter->generateType(null);
+
+		$this->assertInstanceOf(Type::class, $retVal);
 	}
 
 	protected function GivenNodeWithName($node) {

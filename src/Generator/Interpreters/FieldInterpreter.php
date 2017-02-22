@@ -4,13 +4,13 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
-use GraphQL\Language\AST\InputValueDefinitionNode;
+use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
 class FieldInterpreter extends Interpreter {
 	/**
-	 * @param InputValueDefinitionNode $astNode
+	 * @param FieldDefinitionNode $astNode
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;

@@ -7,6 +7,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQLGen\Generator\Types\Scalar;
 
 class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
@@ -30,6 +31,16 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpretedDescription = $interpreter->getDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
+	}
+
+	public function test_GivenNodeWithInformation_generateType_WillReturnRightType() {
+		$scalarNode = new ScalarTypeDefinitionNode([]);
+		$this->GivenNodeWithName($scalarNode);
+
+		$interpreter = new ScalarInterpreter($scalarNode);
+		$retVal = $interpreter->generateType(null);
+
+		$this->assertInstanceOf(Scalar::class, $retVal);
 	}
 
 	protected function GivenNodeWithDescription($node) {
