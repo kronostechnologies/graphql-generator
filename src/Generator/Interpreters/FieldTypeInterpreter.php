@@ -8,6 +8,7 @@ use GraphQL\Language\AST\ListTypeNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\NonNullTypeNode;
+use GraphQL\Language\AST\TypeNode;
 use GraphQLGen\Generator\Types\SubTypes\FieldType;
 
 class FieldTypeInterpreter {
@@ -18,7 +19,7 @@ class FieldTypeInterpreter {
 
 	/**
 	 * FieldTypeInterpreter constructor.
-	 * @param NonNullTypeNode|ListTypeNode|NamedTypeNode $astNode
+	 * @param NonNullTypeNode|ListTypeNode|NamedTypeNode|TypeNode $astNode
 	 */
 	public function __construct($astNode) {
 		$this->_astNode = $astNode;

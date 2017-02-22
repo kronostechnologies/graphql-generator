@@ -93,4 +93,12 @@ class GeneratorFactory {
 			$interpreter->getDescription()
 		);
 	}
+
+	/**
+	 * @param FieldTypeInterpreter $type
+	 * @return FieldTypeInterpreter
+	 */
+	public function createFieldTypeInterpreter($type) {
+		return new FieldTypeInterpreter($type);
+	}
 }

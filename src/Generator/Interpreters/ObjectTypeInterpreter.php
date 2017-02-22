@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\Types\SubTypes\ObjectFieldType;
 
 class ObjectTypeInterpreter {
@@ -14,30 +15,28 @@ class ObjectTypeInterpreter {
 	protected $_astNode;
 
 	/**
-	 * @param ObjectTypeDefinitionNode $astNode
+	 * @var GeneratorFactory
 	 */
-	public function __construct($astNode) {
+	protected $_factory;
+
+	/**
+	 * @param ObjectTypeDefinitionNode $astNode
+	 * @param GeneratorFactory $factory
+	 */
+	public function __construct($astNode, $factory) {
 		$this->_astNode = $astNode;
+		$this->_factory = $factory;
 	}
 
 	/**
 	 * @return ObjectFieldType[]
 	 */
 	public function getFields() {
-		$fields = [];
+		return array_map(function ($field) {
+			$fieldTypeInterpreter = $this->_factory->createFieldTypeInterpreter($field->type);
 
-		foreach($this->_astNode->fields as $field) {
-			$fieldTypeInterpreter = new FieldTypeInterpreter($field->type);
-
-			$newField = new ObjectFieldType();
-			$newField->name = $field->name->value;
-			$newField->description = $field->description;
-			$newField->fieldType = $fieldTypeInterpreter->getFieldType();
-
-			$fields[] = $newField;
-		}
-
-		return $fields;
+			return $this->_factory->createFieldTypeGeneratorType($fieldTypeInterpreter);
+		}, $this->_astNode->fields);
 	}
 
 	/**
