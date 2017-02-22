@@ -8,6 +8,7 @@ use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
+use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -128,8 +129,15 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function test_GivenNodeWithInformation_getGeneratorType_WillReturnRightType() {
+	public function test_GivenNodeWithInformation_generateType_WillReturnRightType() {
+		$enumNode = new EnumTypeDefinitionNode([]);
+		$this->GivenNodeWithName($enumNode);
+		$this->GivenNodeWithSingleEnumValue($enumNode);
 
+		$interpreter = new EnumInterpreter($enumNode);
+		$retVal = $interpreter->generateType(null);
+
+		$this->assertInstanceOf(Enum::class, $retVal);
 	}
 
 	protected function GivenNodeWithMultipleEnumValue($node) {

@@ -11,7 +11,7 @@ use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQLGen\Generator\Interpreters\TypeUsageInterpreter;
 
-class FieldTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
+class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const NODE_NAME = 'TARGET_NAME';
 
 	public function test_GivenNamedTypeNode_isInList_ReturnsFalse() {

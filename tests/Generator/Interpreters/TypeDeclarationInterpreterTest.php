@@ -14,7 +14,7 @@ use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
 
-class ObjectTypeInterpreterTest extends \PHPUnit_Framework_TestCase {
+class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
 	const VALID_NAME = 'TestName';
 
