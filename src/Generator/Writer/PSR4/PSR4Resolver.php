@@ -21,10 +21,11 @@ class PSR4Resolver {
 	 */
 	public static function getBasicPSR4Structure() {
 		return [
+			'',
 			'Types',
-			'Types/Enum',
-			'Types/Interface',
-			'Types/Scalar',
+			'Types/Enums',
+			'Types/Interfaces',
+			'Types/Scalars',
 		];
 	}
 
@@ -41,6 +42,14 @@ class PSR4Resolver {
 	 */
 	public function getFullNamespace($secondaryNamespace) {
 		return $this->baseNamespace . $secondaryNamespace;
+	}
+
+	/**
+	 * @param string $namespace
+	 * @return string
+	 */
+	public function removeNamespaceTrailingSlashes($namespace) {
+		return trim($namespace, "\\");
 	}
 
 	/**
@@ -95,13 +104,13 @@ class PSR4Resolver {
 	protected function getNamespaceForType($type) {
 		switch(get_class($type)) {
 			case Enum::class:
-				return "Enum\\";
+				return "Types\\Enums\\";
 			case Type::class:
-				return "\\";
+				return "Types\\";
 			case Scalar::class:
-				return "Scalar\\";
+				return "Types\\Scalars\\";
 			case InterfaceDeclaration::class:
-				return 'Interface\\';
+				return 'Types\\Interfaces\\';
 		}
 	}
 

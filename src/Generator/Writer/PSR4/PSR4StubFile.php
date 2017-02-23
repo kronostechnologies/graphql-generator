@@ -60,4 +60,11 @@ class PSR4StubFile extends StubFile {
 		$this->replaceTextInStub(PSR4StubFile::USES_DECLARATION, $formattedContent);
 	}
 
+	/**
+	 * @param string $formattedContent
+	 */
+	public function writeVariablesDeclarations($formattedContent) {
+		$this->replaceTextInStub(PSR4StubFile::VARIABLES_DECLARATION, $formattedContent);
+	}
+
 }

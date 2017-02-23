@@ -28,14 +28,14 @@ class PSR4WriterContext extends WriterContext {
 		parent::configureCLI($cmd);
 
 		$cmd
-			->addOption('psr4-namespace', "psr4-ns", InputArgument::OPTIONAL, "Optional. PSR4 base namespace.", "")
+			->addOption('psr4-namespace', "psr4-ns", InputArgument::OPTIONAL, "Optional. PSR4 base namespace.", "\\")
 			->addOption('psr4-stubs-path', "psr4-stubs", InputArgument::OPTIONAL, "Optional. Directory of customized PSR4 stubs to use.");
 	}
 
 	public function executeCLI(InputInterface $input, OutputInterface $output) {
 		parent::executeCLI($input, $output);
 
-		$this->namespace = $input->getArgument('psr4-namespace');
+		$this->namespace = $input->getOption('psr4-namespace');
 		$this->stubsPath = $input->getOption('psr4-stubs-path');
 	}
 }

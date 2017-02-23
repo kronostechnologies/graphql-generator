@@ -48,8 +48,8 @@ class InterfaceInterpreter extends Interpreter {
 	public function generateType($formatter) {
 		return new InterfaceDeclaration(
 			$this->getName(),
-			$formatter,
 			$this->getFields(),
+			$formatter,
 			$this->getDescription()
 		);
 	}

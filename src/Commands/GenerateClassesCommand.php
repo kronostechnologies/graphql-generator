@@ -41,7 +41,7 @@ class GenerateClassesCommand extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		// Writer name
-		$writerName = $input->getOption($input);
+		$writerName = $input->getOption('writer');
 
 		// Writer context (only necessary class to pre-init)
 		$writerContext = $this->generateWriterContext($writerName);
@@ -53,13 +53,14 @@ class GenerateClassesCommand extends Command {
 		// Creates context
 		$genContext = new GeneratorContext();
 		$genContext->ast = $this->generateGraphqlAST($graphqlFileContent);
-		$genContext->writer = $this->generateWriter($writerName, $writerContext);
 		$genContext->formatter = new StubFormatter(
 			$input->getOption('formatter-use-tabs'),
 			$input->getOption('formatter-indent-spaces'),
 			$input->getOption('formatter-line-merge'),
 			$this->generateWriterTypeFormatter($writerName)
 		);
+		$writerContext->formatter = $genContext->formatter;
+		$genContext->writer = $this->generateWriter($writerName, $writerContext);
 
 		// Launch work
 		$generator = new Generator($genContext);

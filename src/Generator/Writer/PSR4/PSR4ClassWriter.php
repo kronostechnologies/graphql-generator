@@ -63,8 +63,9 @@ class PSR4ClassWriter {
 	}
 
 	public function replaceNamespace() {
-		$namespace = $this->psr4Resolver->getFullNamespace($this->_type);
-		$this->_stubFile->writeNamespace($namespace);
+		$namespace = $this->psr4Resolver->getFullNamespaceForType($this->_type);
+		$noSlashNamespace = $this->psr4Resolver->removeNamespaceTrailingSlashes($namespace);
+		$this->_stubFile->writeNamespace($noSlashNamespace);
 	}
 
 	public function replaceVariablesDeclaration() {
@@ -72,10 +73,10 @@ class PSR4ClassWriter {
 			$variablesDeclarationLine = $this->_stubFile->getVariablesDeclarationLine();
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
 			$variablesDeclarationFormatted = $this->psr4Formatter->formatTypeDefinition($variablesDeclarationLine, $variablesDeclarationNoIndent);
-			$this->_stubFile->writeTypeDefinitionDeclaration($variablesDeclarationFormatted);
+			$this->_stubFile->writeVariablesDeclarations($variablesDeclarationFormatted);
 		}
 		else {
-			$this->_stubFile->writeTypeDefinitionDeclaration("");
+			$this->_stubFile->writeVariablesDeclarations("");
 		}
 	}
 
@@ -87,6 +88,11 @@ class PSR4ClassWriter {
 
 	public function writeClass() {
 		$fullPath = $this->getClassFullPath();
+
+		if (file_exists($fullPath) && $this->_context->overwriteOldFiles) {
+			unlink($fullPath);
+		}
+
 		file_put_contents($fullPath, $this->_stubFile->getContent());
 	}
 
@@ -96,7 +102,7 @@ class PSR4ClassWriter {
 	public function getClassFullPath() {
 		$classFQN = $this->psr4Resolver->getFQNForType($this->_type);
 
-		$relevantFQN = str_replace($this->_context->namespace, "", $classFQN);
+		$relevantFQN = substr($classFQN, strlen($this->_context->namespace));
 		$relevantFQN = str_replace("\\", "/", $relevantFQN);
 
 		return $this->_context->targetDir . $relevantFQN . ".php";

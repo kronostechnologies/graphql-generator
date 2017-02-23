@@ -28,6 +28,19 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 */
 	public $fields;
 
+	/**
+	 * InterfaceDeclaration constructor.
+	 * @param string $name
+	 * @param Field[] $fields
+	 * @param StubFormatter $formatter
+	 * @param string $description
+	 */
+	public function __construct($name, $fields, $formatter, $description) {
+		$this->name = $name;
+		$this->fields = $fields;
+		$this->formatter = $formatter;
+		$this->description = $description;
+	}
 
 	/**
 	 * @return string
