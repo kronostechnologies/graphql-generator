@@ -10,7 +10,7 @@ use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 class PSR4Writer implements GeneratorWriterInterface {
 	/**
-	 * @var GeneratorContext
+	 * @var PSR4WriterContext
 	 */
 	protected $_context;
 

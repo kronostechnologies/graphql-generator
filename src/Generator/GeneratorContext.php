@@ -7,13 +7,9 @@ namespace GraphQLGen\Generator;
 use GraphQL\Language\AST\DocumentNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
+use GraphQLGen\Generator\Writer\WriterContext;
 
 class GeneratorContext {
-	/**
-	 * @var string
-	 */
-	public $namespace;
-
 	/**
 	 * @var DocumentNode
 	 */
@@ -30,7 +26,7 @@ class GeneratorContext {
 	public $formatter;
 
 	/**
-	 * @var string
+	 * @var WriterContext
 	 */
-	public $targetDir;
+	public $writerContext;
 }

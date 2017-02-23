@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class PSR4ClassWriter {
@@ -19,7 +18,7 @@ class PSR4ClassWriter {
 	public $psr4Resolver;
 
 	/**
-	 * @var GeneratorContext
+	 * @var PSR4WriterContext
 	 */
 	protected $_context;
 
@@ -36,7 +35,7 @@ class PSR4ClassWriter {
 	/**
 	 * PSR4ClassWriter constructor.
 	 * @param BaseTypeGeneratorInterface $type
-	 * @param GeneratorContext $context
+	 * @param PSR4WriterContext $context
 	 */
 	public function __construct($type, $context) {
 		$this->_context = $context;
