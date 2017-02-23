@@ -1,0 +1,17 @@
+<?php
+
+namespace DummyNamespace;
+
+class TypeStore {
+
+	protected $_cache = [];
+
+	public function getTypeDefinition($instanceOfType) {
+		if (!array_key_exists($instanceOfType, $this->_cache)) {
+			$this->_cache[$instanceOfType] = $instanceOfType::getTypeDefinition();
+		}
+
+		return $this->_cache[$instanceOfType];
+	}
+
+}

@@ -13,6 +13,6 @@ class PSR4TypeFormatter extends TypeFormatter {
 	 * @return string
 	 */
 	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
-		return 'TypeStore::get' . $fieldType->typeName . '()';
+		return 'TypeStore::getTypeDefinition(' . $fieldType->typeName . '::class)';
 	}
 }

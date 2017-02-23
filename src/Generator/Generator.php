@@ -39,6 +39,8 @@ class Generator {
 				$this->generateClassFromType($generatorType);
 			}
 		}
+
+		$this->_context->writer->finalize();
 	}
 
 	/**

@@ -68,7 +68,7 @@ class Type implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function getName() {
-		return $this->name . 'Type';
+		return $this->name;
 	}
 
 	/**

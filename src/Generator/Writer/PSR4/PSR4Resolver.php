@@ -12,6 +12,11 @@ use GraphQLGen\Generator\Types\Type;
 
 class PSR4Resolver {
 	/**
+	 * @var string[]
+	 */
+	protected $_resolvedTokens = [];
+
+	/**
 	 * @var string
 	 */
 	public $baseNamespace;
@@ -21,7 +26,7 @@ class PSR4Resolver {
 	 */
 	public static function getBasicPSR4Structure() {
 		return [
-			'',
+			'', // ToDo: remove this
 			'Types',
 			'Types/Enums',
 			'Types/Interfaces',
@@ -34,32 +39,13 @@ class PSR4Resolver {
 	 */
 	public function __construct($baseNamespace) {
 		$this->baseNamespace = $baseNamespace;
+
+		$this->setStaticDependencies($baseNamespace);
 	}
 
-	/**
-	 * @param string $secondaryNamespace
-	 * @return string
-	 */
-	public function getFullNamespace($secondaryNamespace) {
-		return $this->baseNamespace . $secondaryNamespace;
-	}
-
-	/**
-	 * @param string $namespace
-	 * @return string
-	 */
-	public function removeNamespaceTrailingSlashes($namespace) {
-		return trim($namespace, "\\");
-	}
-
-	/**
-	 * @param BaseTypeGeneratorInterface $type
-	 * @return string
-	 */
-	public function getFullNamespaceForType($type) {
-		$typeNamespace = $this->getNamespaceForType($type);
-
-		return $this->getFullNamespace($typeNamespace);
+	public function setStaticDependencies($baseNamespace) {
+		$this->_resolvedTokens[$this->getDependencyNamespaceToken("Type")] = "GraphQL\\Type\\Definition\\Type";
+		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinNamespaces($baseNamespace, "TypeStore");
 	}
 
 	/**
@@ -68,50 +54,74 @@ class PSR4Resolver {
 	 */
 	public function getFQNForType($type) {
 		$typeNamespace = $this->getNamespaceForType($type);
+		$fqn = $this->joinNamespaces($typeNamespace, $type->getName());
 
-		return $this->getFullNamespace($typeNamespace) . $type->getName();
+		// ToDo: Separate call to store token
+		$token = $this->getDependencyNamespaceToken($type->getName());
+		$this->_resolvedTokens[$token] = $fqn;
+
+		return $fqn;
 	}
 
 	/**
-	 * @param string $dependency
+	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	protected function getNamespaceFromDependency($dependency) {
-		switch($dependency) {
-			case 'Type':
-				return "use GraphQL\\Type\\Definition\\Type;";
-			case 'TypeStore':
-				return "use " . $this->baseNamespace . "\\TypeStore;";
+	public function getFilePathForType($type) {
+		switch(get_class($type)) {
+			case Type::class:
+				return $this->joinNamespaces("Types");
+			case Scalar::class:
+				return $this->joinNamespaces("Types", "Scalars");
+			case Enum::class:
+				return $this->joinNamespaces("Types", "Enums");
+			case InterfaceDeclaration::class:
+				return $this->joinNamespaces("Types", "Interfaces");
 		}
+	}
+
+	/**
+	 * @param BaseTypeGeneratorInterface $type
+	 * @return string
+	 */
+	public function getNamespaceForType($type) {
+		return $this->joinNamespaces(
+			$this->baseNamespace,
+			$this->getFilePathForType($type)
+		);
+	}
+
+	/**
+	 * @param string $dependencyName
+	 * @return string
+	 */
+	public function getDependencyNamespaceToken($dependencyName) {
+		return 'NS/"' . $dependencyName . '";';
+	}
+
+	/**
+	 * @param string[] ...$namespaceParts
+	 * @return string
+	 */
+	public function joinNamespaces(...$namespaceParts) {
+		$namespacePartsWithoutTrailingSlashes = array_map(function ($namespacePart) {
+			$namespacePart = str_replace("/", "\\", $namespacePart);
+			return trim($namespacePart, "\\");
+		}, $namespaceParts);
+
+		return trim(implode("\\", $namespacePartsWithoutTrailingSlashes), "\\");
 	}
 
 	/**
 	 * @param string[] $dependencies
-	 * @return string
+	 * @return string[]
 	 */
-	public function getAllNamespacesFromDependencies($dependencies) {
-		$uses = [];
-
-		foreach($dependencies as $dependency) {
-			$uses[] = $this->getNamespaceFromDependency($dependency);
-		}
-
-		$uniqueUses = array_unique($uses);
-
-		return implode("\n", $uniqueUses);
-	}
-
-	protected function getNamespaceForType($type) {
-		switch(get_class($type)) {
-			case Enum::class:
-				return "Types\\Enums\\";
-			case Type::class:
-				return "Types\\";
-			case Scalar::class:
-				return "Types\\Scalars\\";
-			case InterfaceDeclaration::class:
-				return 'Types\\Interfaces\\';
-		}
+	public function generateTokensFromDependencies($dependencies) {
+		return array_unique(
+			array_map(function ($dependency) {
+				return $this->getDependencyNamespaceToken($dependency);
+			}, $dependencies)
+		);
 	}
 
 	/**
@@ -129,5 +139,23 @@ class PSR4Resolver {
 			case InterfaceDeclaration::class:
 				return '/stubs/interface.stub';
 		}
+	}
+
+	/**
+	 * @return \string[]
+	 */
+	public function getAllResolvedTokens() {
+		return $this->_resolvedTokens;
+	}
+
+	/**
+	 * @param string $namespace
+	 * @return string
+	 */
+	public function getNamespaceDirectory($namespace) {
+		$baseNamespaceTrimmed = $this->joinNamespaces($this->baseNamespace);
+		$namespaceTrimmed = $this->joinNamespaces($namespace);
+
+		return trim(substr($namespaceTrimmed, strlen($baseNamespaceTrimmed)), "\\");
 	}
 }

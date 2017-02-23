@@ -49,20 +49,6 @@ class PSR4StubFile extends StubFile {
 	/**
 	 * @param string $formattedContent
 	 */
-	public function writeTypeDefinitionDeclaration($formattedContent) {
-		$this->replaceTextInStub(PSR4StubFile::TYPE_DEFINITION_DECLARATION, $formattedContent);
-	}
-
-	/**
-	 * @param string $formattedContent
-	 */
-	public function writeUsesDeclaration($formattedContent) {
-		$this->replaceTextInStub(PSR4StubFile::USES_DECLARATION, $formattedContent);
-	}
-
-	/**
-	 * @param string $formattedContent
-	 */
 	public function writeVariablesDeclarations($formattedContent) {
 		$this->replaceTextInStub(PSR4StubFile::VARIABLES_DECLARATION, $formattedContent);
 	}

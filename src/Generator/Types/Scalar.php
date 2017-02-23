@@ -47,7 +47,7 @@ class Scalar implements BaseTypeGeneratorInterface {
 	 * @return mixed
 	 */
 	public function getName() {
-		return $this->name . 'ScalarType';
+		return $this->name;
 	}
 
 	/**

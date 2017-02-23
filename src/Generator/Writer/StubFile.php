@@ -18,13 +18,7 @@ class StubFile {
 	 */
 	protected $_contentAsLines;
 
-	/**
-	 * @param string $content
-	 */
-	public function __construct($content) {
-		$this->_content = $content;
-
-		$this->splitContentAsLines();
+	public function __construct() {
 	}
 
 	/**
@@ -87,5 +81,28 @@ class StubFile {
 	 */
 	public function getContentAsLines() {
 		return $this->_contentAsLines;
+	}
+
+	/**
+	 * @param string $formattedContent
+	 */
+	public function writeTypeDefinition($formattedContent) {
+		$this->replaceTextInStub(StubFile::TYPE_DEFINITION_DECLARATION, $formattedContent);
+	}
+
+	/**
+	 * @param string $formattedContent
+	 */
+	public function writeUsesDeclaration($formattedContent) {
+		$this->replaceTextInStub(StubFile::USES_DECLARATION, $formattedContent);
+	}
+
+	/**
+	 * @param string $fileName
+	 */
+	public function loadFromFile($fileName) {
+		$this->_content = file_get_contents($fileName);
+
+		$this->splitContentAsLines();
 	}
 }

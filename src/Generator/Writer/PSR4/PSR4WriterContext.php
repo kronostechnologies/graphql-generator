@@ -22,6 +22,11 @@ class PSR4WriterContext extends WriterContext {
 	public $stubsPath;
 
 	/**
+	 * @var PSR4Resolver
+	 */
+	public $resolver;
+
+	/**
 	 * @param Command $cmd
 	 */
 	public function configureCLI($cmd) {
@@ -37,5 +42,7 @@ class PSR4WriterContext extends WriterContext {
 
 		$this->namespace = $input->getOption('psr4-namespace');
 		$this->stubsPath = $input->getOption('psr4-stubs-path');
+
+		$this->resolver = new PSR4Resolver($this->namespace);
 	}
 }

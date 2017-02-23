@@ -75,7 +75,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function getName() {
-		return $this->name . 'Enum';
+		return $this->name;
 	}
 
 	/**

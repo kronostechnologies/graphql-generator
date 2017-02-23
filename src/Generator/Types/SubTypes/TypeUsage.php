@@ -6,10 +6,12 @@ namespace GraphQLGen\Generator\Types\SubTypes;
 
 class TypeUsage {
 	public static $PRIMARY_TYPES_MAPPINGS = [
+		'ID' => 'Type::id()',
 		'Int' => 'Type::int()',
 		'String' => 'Type::string()',
 		'Float' => 'Type::float()',
 		'Bool' => 'Type::bool()',
+		'Boolean' => 'Type::bool()',
 	];
 
 	/**

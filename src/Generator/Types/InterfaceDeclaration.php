@@ -68,7 +68,7 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function getName() {
-		return $this->name . 'Interface';
+		return $this->name;
 	}
 
 	/**

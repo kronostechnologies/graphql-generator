@@ -8,14 +8,9 @@ use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class PSR4ClassWriter {
 	/**
-	 * @var PSR4Formatter
+	 * @var PSR4ClassFormatter
 	 */
 	public $psr4Formatter;
-
-	/**
-	 * @var PSR4Resolver
-	 */
-	public $psr4Resolver;
 
 	/**
 	 * @var PSR4WriterContext
@@ -40,72 +35,122 @@ class PSR4ClassWriter {
 	public function __construct($type, $context) {
 		$this->_context = $context;
 		$this->_type = $type;
-
-		$this->psr4Formatter = new PSR4Formatter($this->_context->formatter);
-		$this->psr4Resolver = new PSR4Resolver($this->_context->namespace);
 	}
 
-	public function initializeStub() {
-		$stub = file_get_contents(__DIR__ . $this->psr4Resolver->getStubFilenameForType($this->_type));
-		$this->_stubFile = new PSR4StubFile($stub);
+	// StubFile + Resolver + Type
+	public function loadStubFile() {
+		$this->_stubFile = new PSR4StubFile();
+		$this->_stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($this->_type));
 	}
 
-	public function replaceTypeDefinitionDeclaration() {
-		$typeDefinitionLine = $this->_stubFile->getTypeDefinitionDeclarationLine();
-		$typeDefinitionUnformatted = $this->_type->generateTypeDefinition();
-		$typeDefinitionFormatted = $this->psr4Formatter->formatTypeDefinition($typeDefinitionLine, $typeDefinitionUnformatted);
-		$this->_stubFile->writeTypeDefinitionDeclaration($typeDefinitionFormatted);
+	public function loadPSR4Formatter() {
+		$this->psr4Formatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
 	}
 
-	public function replaceClassName() {
-		$className = $this->_type->getName();
-		$this->_stubFile->writeClassName($className);
-	}
+	public function replacePlaceholdersAndWriteToFile() {
+		// ToDo: Ugly hack, remove me
+		$this->_context->resolver->getFQNForType($this->_type);
 
-	public function replaceNamespace() {
-		$namespace = $this->psr4Resolver->getFullNamespaceForType($this->_type);
-		$noSlashNamespace = $this->psr4Resolver->removeNamespaceTrailingSlashes($namespace);
-		$this->_stubFile->writeNamespace($noSlashNamespace);
-	}
-
-	public function replaceVariablesDeclaration() {
-		if($this->_context->formatter->useConstantsForEnums) {
-			$variablesDeclarationLine = $this->_stubFile->getVariablesDeclarationLine();
-			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
-			$variablesDeclarationFormatted = $this->psr4Formatter->formatTypeDefinition($variablesDeclarationLine, $variablesDeclarationNoIndent);
-			$this->_stubFile->writeVariablesDeclarations($variablesDeclarationFormatted);
-		}
-		else {
-			$this->_stubFile->writeVariablesDeclarations("");
-		}
-	}
-
-	public function replaceUsesDeclaration() {
-		$usesDependencies = $this->_type->getDependencies();
-		$usesDeclarations = $this->psr4Resolver->getAllNamespacesFromDependencies($usesDependencies);
-		$this->_stubFile->writeUsesDeclaration($usesDeclarations);
-	}
-
-	public function writeClass() {
-		$fullPath = $this->getClassFullPath();
-
-		if (file_exists($fullPath) && $this->_context->overwriteOldFiles) {
-			unlink($fullPath);
-		}
-
-		file_put_contents($fullPath, $this->_stubFile->getContent());
+		$this->loadStubFile();
+		$this->loadPSR4Formatter();
+		$this->writeNamespace();
+		$this->writeUsesTokens();
+		$this->writeClassName();
+		$this->writeVariablesDeclaration();
+		$this->writeTypeDefinition();
+		$this->writeClassToFile();
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getClassFullPath() {
-		$classFQN = $this->psr4Resolver->getFQNForType($this->_type);
+	public function getFormattedTypeDefinition() {
+		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
-		$relevantFQN = substr($classFQN, strlen($this->_context->namespace));
-		$relevantFQN = str_replace("\\", "/", $relevantFQN);
+		return $this->psr4Formatter->getFormattedTypeDefinition($unformattedTypeDefinition);
+	}
 
-		return $this->_context->targetDir . $relevantFQN . ".php";
+	/**
+	 * @return string
+	 */
+	public function getClassName() {
+		return $this->_type->getName();
+	}
+
+	// Type
+
+	public function getVariablesDeclarationFormatted() {
+		if($this->_context->formatter->useConstantsForEnums) {
+			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
+
+			return $this->psr4Formatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
+		}
+		else {
+			return "";
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNamespace() {
+		return $this->_context->resolver->getNamespaceForType($this->_type);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getUsesTokens() {
+		$dependencies = $this->_type->getDependencies();
+
+		return $this->_context->resolver->generateTokensFromDependencies($dependencies);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getClassFilePath() {
+		$basePath = $this->_context->resolver->getFilePathForType($this->_type);
+
+		 return str_replace("\\", "/", $this->_context->targetDir . $basePath . '/' . $this->_type->getName() . '.php');
+	}
+
+	protected function writeTypeDefinition() {
+		$this->_stubFile->writeTypeDefinition(
+			$this->getFormattedTypeDefinition()
+		);
+	}
+
+	protected function writeClassName() {
+		$this->_stubFile->writeClassName(
+			$this->getClassName()
+		);
+	}
+
+	protected function writeNamespace() {
+		$this->_stubFile->writeNamespace(
+			$this->getNamespace()
+		);
+	}
+
+	protected function writeVariablesDeclaration() {
+		$this->_stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
+	}
+
+	protected function writeUsesTokens() {
+		$this->_stubFile->writeUsesDeclaration(
+			implode("\n", $this->getUsesTokens())
+		);
+	}
+
+	protected function writeClassToFile() {
+		$fullPath = $this->getClassFilePath();
+
+		if(file_exists($fullPath) && $this->_context->overwriteOldFiles) {
+			unlink($fullPath);
+		}
+
+		file_put_contents($fullPath, $this->_stubFile->getContent());
 	}
 
 }
