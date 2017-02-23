@@ -28,4 +28,9 @@ class GeneratorContext {
 	 * @var StubFormatter
 	 */
 	public $formatter;
+
+	/**
+	 * @var string
+	 */
+	public $targetDir;
 }

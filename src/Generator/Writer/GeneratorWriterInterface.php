@@ -10,8 +10,8 @@ interface GeneratorWriterInterface {
 	public function initialize();
 
 	/**
-	 * @param BaseTypeGeneratorInterface $typeGenerator
+	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	public function generateFileForTypeGenerator($typeGenerator);
+	public function generateFileForTypeGenerator($type);
 }

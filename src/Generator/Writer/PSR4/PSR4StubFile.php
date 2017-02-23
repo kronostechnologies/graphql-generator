@@ -31,4 +31,33 @@ class PSR4StubFile extends StubFile {
 	public function getVariablesDeclarationLine() {
 		return $this->getLineWithText(self::VARIABLES_DECLARATION);
 	}
+
+	/**
+	 * @param string $namespaceValue
+	 */
+	public function writeNamespace($namespaceValue) {
+		$this->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespaceValue);
+	}
+
+	/**
+	 * @param string $className
+	 */
+	public function writeClassName($className) {
+		$this->replaceTextInStub(PSR4StubFile::DUMMY_CLASSNAME, $className);
+	}
+
+	/**
+	 * @param string $formattedContent
+	 */
+	public function writeTypeDefinitionDeclaration($formattedContent) {
+		$this->replaceTextInStub(PSR4StubFile::TYPE_DEFINITION_DECLARATION, $formattedContent);
+	}
+
+	/**
+	 * @param string $formattedContent
+	 */
+	public function writeUsesDeclaration($formattedContent) {
+		$this->replaceTextInStub(PSR4StubFile::USES_DECLARATION, $formattedContent);
+	}
+
 }
