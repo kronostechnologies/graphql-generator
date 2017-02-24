@@ -18,9 +18,6 @@ class StubFile {
 	 */
 	protected $_contentAsLines;
 
-	public function __construct() {
-	}
-
 	/**
 	 * @param string $searchText
 	 * @return string|null
@@ -36,9 +33,11 @@ class StubFile {
 	 * @return string[]
 	 */
 	public function getLinesWithText($searchText) {
-		return array_filter($this->_contentAsLines, function ($line) use ($searchText) {
-			return strpos($line, $searchText) !== false;
-		});
+		return array_values(
+			array_filter($this->_contentAsLines, function ($line) use ($searchText) {
+				return strpos($line, $searchText) !== false;
+			})
+		);
 	}
 
 	/**
