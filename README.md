@@ -51,7 +51,7 @@ Available options are:
 * `--writer=WRITER`: Type of writer with which to output the files. Default is psr4.
     * PSR4 Writer: A class will be generated for each type definition under `Types\Enums` for enum types, `Types\Interfaces` for interface types, `Types\Scalars` for scalar types, and `Types` for standard types. The PSR-4 standard will be respected.
 * `--psr4-namespace`: If using the PSR4 Writer, the given namespace will be prefixed. This does not alter the target directory structure.
-* `--psr4-stubs-path`: If using the PSR4 Writer, this is a directory containing the stub files for generating classes. The files required are the same ones in [src/Generator/Writer/PSR4](./src/Generator/Writer/PSR4)
+* `--psr4-stubs-path`: If using the PSR4 Writer, this is a directory containing the stub files for generating classes. The files required are the same ones in [src/Generator/Writer/PSR4/stubs](./src/Generator/Writer/PSR4/stubs)
 * `--overwrite`: If this flag is set, the writer will attempt to override the files. If not, a warning will be thrown when an existing file is found.
 * `--formatter-use-tabs`: If this flag is set, the PHP ouput file formatter will use tabs instead of spaces for indentation.
 * `--formatter-indent-spaces`: If not using tabs for the formatter, this is the number of spaces per indent block. Default is 4.
