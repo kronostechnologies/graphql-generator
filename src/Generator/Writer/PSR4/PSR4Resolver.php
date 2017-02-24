@@ -20,7 +20,7 @@ class PSR4Resolver {
 	/**
 	 * @var string
 	 */
-	public $baseNamespace;
+	protected $_baseNamespace;
 
 	/**
 	 * @return string[]
@@ -39,14 +39,14 @@ class PSR4Resolver {
 	 * @param string $baseNamespace
 	 */
 	public function __construct($baseNamespace) {
-		$this->baseNamespace = $baseNamespace;
+		$this->_baseNamespace = $baseNamespace;
 
 		$this->setStaticDependencies($baseNamespace);
 	}
 
 	public function setStaticDependencies($baseNamespace) {
 		$this->_resolvedTokens[$this->getDependencyNamespaceToken("Type")] = "GraphQL\\Type\\Definition\\Type";
-		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinNamespaces($baseNamespace, "TypeStore");
+		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinAndStandardizeNamespaces($baseNamespace, "TypeStore");
 	}
 
 	/**
@@ -54,7 +54,7 @@ class PSR4Resolver {
 	 * @return string
 	 */
 	public function getFQNForType($type) {
-		return $this->joinNamespaces(
+		return $this->joinAndStandardizeNamespaces(
 			$this->getNamespaceForType($type),
 			$type->getName()
 		);
@@ -71,20 +71,14 @@ class PSR4Resolver {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param string $fqn
 	 * @return string
 	 */
-	public function getFilePathForType($type) {
-		switch(get_class($type)) {
-			case Type::class:
-				return $this->joinNamespaces("Types");
-			case Scalar::class:
-				return $this->joinNamespaces("Types", "Scalars");
-			case Enum::class:
-				return $this->joinNamespaces("Types", "Enums");
-			case InterfaceDeclaration::class:
-				return $this->joinNamespaces("Types", "Interfaces");
-		}
+	public function getFilePathSuffixForFQN($fqn) {
+		// Strips base namespace from FQN
+		$fqnWithoutBaseNS = substr($fqn, strlen($this->_baseNamespace) + 1);
+
+		return str_replace("\\", "/", $fqnWithoutBaseNS) . ".php";
 	}
 
 	/**
@@ -92,10 +86,16 @@ class PSR4Resolver {
 	 * @return string
 	 */
 	public function getNamespaceForType($type) {
-		return $this->joinNamespaces(
-			$this->baseNamespace,
-			$this->getFilePathForType($type)
-		);
+		switch(get_class($type)) {
+			case Type::class:
+				return $this->joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
+			case Scalar::class:
+				return $this->joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Scalars");
+			case Enum::class:
+				return $this->joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Enums");
+			case InterfaceDeclaration::class:
+				return $this->joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
+		}
 	}
 
 	/**
@@ -110,7 +110,7 @@ class PSR4Resolver {
 	 * @param string[] ...$namespaceParts
 	 * @return string
 	 */
-	public function joinNamespaces(...$namespaceParts) {
+	public function joinAndStandardizeNamespaces(...$namespaceParts) {
 		$namespacePartsWithoutTrailingSlashes = array_map(function ($namespacePart) {
 			$namespacePart = str_replace("/", "\\", $namespacePart);
 			return trim($namespacePart, "\\");
@@ -125,7 +125,7 @@ class PSR4Resolver {
 	 */
 	public function generateTokensFromDependencies($dependencies) {
 		// Checks if a non-primary type is a dependency. If so, add TypeStore
-		if ($this->isNonPrimaryTypeDependencyPresent($dependencies)) {
+		if($this->isNonPrimaryTypeDependencyPresent($dependencies)) {
 			$dependencies[] = 'TypeStore';
 		}
 
@@ -142,10 +142,10 @@ class PSR4Resolver {
 	 */
 	protected function isNonPrimaryTypeDependencyPresent($dependencies) {
 		return count(
-			array_filter($dependencies,function ($dependency) {
-				return !isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$dependency]);
-			})
-		) > 0;
+				array_filter($dependencies, function ($dependency) {
+					return !isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$dependency]);
+				})
+			) > 0;
 	}
 
 	/**
@@ -177,8 +177,8 @@ class PSR4Resolver {
 	 * @return string
 	 */
 	public function getNamespaceDirectory($namespace) {
-		$baseNamespaceTrimmed = $this->joinNamespaces($this->baseNamespace);
-		$namespaceTrimmed = $this->joinNamespaces($namespace);
+		$baseNamespaceTrimmed = $this->joinAndStandardizeNamespaces($this->_baseNamespace);
+		$namespaceTrimmed = $this->joinAndStandardizeNamespaces($namespace);
 
 		return trim(substr($namespaceTrimmed, strlen($baseNamespaceTrimmed)), "\\");
 	}

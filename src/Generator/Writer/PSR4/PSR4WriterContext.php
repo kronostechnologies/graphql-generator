@@ -37,6 +37,10 @@ class PSR4WriterContext extends WriterContext {
 			->addOption('psr4-stubs-path', "psr4-stubs", InputArgument::OPTIONAL, "Optional. Directory of customized PSR4 stubs to use.");
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */
 	public function executeCLI(InputInterface $input, OutputInterface $output) {
 		parent::executeCLI($input, $output);
 

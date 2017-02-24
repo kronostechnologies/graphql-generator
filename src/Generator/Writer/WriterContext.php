@@ -45,4 +45,21 @@ abstract class WriterContext {
 			$this->targetDir .= '/';
 		}
 	}
+
+	/**
+	 * @param string $suffixFilePath
+	 * @return string
+	 */
+	public function getFilePath($suffixFilePath) {
+		$targetDirWithoutTrailingSlash = rtrim($this->targetDir, "\\");
+		$targetDirWithoutTrailingSlash = rtrim($targetDirWithoutTrailingSlash, "/");
+
+		$suffixFilePathWithoutTrailingSlash = ltrim($suffixFilePath, "\\");
+		$suffixFilePathWithoutTrailingSlash = ltrim($suffixFilePathWithoutTrailingSlash, "/");
+
+		$nonStandardizedPath = $targetDirWithoutTrailingSlash . DIRECTORY_SEPARATOR . $suffixFilePathWithoutTrailingSlash;
+		$standardizedPath = str_replace("\\", "/", $nonStandardizedPath);
+
+		return $standardizedPath;
+	}
 }

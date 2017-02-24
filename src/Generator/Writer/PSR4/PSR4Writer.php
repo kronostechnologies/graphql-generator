@@ -24,7 +24,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 
 	public function initialize() {
 		foreach(PSR4Resolver::getBasicPSR4Structure() as $structureFolder) {
-			mkdir(getcwd() . '/' . $this->_context->targetDir . $structureFolder);
+			mkdir($this->_context->getFilePath($structureFolder));
 		}
 	}
 
@@ -50,11 +50,11 @@ class PSR4Writer implements GeneratorWriterInterface {
 		// Replaces namespace
 		$stubFile->replaceTextInStub(
 			PSR4StubFile::DUMMY_NAMESPACE,
-			$this->_context->resolver->joinNamespaces($this->_context->namespace)
+			$this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace)
 		);
 
 		// Writes file
-		$fullPath = $this->_context->targetDir . 'TypeStore.php';
+		$fullPath = $this->_context->getFilePath("TypeStore.php");
 		if(file_exists($fullPath) && $this->_context->overwriteOldFiles) {
 			unlink($fullPath);
 		}
@@ -66,8 +66,10 @@ class PSR4Writer implements GeneratorWriterInterface {
 	public function replaceResolvedTokens() {
 		foreach($this->_context->resolver->getAllResolvedTokens() as $token => $fqn) {
 			// Strips namespace end
-			$filePath = $this->_context->targetDir . $this->_context->resolver->getNamespaceDirectory($fqn) . ".php";
-			$filePath = str_replace("\\", "/", $filePath);
+			$filePath = $this->_context->getFilePath(
+				$this->_context->resolver->getFilePathSuffixForFQN($fqn)
+			);
+
 			// Read file
 			if(file_exists($filePath)) {
 				$fileContent = file_get_contents($filePath);

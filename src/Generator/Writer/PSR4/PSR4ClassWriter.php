@@ -10,7 +10,7 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4ClassFormatter
 	 */
-	public $psr4ClassFormatter;
+	protected $_psr4ClassFormatter;
 
 	/**
 	 * @var PSR4WriterContext
@@ -43,7 +43,7 @@ class PSR4ClassWriter {
 	}
 
 	public function loadPSR4Formatter() {
-		$this->psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
+		$this->_psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
 	}
 
 	public function replacePlaceholdersAndWriteToFile() {
@@ -63,7 +63,7 @@ class PSR4ClassWriter {
 	public function getFormattedTypeDefinition() {
 		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
-		return $this->psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
+		return $this->_psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class PSR4ClassWriter {
 		if($this->_context->formatter->useConstantsForEnums) {
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
 
-			return $this->psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
 		}
 		else {
 			return "";
@@ -107,9 +107,9 @@ class PSR4ClassWriter {
 	 * @return string
 	 */
 	public function getClassFilePath() {
-		$basePath = $this->_context->resolver->getFilePathForType($this->_type);
-
-		 return str_replace("\\", "/", $this->_context->targetDir . $basePath . '/' . $this->_type->getName() . '.php');
+		return $this->_context->getFilePath(
+			$this->_context->resolver->getFQNForType($this->_type)
+		);
 	}
 
 	protected function writeTypeDefinition() {
