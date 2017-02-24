@@ -8,5 +8,4 @@ use Symfony\Component\Console\Application;
 
 $cli = new Application();
 $cli->add(new GenerateClassesCommand());
-$cli->add(new DescribeCommand());
 $cli->run();
