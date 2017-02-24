@@ -48,8 +48,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$escapedName = addslashes($this->name);
-		return "[ 'name' => '{$escapedName}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ];";
+		return "[ 'name' => '{$this->name}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ];";
 	}
 
 	/**
@@ -81,7 +80,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	protected function getConstantValuesArray() {
 		$valuesNames = array_map(function ($value) {
 			return $this->getSingleConstantValueEntry($value);
-		}, $this->values);
+		}, $this->values ?: []);
 
 		return implode("", $valuesNames);
 	}
