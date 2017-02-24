@@ -8,6 +8,7 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
 
 class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'AnInterface';
@@ -57,6 +58,15 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $interface->getDependencies();
 
 		$this->assertCount(2, $retVal);
+	}
+
+	public function test_GivenInterfaceDeclarationWith2DistinctFields_generateTypeDefinition_WillContainFields() {
+		$interface = $this->GivenInterfaceDeclarationWith2DistinctFields();
+
+		$retVal = $interface->generateTypeDefinition();
+
+		$this->assertContains(self::FIELD_NAME_1, $retVal);
+		$this->assertContains(self::FIELD_NAME_2, $retVal);
 	}
 
 	public function test_GivenInterfaceDeclaration_generateTypeDefinition_WillContainName() {
@@ -130,7 +140,13 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 		return new InterfaceDeclaration(
 			self::VALID_NAME,
 			[$field1, $field2],
-			new StubFormatter(),
+			new StubFormatter(
+				true,
+				4,
+				",",
+				new PSR4TypeFormatter(),
+				true
+			),
 			null
 		);
 	}

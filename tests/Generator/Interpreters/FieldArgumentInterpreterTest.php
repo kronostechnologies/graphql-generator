@@ -36,6 +36,16 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::VALID_DESCRIPTION, $retVal);
 	}
 
+	public function test_GivenNoDefaultValue_getDefaultValue_WillReturnNull() {
+		$node = new InputValueDefinitionNode([]);
+		$this->GivenValidName($node);
+
+		$interpreter =  new FieldArgumentInterpreter($node);
+		$retVal = $interpreter->getDefaultValue();
+
+		$this->assertNull($retVal);
+	}
+
 	public function test_GivenDefaultValue_getDefaultValue_WillReturnDefaultValue() {
 		$node = new InputValueDefinitionNode([]);
 		$this->GivenDefaultValue($node);
