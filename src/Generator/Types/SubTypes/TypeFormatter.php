@@ -11,7 +11,7 @@ abstract class TypeFormatter {
 	 */
 	public function getFieldTypeDeclaration($fieldType) {
 		// Primary type check
-		if (in_array($fieldType->typeName, TypeUsage::$PRIMARY_TYPES_MAPPINGS)) {
+		if (isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName])) {
 			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName];
 		}
 		else {

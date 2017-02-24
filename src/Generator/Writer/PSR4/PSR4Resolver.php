@@ -8,6 +8,7 @@ use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
 
 class PSR4Resolver {
@@ -117,11 +118,28 @@ class PSR4Resolver {
 	 * @return string[]
 	 */
 	public function generateTokensFromDependencies($dependencies) {
+		// Checks if a non-primary type is a dependency. If so, add TypeStore
+		if ($this->isNonPrimaryTypeDependencyPresent($dependencies)) {
+			$dependencies[] = 'TypeStore';
+		}
+
 		return array_unique(
 			array_map(function ($dependency) {
 				return $this->getDependencyNamespaceToken($dependency);
 			}, $dependencies)
 		);
+	}
+
+	/**
+	 * @param string[] $dependencies
+	 * @return bool
+	 */
+	protected function isNonPrimaryTypeDependencyPresent($dependencies) {
+		return count(
+			array_filter($dependencies,function ($dependency) {
+				return !isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$dependency]);
+			})
+		) > 0;
 	}
 
 	/**

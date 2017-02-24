@@ -10,7 +10,7 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4ClassFormatter
 	 */
-	public $psr4Formatter;
+	public $psr4ClassFormatter;
 
 	/**
 	 * @var PSR4WriterContext
@@ -44,7 +44,7 @@ class PSR4ClassWriter {
 	}
 
 	public function loadPSR4Formatter() {
-		$this->psr4Formatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
+		$this->psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
 	}
 
 	public function replacePlaceholdersAndWriteToFile() {
@@ -67,7 +67,7 @@ class PSR4ClassWriter {
 	public function getFormattedTypeDefinition() {
 		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
-		return $this->psr4Formatter->getFormattedTypeDefinition($unformattedTypeDefinition);
+		return $this->psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class PSR4ClassWriter {
 		if($this->_context->formatter->useConstantsForEnums) {
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
 
-			return $this->psr4Formatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
+			return $this->psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
 		}
 		else {
 			return "";

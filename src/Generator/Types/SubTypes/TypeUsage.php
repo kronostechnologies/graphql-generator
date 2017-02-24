@@ -10,8 +10,8 @@ class TypeUsage {
 		'Int' => 'Type::int()',
 		'String' => 'Type::string()',
 		'Float' => 'Type::float()',
-		'Bool' => 'Type::bool()',
-		'Boolean' => 'Type::bool()',
+		'Bool' => 'Type::boolean()',
+		'Boolean' => 'Type::boolean()',
 	];
 
 	/**

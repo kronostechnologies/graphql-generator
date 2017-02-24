@@ -4,10 +4,10 @@ namespace DummyNamespace;
 
 class TypeStore {
 
-	protected $_cache = [];
+	private static $_cache = [];
 
-	public function getTypeDefinition($instanceOfType) {
-		if (!array_key_exists($instanceOfType, $this->_cache)) {
+	public static function getTypeDefinition($instanceOfType) {
+		if (!array_key_exists($instanceOfType, self::$_cache)) {
 			$this->_cache[$instanceOfType] = $instanceOfType::getTypeDefinition();
 		}
 
