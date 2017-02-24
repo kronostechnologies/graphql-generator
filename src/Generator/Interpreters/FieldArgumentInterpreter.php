@@ -33,7 +33,7 @@ class FieldArgumentInterpreter extends Interpreter {
 	 * @return mixed
 	 */
 	public function getDefaultValue() {
-		if ($this->_astNode->defaultValue === null) {
+		if($this->_astNode->defaultValue === null) {
 			return null;
 		}
 		else {

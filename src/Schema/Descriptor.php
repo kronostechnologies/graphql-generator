@@ -38,6 +38,15 @@ class Descriptor {
 		$this->setupStyles();
 	}
 
+	/**
+	 * @param DocumentNode $ast
+	 */
+	public function describeAST($ast) {
+		foreach($ast->definitions as $astNode) {
+			$this->describeNode($astNode);
+		}
+	}
+
 	protected function setupStyles() {
 		$interfaceDefinitionStyle = new OutputFormatterStyle('white', null, ['bold']);
 		$enumDefinitionStyle = new OutputFormatterStyle('green', null, ['bold']);
@@ -52,15 +61,6 @@ class Descriptor {
 		$this->_consoleOutput->getFormatter()->setStyle('input', $inputDefinitionStyle);
 		$this->_consoleOutput->getFormatter()->setStyle('typedef', $typeDefinitionStyle);
 		$this->_consoleOutput->getFormatter()->setStyle('typeusage', $typeUsageStyle);
-	}
-
-	/**
-	 * @param DocumentNode $ast
-	 */
-	public function describeAST($ast) {
-		foreach($ast->definitions as $astNode) {
-			$this->describeNode($astNode);
-		}
 	}
 
 	/**

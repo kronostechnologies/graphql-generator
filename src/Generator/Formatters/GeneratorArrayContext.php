@@ -31,6 +31,13 @@ class GeneratorArrayContext {
 	protected $_buffer = '';
 
 	/**
+	 * @param int $initialIndentLevel
+	 */
+	public function __construct($initialIndentLevel) {
+		$this->_indentLevel = $initialIndentLevel;
+	}
+
+	/**
 	 * @param string $character
 	 */
 	public function appendCharacter($character) {
@@ -90,12 +97,5 @@ class GeneratorArrayContext {
 
 	public function setIsAfterNewLine($value) {
 		$this->_isAfterNewLine = $value;
-	}
-
-	/**
-	 * @param int $initialIndentLevel
-	 */
-	public function __construct($initialIndentLevel) {
-		$this->_indentLevel = $initialIndentLevel;
 	}
 }

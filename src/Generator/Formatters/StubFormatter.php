@@ -73,7 +73,7 @@ class StubFormatter {
 	 */
 	public function indent($text, $tabsCount) {
 		$lines = explode("\n", $text);
-		$tabbedLines = array_map(function($line) use ($tabsCount) {
+		$tabbedLines = array_map(function ($line) use ($tabsCount) {
 			return $this->getTab($tabsCount) . $line;
 		}, $lines);
 
@@ -88,7 +88,7 @@ class StubFormatter {
 		$regCountSpaces = "/( |\t)/";
 		$countMatches = preg_match_all($regCountSpaces, $line, $countSpacesArr);
 
-		if ($this->useSpaces) {
+		if($this->useSpaces) {
 			return intval($countMatches / $this->tabSize);
 		}
 		else {
@@ -101,7 +101,7 @@ class StubFormatter {
 	 * @return string
 	 */
 	protected function getTab($size) {
-		if ($this->useSpaces) {
+		if($this->useSpaces) {
 			return str_repeat(' ', $size * $this->tabSize);
 		}
 		else {

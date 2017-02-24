@@ -21,6 +21,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateClassesCommand extends Command {
+	/**
+	 * @return string[][]
+	 */
+	public static function getWriterMappings() {
+		return [
+			'psr4' => [
+				'writer' => PSR4Writer::class,
+				'context' => PSR4WriterContext::class,
+				'type-formatter' => PSR4TypeFormatter::class
+			]
+		];
+	}
+
 	protected function configure() {
 		$this
 			->setName("generate-classes")
@@ -32,7 +45,7 @@ class GenerateClassesCommand extends Command {
 			->addOption("formatter-indent-spaces", "fi", InputArgument::OPTIONAL, "Optional. If formatter isn't using tabs, number of spaces per indent block.", 4)
 			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",");
 
-		foreach (self::getWriterMappings() as $mapping) {
+		foreach(self::getWriterMappings() as $mapping) {
 			/** @var WriterContext $context */
 			$context = new $mapping['context'];
 			$context->configureCLI($this);
@@ -113,18 +126,5 @@ class GenerateClassesCommand extends Command {
 	 */
 	protected function generateGraphqlAST($content) {
 		return Parser::parse($content);
-	}
-
-	/**
-	 * @return string[][]
-	 */
-	public static function getWriterMappings() {
-		return [
-			'psr4' => [
-				'writer' => PSR4Writer::class,
-				'context' => PSR4WriterContext::class,
-				'type-formatter' => PSR4TypeFormatter::class
-			]
-		];
 	}
 }

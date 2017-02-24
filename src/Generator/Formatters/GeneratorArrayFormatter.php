@@ -44,7 +44,9 @@ class GeneratorArrayFormatter {
 		$textContentSplit = str_split($textContent);
 		$context->appendCharacter($this->getTab($context->getIndentLevel()) . "");
 
-		foreach ($textContentSplit as $char) {
+		foreach($textContentSplit as $char) {
+			// Interpret a single token. && is used a char ending so if any value returns false, the current token
+			// interpretation will be stopped.
 			$this->skipIfAfterNewLineAndIsIgnoredToken($context, $char) &&
 			$this->setNotAfterNewLineAndContinue($context) &&
 			$this->toggleStringContextAndStopIfStringToken($context, $char) &&
@@ -71,7 +73,7 @@ class GeneratorArrayFormatter {
 	 * @return string
 	 */
 	protected function getTab($size) {
-		if ($this->useSpaces) {
+		if($this->useSpaces) {
 			return str_repeat(' ', $size * $this->tabSize);
 		}
 		else {
@@ -104,7 +106,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function toggleStringContextAndStopIfStringToken($context, $char) {
-		if (!$context->doEscapeNext() && strrpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
+		if(!$context->doEscapeNext() && strrpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
 			$context->toggleStringContext();
 			$context->appendCharacter($char);
 			return false;
@@ -119,7 +121,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function stopAndEscapeNextCharIfInStringContextAndTokenMatches($context, $char) {
-		if (!$context->doEscapeNext() && $context->isInStringContext() && strrpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
+		if(!$context->doEscapeNext() && $context->isInStringContext() && strrpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
 			$context->toggleDoEscapeNext();
 			$context->appendCharacter($char);
 			return false;
@@ -134,7 +136,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function escapeCurrentCharAndStopIfRequestedTo($context, $char) {
-		if ($context->doEscapeNext()) {
+		if($context->doEscapeNext()) {
 			$context->toggleDoEscapeNext();
 			$context->appendCharacter($char);
 			return false;
@@ -149,7 +151,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function addCharacterAndStopIfInStringContext($context, $char) {
-		if ($context->isInStringContext()) {
+		if($context->isInStringContext()) {
 			$context->appendCharacter($char);
 			return false;
 		}
@@ -163,7 +165,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function increaseIndentLevelIfIndentTokenFound($context, $char) {
-		if (strrpos(self::INDENT_TOKENS, $char) !== false) {
+		if(strrpos(self::INDENT_TOKENS, $char) !== false) {
 			$context->increaseIndentLevel();
 		}
 
@@ -176,7 +178,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function decreaseIndentLevelIfUnindentTokenFound($context, $char) {
-		if (strrpos(self::UNINDENT_TOKENS, $char) !== false) {
+		if(strrpos(self::UNINDENT_TOKENS, $char) !== false) {
 			$context->decreaseIndentLevel();
 		}
 
@@ -189,7 +191,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function indentBeforeNewLineAndToggleContext($context, $char) {
-		if (strrpos(self::NEWLINE_BEFORE_TOKENS, $char) !== false) {
+		if(strrpos(self::NEWLINE_BEFORE_TOKENS, $char) !== false) {
 			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);
 		}
@@ -214,7 +216,7 @@ class GeneratorArrayFormatter {
 	 * @return bool
 	 */
 	private function indentAfterNewLineAndToggleContext($context, $char) {
-		if (strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
+		if(strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
 			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);
 		}
@@ -226,7 +228,9 @@ class GeneratorArrayFormatter {
 	 * @param string[] $contentAsLines
 	 */
 	private function rtrimLines(&$contentAsLines) {
-		$contentAsLines = array_map(function ($line) { return rtrim($line); }, $contentAsLines);
+		$contentAsLines = array_map(function ($line) {
+			return rtrim($line);
+		}, $contentAsLines);
 
 	}
 
@@ -234,6 +238,8 @@ class GeneratorArrayFormatter {
 	 * @param string[] $contentAsLines
 	 */
 	private function removeBlankLines(&$contentAsLines) {
-		$contentAsLines = array_filter($contentAsLines, function ($line) { return !empty($line); });
+		$contentAsLines = array_filter($contentAsLines, function ($line) {
+			return !empty($line);
+		});
 	}
 }

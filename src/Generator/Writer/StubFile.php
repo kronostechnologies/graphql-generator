@@ -36,7 +36,7 @@ class StubFile {
 	 * @return string[]
 	 */
 	public function getLinesWithText($searchText) {
-		return array_filter($this->_contentAsLines, function($line) use ($searchText) {
+		return array_filter($this->_contentAsLines, function ($line) use ($searchText) {
 			return strpos($line, $searchText) !== false;
 		});
 	}
@@ -63,10 +63,6 @@ class StubFile {
 		$this->_content = str_replace($original, $new, $this->_content);
 
 		$this->splitContentAsLines();
-	}
-
-	private function splitContentAsLines() {
-		$this->_contentAsLines = explode("\n", $this->_content);
 	}
 
 	/**
@@ -104,5 +100,9 @@ class StubFile {
 		$this->_content = file_get_contents($fileName);
 
 		$this->splitContentAsLines();
+	}
+
+	private function splitContentAsLines() {
+		$this->_contentAsLines = explode("\n", $this->_content);
 	}
 }

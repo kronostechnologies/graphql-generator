@@ -40,8 +40,9 @@ abstract class WriterContext {
 		$this->overwriteOldFiles = $input->getOption('overwrite');
 
 		// Append slash to targetdir
-		if (strrpos($this->targetDir, "/") !== strlen($this->targetDir) - 1 &&
-			strrpos($this->targetDir, "\\") !== strlen($this->targetDir) - 1) {
+		if(strrpos($this->targetDir, "/") !== strlen($this->targetDir) - 1 &&
+			strrpos($this->targetDir, "\\") !== strlen($this->targetDir) - 1
+		) {
 			$this->targetDir .= '/';
 		}
 	}

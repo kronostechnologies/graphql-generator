@@ -4,8 +4,6 @@
 namespace GraphQLGen\Generator\Types;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-
 class Scalar implements BaseTypeGeneratorInterface {
 	/**
 	 * @var null|string

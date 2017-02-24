@@ -54,7 +54,7 @@ class TypeUsage {
 	public function getDependencies() {
 		$dependencies = [];
 
-		if (isset(self::$PRIMARY_TYPES_MAPPINGS[$this->typeName])) {
+		if(isset(self::$PRIMARY_TYPES_MAPPINGS[$this->typeName])) {
 			$dependencies[] = 'Type';
 		}
 		else {

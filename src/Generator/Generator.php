@@ -10,8 +10,8 @@ use GraphQL\Language\AST\NodeKind;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
 use GraphQLGen\Generator\Interpreters\InterfaceInterpreter;
 use GraphQLGen\Generator\Interpreters\Interpreter;
-use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 class Generator {

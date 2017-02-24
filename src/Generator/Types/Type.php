@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Types;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
 class Type implements BaseTypeGeneratorInterface {
@@ -52,21 +51,6 @@ class Type implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string
 	 */
-	protected function getFieldsDefinitions() {
-		$fields = [];
-
-		foreach($this->fields as $field) {
-			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
-
-			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$this->formatter->getDescriptionValue($field->description)}],";
-		}
-
-		return implode('', $fields);
-	}
-
-	/**
-	 * @return string
-	 */
 	public function getName() {
 		return $this->name;
 	}
@@ -84,10 +68,25 @@ class Type implements BaseTypeGeneratorInterface {
 	public function getDependencies() {
 		$dependencies = [];
 
-		foreach ($this->fields as $field) {
+		foreach($this->fields as $field) {
 			$dependencies = array_merge($dependencies, $field->fieldType->getDependencies());
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getFieldsDefinitions() {
+		$fields = [];
+
+		foreach($this->fields as $field) {
+			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
+
+			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$this->formatter->getDescriptionValue($field->description)}],";
+		}
+
+		return implode('', $fields);
 	}
 }

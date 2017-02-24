@@ -50,27 +50,6 @@ class Enum implements BaseTypeGeneratorInterface {
 		return "[ 'name' => '{$escapedName}', {$this->formatter->getDescriptionValue($this->description)} 'values' => [{$this->getConstantValuesArray()}] ];";
 	}
 
-	protected function getConstantValuesArray() {
-		$valuesNames = array_map(function ($value) {
-			return $this->getSingleConstantValueEntry($value);
-		}, $this->values);
-
-		return implode("", $valuesNames);
-	}
-
-	/**
-	 * @param EnumValue $value
-	 * @return string
-	 */
-	protected function getSingleConstantValueEntry($value) {
-		if ($this->formatter->useConstantsForEnums) {
-			return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
-		}
-		else {
-			return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
-		}
-	}
-
 	/**
 	 * @return string
 	 */
@@ -95,5 +74,26 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	public function getDependencies() {
 		return [];
+	}
+
+	protected function getConstantValuesArray() {
+		$valuesNames = array_map(function ($value) {
+			return $this->getSingleConstantValueEntry($value);
+		}, $this->values);
+
+		return implode("", $valuesNames);
+	}
+
+	/**
+	 * @param EnumValue $value
+	 * @return string
+	 */
+	protected function getSingleConstantValueEntry($value) {
+		if($this->formatter->useConstantsForEnums) {
+			return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
+		}
+		else {
+			return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
+		}
 	}
 }

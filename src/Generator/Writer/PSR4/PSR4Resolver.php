@@ -23,6 +23,15 @@ class PSR4Resolver {
 	protected $_baseNamespace;
 
 	/**
+	 * @param string $baseNamespace
+	 */
+	public function __construct($baseNamespace) {
+		$this->_baseNamespace = $baseNamespace;
+
+		$this->setStaticDependencies($baseNamespace);
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public static function getBasicPSR4Structure() {
@@ -33,15 +42,6 @@ class PSR4Resolver {
 			'Types/Interfaces',
 			'Types/Scalars',
 		];
-	}
-
-	/**
-	 * @param string $baseNamespace
-	 */
-	public function __construct($baseNamespace) {
-		$this->_baseNamespace = $baseNamespace;
-
-		$this->setStaticDependencies($baseNamespace);
 	}
 
 	public function setStaticDependencies($baseNamespace) {
@@ -137,18 +137,6 @@ class PSR4Resolver {
 	}
 
 	/**
-	 * @param string[] $dependencies
-	 * @return bool
-	 */
-	protected function isNonPrimaryTypeDependencyPresent($dependencies) {
-		return count(
-				array_filter($dependencies, function ($dependency) {
-					return !isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$dependency]);
-				})
-			) > 0;
-	}
-
-	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
@@ -181,5 +169,17 @@ class PSR4Resolver {
 		$namespaceTrimmed = $this->joinAndStandardizeNamespaces($namespace);
 
 		return trim(substr($namespaceTrimmed, strlen($baseNamespaceTrimmed)), "\\");
+	}
+
+	/**
+	 * @param string[] $dependencies
+	 * @return bool
+	 */
+	protected function isNonPrimaryTypeDependencyPresent($dependencies) {
+		return count(
+				array_filter($dependencies, function ($dependency) {
+					return !isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$dependency]);
+				})
+			) > 0;
 	}
 }
