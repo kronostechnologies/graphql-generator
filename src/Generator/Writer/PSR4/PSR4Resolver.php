@@ -54,14 +54,20 @@ class PSR4Resolver {
 	 * @return string
 	 */
 	public function getFQNForType($type) {
-		$typeNamespace = $this->getNamespaceForType($type);
-		$fqn = $this->joinNamespaces($typeNamespace, $type->getName());
+		return $this->joinNamespaces(
+			$this->getNamespaceForType($type),
+			$type->getName()
+		);
+	}
 
-		// ToDo: Separate call to store token
+	/**
+	 * @param BaseTypeGeneratorInterface $type
+	 * @return string
+	 */
+	public function storeFQNTokenForType($type) {
+		$fqn = $this->getFQNForType($type);
 		$token = $this->getDependencyNamespaceToken($type->getName());
 		$this->_resolvedTokens[$token] = $fqn;
-
-		return $fqn;
 	}
 
 	/**

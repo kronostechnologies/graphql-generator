@@ -37,7 +37,6 @@ class PSR4ClassWriter {
 		$this->_type = $type;
 	}
 
-	// StubFile + Resolver + Type
 	public function loadStubFile() {
 		$this->_stubFile = new PSR4StubFile();
 		$this->_stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($this->_type));
@@ -48,9 +47,6 @@ class PSR4ClassWriter {
 	}
 
 	public function replacePlaceholdersAndWriteToFile() {
-		// ToDo: Ugly hack, remove me
-		$this->_context->resolver->getFQNForType($this->_type);
-
 		$this->loadStubFile();
 		$this->loadPSR4Formatter();
 		$this->writeNamespace();
@@ -77,8 +73,9 @@ class PSR4ClassWriter {
 		return $this->_type->getName();
 	}
 
-	// Type
-
+	/**
+	 * @return string
+	 */
 	public function getVariablesDeclarationFormatted() {
 		if($this->_context->formatter->useConstantsForEnums) {
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
