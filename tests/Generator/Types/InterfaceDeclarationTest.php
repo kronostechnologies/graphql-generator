@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Tests\Generator;
+namespace GraphQLGen\Tests\Generator\Types;
 
 
 class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
