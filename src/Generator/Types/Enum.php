@@ -28,6 +28,8 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	public $formatter;
 
+	const ENUM_VAL_PREFIX = 'VAL_';
+
 	/**
 	 * EnumType constructor.
 	 * @param string $name
@@ -63,7 +65,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	public function getConstantsDeclaration() {
 		$constants = "";
 		foreach($this->values as $value) {
-			$constants .= "const VAL_{$value->name} = '{$value->name}';\n";
+			$constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = '{$value->name}';\n";
 		}
 
 		return $constants;
@@ -90,7 +92,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	protected function getSingleConstantValueEntry($value) {
 		if($this->formatter->useConstantsForEnums) {
-			return "'{$value->name}' => [ 'value' => self::VAL_{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
+			return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
 		}
 		else {
 			return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
