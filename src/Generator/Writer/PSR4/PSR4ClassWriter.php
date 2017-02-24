@@ -108,7 +108,9 @@ class PSR4ClassWriter {
 	 */
 	public function getClassFilePath() {
 		return $this->_context->getFilePath(
-			$this->_context->resolver->getFQNForType($this->_type)
+			$this->_context->resolver->getFilePathSuffixForFQN(
+				$this->_context->resolver->getFQNForType($this->_type)
+			)
 		);
 	}
 
