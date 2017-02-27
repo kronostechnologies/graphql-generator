@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-abstract class TypeFormatter {
+class TypeFormatter {
 	/**
 	 * @param TypeUsage $fieldType
 	 * @return string
@@ -40,5 +40,7 @@ abstract class TypeFormatter {
 	 * @param TypeUsage $fieldType
 	 * @return string
 	 */
-	abstract public function getFieldTypeDeclarationNonPrimaryType($fieldType);
+	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
+		return $fieldType->typeName;
+	}
 }
