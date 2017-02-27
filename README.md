@@ -15,7 +15,7 @@ This is a GraphQL schema generator with a CLI interface available. Currently in 
 As this is currently in development, you can clone this repository and try out the CLI tool with composer.
 
 ```
-git clone https://github.com/kronostechnologies/kronos-log.git
+git clone https://github.com/kronostechnologies/graphql-generator.git
 composer install
 ```
 
