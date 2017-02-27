@@ -1,14 +1,13 @@
 <?php
 
 
-namespace GraphQLGen\Tests\Mocks\Stubs\PSR4;
+namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Formatters\GeneratorArrayFormatter;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4ClassFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
-use GraphQLGen\Generator\Writer\StubFile;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
