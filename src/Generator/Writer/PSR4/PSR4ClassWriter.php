@@ -10,7 +10,7 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4ClassFormatter
 	 */
-	public $psr4ClassFormatter;
+	protected $_psr4ClassFormatter;
 
 	/**
 	 * @var PSR4WriterContext
@@ -25,43 +25,38 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4StubFile
 	 */
-	public $stubFile;
+	protected $_stubFile;
 
 	/**
 	 * PSR4ClassWriter constructor.
 	 * @param BaseTypeGeneratorInterface $type
 	 * @param PSR4WriterContext $context
+	 * @param PSR4StubFile $stubFile
+	 * @param PSR4ClassFormatter $psr4Formatter
 	 */
-	public function __construct($type, $context) {
+	public function __construct($type, $context, $stubFile, $psr4Formatter) {
 		$this->_context = $context;
 		$this->_type = $type;
+		$this->_psr4ClassFormatter = $psr4Formatter;
+		$this->_stubFile = $stubFile;
 	}
 
-	public function createStubFileInstance() {
-		$this->stubFile = new PSR4StubFile();
-		$this->stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($this->_type));
-	}
-
-	public function createPSR4Formatter() {
-		$this->psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->stubFile);
-	}
-
-	public function replacePlaceholdersAndWriteToFile() {
+	public function replacePlaceholders() {
 		$this->writeNamespace();
 		$this->writeUsesTokens();
 		$this->writeClassName();
 		$this->writeVariablesDeclaration();
 		$this->writeTypeDefinition();
-		$this->writeClassToFile();
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getFormattedTypeDefinition() {
+		$stubTypeDefinitionLine = $this->_stubFile->getTypeDefinitionDeclarationLine();
 		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
-		return $this->psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
+		return $this->_psr4ClassFormatter->getFormattedTypeDefinition($stubTypeDefinitionLine, $unformattedTypeDefinition);
 	}
 
 	/**
@@ -76,9 +71,10 @@ class PSR4ClassWriter {
 	 */
 	public function getVariablesDeclarationFormatted() {
 		if($this->_context->formatter->useConstantsForEnums) {
+			$stubVariableDeclarationLine = $this->_stubFile->getVariablesDeclarationLine();
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
 
-			return $this->psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
 		}
 		else {
 			return "";
@@ -95,7 +91,7 @@ class PSR4ClassWriter {
 	/**
 	 * @return string[]
 	 */
-	public function getUsesTokens() {
+	public function getImportedNamespacesTokens() {
 		$dependencies = $this->_type->getDependencies();
 
 		return $this->_context->resolver->generateTokensFromDependencies($dependencies);
@@ -104,7 +100,7 @@ class PSR4ClassWriter {
 	/**
 	 * @return string
 	 */
-	public function getClassFilePath() {
+	public function getFilePath() {
 		return $this->_context->getFilePath(
 			$this->_context->resolver->getFilePathSuffixForFQN(
 				$this->_context->resolver->getFQNForType($this->_type)
@@ -112,42 +108,38 @@ class PSR4ClassWriter {
 		);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getClassContent() {
+		return $this->_stubFile->getContent();
+	}
+
 	protected function writeTypeDefinition() {
-		$this->stubFile->writeTypeDefinition(
+		$this->_stubFile->writeTypeDefinition(
 			$this->getFormattedTypeDefinition()
 		);
 	}
 
 	protected function writeClassName() {
-		$this->stubFile->writeClassName(
+		$this->_stubFile->writeClassName(
 			$this->getClassName()
 		);
 	}
 
 	protected function writeNamespace() {
-		$this->stubFile->writeNamespace(
+		$this->_stubFile->writeNamespace(
 			$this->getNamespace()
 		);
 	}
 
 	protected function writeVariablesDeclaration() {
-		$this->stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
+		$this->_stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
 	}
 
 	protected function writeUsesTokens() {
-		$this->stubFile->writeUsesDeclaration(
-			implode("\n", $this->getUsesTokens())
+		$this->_stubFile->writeUsesDeclaration(
+			implode("\n", $this->getImportedNamespacesTokens())
 		);
 	}
-
-	protected function writeClassToFile() {
-		$fullPath = $this->getClassFilePath();
-
-		if(file_exists($fullPath) && $this->_context->overwriteOldFiles) {
-			unlink($fullPath);
-		}
-
-		file_put_contents($fullPath, $this->stubFile->getContent());
-	}
-
 }

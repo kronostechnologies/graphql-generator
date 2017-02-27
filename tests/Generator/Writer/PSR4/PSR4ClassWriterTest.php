@@ -90,17 +90,13 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_givenType = $this->GivenType();
 
-		$this->_classWriter = new PSR4ClassWriter($this->_givenType, $this->_psr4Context);
 		$this->_classWriter =
 			$this
 				->getMockBuilder(PSR4ClassWriter::class)
 				->enableOriginalConstructor()
-				->setConstructorArgs([$this->_givenType, $this->_psr4Context])
+				->setConstructorArgs([$this->_givenType, $this->_psr4Context, $this->_stubFile, $this->_psr4Formatter])
 				->setMethods(['writeClassToFile'])
 				->getMock();
-
-		$this->_classWriter->stubFile = $this->_stubFile;
-		$this->_classWriter->psr4ClassFormatter = $this->_psr4Formatter;
 	}
 
 	public function test_GivenType_getClassName_WillFetchName() {
@@ -134,43 +130,43 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenType_getUsesTokens_WillGenerateTokensFromDependencies() {
 		$this->_psr4Resolver->expects($this->once())->method('generateTokensFromDependencies');
 
-		$this->_classWriter->getUsesTokens();
+		$this->_classWriter->getImportedNamespacesTokens();
 	}
 
 	public function test_GivenType_getClassFilePath_WillGetFilePathSuffixForFQN() {
 		$this->_psr4Resolver->expects($this->once())->method('getFilePathSuffixForFQN');
 
-		$this->_classWriter->getClassFilePath();
+		$this->_classWriter->getFilePath();
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteTypeDefinition() {
 		$this->_stubFile->expects($this->once())->method('writeTypeDefinition');
 
-		$this->_classWriter->replacePlaceholdersAndWriteToFile();
+		$this->_classWriter->replacePlaceholders();
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteClassName() {
 		$this->_stubFile->expects($this->once())->method('writeClassName');
 
-		$this->_classWriter->replacePlaceholdersAndWriteToFile();
+		$this->_classWriter->replacePlaceholders();
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteNamespace() {
 		$this->_stubFile->expects($this->once())->method('writeNamespace');
 
-		$this->_classWriter->replacePlaceholdersAndWriteToFile();
+		$this->_classWriter->replacePlaceholders();
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteVariablesDeclarations() {
 		$this->_stubFile->expects($this->once())->method('writeVariablesDeclarations');
 
-		$this->_classWriter->replacePlaceholdersAndWriteToFile();
+		$this->_classWriter->replacePlaceholders();
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteUsesDeclarations() {
 		$this->_stubFile->expects($this->once())->method('writeUsesDeclaration');
 
-		$this->_classWriter->replacePlaceholdersAndWriteToFile();
+		$this->_classWriter->replacePlaceholders();
 	}
 
 	protected function GivenType() {

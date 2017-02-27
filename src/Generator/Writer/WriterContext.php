@@ -63,4 +63,16 @@ abstract class WriterContext {
 
 		return $standardizedPath;
 	}
+
+	/**
+	 * @param string $fileName
+	 * @param string $content
+	 */
+	public function writeFile($fileName, $content) {
+		if(file_exists($fileName) && $this->overwriteOldFiles) {
+			unlink($fileName);
+		}
+
+		file_put_contents($fileName, $content);
+	}
 }

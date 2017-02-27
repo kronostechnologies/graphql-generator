@@ -7,6 +7,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
+use GraphQLGen\Generator\Writer\StubFile;
 
 class PSR4Writer implements GeneratorWriterInterface {
 	/**
@@ -33,15 +34,21 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 * @return string|void
 	 */
 	public function generateFileForTypeGenerator($type) {
-		$classWriter = new PSR4ClassWriter($type, $this->_context);
+		$psr4Formatter = new PSR4ClassFormatter($this->_context->formatter);
+
+		$stubFile = new PSR4StubFile();
+		$stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($type));
+
+		$classWriter = new PSR4ClassWriter($type, $this->_context, $stubFile, $psr4Formatter);
 
 		// Store token for later usage
 		$this->_context->resolver->storeFQNTokenForType($type);
 
 		// Writes class from stub file
-		$classWriter->createStubFileInstance();
-		$classWriter->createPSR4Formatter();
-		$classWriter->replacePlaceholdersAndWriteToFile();
+		$classWriter->replacePlaceholders();
+		$fullPath = $classWriter->getFilePath();
+		$content = $classWriter->getClassContent();
+		$this->_context->writeFile($fullPath, $content);
 	}
 
 	public function finalize() {

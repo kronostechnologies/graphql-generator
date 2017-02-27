@@ -17,11 +17,6 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 	protected $_formatterMock;
 
 	/**
-	 * @var PSR4StubFile|PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $_stubFileMock;
-
-	/**
 	 * @var PSR4ClassFormatter|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_givenClassFormatter;
@@ -37,23 +32,8 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->_formatterMock = $this->createMock(StubFormatter::class);
 		$this->_formatterMock->arrayFormatter = $this->_arrayFormatterMock;
 
-		$this->_stubFileMock = $this->createMock(PSR4StubFile::class);
-
-		$this->_givenClassFormatter = new PSR4ClassFormatter(
-			$this->_formatterMock,
-			$this->_stubFileMock
-		);
+		$this->_givenClassFormatter = new PSR4ClassFormatter($this->_formatterMock);
 	}
-
-	public function test_GivenClassFormatter_getFormattedTypeDefinition_WillGetTypeDefinitionDeclarationLine() {
-		$this
-			->_stubFileMock
-			->expects($this->once())
-			->method('getTypeDefinitionDeclarationLine');
-
-		$this->_givenClassFormatter->getFormattedTypeDefinition(null);
-	}
-
 
 	public function test_GivenClassFormatter_getFormattedTypeDefinition_WillGuessIndentCount() {
 		$this
@@ -61,7 +41,7 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('guessIndentsCount');
 
-		$this->_givenClassFormatter->getFormattedTypeDefinition(null);
+		$this->_givenClassFormatter->getFormattedTypeDefinition(null, null);
 	}
 
 	public function test_GivenClassFormatter_getFormattedTypeDefinition_WillFormatArray() {
@@ -70,16 +50,7 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('formatArray');
 
-		$this->_givenClassFormatter->getFormattedTypeDefinition(null);
-	}
-
-	public function test_GivenClassFormatter_getFormattedVariablesDeclaration_WillGetVariablesDeclarationLine() {
-		$this
-			->_stubFileMock
-			->expects($this->once())
-			->method('getVariablesDeclarationLine');
-
-		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null);
+		$this->_givenClassFormatter->getFormattedTypeDefinition(null, null);
 	}
 
 	public function test_GivenClassFormatter_getFormattedVariablesDeclaration_WillGuessIndentCount() {
@@ -88,7 +59,7 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('guessIndentsCount');
 
-		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null);
+		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null, null);
 	}
 
 	public function test_GivenClassFormatter_getFormattedVariablesDeclaration_WillIndent() {
@@ -97,6 +68,6 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('indent');
 
-		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null);
+		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null, null);
 	}
 }
