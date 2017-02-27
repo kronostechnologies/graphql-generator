@@ -44,7 +44,7 @@ class PSR4Resolver {
 		];
 	}
 
-	public function setStaticDependencies($baseNamespace) {
+	protected function setStaticDependencies($baseNamespace) {
 		$this->_resolvedTokens[$this->getDependencyNamespaceToken("Type")] = "GraphQL\\Type\\Definition\\Type";
 		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinAndStandardizeNamespaces($baseNamespace, "TypeStore");
 	}
@@ -158,17 +158,6 @@ class PSR4Resolver {
 	 */
 	public function getAllResolvedTokens() {
 		return $this->_resolvedTokens;
-	}
-
-	/**
-	 * @param string $namespace
-	 * @return string
-	 */
-	public function getNamespaceDirectory($namespace) {
-		$baseNamespaceTrimmed = $this->joinAndStandardizeNamespaces($this->_baseNamespace);
-		$namespaceTrimmed = $this->joinAndStandardizeNamespaces($namespace);
-
-		return trim(substr($namespaceTrimmed, strlen($baseNamespaceTrimmed)), "\\");
 	}
 
 	/**
