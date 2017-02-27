@@ -39,6 +39,8 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$this->_context->resolver->storeFQNTokenForType($type);
 
 		// Writes class from stub file
+		$classWriter->createStubFileInstance();
+		$classWriter->createPSR4Formatter();
 		$classWriter->replacePlaceholdersAndWriteToFile();
 	}
 

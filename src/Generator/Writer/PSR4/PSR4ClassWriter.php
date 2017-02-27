@@ -10,7 +10,7 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4ClassFormatter
 	 */
-	protected $_psr4ClassFormatter;
+	public $psr4ClassFormatter;
 
 	/**
 	 * @var PSR4WriterContext
@@ -25,7 +25,7 @@ class PSR4ClassWriter {
 	/**
 	 * @var PSR4StubFile
 	 */
-	protected $_stubFile;
+	public $stubFile;
 
 	/**
 	 * PSR4ClassWriter constructor.
@@ -37,18 +37,16 @@ class PSR4ClassWriter {
 		$this->_type = $type;
 	}
 
-	public function loadStubFile() {
-		$this->_stubFile = new PSR4StubFile();
-		$this->_stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($this->_type));
+	public function createStubFileInstance() {
+		$this->stubFile = new PSR4StubFile();
+		$this->stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($this->_type));
 	}
 
-	public function loadPSR4Formatter() {
-		$this->_psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->_stubFile);
+	public function createPSR4Formatter() {
+		$this->psr4ClassFormatter = new PSR4ClassFormatter($this->_context->formatter, $this->stubFile);
 	}
 
 	public function replacePlaceholdersAndWriteToFile() {
-		$this->loadStubFile();
-		$this->loadPSR4Formatter();
 		$this->writeNamespace();
 		$this->writeUsesTokens();
 		$this->writeClassName();
@@ -63,7 +61,7 @@ class PSR4ClassWriter {
 	public function getFormattedTypeDefinition() {
 		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
-		return $this->_psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
+		return $this->psr4ClassFormatter->getFormattedTypeDefinition($unformattedTypeDefinition);
 	}
 
 	/**
@@ -80,7 +78,7 @@ class PSR4ClassWriter {
 		if($this->_context->formatter->useConstantsForEnums) {
 			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
 
-			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
+			return $this->psr4ClassFormatter->getFormattedVariablesDeclaration($variablesDeclarationNoIndent);
 		}
 		else {
 			return "";
@@ -115,29 +113,29 @@ class PSR4ClassWriter {
 	}
 
 	protected function writeTypeDefinition() {
-		$this->_stubFile->writeTypeDefinition(
+		$this->stubFile->writeTypeDefinition(
 			$this->getFormattedTypeDefinition()
 		);
 	}
 
 	protected function writeClassName() {
-		$this->_stubFile->writeClassName(
+		$this->stubFile->writeClassName(
 			$this->getClassName()
 		);
 	}
 
 	protected function writeNamespace() {
-		$this->_stubFile->writeNamespace(
+		$this->stubFile->writeNamespace(
 			$this->getNamespace()
 		);
 	}
 
 	protected function writeVariablesDeclaration() {
-		$this->_stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
+		$this->stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
 	}
 
 	protected function writeUsesTokens() {
-		$this->_stubFile->writeUsesDeclaration(
+		$this->stubFile->writeUsesDeclaration(
 			implode("\n", $this->getUsesTokens())
 		);
 	}
@@ -149,7 +147,7 @@ class PSR4ClassWriter {
 			unlink($fullPath);
 		}
 
-		file_put_contents($fullPath, $this->_stubFile->getContent());
+		file_put_contents($fullPath, $this->stubFile->getContent());
 	}
 
 }
