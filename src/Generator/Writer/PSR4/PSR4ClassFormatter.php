@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
+use GraphQLGen\Generator\Formatters\AnnotationFormatter;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 
 class PSR4ClassFormatter {
@@ -40,5 +41,15 @@ class PSR4ClassFormatter {
 		$variablesDeclarationIndent = $this->_formatter->guessIndentsCount($stubVariablesDeclarationLine);
 
 		return ltrim($this->_formatter->indent($variablesDeclarationUnformatted, $variablesDeclarationIndent));
+	}
+
+	/**
+	 * @param string $typeName
+	 * @param bool $isNullable
+	 * @param bool $inList
+	 * @return string
+	 */
+	public function getAnnotationForType($typeName, $isNullable, $inList) {
+		return $this->_formatter->annotationFormatter->getAnnotationString($typeName, $isNullable, $inList);
 	}
 }

@@ -31,7 +31,7 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenInterfaceDeclaration_getConstantsDeclaration_WillReturnNull() {
 		$interface = $this->GivenInterfaceDeclaration();
 
-		$retVal = $interface->getConstantsDeclaration();
+		$retVal = $interface->getVariablesDeclarations();
 
 		$this->assertNull($retVal);
 	}

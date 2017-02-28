@@ -5,6 +5,9 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\InterfaceDeclaration;
+use GraphQLGen\Generator\Types\Type;
 
 class PSR4ClassWriter {
 	/**
@@ -70,15 +73,35 @@ class PSR4ClassWriter {
 	 * @return string
 	 */
 	public function getVariablesDeclarationFormatted() {
-		if($this->_context->formatter->useConstantsForEnums) {
-			$stubVariableDeclarationLine = $this->_stubFile->getVariablesDeclarationLine();
-			$variablesDeclarationNoIndent = $this->_type->getConstantsDeclaration();
+		$stubVariableDeclarationLine = $this->_stubFile->getVariablesDeclarationLine();
+
+		if($this->_context->formatter->useConstantsForEnums && get_class($this->_type) === Enum::class) {
+			$variablesDeclarationNoIndent = $this->_type->getVariablesDeclarations();
+
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
+		}
+		else if (get_class($this->_type) === Type::class || get_class($this->_type) === InterfaceDeclaration::class) {
+			$variablesDeclarationNoIndent = $this->getFieldsDeclarations($this->_type);
 
 			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
 		}
 		else {
 			return "";
 		}
+	}
+
+	/**
+	 * @param InterfaceDeclaration|Type $type
+	 * @return array
+	 */
+	protected function getFieldsDeclarations($type) {
+		return implode("\n\n",
+			array_map(function ($field) {
+				$fieldDeclaration = new PSR4FieldDeclaration($field, true);
+
+				return $fieldDeclaration->getFieldDeclaration();
+			}, $type->getFields())
+		);
 	}
 
 	/**

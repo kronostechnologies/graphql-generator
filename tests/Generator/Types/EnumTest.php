@@ -36,7 +36,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenEnumWithNoValues_getConstantsDeclaration_WillBeEmpty() {
 		$enum = $this->GivenEnumWithNoValues();
 
-		$retVal = $enum->getConstantsDeclaration();
+		$retVal = $enum->getVariablesDeclarations();
 
 		$this->assertEmpty($retVal);
 	}
@@ -44,7 +44,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenEnumWith3Values_getConstants_WillContain3Const() {
 		$enum = $this->GivenEnumWith3Values();
 
-		$retVal = $enum->getConstantsDeclaration();
+		$retVal = $enum->getVariablesDeclarations();
 
 		$this->assertEquals(3, substr_count($retVal, "const "));
 	}

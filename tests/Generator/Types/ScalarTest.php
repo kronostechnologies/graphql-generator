@@ -46,7 +46,7 @@ class ScalarTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenScalar_getConstantsDeclaration_WillReturnNull() {
 		$scalar = $this->GivenScalar();
 
-		$retVal = $scalar->getConstantsDeclaration();
+		$retVal = $scalar->getVariablesDeclarations();
 
 		$this->assertNull($retVal);
 	}

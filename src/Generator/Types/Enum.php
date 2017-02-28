@@ -61,7 +61,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string|null
 	 */
-	public function getConstantsDeclaration() {
+	public function getVariablesDeclarations() {
 		$constants = "";
 		foreach($this->values as $value) {
 			$constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = '{$value->name}';\n";

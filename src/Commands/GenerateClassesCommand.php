@@ -68,7 +68,7 @@ class GenerateClassesCommand extends Command {
 		$genContext = new GeneratorContext();
 		$genContext->ast = $this->generateGraphqlAST($graphqlFileContent);
 		$genContext->formatter = new StubFormatter(
-			$input->getOption('formatter-use-tabs'),
+			!$input->getOption('formatter-use-tabs'),
 			$input->getOption('formatter-indent-spaces'),
 			$input->getOption('formatter-line-merge'),
 			$this->generateWriterTypeFormatter($writerName)

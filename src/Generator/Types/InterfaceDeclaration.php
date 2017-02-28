@@ -50,6 +50,13 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	}
 
 	/**
+	 * @return Field[]
+	 */
+	public function getFields() {
+		return $this->fields;
+	}
+
+	/**
 	 * @return string
 	 */
 	protected function getFieldsDefinitions() {
@@ -74,7 +81,7 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string|null
 	 */
-	public function getConstantsDeclaration() {
+	public function getVariablesDeclarations() {
 		return null;
 	}
 

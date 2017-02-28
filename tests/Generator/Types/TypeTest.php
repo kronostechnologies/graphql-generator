@@ -29,7 +29,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenType_getConstantsDeclaration_WillReturnNull() {
 		$type = $this->GivenType();
 
-		$retVal = $type->getConstantsDeclaration();
+		$retVal = $type->getVariablesDeclarations();
 
 		$this->assertNull($retVal);
 	}

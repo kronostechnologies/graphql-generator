@@ -59,7 +59,7 @@ class Type implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string
 	 */
-	public function getConstantsDeclaration() {
+	public function getVariablesDeclarations() {
 		return null;
 	}
 
@@ -74,6 +74,13 @@ class Type implements BaseTypeGeneratorInterface {
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @return Field[]
+	 */
+	public function getFields() {
+		return $this->fields;
 	}
 
 	/**

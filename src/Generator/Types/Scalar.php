@@ -51,7 +51,7 @@ class Scalar implements BaseTypeGeneratorInterface {
 	/**
 	 * @return string|null
 	 */
-	public function getConstantsDeclaration() {
+	public function getVariablesDeclarations() {
 		return null;
 	}
 

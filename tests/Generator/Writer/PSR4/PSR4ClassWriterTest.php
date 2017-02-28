@@ -113,14 +113,6 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_classWriter->getVariablesDeclarationFormatted();
 	}
 
-	public function test_GivenTypeContextNoConstants_getVariablesDeclarationFormatted_WontCallGetFormattedVariablesDeclaration() {
-		$this->_psr4Context->formatter->useConstantsForEnums = false;
-
-		$this->_psr4Formatter->expects($this->never())->method('getFormattedVariablesDeclaration');
-
-		$this->_classWriter->getVariablesDeclarationFormatted();
-	}
-
 	public function test_GivenType_getNamespace_WillGetNamespaceForType() {
 		$this->_psr4Resolver->expects($this->once())->method('getNamespaceForType');
 

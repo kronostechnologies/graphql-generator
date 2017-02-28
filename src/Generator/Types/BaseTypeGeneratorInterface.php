@@ -18,7 +18,7 @@ interface BaseTypeGeneratorInterface {
 	/**
 	 * @return string|null
 	 */
-	public function getConstantsDeclaration();
+	public function getVariablesDeclarations();
 
 	/**
 	 * @return string[]
