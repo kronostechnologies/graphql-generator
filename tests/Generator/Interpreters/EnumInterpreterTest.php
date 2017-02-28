@@ -7,6 +7,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
@@ -135,7 +136,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithSingleEnumValue($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$retVal = $interpreter->generateType(null);
+		$retVal = $interpreter->generateType(new StubFormatter());
 
 		$this->assertInstanceOf(Enum::class, $retVal);
 	}

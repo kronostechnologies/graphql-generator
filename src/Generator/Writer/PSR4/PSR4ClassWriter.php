@@ -34,7 +34,7 @@ class PSR4ClassWriter {
 	 * @param PSR4StubFile $stubFile
 	 * @param PSR4ClassFormatter $psr4Formatter
 	 */
-	public function __construct($type, $context, $stubFile, $psr4Formatter) {
+	public function __construct(BaseTypeGeneratorInterface $type, PSR4WriterContext $context, PSR4StubFile $stubFile, PSR4ClassFormatter $psr4Formatter) {
 		$this->_context = $context;
 		$this->_type = $type;
 		$this->_psr4ClassFormatter = $psr4Formatter;

@@ -11,7 +11,7 @@ class FieldArgumentInterpreter extends Interpreter {
 	/**
 	 * @param InputValueDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(InputValueDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

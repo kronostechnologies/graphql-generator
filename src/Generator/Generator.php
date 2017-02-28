@@ -13,8 +13,11 @@ use GraphQLGen\Generator\Interpreters\Interpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class Generator {
+class Generator implements LoggerAwareInterface {
+	use LoggerAwareTrait;
 
 	/**
 	 * @var GeneratorContext
@@ -29,6 +32,7 @@ class Generator {
 	}
 
 	public function generateClasses() {
+		$this->logger->info("Initializing entries generation");
 		$this->_context->writer->initialize();
 
 		foreach($this->_context->ast->definitions as $astDefinition) {
@@ -36,10 +40,12 @@ class Generator {
 
 			if(!is_null($interpreter)) {
 				$generatorType = $interpreter->generateType($this->_context->formatter);
+				$this->logger->info("Generating entry for {$generatorType->getName()}");
 				$this->generateClassFromType($generatorType);
 			}
 		}
 
+		$this->logger->info("Finalizing entries generation");
 		$this->_context->writer->finalize();
 	}
 

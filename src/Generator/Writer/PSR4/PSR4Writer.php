@@ -17,15 +17,17 @@ class PSR4Writer implements GeneratorWriterInterface {
 
 	/**
 	 * PSR4Writer constructor.
-	 * @param GeneratorContext $context
+	 * @param PSR4WriterContext $context
 	 */
-	public function __construct($context) {
+	public function __construct(PSR4WriterContext $context) {
 		$this->_context = $context;
 	}
 
 	public function initialize() {
 		foreach(PSR4Resolver::getBasicPSR4Structure() as $structureFolder) {
-			mkdir($this->_context->getFilePath($structureFolder));
+			$this->_context->createDirectoryIfNonExistant(
+				$this->_context->getFilePath($structureFolder)
+			);
 		}
 	}
 

@@ -36,7 +36,6 @@ class PSR4Resolver {
 	 */
 	public static function getBasicPSR4Structure() {
 		return [
-			'', // ToDo: remove this
 			'Types',
 			'Types/Enums',
 			'Types/Interfaces',
@@ -44,16 +43,16 @@ class PSR4Resolver {
 		];
 	}
 
-	protected function setStaticDependencies($baseNamespace) {
+	protected function setStaticDependencies() {
 		$this->_resolvedTokens[$this->getDependencyNamespaceToken("Type")] = "GraphQL\\Type\\Definition\\Type";
-		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinAndStandardizeNamespaces($baseNamespace, "TypeStore");
+		$this->_resolvedTokens[$this->getDependencyNamespaceToken("TypeStore")] = $this->joinAndStandardizeNamespaces($this->_baseNamespace, "TypeStore");
 	}
 
 	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	public function getFQNForType($type) {
+	public function getFQNForType(BaseTypeGeneratorInterface $type) {
 		return $this->joinAndStandardizeNamespaces(
 			$this->getNamespaceForType($type),
 			$type->getName()
@@ -64,7 +63,7 @@ class PSR4Resolver {
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	public function storeFQNTokenForType($type) {
+	public function storeFQNTokenForType(BaseTypeGeneratorInterface $type) {
 		$fqn = $this->getFQNForType($type);
 		$token = $this->getDependencyNamespaceToken($type->getName());
 		$this->_resolvedTokens[$token] = $fqn;
@@ -76,7 +75,8 @@ class PSR4Resolver {
 	 */
 	public function getFilePathSuffixForFQN($fqn) {
 		// Strips base namespace from FQN
-		$fqnWithoutBaseNS = substr($fqn, strlen($this->_baseNamespace) + 1);
+		$standardizedBaseNS = $this->joinAndStandardizeNamespaces($this->_baseNamespace);
+		$fqnWithoutBaseNS = substr($fqn, strlen($standardizedBaseNS));
 
 		return str_replace("\\", "/", $fqnWithoutBaseNS) . ".php";
 	}
@@ -85,7 +85,7 @@ class PSR4Resolver {
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	public function getNamespaceForType($type) {
+	public function getNamespaceForType(BaseTypeGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case Type::class:
 				return $this->joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
@@ -140,7 +140,7 @@ class PSR4Resolver {
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 */
-	public function getStubFilenameForType($type) {
+	public function getStubFilenameForType(BaseTypeGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case Enum::class:
 				return '/stubs/enum.stub';

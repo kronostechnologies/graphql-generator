@@ -12,7 +12,7 @@ class FieldInterpreter extends Interpreter {
 	/**
 	 * @param FieldDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(FieldDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

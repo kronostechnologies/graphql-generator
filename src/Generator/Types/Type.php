@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Types;
 
 
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
 class Type implements BaseTypeGeneratorInterface {
@@ -30,11 +31,11 @@ class Type implements BaseTypeGeneratorInterface {
 	/**
 	 * ObjectType constructor.
 	 * @param string $name
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
+	 * @param StubFormatter $formatter
 	 * @param Field[] $fields
 	 * @param string|null $description
 	 */
-	public function __construct($name, $formatter, $fields, $description = null) {
+	public function __construct($name, StubFormatter $formatter, $fields, $description = null) {
 		$this->name = $name;
 		$this->description = $description;
 		$this->fields = $fields ?: [];

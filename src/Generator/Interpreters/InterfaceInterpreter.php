@@ -12,7 +12,7 @@ class InterfaceInterpreter extends Interpreter {
 	/**
 	 * @param InterfaceTypeDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(InterfaceTypeDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

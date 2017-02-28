@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Interpreters;
 
 use GraphQL\Language\AST\Node;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 
 abstract class Interpreter {
 	/**
@@ -15,7 +16,7 @@ abstract class Interpreter {
 
 	/**
 	 * @param StubFormatter $formatter
-	 * @return mixed
+	 * @return BaseTypeGeneratorInterface
 	 */
 	public abstract function generateType($formatter);
 }

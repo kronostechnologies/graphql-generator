@@ -11,7 +11,7 @@ class ScalarInterpreter extends Interpreter {
 	/**
 	 * @param ScalarTypeDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(ScalarTypeDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

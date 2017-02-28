@@ -37,7 +37,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @param StubFormatter $formatter
 	 * @param string|null $description
 	 */
-	public function __construct($name, $values, $formatter, $description = null) {
+	public function __construct($name, $values, StubFormatter $formatter, $description = null) {
 		$this->formatter = $formatter;
 		$this->name = $name;
 		$this->values = $values;

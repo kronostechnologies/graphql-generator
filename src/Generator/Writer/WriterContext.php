@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer;
 
 
+use Exception;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -67,12 +68,29 @@ abstract class WriterContext {
 	/**
 	 * @param string $fileName
 	 * @param string $content
+	 * @throws Exception
 	 */
 	public function writeFile($fileName, $content) {
+		if(is_dir($fileName)) {
+			throw new Exception("File {$fileName} is a directory, and cannot be written.");
+		}
+
 		if(file_exists($fileName) && $this->overwriteOldFiles) {
-			unlink($fileName);
+			if ($this->overwriteOldFiles) {
+				unlink($fileName);
+			} else {
+				throw new Exception("File {$fileName} already exists.");
+			}
 		}
 
 		file_put_contents($fileName, $content);
+	}
+
+	public function createDirectoryIfNonExistant($directory) {
+		if (is_dir($directory)) {
+			return;
+		}
+
+		mkdir($directory, 0777, true);
 	}
 }

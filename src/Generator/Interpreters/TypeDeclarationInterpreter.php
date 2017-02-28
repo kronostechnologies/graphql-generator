@@ -12,7 +12,7 @@ class TypeDeclarationInterpreter extends Interpreter {
 	/**
 	 * @param ObjectTypeDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(ObjectTypeDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

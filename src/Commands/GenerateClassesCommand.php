@@ -9,6 +9,7 @@ use GraphQL\Language\Parser;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
+use GraphQLGen\Generator\GeneratorLogger;
 use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
@@ -77,6 +78,7 @@ class GenerateClassesCommand extends Command {
 
 		// Launch work
 		$generator = new Generator($genContext);
+		$generator->setLogger(new GeneratorLogger($output));
 		$generator->generateClasses();
 	}
 

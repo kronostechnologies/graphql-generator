@@ -12,7 +12,7 @@ class EnumInterpreter extends Interpreter {
 	/**
 	 * @param EnumTypeDefinitionNode $astNode
 	 */
-	public function __construct($astNode) {
+	public function __construct(EnumTypeDefinitionNode $astNode) {
 		$this->_astNode = $astNode;
 	}
 

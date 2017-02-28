@@ -10,6 +10,7 @@ use GraphQL\Language\AST\IntValueNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\Type;
@@ -58,7 +59,7 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithField($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$retVal = $interpreter->generateType(null);
+		$retVal = $interpreter->generateType(new StubFormatter());
 
 		$this->assertInstanceOf(Type::class, $retVal);
 	}
