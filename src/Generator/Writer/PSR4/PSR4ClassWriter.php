@@ -150,7 +150,7 @@ class PSR4ClassWriter {
 	protected function writeNamespace() {
 		$namespace = $this->getNamespace();
 
-		$this->_stubFile->writeNamespace($namespace);
+		$this->_stubFile->writeOrStripNamespace($namespace);
 	}
 
 	protected function writeVariablesDeclaration() {

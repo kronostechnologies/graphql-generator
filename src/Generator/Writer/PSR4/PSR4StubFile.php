@@ -35,8 +35,12 @@ class PSR4StubFile extends StubFile {
 	/**
 	 * @param string $namespaceValue
 	 */
-	public function writeNamespace($namespaceValue) {
-		$this->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespaceValue);
+	public function writeOrStripNamespace($namespaceValue) {
+		if (empty($namespaceValue)) {
+			$this->replaceTextInStub($this->getNamespaceDeclarationLine(), "");
+		} else {
+			$this->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespaceValue);
+		}
 	}
 
 	/**

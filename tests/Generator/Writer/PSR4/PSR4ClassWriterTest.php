@@ -144,7 +144,7 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenType_replacePlaceholdersAndWriteToFile_WillCallStubWriteNamespace() {
-		$this->_stubFile->expects($this->once())->method('writeNamespace');
+		$this->_stubFile->expects($this->once())->method('writeOrStripNamespace');
 
 		$this->_classWriter->replacePlaceholders();
 	}

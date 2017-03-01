@@ -78,7 +78,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 */
 	protected function writeTypeStoreNamespace($stubFile) {
 		$standardizedFullNS = $this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace);
-		$stubFile->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $standardizedFullNS);
+		$stubFile->writeOrStripNamespace($standardizedFullNS);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	protected function resolveResolvedTokensForSpecificFQN($token, $fqn) {
-		$filePath = $this->getFilePathForFQN($fqn);
+		$filePath = $this->getFilePathForFQN($fqn) . ".php";
 
 		if ($this->_context->fileExists($filePath)) {
 			$fileContent = $this->_context->readFileContentToString($filePath);

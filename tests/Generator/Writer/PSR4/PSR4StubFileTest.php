@@ -56,7 +56,7 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function test_GivenStubFile_writeNamespace_WillReplaceRightLine() {
-		$this->_givenStubFile->writeNamespace(self::NAMESPACE_NEW);
+		$this->_givenStubFile->writeOrStripNamespace(self::NAMESPACE_NEW);
 		$retVal = $this->_givenStubFile->getContent();
 
 		$this->assertContains(self::NAMESPACE_NEW, $retVal);
