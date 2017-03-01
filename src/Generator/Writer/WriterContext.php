@@ -67,16 +67,25 @@ abstract class WriterContext {
 
 	/**
 	 * @param string $fileName
+	 * @return string
+	 */
+	public function readFileContentToString($fileName) {
+		return file_get_contents($fileName);
+	}
+
+	/**
+	 * @param string $fileName
 	 * @param string $content
+	 * @param bool $forceOverride
 	 * @throws Exception
 	 */
-	public function writeFile($fileName, $content) {
+	public function writeFile($fileName, $content, $forceOverride = false) {
 		if(is_dir($fileName)) {
 			throw new Exception("File {$fileName} is a directory, and cannot be written.");
 		}
 
-		if(file_exists($fileName) && $this->overwriteOldFiles) {
-			if ($this->overwriteOldFiles) {
+		if($this->fileExists($fileName)) {
+			if ($forceOverride || $this->overwriteOldFiles) {
 				unlink($fileName);
 			} else {
 				throw new Exception("File {$fileName} already exists.");
@@ -92,5 +101,13 @@ abstract class WriterContext {
 		}
 
 		mkdir($directory, 0777, true);
+	}
+
+	/**
+	 * @param string $fileName
+	 * @return bool
+	 */
+	public function fileExists($fileName) {
+		return file_exists($fileName);
 	}
 }

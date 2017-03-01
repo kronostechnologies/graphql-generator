@@ -78,12 +78,12 @@ class PSR4ClassWriter {
 		if($this->_context->formatter->useConstantsForEnums && get_class($this->_type) === Enum::class) {
 			$variablesDeclarationNoIndent = $this->_type->getVariablesDeclarations();
 
-			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent) ?: "";
 		}
 		else if (get_class($this->_type) === Type::class || get_class($this->_type) === InterfaceDeclaration::class) {
 			$variablesDeclarationNoIndent = $this->getFieldsDeclarations($this->_type);
 
-			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent) ?: "";
 		}
 		else {
 			return "";
@@ -117,7 +117,7 @@ class PSR4ClassWriter {
 	public function getImportedNamespacesTokens() {
 		$dependencies = $this->_type->getDependencies();
 
-		return $this->_context->resolver->generateTokensFromDependencies($dependencies);
+		return $this->_context->resolver->generateTokensFromDependencies($dependencies) ?: [];
 	}
 
 	/**
@@ -157,7 +157,9 @@ class PSR4ClassWriter {
 	}
 
 	protected function writeVariablesDeclaration() {
-		$this->_stubFile->writeVariablesDeclarations($this->getVariablesDeclarationFormatted());
+		$this->_stubFile->writeVariablesDeclarations(
+			$this->getVariablesDeclarationFormatted()
+		);
 	}
 
 	protected function writeUsesTokens() {

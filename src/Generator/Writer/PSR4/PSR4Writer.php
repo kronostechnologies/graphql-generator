@@ -54,45 +54,78 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	public function finalize() {
-		// Init stub
-		$stubFile = new PSR4StubFile();
-		$stubFile->loadFromFile(__DIR__ . '/stubs/typestore.stub');
+		$stubFile = $this->getTypeStoreStub();
 
-		// Replaces namespace
+		$this->writeTypeStoreNamespace($stubFile);
+		$this->writeTypeStoreFromStub($stubFile);
+		$this->replaceResolvedTokens();
+	}
+
+	/**
+	 * @param PSR4StubFile $stubFile
+	 */
+	protected function writeTypeStoreFromStub($stubFile) {
+		$fullPath = $this->_context->getFilePath("TypeStore.php");
+		$typeStoreContent = $stubFile->getContent();
+		$this->_context->writeFile($fullPath, $typeStoreContent);
+	}
+
+	/**
+	 * @param PSR4StubFile $stubFile
+	 */
+	protected function writeTypeStoreNamespace($stubFile) {
 		$stubFile->replaceTextInStub(
 			PSR4StubFile::DUMMY_NAMESPACE,
 			$this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace)
 		);
-
-		// Writes file
-		$fullPath = $this->_context->getFilePath("TypeStore.php");
-		if(file_exists($fullPath) && $this->_context->overwriteOldFiles) {
-			unlink($fullPath);
-		}
-		file_put_contents($fullPath, $stubFile->getContent());
-
-		$this->replaceResolvedTokens();
 	}
 
-	public function replaceResolvedTokens() {
+	/**
+	 * @return PSR4StubFile
+	 */
+	protected function getTypeStoreStub() {
+		$stubFile = new PSR4StubFile();
+		$stubFile->loadFromFile(__DIR__ . '/stubs/typestore.stub');
+
+		return $stubFile;
+	}
+
+	protected function replaceResolvedTokens() {
 		foreach($this->_context->resolver->getAllResolvedTokens() as $token => $fqn) {
-			// Strips namespace end
-			$filePath = $this->_context->getFilePath(
-				$this->_context->resolver->getFilePathSuffixForFQN($fqn)
-			);
-
-			// Read file
-			if(file_exists($filePath)) {
-				$fileContent = file_get_contents($filePath);
-
-				foreach($this->_context->resolver->getAllResolvedTokens() as $token2 => $fqn2) {
-					$fileContent = str_replace($token2, "use " . $fqn2 . ";", $fileContent);
-				}
-
-				// rewrite file
-				unlink($filePath);
-				file_put_contents($filePath, $fileContent);
-			}
+			$this->resolveResolvedTokensForSpecificFQN($token, $fqn);
 		}
+	}
+
+	protected function resolveResolvedTokensForSpecificFQN($token, $fqn) {
+		$filePath = $this->getFilePathForFQN($fqn);
+
+		if ($this->_context->fileExists($filePath)) {
+			$fileContent = $this->_context->readFileContentToString($filePath);
+			$fileContent = $this->replaceResolvedTokensInString($fileContent);
+
+			$this->_context->writeFile($filePath, $fileContent, true);
+		}
+	}
+
+	/**
+	 * @param string $string
+	 * @return string
+	 */
+	protected function replaceResolvedTokensInString($string) {
+		foreach($this->_context->resolver->getAllResolvedTokens() as $token => $fqn) {
+			$string = str_replace($token, "use " . $fqn . ";", $string);
+		}
+
+		return $string;
+	}
+
+	/**
+	 * @param string $fqn
+	 * @return string
+	 */
+	protected function getFilePathForFQN($fqn) {
+		return $this->_context->getFilePath(
+			$this->_context->resolver->getFilePathSuffixForFQN($fqn)
+		);
 	}
 }
