@@ -4,21 +4,20 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Formatters\AnnotationFormatter;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 
 class PSR4ClassFormatter {
 	/**
 	 * @var StubFormatter
 	 */
-	protected $_formatter;
+	protected $_stubFormatter;
 
 	/**
 	 * PSR4Formatter constructor.
-	 * @param StubFormatter $formatter
+	 * @param StubFormatter $stubFormatter
 	 */
-	public function __construct($formatter) {
-		$this->_formatter = $formatter;
+	public function __construct($stubFormatter) {
+		$this->_stubFormatter = $stubFormatter;
 	}
 
 	/**
@@ -27,9 +26,10 @@ class PSR4ClassFormatter {
 	 * @return string
 	 */
 	public function getFormattedTypeDefinition($stubTypeDefinitionLine, $typeDefinitionUnformatted) {
-		$typeDefinitionIndent = $this->_formatter->guessIndentsCount($stubTypeDefinitionLine);
+		$typeDefinitionIndentSize = $this->_stubFormatter->guessIndentsSize($stubTypeDefinitionLine);
+		$typeDefinitionIndented = $this->_stubFormatter->arrayFormatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndentSize);
 
-		return ltrim($this->_formatter->arrayFormatter->formatArray($typeDefinitionUnformatted, $typeDefinitionIndent));
+		return ltrim($typeDefinitionIndented);
 	}
 
 	/**
@@ -38,18 +38,9 @@ class PSR4ClassFormatter {
 	 * @return string
 	 */
 	public function getFormattedVariablesDeclaration($stubVariablesDeclarationLine, $variablesDeclarationUnformatted) {
-		$variablesDeclarationIndent = $this->_formatter->guessIndentsCount($stubVariablesDeclarationLine);
+		$variablesDeclarationIndentSize = $this->_stubFormatter->guessIndentsSize($stubVariablesDeclarationLine);
+		$variablesDeclarationIndented = $this->_stubFormatter->indent($variablesDeclarationUnformatted, $variablesDeclarationIndentSize);
 
-		return ltrim($this->_formatter->indent($variablesDeclarationUnformatted, $variablesDeclarationIndent));
-	}
-
-	/**
-	 * @param string $typeName
-	 * @param bool $isNullable
-	 * @param bool $inList
-	 * @return string
-	 */
-	public function getAnnotationForType($typeName, $isNullable, $inList) {
-		return $this->_formatter->annotationFormatter->getAnnotationString($typeName, $isNullable, $inList);
+		return ltrim($variablesDeclarationIndented);
 	}
 }

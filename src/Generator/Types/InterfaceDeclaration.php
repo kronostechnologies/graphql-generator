@@ -46,7 +46,10 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		return "[ 'name' => '{$this->name}',{$this->formatter->getDescriptionValue($this->description)} 'fields' => [{$this->getFieldsDefinitions()}], ];";
+		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
+		$fields = $this->getFieldsDefinitions();
+
+		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [{$fields}], ];";
 	}
 
 	/**
@@ -63,9 +66,10 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 		$fields = [];
 
 		foreach($this->fields as $field) {
+			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
 			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
 
-			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$this->formatter->getDescriptionValue($field->description)}],";
+			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$formattedDescription}],";
 		}
 
 		return implode('', $fields);
@@ -92,7 +96,8 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 		$dependencies = [];
 
 		foreach($this->fields as $field) {
-			$dependencies = array_merge($dependencies, $field->fieldType->getDependencies());
+			$fieldDependencies = $field->fieldType->getDependencies();
+			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
 		return array_unique($dependencies);

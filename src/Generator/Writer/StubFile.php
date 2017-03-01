@@ -19,6 +19,13 @@ class StubFile {
 	protected $_contentAsLines;
 
 	/**
+	 * @param WriterContext $context
+	 */
+	public function __construct(WriterContext $context) {
+
+	}
+
+	/**
 	 * @param string $searchText
 	 * @return string|null
 	 */
@@ -92,11 +99,8 @@ class StubFile {
 		$this->replaceTextInStub(StubFile::USES_DECLARATION, $formattedContent);
 	}
 
-	/**
-	 * @param string $fileName
-	 */
-	public function loadFromFile($fileName) {
-		$this->_content = file_get_contents($fileName);
+	public function setContent($content) {
+		$this->_content = $content;
 
 		$this->splitContentAsLines();
 	}

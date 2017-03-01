@@ -35,11 +35,11 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->_givenClassFormatter = new PSR4ClassFormatter($this->_formatterMock);
 	}
 
-	public function test_GivenClassFormatter_getFormattedTypeDefinition_WillGuessIndentCount() {
+	public function test_GivenClassFormatter_getFormattedTypeDefinition_WillGuessIndentSize() {
 		$this
 			->_formatterMock
 			->expects($this->once())
-			->method('guessIndentsCount');
+			->method('guessIndentsSize');
 
 		$this->_givenClassFormatter->getFormattedTypeDefinition(null, null);
 	}
@@ -53,11 +53,11 @@ class PSR4ClassFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->_givenClassFormatter->getFormattedTypeDefinition(null, null);
 	}
 
-	public function test_GivenClassFormatter_getFormattedVariablesDeclaration_WillGuessIndentCount() {
+	public function test_GivenClassFormatter_getFormattedVariablesDeclaration_WillGuessIndentSize() {
 		$this
 			->_formatterMock
 			->expects($this->once())
-			->method('guessIndentsCount');
+			->method('guessIndentsSize');
 
 		$this->_givenClassFormatter->getFormattedVariablesDeclaration(null, null);
 	}

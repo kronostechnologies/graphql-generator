@@ -5,6 +5,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
+use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_FILE_LINE_1 = "FirstLine;";
@@ -21,9 +23,17 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_givenStubFile;
 
+	/**
+	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_context;
+
 	public function setUp() {
-		$this->_givenStubFile = new PSR4StubFile();
-		$this->_givenStubFile->loadFromFile(getcwd() . '/tests/Mocks/Stubs/PSR4StubFileTest.stub');
+		$this->_context = $this->createMock(PSR4WriterContext::class);
+
+		$this->_givenStubFile = new PSR4StubFile($this->_context);
+		$stubContent = file_get_contents(getcwd() . '/tests/Mocks/Stubs/PSR4StubFileTest.stub');
+		$this->_givenStubFile->setContent($stubContent);
 	}
 
 	public function test_GivenStubFile_getNamespaceDeclarationLine_WillReturnRightLine() {

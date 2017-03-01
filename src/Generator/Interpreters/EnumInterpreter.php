@@ -8,7 +8,7 @@ use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
-class EnumInterpreter extends Interpreter {
+class EnumInterpreter extends MainTypeInterpreter {
 	/**
 	 * @param EnumTypeDefinitionNode $astNode
 	 */

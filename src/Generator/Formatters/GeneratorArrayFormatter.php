@@ -55,9 +55,9 @@ class GeneratorArrayFormatter {
 			$this->addCharacterAndStopIfInStringContext($context, $char) &&
 			$this->increaseIndentLevelIfIndentTokenFound($context, $char) &&
 			$this->decreaseIndentLevelIfUnindentTokenFound($context, $char) &&
-			$this->indentBeforeNewLineAndToggleContext($context, $char) &&
+			$this->increaseIndentBeforeNewLineAndToggleNewLineContext($context, $char) &&
 			$this->appendCharacterAndContinue($context, $char) &&
-			$this->indentAfterNewLineAndToggleContext($context, $char);
+			$this->increaseIndentAfterNewLineAndToggleNewLineContext($context, $char);
 		}
 
 		// rtrim & remove blank lines
@@ -190,7 +190,7 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function indentBeforeNewLineAndToggleContext($context, $char) {
+	private function increaseIndentBeforeNewLineAndToggleNewLineContext($context, $char) {
 		if(strrpos(self::NEWLINE_BEFORE_TOKENS, $char) !== false) {
 			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);
@@ -215,7 +215,7 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function indentAfterNewLineAndToggleContext($context, $char) {
+	private function increaseIndentAfterNewLineAndToggleNewLineContext($context, $char) {
 		if(strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
 			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);

@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Interpreters;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
-class FieldArgumentInterpreter extends Interpreter {
+class FieldArgumentInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @param InputValueDefinitionNode $astNode
 	 */
@@ -50,10 +50,9 @@ class FieldArgumentInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param null $formatter
 	 * @return FieldArgument
 	 */
-	public function generateType($formatter = null) {
+	public function generateType() {
 		return new FieldArgument(
 			$this->getDescription(),
 			$this->getName(),

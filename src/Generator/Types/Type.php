@@ -46,7 +46,10 @@ class Type implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		return "[ 'name' => '{$this->name}',{$this->formatter->getDescriptionValue($this->description)} 'fields' => [{$this->getFieldsDefinitions()}], ];";
+		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
+		$fieldsDefinitions = $this->getFieldsDefinitions();
+
+		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [$fieldsDefinitions], ];";
 	}
 
 	/**
@@ -70,7 +73,8 @@ class Type implements BaseTypeGeneratorInterface {
 		$dependencies = [];
 
 		foreach($this->fields as $field) {
-			$dependencies = array_merge($dependencies, $field->fieldType->getDependencies());
+			$fieldDependencies = $field->fieldType->getDependencies();
+			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
 		return array_unique($dependencies);
@@ -91,8 +95,9 @@ class Type implements BaseTypeGeneratorInterface {
 
 		foreach($this->fields as $field) {
 			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
+			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
 
-			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$this->formatter->getDescriptionValue($field->description)}],";
+			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$formattedDescription}],";
 		}
 
 		return implode('', $fields);

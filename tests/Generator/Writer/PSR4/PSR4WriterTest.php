@@ -30,6 +30,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_psr4Resolver = $this->createMock(PSR4Resolver::class);
+		$this->_psr4Resolver->method('generateTokensFromDependencies')->willReturn([]);
 
 		$this->_psr4WriterContext = $this->createMock(PSR4WriterContext::class);
 		$this->_psr4WriterContext->resolver = $this->_psr4Resolver;

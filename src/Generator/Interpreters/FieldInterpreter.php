@@ -8,7 +8,7 @@ use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
-class FieldInterpreter extends Interpreter {
+class FieldInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @param FieldDefinitionNode $astNode
 	 */
@@ -51,10 +51,9 @@ class FieldInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param null $formatter
 	 * @return Field
 	 */
-	public function generateType($formatter = null) {
+	public function generateType() {
 		return new Field(
 			$this->getName(),
 			$this->getDescription(),

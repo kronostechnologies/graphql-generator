@@ -83,7 +83,7 @@ class StubFormatter {
 	 * @param string $line
 	 * @return int
 	 */
-	public function guessIndentsCount($line) {
+	public function guessIndentsSize($line) {
 		$regCountSpaces = "/( |\t)/";
 		$countMatches = preg_match_all($regCountSpaces, $line, $countSpacesArr);
 

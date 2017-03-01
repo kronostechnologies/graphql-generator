@@ -78,12 +78,12 @@ class PSR4ClassWriter {
 		if($this->_context->formatter->useConstantsForEnums && get_class($this->_type) === Enum::class) {
 			$variablesDeclarationNoIndent = $this->_type->getVariablesDeclarations();
 
-			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent) ?: "";
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
 		}
 		else if (get_class($this->_type) === Type::class || get_class($this->_type) === InterfaceDeclaration::class) {
 			$variablesDeclarationNoIndent = $this->getFieldsDeclarations($this->_type);
 
-			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent) ?: "";
+			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent);
 		}
 
 		return "";
@@ -116,18 +116,17 @@ class PSR4ClassWriter {
 	public function getImportedNamespacesTokens() {
 		$dependencies = $this->_type->getDependencies();
 
-		return $this->_context->resolver->generateTokensFromDependencies($dependencies) ?: [];
+		return $this->_context->resolver->generateTokensFromDependencies($dependencies);
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getFilePath() {
-		return $this->_context->getFilePath(
-			$this->_context->resolver->getFilePathSuffixForFQN(
-				$this->_context->resolver->getFQNForType($this->_type)
-			)
-		);
+		$typeFQN = $this->_context->resolver->getFQNForType($this->_type);
+		$filePathFQNSuffix = $this->_context->resolver->getFilePathSuffixForFQN($typeFQN);
+
+		return $this->_context->getFilePath($filePathFQNSuffix);
 	}
 
 	/**
@@ -138,32 +137,32 @@ class PSR4ClassWriter {
 	}
 
 	protected function writeTypeDefinition() {
-		$this->_stubFile->writeTypeDefinition(
-			$this->getFormattedTypeDefinition()
-		);
+		$formattedTypeDefinition = $this->getFormattedTypeDefinition();
+		$this->_stubFile->writeTypeDefinition($formattedTypeDefinition);
 	}
 
 	protected function writeClassName() {
-		$this->_stubFile->writeClassName(
-			$this->getClassName()
-		);
+		$className = $this->getClassName();
+
+		$this->_stubFile->writeClassName($className);
 	}
 
 	protected function writeNamespace() {
-		$this->_stubFile->writeNamespace(
-			$this->getNamespace()
-		);
+		$namespace = $this->getNamespace();
+
+		$this->_stubFile->writeNamespace($namespace);
 	}
 
 	protected function writeVariablesDeclaration() {
-		$this->_stubFile->writeVariablesDeclarations(
-			$this->getVariablesDeclarationFormatted()
-		);
+		$variablesDeclarationFormatted = $this->getVariablesDeclarationFormatted();
+
+		$this->_stubFile->writeVariablesDeclarations($variablesDeclarationFormatted);
 	}
 
 	protected function writeUsesTokens() {
-		$this->_stubFile->writeUsesDeclaration(
-			implode("\n", $this->getImportedNamespacesTokens())
-		);
+		$importedNSTokens = $this->getImportedNamespacesTokens();
+		$lineSeparatedNSTokens = implode("\n", $importedNSTokens);
+
+		$this->_stubFile->writeUsesDeclaration($lineSeparatedNSTokens);
 	}
 }

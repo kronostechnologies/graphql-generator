@@ -11,7 +11,7 @@ use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQL\Language\AST\TypeNode;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
-class TypeUsageInterpreter extends Interpreter {
+class TypeUsageInterpreter extends NestedTypeInterpreter {
 	/**
 	 * FieldTypeInterpreter constructor.
 	 * @param NonNullTypeNode|ListTypeNode|NamedTypeNode|TypeNode $astNode
@@ -70,10 +70,9 @@ class TypeUsageInterpreter extends Interpreter {
 	}
 
 	/**
-	 * @param null $formatter
 	 * @return TypeUsage
 	 */
-	public function generateType($formatter = null) {
+	public function generateType() {
 		return new TypeUsage(
 			$this->getName(),
 			$this->isNullableObject(),

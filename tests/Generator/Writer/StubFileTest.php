@@ -5,6 +5,8 @@ namespace GraphQLGen\Tests\Generator\Writer;
 
 
 use GraphQLGen\Generator\Writer\StubFile;
+use GraphQLGen\Generator\Writer\WriterContext;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class StubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_LINE_1 = "FirstLine = 1; Set 1;";
@@ -26,9 +28,17 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_givenStubFile;
 
+	/**
+	 * @var WriterContext|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_context;
+
 	public function setUp() {
-		$this->_givenStubFile = new StubFile();
-		$this->_givenStubFile->loadFromFile(getcwd() . '/tests/Mocks/Stubs/StubFileTest.stub');
+		$this->_context = $this->createMock(WriterContext::class);
+
+		$this->_givenStubFile = new StubFile($this->_context);
+		$content = file_get_contents(getcwd() . '/tests/Mocks/Stubs/StubFileTest.stub');
+		$this->_givenStubFile->setContent($content);
 	}
 
 	public function test_GivenStubFile_getLineWithText_WillReturnFirstLine() {

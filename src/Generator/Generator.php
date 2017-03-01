@@ -5,11 +5,16 @@ namespace GraphQLGen\Generator;
 
 
 use GraphQL\Language\AST\DefinitionNode;
+use GraphQL\Language\AST\EnumTypeDefinitionNode;
+use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
+use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQLGen\Generator\Interpreters\EnumInterpreter;
 use GraphQLGen\Generator\Interpreters\InterfaceInterpreter;
 use GraphQLGen\Generator\Interpreters\Interpreter;
+use GraphQLGen\Generator\Interpreters\MainTypeInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
@@ -50,30 +55,22 @@ class Generator implements LoggerAwareInterface {
 	}
 
 	/**
-	 * @param Node|DefinitionNode $astNode
-	 * @return Interpreter
+	 * @param DefinitionNode|ScalarTypeDefinitionNode|EnumTypeDefinitionNode|ObjectTypeDefinitionNode|InterfaceTypeDefinitionNode $astDefinitionNode
+	 * @return MainTypeInterpreter
 	 */
-	protected function getCorrectInterpreter($astNode) {
-		switch($astNode->kind) {
+	protected function getCorrectInterpreter($astDefinitionNode) {
+		switch($astDefinitionNode->kind) {
 			case NodeKind::SCALAR_TYPE_DEFINITION:
-				return new ScalarInterpreter($astNode);
+				return new ScalarInterpreter($astDefinitionNode);
 			case NodeKind::ENUM_TYPE_DEFINITION:
-				return new EnumInterpreter($astNode);
+				return new EnumInterpreter($astDefinitionNode);
 			case NodeKind::OBJECT_TYPE_DEFINITION:
-				return new TypeDeclarationInterpreter($astNode);
+				return new TypeDeclarationInterpreter($astDefinitionNode);
 			case NodeKind::INTERFACE_TYPE_DEFINITION:
-				return new InterfaceInterpreter($astNode);
+				return new InterfaceInterpreter($astDefinitionNode);
 		}
 
 		return null;
-	}
-
-	/**
-	 * @param string $suffix
-	 * @return string
-	 */
-	protected function getFullNamespace($suffix = '') {
-		return $this->_context->namespace . '\\' . $suffix;
 	}
 
 	/**

@@ -42,7 +42,7 @@ unindentedText3 = 'asbas';";
 	public function test_GivenIndentedText_guess_WillGuessNumberOfIndentsCorrectly() {
 		$string = "        testText"; // 2
 
-		$retVal = $this->_formatter->guessIndentsCount($string);
+		$retVal = $this->_formatter->guessIndentsSize($string);
 
 		$this->assertEquals(2, $retVal);
 	}

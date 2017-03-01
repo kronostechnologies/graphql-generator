@@ -28,7 +28,7 @@ class PSR4Resolver {
 	public function __construct($baseNamespace) {
 		$this->_baseNamespace = $baseNamespace;
 
-		$this->setStaticDependencies($baseNamespace);
+		$this->setStaticDependencies();
 	}
 
 	/**
@@ -143,13 +143,13 @@ class PSR4Resolver {
 	public function getStubFilenameForType(BaseTypeGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case Enum::class:
-				return '/stubs/enum.stub';
+				return 'enum.stub';
 			case Type::class:
-				return '/stubs/object.stub';
+				return 'object.stub';
 			case Scalar::class:
-				return '/stubs/scalar.stub';
+				return 'scalar.stub';
 			case InterfaceDeclaration::class:
-				return '/stubs/interface.stub';
+				return 'interface.stub';
 		}
 	}
 

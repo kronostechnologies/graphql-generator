@@ -13,10 +13,4 @@ abstract class Interpreter {
 	 * @var Node
 	 */
 	protected $_astNode;
-
-	/**
-	 * @param StubFormatter $formatter
-	 * @return BaseTypeGeneratorInterface
-	 */
-	public abstract function generateType($formatter);
 }

@@ -25,9 +25,8 @@ class PSR4Writer implements GeneratorWriterInterface {
 
 	public function initialize() {
 		foreach(PSR4Resolver::getBasicPSR4Structure() as $structureFolder) {
-			$this->_context->createDirectoryIfNonExistant(
-				$this->_context->getFilePath($structureFolder)
-			);
+			$filePath = $this->_context->getFilePath($structureFolder);
+			$this->_context->createDirectoryIfNonExistant($filePath);
 		}
 	}
 
@@ -38,8 +37,12 @@ class PSR4Writer implements GeneratorWriterInterface {
 	public function generateFileForTypeGenerator($type) {
 		$psr4Formatter = new PSR4ClassFormatter($this->_context->formatter);
 
-		$stubFile = new PSR4StubFile();
-		$stubFile->loadFromFile(__DIR__ . $this->_context->resolver->getStubFilenameForType($type));
+		$stubFile = new PSR4StubFile($this->_context);
+
+		$stubFileName = $this->_context->resolver->getStubFilenameForType($type);
+		$stubFilePath = $this->_context->getStubFilePath($stubFileName);
+		$content = $this->_context->readFileContentToString($stubFilePath);
+		$stubFile->setContent($content);
 
 		$classWriter = new PSR4ClassWriter($type, $this->_context, $stubFile, $psr4Formatter);
 
@@ -74,18 +77,19 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 * @param PSR4StubFile $stubFile
 	 */
 	protected function writeTypeStoreNamespace($stubFile) {
-		$stubFile->replaceTextInStub(
-			PSR4StubFile::DUMMY_NAMESPACE,
-			$this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace)
-		);
+		$standardizedFullNS = $this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace);
+		$stubFile->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $standardizedFullNS);
 	}
 
 	/**
 	 * @return PSR4StubFile
 	 */
 	protected function getTypeStoreStub() {
-		$stubFile = new PSR4StubFile();
-		$stubFile->loadFromFile(__DIR__ . '/stubs/typestore.stub');
+		$stubFile = new PSR4StubFile($this->_context);
+
+		$stubFilePath = $this->_context->getStubFilePath('typestore.stub');
+		$content = $this->_context->readFileContentToString($stubFilePath);
+		$stubFile->setContent($content);
 
 		return $stubFile;
 	}
@@ -124,8 +128,8 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 * @return string
 	 */
 	protected function getFilePathForFQN($fqn) {
-		return $this->_context->getFilePath(
-			$this->_context->resolver->getFilePathSuffixForFQN($fqn)
-		);
+		$filePathSuffix = $this->_context->resolver->getFilePathSuffixForFQN($fqn);
+
+		return $this->_context->getFilePath($fqn);
 	}
 }

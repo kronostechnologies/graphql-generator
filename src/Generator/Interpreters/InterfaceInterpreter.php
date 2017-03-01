@@ -8,7 +8,7 @@ use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
-class InterfaceInterpreter extends Interpreter {
+class InterfaceInterpreter extends MainTypeInterpreter {
 	/**
 	 * @param InterfaceTypeDefinitionNode $astNode
 	 */

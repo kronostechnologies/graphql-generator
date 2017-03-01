@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-abstract class WriterContext {
+class WriterContext {
 	/**
 	 * @var StubFormatter
 	 */
@@ -28,23 +28,49 @@ abstract class WriterContext {
 	public $overwriteOldFiles = false;
 
 	/**
+	 * @var string
+	 */
+	public $stubsDir;
+
+	/**
 	 * @param Command $cmd
 	 */
 	public function configureCLI($cmd) {
 		$cmd
 			->addArgument('targetdir', InputArgument::REQUIRED, "Target output directory")
-			->addOption('overwrite', 'o', null, "Optional. Activate if you want the files to be overwritten.");
+			->addOption('overwrite', 'o', null, "Optional. Activate if you want the files to be overwritten.")
+			->addOption('stubs-dir', "s", InputArgument::OPTIONAL, "Optional. Directory of customized stubs to use.");
 	}
 
 	public function executeCLI(InputInterface $input, OutputInterface $output) {
 		$this->targetDir = $input->getArgument('targetdir');
 		$this->overwriteOldFiles = $input->getOption('overwrite');
+		$this->stubsDir = $input->getOption('stubs-dir');
 
-		// Append slash to targetdir
-		if(strrpos($this->targetDir, "/") !== strlen($this->targetDir) - 1 &&
-			strrpos($this->targetDir, "\\") !== strlen($this->targetDir) - 1
-		) {
-			$this->targetDir .= '/';
+		$this->targetDir = $this->appendDirectorySlash($this->targetDir);
+		$this->stubsDir = $this->stubsDir !== null ? $this->appendDirectorySlash($this->stubsDir) : null;
+	}
+
+	/**
+	 * @param string $stubFileName
+	 * @return string
+	 */
+	public function getStubFilePath($stubFileName) {
+		if ($this->stubsDir === null) {
+			return __DIR__ . "/" . $stubFileName;
+		}
+
+		return $this->stubsDir . $stubFileName;
+	}
+
+	/**
+	 * @param string $directory
+	 * @return string
+	 */
+	protected function appendDirectorySlash($directory) {
+		if (strrpos($directory, "/") !== strlen($directory) - 1 &&
+			strrpos($directory, "\\") !== strlen($directory) - 1) {
+			return $directory . "/";
 		}
 	}
 
@@ -53,13 +79,10 @@ abstract class WriterContext {
 	 * @return string
 	 */
 	public function getFilePath($suffixFilePath) {
-		$targetDirWithoutTrailingSlash = rtrim($this->targetDir, "\\");
-		$targetDirWithoutTrailingSlash = rtrim($targetDirWithoutTrailingSlash, "/");
+		$targetDirWithoutEndTrailingSlash = rtrim($this->targetDir, "\\/");
+		$suffixFilePathWithoutInitialTrailingSlash = ltrim($suffixFilePath, "\\/");
 
-		$suffixFilePathWithoutTrailingSlash = ltrim($suffixFilePath, "\\");
-		$suffixFilePathWithoutTrailingSlash = ltrim($suffixFilePathWithoutTrailingSlash, "/");
-
-		$nonStandardizedPath = $targetDirWithoutTrailingSlash . DIRECTORY_SEPARATOR . $suffixFilePathWithoutTrailingSlash;
+		$nonStandardizedPath = $targetDirWithoutEndTrailingSlash . DIRECTORY_SEPARATOR . $suffixFilePathWithoutInitialTrailingSlash;
 		$standardizedPath = str_replace("\\", "/", $nonStandardizedPath);
 
 		return $standardizedPath;
