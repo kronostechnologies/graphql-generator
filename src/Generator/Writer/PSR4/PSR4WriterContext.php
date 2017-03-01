@@ -49,7 +49,7 @@ class PSR4WriterContext extends WriterContext {
 	 */
 	public function getStubFilePath($stubFileName) {
 		if ($this->stubsDir === null) {
-			return __DIR__ . "/" . $stubFileName;
+			return __DIR__ . "/stubs/" . $stubFileName;
 		}
 
 		return $this->stubsDir . $stubFileName;

@@ -8,10 +8,10 @@ class TypeStore {
 
 	public static function getTypeDefinition($instanceOfType) {
 		if (!array_key_exists($instanceOfType, self::$_cache)) {
-			$this->_cache[$instanceOfType] = $instanceOfType::getTypeDefinition();
+			self::_cache[$instanceOfType] = $instanceOfType::getTypeDefinition();
 		}
 
-		return $this->_cache[$instanceOfType];
+		return self::_cache[$instanceOfType];
 	}
 
 }
