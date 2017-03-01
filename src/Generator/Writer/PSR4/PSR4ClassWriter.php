@@ -85,9 +85,8 @@ class PSR4ClassWriter {
 
 			return $this->_psr4ClassFormatter->getFormattedVariablesDeclaration($stubVariableDeclarationLine, $variablesDeclarationNoIndent) ?: "";
 		}
-		else {
-			return "";
-		}
+
+		return "";
 	}
 
 	/**

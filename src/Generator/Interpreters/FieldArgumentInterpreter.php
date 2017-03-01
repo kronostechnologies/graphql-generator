@@ -36,9 +36,8 @@ class FieldArgumentInterpreter extends Interpreter {
 		if($this->_astNode->defaultValue === null) {
 			return null;
 		}
-		else {
-			return $this->_astNode->defaultValue->value;
-		}
+
+		return $this->_astNode->defaultValue->value;
 	}
 
 	/**

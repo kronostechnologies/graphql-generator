@@ -38,9 +38,9 @@ class PSR4FieldDeclaration {
 			$annotationString = $this->getAnnotationString();
 
 			return "{$annotationString}\n{$variableString}";
-		} else {
-			return "{$variableString}";
 		}
+
+		return "{$variableString}";
 	}
 
 	/**

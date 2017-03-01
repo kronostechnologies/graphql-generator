@@ -93,8 +93,7 @@ class Enum implements BaseTypeGeneratorInterface {
 		if($this->formatter->useConstantsForEnums) {
 			return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$this->formatter->getDescriptionValue($value->description)} ],";
 		}
-		else {
-			return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
-		}
+
+		return "'{$value->name}' => [ 'value' => '{$value->name}', {$this->formatter->getDescriptionValue($value->description)} ],";
 	}
 }

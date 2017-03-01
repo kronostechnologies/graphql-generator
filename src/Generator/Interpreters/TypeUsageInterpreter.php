@@ -27,9 +27,8 @@ class TypeUsageInterpreter extends Interpreter {
 		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
 			return $this->_astNode->type->kind === NodeKind::LIST_TYPE;
 		}
-		else {
-			return $this->_astNode->kind === NodeKind::LIST_TYPE;
-		}
+
+		return $this->_astNode->kind === NodeKind::LIST_TYPE;
 	}
 
 	/**
@@ -42,9 +41,8 @@ class TypeUsageInterpreter extends Interpreter {
 		else if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
 			return $this->_astNode->type->kind !== NodeKind::LIST_TYPE;
 		}
-		else {
-			return $this->_astNode->kind === NodeKind::LIST_TYPE;
-		}
+
+		return $this->_astNode->kind === NodeKind::LIST_TYPE;
 	}
 
 	/**
@@ -54,9 +52,8 @@ class TypeUsageInterpreter extends Interpreter {
 		if($this->_astNode->kind === NodeKind::NON_NULL_TYPE) {
 			return $this->isInList() ? $this->_astNode->type->type->kind !== NodeKind::NON_NULL_TYPE : false;
 		}
-		else {
-			return $this->isInList() ? $this->_astNode->type->kind !== NodeKind::NON_NULL_TYPE : true;
-		}
+
+		return $this->isInList() ? $this->_astNode->type->kind !== NodeKind::NON_NULL_TYPE : true;
 	}
 
 	/**

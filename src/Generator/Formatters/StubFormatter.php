@@ -61,9 +61,8 @@ class StubFormatter {
 
 			return "'description' => '{$descriptionSlashed}',";
 		}
-		else {
-			return "";
-		}
+
+		return "";
 	}
 
 	/**
@@ -91,9 +90,8 @@ class StubFormatter {
 		if($this->useSpaces) {
 			return intval($countMatches / $this->tabSize);
 		}
-		else {
-			return count($countSpacesArr);
-		}
+
+		return count($countSpacesArr);
 	}
 
 	/**
@@ -104,8 +102,7 @@ class StubFormatter {
 		if($this->useSpaces) {
 			return str_repeat(' ', $size * $this->tabSize);
 		}
-		else {
-			return str_repeat("\t", $size);
-		}
+
+		return str_repeat("\t", $size);
 	}
 }
