@@ -1,0 +1,29 @@
+<?php
+/**
+File header goes here
+Object: DummyClass
+*/
+
+namespace DummyNamespace;
+
+'UsesDeclarations';
+
+class DummyClass {
+    'VariablesDeclarations';
+
+	public static function getTypeDefinition() {
+        return 'TypeDefinitionDeclaration';
+    }
+
+    public static function serialize($value) {
+        // ToDo: Implement
+    }
+
+    public static function parseValue($value) {
+        // ToDo: Implement
+    }
+
+    public static function parseLiteral($value) {
+        // ToDo: Implement
+    }
+}

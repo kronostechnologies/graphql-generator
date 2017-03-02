@@ -1,0 +1,26 @@
+scalar DateTime
+scalar Cursor
+
+interface Identifiable {
+	id: ID
+}
+
+enum Color {
+	BLUE,
+	RED,
+	YELLOW,
+	GREEN,
+	PURPLE,
+	CYAN
+}
+
+type Item implements Identifiable {
+	id: ID,
+	name: String,
+	color: Color
+}
+
+type Query {
+	item(id: ID): Item!
+	items(page: Number, perPage: Number): [Item!]!
+}
