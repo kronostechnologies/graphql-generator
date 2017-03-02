@@ -4,6 +4,9 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
+use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
+use GraphQLGen\Generator\Writer\PSR4\PSR4Utils;
+
 abstract class SingleClass {
 	/**
 	 * @var string
@@ -14,6 +17,21 @@ abstract class SingleClass {
 	 * @var string
 	 */
 	protected $_className;
+
+	/**
+	 * @var PSR4StubFile
+	 */
+	protected $_stubFile;
+
+	/**
+	 * @var string[]
+	 */
+	protected $_dependencies;
+
+	/**
+	 * @var string[]
+	 */
+	protected $_variables;
 
 	/**
 	 * @return string
@@ -33,8 +51,7 @@ abstract class SingleClass {
 	 * @return string
 	 */
 	public function getFullQualifiedName() {
-		// ToDo: Concat namespace and className
-		return "";
+		return PSR4Utils::joinAndStandardizeNamespaces($this->_namespace, $this->_className);
 	}
 
 	/**
@@ -48,12 +65,53 @@ abstract class SingleClass {
 	 * @param string $namespace
 	 */
 	public function setNamespace($namespace) {
-		// ToDo: Format namespace here
-		$this->_namespace = $namespace;
+		$this->_namespace = PSR4Utils::joinAndStandardizeNamespaces($namespace);
 	}
 
 	/**
 	 * @return string
 	 */
 	public abstract function getContent();
+
+	/**
+	 * @return PSR4StubFile
+	 */
+	public function getStubFile() {
+		return $this->_stubFile;
+	}
+
+	/**
+	 * @param PSR4StubFile $stubFile
+	 */
+	public function setStubFile(PSR4StubFile $stubFile) {
+		$this->_stubFile = $stubFile;
+	}
+
+	/**
+	 * @return \string[]
+	 */
+	public function getDependencies() {
+		return $this->_dependencies;
+	}
+
+	/**
+	 * @param string $dependency
+	 */
+	public function addDependency($dependency) {
+		$this->_dependencies[] = $dependency;
+	}
+
+	/**
+	 * @return \string[]
+	 */
+	public function getVariables() {
+		return $this->_variables;
+	}
+
+	/**
+	 * @param string $variable
+	 */
+	public function addVariable($variable) {
+		$this->_variables[] = $variable;
+	}
 }
