@@ -16,6 +16,9 @@ class TypeStore extends SingleClass {
 		throw new Exception("ToDo: Implement");
 	}
 
+	/**
+	 * @param ObjectType $type
+	 */
 	public function addTypeImplementation(ObjectType $type) {
 		$this->_typesToImplement = $type;
 	}

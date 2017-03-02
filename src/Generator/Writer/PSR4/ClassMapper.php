@@ -75,6 +75,25 @@ class ClassMapper {
 	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
+	 */
+	public function getResolverNamespaceFromGenerator(BaseTypeGeneratorInterface $type) {
+		switch(get_class($type)) {
+			case Type::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
+			case Scalar::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Scalars");
+			case Enum::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Enums");
+			case InterfaceDeclaration::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
+			default:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace);
+		}
+	}
+
+	/**
+	 * @param BaseTypeGeneratorInterface $type
+	 * @return string
 	 * @throws Exception
 	 */
 	public function getStubFilenameForType(BaseTypeGeneratorInterface $type) {
@@ -127,6 +146,6 @@ class ClassMapper {
 	 * @param string $baseNamespace
 	 */
 	public function setBaseNamespace($baseNamespace) {
-		$this->_baseNamespace = $baseNamespace;
+		$this->_baseNamespace = PSR4Utils::joinAndStandardizeNamespaces($baseNamespace);
 	}
 }
