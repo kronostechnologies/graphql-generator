@@ -30,47 +30,53 @@ class Generator implements LoggerAwareInterface {
 	protected $_context;
 
 	/**
-	 * @param GeneratorContext $context
+	 * @var GeneratorFactory
 	 */
-	public function __construct($context) {
+	protected $_factory;
+
+	/**
+	 * @param GeneratorContext $context
+	 * @param GeneratorFactory $factory
+	 */
+	public function __construct($context, $factory = null) {
 		$this->_context = $context;
+		$this->_factory = $factory ?: new GeneratorFactory();
 	}
 
 	public function generateClasses() {
-		$this->logger->info("Initializing entries generation");
-		$this->_context->writer->initialize();
+		$this->initializeClassesGeneration();
 
 		foreach($this->_context->ast->definitions as $astDefinition) {
-			$interpreter = $this->getCorrectInterpreter($astDefinition);
-
-			if(!is_null($interpreter)) {
-				$generatorType = $interpreter->generateType($this->_context->formatter);
-				$this->logger->info("Generating entry for {$generatorType->getName()}");
-				$this->generateClassFromType($generatorType);
-			}
+			$this->interpretASTDefinition($astDefinition);
 		}
 
-		$this->logger->info("Finalizing entries generation");
-		$this->_context->writer->finalize();
+		$this->finalizeClassesGeneration();
+	}
+
+	protected function initializeClassesGeneration() {
+		// Initialize classes generation
+		$this->logger->info("Initializing entries generation");
+		$this->_context->writer->initialize();
 	}
 
 	/**
-	 * @param DefinitionNode|ScalarTypeDefinitionNode|EnumTypeDefinitionNode|ObjectTypeDefinitionNode|InterfaceTypeDefinitionNode $astDefinitionNode
-	 * @return MainTypeInterpreter
+	 * @param DefinitionNode $astDefinition
 	 */
-	protected function getCorrectInterpreter($astDefinitionNode) {
-		switch($astDefinitionNode->kind) {
-			case NodeKind::SCALAR_TYPE_DEFINITION:
-				return new ScalarInterpreter($astDefinitionNode);
-			case NodeKind::ENUM_TYPE_DEFINITION:
-				return new EnumInterpreter($astDefinitionNode);
-			case NodeKind::OBJECT_TYPE_DEFINITION:
-				return new TypeDeclarationInterpreter($astDefinitionNode);
-			case NodeKind::INTERFACE_TYPE_DEFINITION:
-				return new InterfaceInterpreter($astDefinitionNode);
-		}
+	protected function interpretASTDefinition($astDefinition) {
+		// Interpret AST definition
+		$interpreter = $this->_factory->getCorrectInterpreter($astDefinition);
 
-		return null;
+		if(!is_null($interpreter)) {
+			$generatorType = $interpreter->generateType($this->_context->formatter);
+			$this->logger->info("Generating entry for {$generatorType->getName()}");
+			$this->generateClassFromType($generatorType);
+		}
+	}
+
+	protected function finalizeClassesGeneration() {
+		// Finalize classes generation
+		$this->logger->info("Finalizing entries generation");
+		$this->_context->writer->finalize();
 	}
 
 	/**
