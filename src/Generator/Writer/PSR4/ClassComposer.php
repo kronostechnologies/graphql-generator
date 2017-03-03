@@ -18,6 +18,7 @@ class ClassComposer {
 	const RESOLVER_CLASS_NAME_SUFFIX = 'Resolver';
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';
 	const TYPE_STORE_CLASS_NAME = 'TypeStore';
+	const TYPE_CLASS_NAME = 'Type';
 
 	/**
 	 * @var ClassMapper
@@ -45,15 +46,15 @@ class ClassComposer {
 		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
 
-		// Write dependencies
-		foreach($type->getDependencies() as $dependency) {
-			$generatorClass->addDependency($dependency);
-		}
+		// Add dependency to TypeStore
+		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
 
 		// Add resolver dependency
 		if ($this->generatorTypeSupportsResolver($type)) {
 			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
+		$generatorClass->addDependency(self::TYPE_STORE_CLASS_NAME);
+		$generatorClass->addDependency(self::TYPE_CLASS_NAME);
 
 		// Map class
 		$this->getClassMapper()->mapClass($type->getName(), $generatorClass, true);
@@ -92,35 +93,7 @@ class ClassComposer {
 		$this->getClassMapper()->mapClass($typeStoreClass->getClassName(), $typeStoreClass, false);
 	}
 
-	/**
-	 * ToDo: Does not belong here
-	 */
-	public function writeClasses() {
-		foreach($this->_classMapper->getClasses() as $class) {
-			$contentCreator = $class->getContentCreator();
 
-			// Resolve dependencies
-			$resolvedDependenciesAsLines = [];
-			foreach($class->getDependencies() as $dependency) {
-				$resolvedDependenciesAsLines[] = $this->getClassMapper()->getResolvedDependency($dependency);
-			}
-			$resolvedDependenciesAsLines = array_unique($resolvedDependenciesAsLines);
-			$resolvedDependencies = implode("\n", $resolvedDependenciesAsLines);
-
-			// ToDo: Writer content formatting
-
-			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
-			$stubFile = new ClassStubFile();
-			$stubFile->writeContent($contentCreator->getContent());
-			$stubFile->writeNamespace($contentCreator->getNamespace()); // ToDo: Check for blank namespace
-			$stubFile->writeClassName($contentCreator->getClassName());
-			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
-			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
-
-			// ToDo: Save stub file
-
-		}
-	}
 
 	/**
 	 * @return ClassMapper

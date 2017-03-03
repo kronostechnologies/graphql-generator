@@ -20,6 +20,7 @@ class Resolver extends SingleClass {
 	public function getContentCreator() {
 		$resolverContent = new ResolverContent();
 		$resolverContent->setResolverClass($this);
+		$resolverContent->setTypeGenerator($this->getGeneratorType());
 
 		return $resolverContent;
 	}

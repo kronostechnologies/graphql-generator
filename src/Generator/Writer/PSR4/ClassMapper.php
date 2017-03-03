@@ -176,6 +176,8 @@ class ClassMapper {
 		$this->resolveDependency($dependencyName, $class->getFullQualifiedName());
 		$this->addClass($class);
 
+		echo $dependencyName;
+
 		if($asTypeImplementation) {
 			/** @var ObjectType $class */
 			$this->getTypeStore()->addTypeImplementation($class);

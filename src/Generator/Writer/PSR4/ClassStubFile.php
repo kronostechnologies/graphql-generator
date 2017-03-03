@@ -25,7 +25,7 @@ use GraphQLGen\Generator\Writer\StubFile;
 class ClassStubFile extends StubFile {
 	const DUMMY_CLASSNAME = "ClassName";
 	const DUMMY_NAMESPACE = "LocalNamespace";
-	const VARIABLES_DECLARATION = "'// @generate:Variables";
+	const VARIABLES_DECLARATION = "// @generate:Variables";
 
 	/**
 	 * @return null|string

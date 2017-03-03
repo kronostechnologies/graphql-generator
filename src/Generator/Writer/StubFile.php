@@ -67,7 +67,7 @@ class StubFile {
 	/**
 	 * @return string
 	 */
-	public function getContent() {
+	public function getFileContent() {
 		return $this->_content;
 	}
 

@@ -56,7 +56,10 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	public function finalize() {
-		$this->_classComposer->writeClasses();
+		$writer = new ClassesWriter();
+		$writer->setClassMapper($this->_classComposer->getClassMapper());
+		$writer->setWriterContext($this->_context);
+		$writer->writeClasses();
 	}
 
 	/**

@@ -78,7 +78,7 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenStubFile_getContent_WillReturnCorrectFileData() {
-		$retVal = $this->_givenStubFile->getContent();
+		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertEquals(file_get_contents(getcwd() . '/tests/Mocks/Stubs/StubFileTest.stub'), $retVal);
 	}

@@ -5,6 +5,8 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\InterfaceDeclaration;
+use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 
@@ -38,9 +40,11 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function getContent() {
 		$contentAsLines = [];
-		$resolverName = $this->getGeneratorType()->getName() . ClassComposer::TYPE_STORE_CLASS_NAME;
+		$resolverName = $this->getGeneratorType()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
-		$contentAsLines[] = "public function __construct() { \$this->resolver = new {$resolverName}(); }";
+		if (in_array(get_class($this->getGeneratorType()), [InterfaceDeclaration::class, Type::class])) {
+			$contentAsLines[] = "public function __construct() { \$this->resolver = new {$resolverName}(); }";
+		}
 		$contentAsLines[] = "public static function getTypeDefinition() {";
 		$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
 		$contentAsLines[] = "}";
@@ -54,7 +58,9 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		$variableDeclarationsAsLines[] = "public \$resolver;";
+		if (in_array(get_class($this->getGeneratorType()), [InterfaceDeclaration::class, Type::class])) {
+			$variableDeclarationsAsLines[] = "public \$resolver;";
+		}
 		$variableDeclarationsAsLines[] = $this->getGeneratorType()->getVariablesDeclarations();
 
 		return implode("\n", $variableDeclarationsAsLines);

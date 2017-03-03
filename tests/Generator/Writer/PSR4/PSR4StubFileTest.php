@@ -57,21 +57,21 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenStubFile_writeNamespace_WillReplaceRightLine() {
 		$this->_givenStubFile->writeOrStripNamespace(self::NAMESPACE_NEW);
-		$retVal = $this->_givenStubFile->getContent();
+		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::NAMESPACE_NEW, $retVal);
 	}
 
 	public function test_GivenStubFile_writeClassName_WillReplaceRightLine() {
 		$this->_givenStubFile->writeClassName(self::CLASS_NEW);
-		$retVal = $this->_givenStubFile->getContent();
+		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::CLASS_NEW, $retVal);
 	}
 
 	public function test_GivenStubFile_writeVariablesDeclarations_WillReplaceRightLine() {
 		$this->_givenStubFile->writeVariablesDeclarations(self::VARIABLES_DECLARATIONS);
-		$retVal = $this->_givenStubFile->getContent();
+		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::VARIABLES_DECLARATIONS, $retVal);
 	}

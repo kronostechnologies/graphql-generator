@@ -23,7 +23,7 @@ class TypeStoreContent extends BaseContentCreator {
 	/**
 	 * @param TypeStore $typeStoreClass
 	 */
-	public function setTypeStoreClass($typeStoreClass) {
+	public function setTypeStoreClass(TypeStore $typeStoreClass) {
 		$this->_typeStoreClass = $typeStoreClass;
 	}
 
@@ -47,7 +47,7 @@ class TypeStoreContent extends BaseContentCreator {
 		$lineSeparatedVariables = [];
 
 		foreach($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
-			$lineSeparatedContent[] = $this->getVariableForType($typeToImplement);
+			$lineSeparatedVariables[] = $this->getVariableForType($typeToImplement);
 		}
 
 		return implode("\n", $lineSeparatedVariables);
@@ -72,7 +72,7 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	protected function getFunctionForType(ObjectType $type) {
-		return "public static function \${$type->getClassName()}() { if (self::\${$type->getClassName()} === null) { self::\${$type->getClassName()} = new {$type->getClassName()}(); } return self::\${$type->getClassName()}; }";
+		return "public static function {$type->getClassName()}() { if (self::\${$type->getClassName()} === null) { self::\${$type->getClassName()} = new {$type->getClassName()}(); } return self::\${$type->getClassName()}; }";
 	}
 
 	/**

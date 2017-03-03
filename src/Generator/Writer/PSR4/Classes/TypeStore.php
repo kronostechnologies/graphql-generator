@@ -16,7 +16,7 @@ class TypeStore extends SingleClass {
 	 * @param ObjectType $type
 	 */
 	public function addTypeImplementation(ObjectType $type) {
-		$this->_typesToImplement = $type;
+		$this->_typesToImplement[] = $type;
 	}
 
 	/**
