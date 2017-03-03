@@ -92,6 +92,9 @@ class ClassComposer {
 		$this->getClassMapper()->mapClass($typeStoreClass->getClassName(), $typeStoreClass, false);
 	}
 
+	/**
+	 * ToDo: Does not belong here
+	 */
 	public function writeClasses() {
 		foreach($this->_classMapper->getClasses() as $class) {
 			$contentCreator = $class->getContentCreator();
@@ -106,10 +109,10 @@ class ClassComposer {
 
 			// ToDo: Writer content formatting
 
-			$stubFileName = $this->getClassMapper()->getStubFilenameForClass($class);
+			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
 			$stubFile = new ClassStubFile();
 			$stubFile->writeContent($contentCreator->getContent());
-			$stubFile->writeOrStripNamespace($contentCreator->getNamespace()); // ToDo: Move if here
+			$stubFile->writeNamespace($contentCreator->getNamespace()); // ToDo: Check for blank namespace
 			$stubFile->writeClassName($contentCreator->getClassName());
 			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
 			$stubFile->writeDependenciesDeclaration($resolvedDependencies);

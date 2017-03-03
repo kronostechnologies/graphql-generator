@@ -11,7 +11,6 @@ use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -104,51 +103,18 @@ class ClassMapper {
 	}
 
 	/**
-	 * ToDo: Does not belong here
 	 * @param SingleClass $class
-	 * @return string
 	 * @throws Exception
-	 */
-	public function getStubFilenameForClass(SingleClass $class) {
-		switch(get_class($class)) {
-			case TypeStore::class:
-				return 'typestore.stub';
-			case Resolver::class:
-				return 'resolver.stub';
-			case ObjectType::class:
-				/** @var ObjectType $class */
-				return $this->getStubFilenameForGeneratorType($class->getGeneratorType());
-			default:
-				throw new Exception("Stub not implemented for class generator type " . get_class($class));
-		}
-	}
-
-	/**
-	 * ToDo: Does not belong here.
-	 * @param BaseTypeGeneratorInterface $type
-	 * @return string
-	 * @throws Exception
-	 */
-	public function getStubFilenameForGeneratorType(BaseTypeGeneratorInterface $type) {
-		switch(get_class($type)) {
-			case Enum::class:
-				return 'enum.stub';
-			case Type::class:
-				return 'object.stub';
-			case Scalar::class:
-				return 'scalar.stub';
-			case InterfaceDeclaration::class:
-				return 'interface.stub';
-			default:
-				throw new Exception("Stub not implemented for generator type " . get_class($type));
-		}
-	}
-
-	/**
-	 * @param SingleClass $class
 	 */
 	public function addClass(SingleClass $class) {
-		// ToDo: Multiple definitions check
+		$similarClasses = array_filter($this->_classes, function (SingleClass $comparedAgainstClass) use ($class) {
+			return ($comparedAgainstClass->getClassName() === $class->getClassName());
+		});
+
+		if (!empty($similarClasses)) {
+			throw new Exception("Two resolved classes have the same name ({$class->getClassName()}). This usually means you declared a type of the same name twice in your GraphQL Schema.");
+		}
+
 		$this->_classes[] = $class;
 	}
 
@@ -210,7 +176,7 @@ class ClassMapper {
 		$this->resolveDependency($dependencyName, $class->getFullQualifiedName());
 		$this->addClass($class);
 
-		if ($asTypeImplementation) {
+		if($asTypeImplementation) {
 			/** @var ObjectType $class */
 			$this->getTypeStore()->addTypeImplementation($class);
 		}

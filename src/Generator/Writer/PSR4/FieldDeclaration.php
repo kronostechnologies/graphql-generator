@@ -34,11 +34,9 @@ class FieldDeclaration {
 	}
 
 	/**
-	 * ToDo: Wrong name, can be private
-	 *
-	 * @return array
+	 * @return string[]
 	 */
-	public static function getPrimaryTypesAnnotationMappings() {
+	private static function getPrimaryTypesAnnotationMappings() {
 		return [
 			'ID' => 'int',
 			'Int' => 'int',
