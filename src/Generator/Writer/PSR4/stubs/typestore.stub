@@ -1,17 +1,10 @@
 <?php
 
-namespace DummyNamespace;
+namespace LocalNamespace;
 
-class TypeStore {
+// @generate:Dependencies
 
-	private static $_cache = [];
-
-	public static function getTypeDefinition($instanceOfType) {
-		if (!array_key_exists($instanceOfType, self::$_cache)) {
-			self::$_cache[$instanceOfType] = $instanceOfType::getTypeDefinition();
-		}
-
-		return self::$_cache[$instanceOfType];
-	}
-
+class ClassName {
+	// @generate:Variables
+    // @generate:Content
 }

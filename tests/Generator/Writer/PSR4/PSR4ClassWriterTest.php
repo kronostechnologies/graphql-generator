@@ -11,7 +11,7 @@ use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\PSR4ClassFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4ClassWriter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Resolver;
-use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
+use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
 use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
@@ -29,7 +29,7 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 	const ACTUAL_NAMESPACE = 'Types';
 
 	/**
-	 * @var PSR4StubFile|PHPUnit_Framework_MockObject_MockObject
+	 * @var ClassStubFile|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_stubFile;
 
@@ -59,7 +59,7 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 	protected $_psr4Resolver;
 
 	public function setUp() {
-		$this->_stubFile = $this->createMock(PSR4StubFile::class);
+		$this->_stubFile = $this->createMock(ClassStubFile::class);
 
 		$this->_psr4Context = new PSR4WriterContext();
 		$this->_psr4Context->formatter = new StubFormatter(

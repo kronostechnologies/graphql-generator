@@ -163,9 +163,29 @@ class ClassMapper {
 	}
 
 	/**
+	 * @param string $dependencyName
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getResolvedDependency($dependencyName) {
+		if (!array_key_exists($dependencyName, $this->getResolvedDependencies())) {
+			throw new Exception("Dependency {$dependencyName} not found. Is the type declared in your graphqls file?");
+		}
+
+		return $this->getResolvedDependencies()[$dependencyName];
+	}
+
+	/**
 	 * @param string $baseNamespace
 	 */
 	public function setBaseNamespace($baseNamespace) {
 		$this->_baseNamespace = PSR4Utils::joinAndStandardizeNamespaces($baseNamespace);
+	}
+
+	/**
+	 * @return \string[]
+	 */
+	public function getResolvedDependencies() {
+		return $this->_resolvedDependencies;
 	}
 }

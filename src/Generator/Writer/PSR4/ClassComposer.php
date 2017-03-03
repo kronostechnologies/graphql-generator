@@ -27,24 +27,29 @@ class ClassComposer {
 		$this->_classMapper = $classMapper;
 	}
 
-
+	/**
+	 * @param BaseTypeGeneratorInterface $type
+	 */
 	public function generateClassForGenerator(BaseTypeGeneratorInterface $type) {
 		$generatorClass = new ObjectType();
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
 		$generatorClass->setClassName($type->getName() . self::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
 
-		$this->_classMapper->addClass($generatorClass);
-		$this->_classMapper->resolveDependency($generatorClass->getClassName(), $generatorClass->getFullQualifiedName());
-		$this->_classMapper->getTypeStore()->addTypeImplementation($generatorClass);
+		$this->getClassMapper()->addClass($generatorClass);
+		$this->getClassMapper()->resolveDependency($generatorClass->getClassName(), $generatorClass->getFullQualifiedName());
+		$this->getClassMapper()->getTypeStore()->addTypeImplementation($generatorClass);
 	}
 
+	/**
+	 * @param ObjectType $objectType
+	 */
 	public function generateResolverForObjectType(ObjectType $objectType) {
 		$resolverClass = new Resolver();
 		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($objectType->getGeneratorType()));
 		$resolverClass->setClassName($objectType->getGeneratorType()->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 
-		$this->_classMapper->addClass($resolverClass);
-		$this->_classMapper->resolveDependency($resolverClass->getClassName(), $resolverClass->getFullQualifiedName());
+		$this->getClassMapper()->addClass($resolverClass);
+		$this->getClassMapper()->resolveDependency($resolverClass->getClassName(), $resolverClass->getFullQualifiedName());
 	}
 
 	public function generateTypeStore() {
@@ -55,23 +60,34 @@ class ClassComposer {
 		$typeStoreContent = new TypeStoreContent();
 		$typeStoreContent->setTypeStoreClass($typeStoreClass);
 
-		$this->_classMapper->setTypeStore($typeStoreClass);
-		$this->_classMapper->addClass($typeStoreClass);
-		$this->_classMapper->resolveDependency($typeStoreClass->getClassName(), $typeStoreClass->getFullQualifiedName());
+		$this->getClassMapper()->setTypeStore($typeStoreClass);
+		$this->getClassMapper()->addClass($typeStoreClass);
+		$this->getClassMapper()->resolveDependency($typeStoreClass->getClassName(), $typeStoreClass->getFullQualifiedName());
 	}
 
 	public function writeClasses() {
 		foreach ($this->_classMapper->getClasses() as $class) {
 			$contentCreator = $class->getContentCreator();
 
-			$stubFileName = $this->getClassMapper()->getStubFilenameForClass($class);
+			// Resolve dependencies
+			$resolvedDependenciesAsLines = [];
+			foreach ($class->getDependencies() as $dependency) {
+				$resolvedDependenciesAsLines[] = $this->getClassMapper()->getResolvedDependency($dependency);
+			}
+			$resolvedDependenciesAsLines = array_unique($resolvedDependenciesAsLines);
+			$resolvedDependencies = implode("\n", $resolvedDependenciesAsLines);
 
-			// ToDo: Open stub file
-			// ToDo: Write content
-			// ToDo: Write namespace
-			// ToDo: Write class name
-			// ToDo: Write variables
-			// ToDo: Write type definition
+			// ToDo: Writer content formatting
+
+			$stubFileName = $this->getClassMapper()->getStubFilenameForClass($class);
+			$stubFile = new ClassStubFile(null);
+			$stubFile->writeContent($contentCreator->getContent());
+			$stubFile->writeOrStripNamespace($contentCreator->getNamespace()); // ToDo: Move if here
+			$stubFile->writeClassName($contentCreator->getClassName());
+			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
+			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
+
+			// ToDo: Save stub file
 		}
 
 	}

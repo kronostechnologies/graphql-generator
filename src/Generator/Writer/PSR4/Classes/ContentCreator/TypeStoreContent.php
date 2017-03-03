@@ -49,14 +49,34 @@ class TypeStoreContent extends BaseContentCreator {
 	}
 
 	public function getVariables() {
-		// TODO: Implement getVariables() method.
+		$lineSeparatedVariables = [];
+
+		foreach ($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
+			$lineSeparatedContent[] = $this->getVariableForType($typeToImplement);
+		}
+
+		return implode("\n", $lineSeparatedVariables);
 	}
 
+	/**
+	 * @param ObjectType $type
+	 * @return string
+	 */
+	protected function getVariableForType(ObjectType $type) {
+		return "private static \${$type->getClassName()};";
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getNamespace() {
-		// TODO: Implement getNamespace() method.
+		return $this->getTypeStoreClass()->getNamespace();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getClassName() {
-		// TODO: Implement getClassName() method.
+		return $this->getTypeStoreClass()->getClassName();
 	}
 }

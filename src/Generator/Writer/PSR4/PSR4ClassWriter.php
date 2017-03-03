@@ -26,7 +26,7 @@ class PSR4ClassWriter {
 	protected $_type;
 
 	/**
-	 * @var PSR4StubFile
+	 * @var ClassStubFile
 	 */
 	protected $_stubFile;
 
@@ -34,10 +34,10 @@ class PSR4ClassWriter {
 	 * PSR4ClassWriter constructor.
 	 * @param BaseTypeGeneratorInterface $type
 	 * @param PSR4WriterContext $context
-	 * @param PSR4StubFile $stubFile
+	 * @param ClassStubFile $stubFile
 	 * @param PSR4ClassFormatter $psr4Formatter
 	 */
-	public function __construct(BaseTypeGeneratorInterface $type, PSR4WriterContext $context, PSR4StubFile $stubFile, PSR4ClassFormatter $psr4Formatter) {
+	public function __construct(BaseTypeGeneratorInterface $type, PSR4WriterContext $context, ClassStubFile $stubFile, PSR4ClassFormatter $psr4Formatter) {
 		$this->_context = $context;
 		$this->_type = $type;
 		$this->_psr4ClassFormatter = $psr4Formatter;
@@ -56,7 +56,7 @@ class PSR4ClassWriter {
 	 * @return string
 	 */
 	public function getFormattedTypeDefinition() {
-		$stubTypeDefinitionLine = $this->_stubFile->getTypeDefinitionDeclarationLine();
+		$stubTypeDefinitionLine = $this->_stubFile->getContentDeclarationLine();
 		$unformattedTypeDefinition = $this->_type->generateTypeDefinition();
 
 		return $this->_psr4ClassFormatter->getFormattedTypeDefinition($stubTypeDefinitionLine, $unformattedTypeDefinition);
@@ -138,7 +138,7 @@ class PSR4ClassWriter {
 
 	protected function writeTypeDefinition() {
 		$formattedTypeDefinition = $this->getFormattedTypeDefinition();
-		$this->_stubFile->writeTypeDefinition($formattedTypeDefinition);
+		$this->_stubFile->writeContent($formattedTypeDefinition);
 	}
 
 	protected function writeClassName() {
@@ -163,6 +163,6 @@ class PSR4ClassWriter {
 		$importedNSTokens = $this->getImportedNamespacesTokens();
 		$lineSeparatedNSTokens = implode("\n", $importedNSTokens);
 
-		$this->_stubFile->writeUsesDeclaration($lineSeparatedNSTokens);
+		$this->_stubFile->writeDependenciesDeclaration($lineSeparatedNSTokens);
 	}
 }

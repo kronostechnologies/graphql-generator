@@ -5,8 +5,8 @@ namespace GraphQLGen\Generator\Writer;
 
 
 class StubFile {
-	const USES_DECLARATION = "'UsesDeclarations';";
-	const TYPE_DEFINITION_DECLARATION = "'TypeDefinitionDeclaration';";
+	const DEPENDENCIES_DECLARATION = "// @generate:Dependencies";
+	const CONTENT_DECLARATION = "// @generate:Content";
 
 	/**
 	 * @var string
@@ -50,15 +50,15 @@ class StubFile {
 	/**
 	 * @return null|string
 	 */
-	public function getUsesDeclarationLine() {
-		return $this->getLineWithText(self::USES_DECLARATION);
+	public function getDependenciesDeclarationLine() {
+		return $this->getLineWithText(self::DEPENDENCIES_DECLARATION);
 	}
 
 	/**
 	 * @return null|string
 	 */
-	public function getTypeDefinitionDeclarationLine() {
-		return $this->getLineWithText(self::TYPE_DEFINITION_DECLARATION);
+	public function getContentDeclarationLine() {
+		return $this->getLineWithText(self::CONTENT_DECLARATION);
 	}
 
 	/**
@@ -88,18 +88,18 @@ class StubFile {
 	/**
 	 * @param string $formattedContent
 	 */
-	public function writeTypeDefinition($formattedContent) {
-		$this->replaceTextInStub(StubFile::TYPE_DEFINITION_DECLARATION, $formattedContent);
+	public function writeContent($formattedContent) {
+		$this->replaceTextInStub(StubFile::CONTENT_DECLARATION, $formattedContent);
 	}
 
 	/**
 	 * @param string $formattedContent
 	 */
-	public function writeUsesDeclaration($formattedContent) {
-		$this->replaceTextInStub(StubFile::USES_DECLARATION, $formattedContent);
+	public function writeDependenciesDeclaration($formattedContent) {
+		$this->replaceTextInStub(StubFile::DEPENDENCIES_DECLARATION, $formattedContent);
 	}
 
-	public function setContent($content) {
+	public function setFileContent($content) {
 		$this->_content = $content;
 
 		$this->splitContentAsLines();

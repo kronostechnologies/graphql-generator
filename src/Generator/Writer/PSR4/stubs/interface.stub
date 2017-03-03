@@ -1,13 +1,10 @@
 <?php
 
-namespace DummyNamespace;
+namespace LocalNamespace;
 
-'UsesDeclarations';
+// @generate:Dependencies
 
-class DummyClass {
-    'VariablesDeclarations';
-
-    public static function getTypeDefinition() {
-        return 'TypeDefinitionDeclaration';
-    }
+class ClassName {
+	// @generate:Variables
+    // @generate:Content
 }

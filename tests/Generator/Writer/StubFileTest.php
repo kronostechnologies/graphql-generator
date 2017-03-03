@@ -38,7 +38,7 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_givenStubFile = new StubFile($this->_context);
 		$content = file_get_contents(getcwd() . '/tests/Mocks/Stubs/StubFileTest.stub');
-		$this->_givenStubFile->setContent($content);
+		$this->_givenStubFile->setFileContent($content);
 	}
 
 	public function test_GivenStubFile_getLineWithText_WillReturnFirstLine() {
@@ -66,13 +66,13 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenStubFile_getUsesDeclarationLine_WillReturnCorrectLine() {
-		$retVal = $this->_givenStubFile->getUsesDeclarationLine();
+		$retVal = $this->_givenStubFile->getDependenciesDeclarationLine();
 
 		$this->assertEquals(self::STUB_LINE_5, $retVal);
 	}
 
 	public function test_GivenStubFile_getTypeDefinitionDeclarationLine_WillReturnCorrectLine() {
-		$retVal = $this->_givenStubFile->getTypeDefinitionDeclarationLine();
+		$retVal = $this->_givenStubFile->getContentDeclarationLine();
 
 		$this->assertEquals(self::STUB_LINE_6, $retVal);
 	}
@@ -104,14 +104,14 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenStubFile_writeUsesDeclaration_WillAlterTypeDefinition() {
-		$this->_givenStubFile->writeUsesDeclaration(self::ALTERED_TEXT);
+		$this->_givenStubFile->writeDependenciesDeclaration(self::ALTERED_TEXT);
 		$retVal = $this->_givenStubFile->getLineWithText(self::ALTERED_TEXT);
 
 		$this->assertEquals(self::ALTERED_LINE_5, $retVal);
 	}
 
 	public function test_GivenStubFile_writeTypeDefinition_WillAlterUsesDeclaration() {
-		$this->_givenStubFile->writeTypeDefinition(self::ALTERED_TEXT);
+		$this->_givenStubFile->writeContent(self::ALTERED_TEXT);
 		$retVal = $this->_givenStubFile->getLineWithText(self::ALTERED_TEXT);
 
 		$this->assertEquals(self::ALTERED_LINE_6, $retVal);

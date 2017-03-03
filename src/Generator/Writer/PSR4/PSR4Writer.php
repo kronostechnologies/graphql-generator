@@ -37,12 +37,12 @@ class PSR4Writer implements GeneratorWriterInterface {
 	public function generateFileForTypeGenerator($type) {
 		$psr4Formatter = new PSR4ClassFormatter($this->_context->formatter);
 
-		$stubFile = new PSR4StubFile($this->_context);
+		$stubFile = new ClassStubFile($this->_context);
 
 		$stubFileName = $this->_context->resolver->getStubFilenameForType($type);
 		$stubFilePath = $this->_context->getStubFilePath($stubFileName);
 		$content = $this->_context->readFileContentToString($stubFilePath);
-		$stubFile->setContent($content);
+		$stubFile->setFileContent($content);
 
 		$classWriter = new PSR4ClassWriter($type, $this->_context, $stubFile, $psr4Formatter);
 
@@ -65,7 +65,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	/**
-	 * @param PSR4StubFile $stubFile
+	 * @param ClassStubFile $stubFile
 	 */
 	protected function writeTypeStoreFromStub($stubFile) {
 		$fullPath = $this->_context->getFilePath("TypeStore.php");
@@ -74,7 +74,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	/**
-	 * @param PSR4StubFile $stubFile
+	 * @param ClassStubFile $stubFile
 	 */
 	protected function writeTypeStoreNamespace($stubFile) {
 		$standardizedFullNS = $this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace);
@@ -82,14 +82,14 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	/**
-	 * @return PSR4StubFile
+	 * @return ClassStubFile
 	 */
 	protected function getTypeStoreStub() {
-		$stubFile = new PSR4StubFile($this->_context);
+		$stubFile = new ClassStubFile($this->_context);
 
 		$stubFilePath = $this->_context->getStubFilePath('typestore.stub');
 		$content = $this->_context->readFileContentToString($stubFilePath);
-		$stubFile->setContent($content);
+		$stubFile->setFileContent($content);
 
 		return $stubFile;
 	}

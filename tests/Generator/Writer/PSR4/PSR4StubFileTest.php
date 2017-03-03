@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
+use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -19,7 +19,7 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 	const VARIABLES_DECLARATIONS = "var aVariable = 123;";
 
 	/**
-	 * @var PSR4StubFile
+	 * @var ClassStubFile
 	 */
 	protected $_givenStubFile;
 
@@ -31,9 +31,9 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->_context = $this->createMock(PSR4WriterContext::class);
 
-		$this->_givenStubFile = new PSR4StubFile($this->_context);
+		$this->_givenStubFile = new ClassStubFile($this->_context);
 		$stubContent = file_get_contents(getcwd() . '/tests/Mocks/Stubs/PSR4StubFileTest.stub');
-		$this->_givenStubFile->setContent($stubContent);
+		$this->_givenStubFile->setFileContent($stubContent);
 	}
 
 	public function test_GivenStubFile_getNamespaceDeclarationLine_WillReturnRightLine() {

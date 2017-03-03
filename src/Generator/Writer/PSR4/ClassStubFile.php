@@ -6,10 +6,10 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Writer\StubFile;
 
-class PSR4StubFile extends StubFile {
-	const DUMMY_CLASSNAME = "DummyClass";
-	const DUMMY_NAMESPACE = "DummyNamespace";
-	const VARIABLES_DECLARATION = "'VariablesDeclarations';";
+class ClassStubFile extends StubFile {
+	const DUMMY_CLASSNAME = "ClassName";
+	const DUMMY_NAMESPACE = "LocalNamespace";
+	const VARIABLES_DECLARATION = "'// @generate:Variables";
 
 	/**
 	 * @return null|string
@@ -39,7 +39,7 @@ class PSR4StubFile extends StubFile {
 		if (empty($namespaceValue)) {
 			$this->replaceTextInStub($this->getNamespaceDeclarationLine(), "");
 		} else {
-			$this->replaceTextInStub(PSR4StubFile::DUMMY_NAMESPACE, $namespaceValue);
+			$this->replaceTextInStub(ClassStubFile::DUMMY_NAMESPACE, $namespaceValue);
 		}
 	}
 
@@ -47,14 +47,14 @@ class PSR4StubFile extends StubFile {
 	 * @param string $className
 	 */
 	public function writeClassName($className) {
-		$this->replaceTextInStub(PSR4StubFile::DUMMY_CLASSNAME, $className);
+		$this->replaceTextInStub(ClassStubFile::DUMMY_CLASSNAME, $className);
 	}
 
 	/**
 	 * @param string $formattedContent
 	 */
 	public function writeVariablesDeclarations($formattedContent) {
-		$this->replaceTextInStub(PSR4StubFile::VARIABLES_DECLARATION, $formattedContent);
+		$this->replaceTextInStub(ClassStubFile::VARIABLES_DECLARATION, $formattedContent);
 	}
 
 }

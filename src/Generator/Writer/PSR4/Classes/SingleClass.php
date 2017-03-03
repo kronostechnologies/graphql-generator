@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
+use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Utils;
 
 abstract class SingleClass {
@@ -20,7 +20,7 @@ abstract class SingleClass {
 	protected $_className;
 
 	/**
-	 * @var PSR4StubFile
+	 * @var ClassStubFile
 	 */
 	protected $_stubFile;
 
@@ -75,16 +75,16 @@ abstract class SingleClass {
 	public abstract function getContent();
 
 	/**
-	 * @return PSR4StubFile
+	 * @return ClassStubFile
 	 */
 	public function getStubFile() {
 		return $this->_stubFile;
 	}
 
 	/**
-	 * @param PSR4StubFile $stubFile
+	 * @param ClassStubFile $stubFile
 	 */
-	public function setStubFile(PSR4StubFile $stubFile) {
+	public function setStubFile(ClassStubFile $stubFile) {
 		$this->_stubFile = $stubFile;
 	}
 
