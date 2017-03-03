@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Types\SubTypes;
 
 
-use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
@@ -16,12 +16,12 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const OBJ_LIST_NOT_NULLABLE = 'Type::nonNull(Type::listOf(Type::nonNull(TypeTest)))';
 
 	/**
-	 * @var TypeFormatter
+	 * @var BaseTypeFormatter
 	 */
 	protected $_typeFormatter;
 
 	public function setUp() {
-		$this->_typeFormatter = new TypeFormatter();
+		$this->_typeFormatter = new BaseTypeFormatter();
 	}
 
 	public function test_GivenAllNullableNoList_getFieldTypeDeclaration_WillReturnRightString() {

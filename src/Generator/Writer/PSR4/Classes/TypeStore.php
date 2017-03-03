@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
 use Exception;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
 
 class TypeStore extends SingleClass {
 	/**
@@ -28,5 +29,15 @@ class TypeStore extends SingleClass {
 	 */
 	public function getTypesToImplement() {
 		return $this->_typesToImplement;
+	}
+
+	/**
+	 * @return TypeStoreContent
+	 */
+	public function getContentCreator() {
+		$typeStoreContent = new TypeStoreContent();
+		$typeStoreContent->setTypeStoreClass($this);
+
+		return $typeStoreContent;
 	}
 }

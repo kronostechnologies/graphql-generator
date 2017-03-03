@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-class TypeFormatter {
+class BaseTypeFormatter {
 	/**
 	 * @param TypeUsage $fieldType
 	 * @return string

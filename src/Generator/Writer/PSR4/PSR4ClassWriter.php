@@ -96,7 +96,7 @@ class PSR4ClassWriter {
 	protected function getFieldsDeclarations($type) {
 		return implode("\n\n",
 			array_map(function ($field) {
-				$fieldDeclaration = new PSR4FieldDeclaration($field, true);
+				$fieldDeclaration = new FieldDeclaration($field, true);
 
 				return $fieldDeclaration->getFieldDeclaration();
 			}, $type->getFields())

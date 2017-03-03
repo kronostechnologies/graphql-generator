@@ -10,9 +10,9 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorLogger;
-use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
-use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
+use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
 use GraphQLGen\Generator\Writer\WriterContext;
@@ -30,7 +30,7 @@ class GenerateClassesCommand extends Command {
 			'psr4' => [
 				'writer' => PSR4Writer::class,
 				'context' => PSR4WriterContext::class,
-				'type-formatter' => PSR4TypeFormatter::class
+				'type-formatter' => TypeFormatter::class
 			]
 		];
 	}
@@ -106,7 +106,7 @@ class GenerateClassesCommand extends Command {
 
 	/**
 	 * @param string $writerName
-	 * @return TypeFormatter
+	 * @return BaseTypeFormatter
 	 */
 	protected function generateWriterTypeFormatter($writerName) {
 		$writerMappings = self::getWriterMappings();

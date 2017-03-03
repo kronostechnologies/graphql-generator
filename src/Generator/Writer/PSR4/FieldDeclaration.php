@@ -6,7 +6,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
-class PSR4FieldDeclaration {
+class FieldDeclaration {
 	/**
 	 * @var Field
 	 */
@@ -16,6 +16,11 @@ class PSR4FieldDeclaration {
 	 * @var bool
 	 */
 	protected $_showAnnotations;
+
+	/**
+	 * @var string
+	 */
+	protected $_baseNamespace;
 
 
 	/**
@@ -47,7 +52,7 @@ class PSR4FieldDeclaration {
 	 * @return string
 	 */
 	public function getVariableString() {
-		return "protected \${$this->_field->name};";
+		return "public \${$this->_field->name};";
 	}
 
 	/**
@@ -55,6 +60,20 @@ class PSR4FieldDeclaration {
 	 */
 	public function getAnnotationString() {
 		return "/*** @var {$this->getAnnotationTypeFragment()} **/";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBaseNamespace() {
+		return $this->_baseNamespace;
+	}
+
+	/**
+	 * @param string $baseNamespace
+	 */
+	public function setBaseNamespace($baseNamespace) {
+		$this->_baseNamespace = $baseNamespace;
 	}
 
 	/**

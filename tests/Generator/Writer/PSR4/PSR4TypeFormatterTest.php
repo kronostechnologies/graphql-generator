@@ -5,24 +5,24 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
+use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
 class PSR4TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'TypeName';
 	const EXPECTED_TYPE_DEFINITION = 'TypeStore::getTypeDefinition(TypeName::class)';
 
 	/**
-	 * @var PSR4TypeFormatter
+	 * @var TypeFormatter
 	 */
 	protected $_typeFormatter;
 
 	public function setUp() {
-		$this->_typeFormatter = new PSR4TypeFormatter();
+		$this->_typeFormatter = new TypeFormatter();
 	}
 
 	public function test_GivenTypeName_getFieldTypeDeclarationNonPrimaryType_WillReturnRightTypeDeclaration() {
 		$type = new TypeUsage(self::TYPE_NAME, false, false, false);
-		$typeFormatter = new PSR4TypeFormatter();
+		$typeFormatter = new TypeFormatter();
 
 		$retVal = $typeFormatter->getFieldTypeDeclarationNonPrimaryType($type);
 

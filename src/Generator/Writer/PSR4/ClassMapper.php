@@ -10,6 +10,8 @@ use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -92,11 +94,29 @@ class ClassMapper {
 	}
 
 	/**
+	 * @param SingleClass $class
+	 * @return string
+	 */
+	public function getStubFilenameForClass(SingleClass $class) {
+		switch (get_class($class)) {
+			case TypeStore::class:
+				return 'typestore.stub';
+			case Resolver::class:
+				return 'resolver.stub';
+			case ObjectType::class:
+				/** @var ObjectType $class */
+				return $this->getStubFilenameForGeneratorType($class->getGeneratorType());
+			default:
+				throw new Exception("Stub not implemented for class generator type " . get_class($class));
+		}
+	}
+
+	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getStubFilenameForType(BaseTypeGeneratorInterface $type) {
+	public function getStubFilenameForGeneratorType(BaseTypeGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case Enum::class:
 				return 'enum.stub';
@@ -107,7 +127,7 @@ class ClassMapper {
 			case InterfaceDeclaration::class:
 				return 'interface.stub';
 			default:
-				throw new Exception("Stub not implemented for type " . get_class($type));
+				throw new Exception("Stub not implemented for generator type " . get_class($type));
 		}
 	}
 

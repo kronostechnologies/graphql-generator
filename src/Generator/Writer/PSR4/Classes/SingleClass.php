@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
+use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
 use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Utils;
 
@@ -114,4 +115,9 @@ abstract class SingleClass {
 	public function addVariable($variable) {
 		$this->_variables[] = $variable;
 	}
+
+	/**
+	 * @return BaseContentCreator
+	 */
+	public abstract function getContentCreator();
 }

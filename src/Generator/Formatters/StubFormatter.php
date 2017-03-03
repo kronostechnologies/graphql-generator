@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Formatters;
 
 
-use GraphQLGen\Generator\Types\SubTypes\TypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 
 class StubFormatter {
 	/**
@@ -23,7 +23,7 @@ class StubFormatter {
 	public $tabSize;
 
 	/**
-	 * @var TypeFormatter
+	 * @var BaseTypeFormatter
 	 */
 	public $fieldTypeFormatter;
 
@@ -41,7 +41,7 @@ class StubFormatter {
 	 * @param bool $useSpaces
 	 * @param int $tabSize
 	 * @param string $descriptionLineMergeChars
-	 * @param TypeFormatter|null $fieldTypeFormatter
+	 * @param BaseTypeFormatter|null $fieldTypeFormatter
 	 * @param bool $useConstantsForEnums
 	 */
 	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $useConstantsForEnums = true) {

@@ -6,7 +6,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Writer\PSR4\PSR4FieldDeclaration;
+use GraphQLGen\Generator\Writer\PSR4\FieldDeclaration;
 
 class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_NAME = "AFieldName";
@@ -15,7 +15,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = "ATypeName";
 
 	public function test_GivenNullableField_getAnnotationString_ContainsNullFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNullableField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
 		$retVal = $fieldDeclaration->getAnnotationString();
 
@@ -23,7 +23,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenNonNullableField_getAnnotationString_DoesNotContainNullFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNonNullableField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNonNullableField(), true);
 
 		$retVal = $fieldDeclaration->getAnnotationString();
 
@@ -31,7 +31,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenNullableListField_getAnnotationString_ContainsArrayFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNullableListField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNullableListField(), true);
 
 		$retVal = $fieldDeclaration->getAnnotationString();
 
@@ -39,7 +39,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenNullableField_getVariableString_ContainsFieldNameFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNullableField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
 		$retVal = $fieldDeclaration->getVariableString();
 
@@ -47,7 +47,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenNullableFieldWithAnnotationsOn_getFieldDeclaration_ContainsAnnotationFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNullableField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
 		$retVal = $fieldDeclaration->getFieldDeclaration();
 
@@ -55,7 +55,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenNullableFieldWithAnnotationsOff_getFieldDeclaration_DoesNotContainAnottationFragment() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenNullableField(), false);
+		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), false);
 
 		$retVal = $fieldDeclaration->getFieldDeclaration();
 
@@ -63,7 +63,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenPrimaryTypedField_getAnnotationString_WillContainReplacementType() {
-		$fieldDeclaration = new PSR4FieldDeclaration($this->GivenPrimaryTypedField(), true);
+		$fieldDeclaration = new FieldDeclaration($this->GivenPrimaryTypedField(), true);
 
 		$retVal = $fieldDeclaration->getFieldDeclaration();
 

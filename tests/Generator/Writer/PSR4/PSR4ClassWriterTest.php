@@ -12,7 +12,7 @@ use GraphQLGen\Generator\Writer\PSR4\PSR4ClassFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4ClassWriter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Resolver;
 use GraphQLGen\Generator\Writer\PSR4\PSR4StubFile;
-use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
+use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -66,7 +66,7 @@ class PSR4ClassWriterTest extends \PHPUnit_Framework_TestCase {
 			true,
 			4,
 			",",
-			new PSR4TypeFormatter(),
+			new TypeFormatter(),
 			true
 		);
 

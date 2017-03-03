@@ -8,7 +8,7 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Writer\PSR4\PSR4TypeFormatter;
+use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
 class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'AnInterface';
@@ -144,7 +144,7 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 				true,
 				4,
 				",",
-				new PSR4TypeFormatter(),
+				new TypeFormatter(),
 				true
 			),
 			null

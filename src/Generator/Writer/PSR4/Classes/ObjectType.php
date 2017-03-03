@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 use Exception;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
 
 class ObjectType extends SingleClass {
 
@@ -50,5 +51,15 @@ class ObjectType extends SingleClass {
 	 */
 	public function setGeneratorType(BaseTypeGeneratorInterface $generatorType) {
 		$this->_generatorType = $generatorType;
+	}
+
+	/**
+	 * @return ObjectTypeContent
+	 */
+	public function getContentCreator() {
+		$objectTypeContent = new ObjectTypeContent();
+		$objectTypeContent->setObjectTypeClass($this);
+
+		return $objectTypeContent;
 	}
 }
