@@ -40,6 +40,9 @@ class TypeStoreContent extends BaseContentCreator {
 		return implode("\n", $lineSeparatedContent);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getVariables() {
 		$lineSeparatedVariables = [];
 

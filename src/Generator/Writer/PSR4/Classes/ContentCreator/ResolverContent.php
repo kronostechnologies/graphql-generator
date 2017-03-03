@@ -34,6 +34,9 @@ class ResolverContent extends BaseContentCreator {
 		$this->_resolverClass = $resolverClass;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getContent() {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];

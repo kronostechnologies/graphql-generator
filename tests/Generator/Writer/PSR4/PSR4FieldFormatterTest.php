@@ -49,7 +49,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenNullableFieldWithAnnotationsOn_getFieldDeclaration_ContainsAnnotationFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
-		$retVal = $fieldDeclaration->getFieldDeclaration();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertContains("@var", $retVal);
 	}
@@ -57,7 +57,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenNullableFieldWithAnnotationsOff_getFieldDeclaration_DoesNotContainAnottationFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), false);
 
-		$retVal = $fieldDeclaration->getFieldDeclaration();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertNotContains("@var", $retVal);
 	}
@@ -65,7 +65,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenPrimaryTypedField_getAnnotationString_WillContainReplacementType() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenPrimaryTypedField(), true);
 
-		$retVal = $fieldDeclaration->getFieldDeclaration();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertContains(self::PRIMARY_FIELD_TYPE_NEW, $retVal);
 	}

@@ -15,6 +15,12 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
+/**
+ * Maps a dependency name to a full qualified name, and handles namespace generation for generator types.
+ *
+ * Class ClassMapper
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class ClassMapper {
 	/**
 	 * @var SingleClass[]
@@ -43,18 +49,17 @@ class ClassMapper {
 
 	public function setInitialMappings() {
 		$this->resolveDependency("Type", 'GraphQL\Type\Definition\Type');
-
 	}
 
 	/**
-	 * @return mixed
+	 * @return TypeStore
 	 */
 	public function getTypeStore() {
 		return $this->_typeStore;
 	}
 
 	/**
-	 * @param mixed $typeStore
+	 * @param TypeStore $typeStore
 	 */
 	public function setTypeStore($typeStore) {
 		$this->_typeStore = $typeStore;
@@ -99,6 +104,7 @@ class ClassMapper {
 	}
 
 	/**
+	 * ToDo: Does not belong here
 	 * @param SingleClass $class
 	 * @return string
 	 * @throws Exception
@@ -118,6 +124,7 @@ class ClassMapper {
 	}
 
 	/**
+	 * ToDo: Does not belong here.
 	 * @param BaseTypeGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
@@ -158,7 +165,6 @@ class ClassMapper {
 	 */
 	public function resolveDependency($dependencyName, $dependencyNamespace) {
 		$this->_resolvedDependencies[$dependencyName] = $dependencyNamespace;
-		// ToDo: Loop through classes and change unresolved dependencies token to dependency namespace
 	}
 
 	/**
@@ -189,7 +195,7 @@ class ClassMapper {
 	}
 
 	/**
-	 * @return \string[]
+	 * @return string[]
 	 */
 	public function getResolvedDependencies() {
 		return $this->_resolvedDependencies;

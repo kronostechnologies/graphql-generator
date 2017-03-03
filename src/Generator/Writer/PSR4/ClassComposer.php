@@ -12,6 +12,12 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
+/**
+ * Generates individual classes entities.
+ *
+ * Class ClassComposer
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class ClassComposer {
 	const RESOLVER_CLASS_NAME_SUFFIX = 'Resolver';
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';

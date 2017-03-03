@@ -6,6 +6,12 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
+/**
+ * PSR-4 helper for generating a field declaration, along with their variables.
+ *
+ * Class FieldDeclaration
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class FieldDeclaration {
 	/**
 	 * @var Field
@@ -18,12 +24,6 @@ class FieldDeclaration {
 	protected $_showAnnotations;
 
 	/**
-	 * @var string
-	 */
-	protected $_baseNamespace;
-
-
-	/**
 	 * PSR4FieldDeclaration constructor.
 	 * @param Field $field
 	 * @param bool $showAnnotations
@@ -34,6 +34,8 @@ class FieldDeclaration {
 	}
 
 	/**
+	 * ToDo: Wrong name, can be private
+	 *
 	 * @return array
 	 */
 	public static function getPrimaryTypesAnnotationMappings() {
@@ -50,7 +52,7 @@ class FieldDeclaration {
 	/**
 	 * @return string
 	 */
-	public function getFieldDeclaration() {
+	public function getFieldDeclarationVariable() {
 		$variableString = $this->getVariableString();
 
 		if($this->_showAnnotations) {
@@ -65,29 +67,15 @@ class FieldDeclaration {
 	/**
 	 * @return string
 	 */
-	public function getVariableString() {
+	protected function getVariableString() {
 		return "public \${$this->_field->name};";
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getAnnotationString() {
+	protected function getAnnotationString() {
 		return "/*** @var {$this->getAnnotationTypeFragment()} **/";
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getBaseNamespace() {
-		return $this->_baseNamespace;
-	}
-
-	/**
-	 * @param string $baseNamespace
-	 */
-	public function setBaseNamespace($baseNamespace) {
-		$this->_baseNamespace = $baseNamespace;
 	}
 
 	/**

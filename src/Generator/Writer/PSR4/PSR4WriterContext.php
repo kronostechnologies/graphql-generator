@@ -10,6 +10,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Writer configuration.
+ *
+ * Class PSR4WriterContext
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class PSR4WriterContext extends WriterContext {
 	/**
 	 * @var string

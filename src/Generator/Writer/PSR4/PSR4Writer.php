@@ -8,6 +8,12 @@ use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
+/**
+ * Writer entry point.
+ *
+ * Class PSR4Writer
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class PSR4Writer implements GeneratorWriterInterface {
 	/**
 	 * @var PSR4WriterContext

@@ -6,6 +6,12 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Writer\StubFile;
 
+/**
+ * StubFile with special PSR-4 annotations.
+ *
+ * Class ClassStubFile
+ * @package GraphQLGen\Generator\Writer\PSR4
+ */
 class ClassStubFile extends StubFile {
 	const DUMMY_CLASSNAME = "ClassName";
 	const DUMMY_NAMESPACE = "LocalNamespace";
@@ -33,6 +39,8 @@ class ClassStubFile extends StubFile {
 	}
 
 	/**
+	 * ToDo: Remove Needless logic.
+	 *
 	 * @param string $namespaceValue
 	 */
 	public function writeOrStripNamespace($namespaceValue) {
