@@ -38,11 +38,11 @@ class ResolverContent extends BaseContentCreator {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
 
-		if (in_array($typeGeneratorClass, [InterfaceDeclaration::class, Type::class])) {
+		if(in_array($typeGeneratorClass, [InterfaceDeclaration::class, Type::class])) {
 			/** @var InterfaceDeclaration|Type $typeGenerator */
 			$typeGenerator = $this->getTypeGeneratorClass();
 
-			foreach ($typeGenerator->fields as $field) {
+			foreach($typeGenerator->fields as $field) {
 				$contentAsLines[] = "function resolve{$field->name}(\$root, \$args) { // ToDo: Implement }";
 			}
 		}
@@ -79,16 +79,16 @@ class ResolverContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getTypeGeneratorClass() {
-		return get_class($this->_typeGenerator);
-	}
-
-	/**
 	 * @param BaseTypeGeneratorInterface $typeGenerator
 	 */
 	public function setTypeGenerator($typeGenerator) {
 		$this->_typeGenerator = $typeGenerator;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTypeGeneratorClass() {
+		return get_class($this->_typeGenerator);
 	}
 }

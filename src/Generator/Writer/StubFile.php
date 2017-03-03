@@ -19,13 +19,6 @@ class StubFile {
 	protected $_contentAsLines;
 
 	/**
-	 * @param WriterContext $context
-	 */
-	public function __construct(WriterContext $context) {
-
-	}
-
-	/**
 	 * @param string $searchText
 	 * @return string|null
 	 */

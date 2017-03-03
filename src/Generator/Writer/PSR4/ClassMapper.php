@@ -41,6 +41,11 @@ class ClassMapper {
 		$this->_resolvedDependencies = [];
 	}
 
+	public function setInitialMappings() {
+		$this->resolveDependency("Type", 'GraphQL\Type\Definition\Type');
+
+	}
+
 	/**
 	 * @return mixed
 	 */
@@ -96,9 +101,10 @@ class ClassMapper {
 	/**
 	 * @param SingleClass $class
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getStubFilenameForClass(SingleClass $class) {
-		switch (get_class($class)) {
+		switch(get_class($class)) {
 			case TypeStore::class:
 				return 'typestore.stub';
 			case Resolver::class:
@@ -163,23 +169,23 @@ class ClassMapper {
 	}
 
 	/**
+	 * @param string $baseNamespace
+	 */
+	public function setBaseNamespace($baseNamespace) {
+		$this->_baseNamespace = PSR4Utils::joinAndStandardizeNamespaces($baseNamespace);
+	}
+
+	/**
 	 * @param string $dependencyName
 	 * @return string
 	 * @throws Exception
 	 */
 	public function getResolvedDependency($dependencyName) {
-		if (!array_key_exists($dependencyName, $this->getResolvedDependencies())) {
+		if(!array_key_exists($dependencyName, $this->getResolvedDependencies())) {
 			throw new Exception("Dependency {$dependencyName} not found. Is the type declared in your graphqls file?");
 		}
 
 		return $this->getResolvedDependencies()[$dependencyName];
-	}
-
-	/**
-	 * @param string $baseNamespace
-	 */
-	public function setBaseNamespace($baseNamespace) {
-		$this->_baseNamespace = PSR4Utils::joinAndStandardizeNamespaces($baseNamespace);
 	}
 
 	/**

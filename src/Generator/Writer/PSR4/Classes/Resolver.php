@@ -4,35 +4,15 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
-use Exception;
-use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 
 class Resolver extends SingleClass {
 
 	/**
-	 * @var Type
+	 * @var BaseTypeGeneratorInterface
 	 */
-	protected $_associatedType;
-
-
-	public function getContent() {
-		throw new Exception("ToDo: Implement");
-	}
-
-	/**
-	 * @return Type
-	 */
-	public function getAssociatedType() {
-		return $this->_associatedType;
-	}
-
-	/**
-	 * @param Type $associatedType
-	 */
-	public function setAssociatedType(Type $associatedType) {
-		$this->_associatedType = $associatedType;
-	}
+	protected $_generatorType;
 
 	/**
 	 * @return ResolverContent
@@ -42,5 +22,19 @@ class Resolver extends SingleClass {
 		$resolverContent->setResolverClass($this);
 
 		return $resolverContent;
+	}
+
+	/**
+	 * @return BaseTypeGeneratorInterface
+	 */
+	public function getGeneratorType() {
+		return $this->_generatorType;
+	}
+
+	/**
+	 * @param BaseTypeGeneratorInterface $generatorType
+	 */
+	public function setGeneratorType($generatorType) {
+		$this->_generatorType = $generatorType;
 	}
 }

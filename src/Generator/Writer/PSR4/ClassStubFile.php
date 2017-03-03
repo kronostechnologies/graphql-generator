@@ -36,9 +36,10 @@ class ClassStubFile extends StubFile {
 	 * @param string $namespaceValue
 	 */
 	public function writeOrStripNamespace($namespaceValue) {
-		if (empty($namespaceValue)) {
+		if(empty($namespaceValue)) {
 			$this->replaceTextInStub($this->getNamespaceDeclarationLine(), "");
-		} else {
+		}
+		else {
 			$this->replaceTextInStub(ClassStubFile::DUMMY_NAMESPACE, $namespaceValue);
 		}
 	}

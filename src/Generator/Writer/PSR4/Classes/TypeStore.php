@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
-use Exception;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
 
 class TypeStore extends SingleClass {
@@ -12,10 +11,6 @@ class TypeStore extends SingleClass {
 	 * @var ObjectType[]
 	 */
 	protected $_typesToImplement;
-
-	public function getContent() {
-		throw new Exception("ToDo: Implement");
-	}
 
 	/**
 	 * @param ObjectType $type

@@ -27,7 +27,7 @@ abstract class SingleClass {
 	/**
 	 * @var string[]
 	 */
-	protected $_dependencies;
+	protected $_dependencies = [];
 
 	/**
 	 * @var string[]
@@ -42,24 +42,17 @@ abstract class SingleClass {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getNamespace() {
-		return $this->_namespace;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getFullQualifiedName() {
-		return PSR4Utils::joinAndStandardizeNamespaces($this->_namespace, $this->_className);
-	}
-
-	/**
 	 * @param string $className
 	 */
 	public function setClassName($className) {
 		$this->_className = $className;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNamespace() {
+		return $this->_namespace;
 	}
 
 	/**
@@ -72,7 +65,9 @@ abstract class SingleClass {
 	/**
 	 * @return string
 	 */
-	public abstract function getContent();
+	public function getFullQualifiedName() {
+		return PSR4Utils::joinAndStandardizeNamespaces($this->_namespace, $this->_className);
+	}
 
 	/**
 	 * @return ClassStubFile

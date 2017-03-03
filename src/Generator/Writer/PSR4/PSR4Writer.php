@@ -4,16 +4,20 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
-use GraphQLGen\Generator\Writer\StubFile;
+use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class PSR4Writer implements GeneratorWriterInterface {
 	/**
 	 * @var PSR4WriterContext
 	 */
 	protected $_context;
+
+	/**
+	 * @var ClassComposer
+	 */
+	protected $_classComposer;
 
 	/**
 	 * PSR4Writer constructor.
@@ -24,10 +28,13 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	public function initialize() {
-		foreach(PSR4Resolver::getBasicPSR4Structure() as $structureFolder) {
-			$filePath = $this->_context->getFilePath($structureFolder);
-			$this->_context->createDirectoryIfNonExistant($filePath);
-		}
+		$this->_classComposer = new ClassComposer();
+		$this->_classComposer->setClassMapper(new ClassMapper());
+		$this->_classComposer->getClassMapper()->setTypeStore(new TypeStore());
+		$this->_classComposer->getClassMapper()->setBaseNamespace($this->_context->namespace);
+		$this->_classComposer->getClassMapper()->setInitialMappings();
+
+		$this->_classComposer->generateTypeStore();
 	}
 
 	/**
@@ -35,101 +42,28 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 * @return string|void
 	 */
 	public function generateFileForTypeGenerator($type) {
-		$psr4Formatter = new PSR4ClassFormatter($this->_context->formatter);
+		$this->_classComposer->generateClassForGenerator($type);
 
-		$stubFile = new ClassStubFile($this->_context);
-
-		$stubFileName = $this->_context->resolver->getStubFilenameForType($type);
-		$stubFilePath = $this->_context->getStubFilePath($stubFileName);
-		$content = $this->_context->readFileContentToString($stubFilePath);
-		$stubFile->setFileContent($content);
-
-		$classWriter = new PSR4ClassWriter($type, $this->_context, $stubFile, $psr4Formatter);
-
-		// Store token for later usage
-		$this->_context->resolver->storeFQNTokenForType($type);
-
-		// Writes class from stub file
-		$classWriter->replacePlaceholders();
-		$fullPath = $classWriter->getFilePath();
-		$content = $classWriter->getClassContent();
-		$this->_context->writeFile($fullPath, $content);
+		if ($this->getClassComposer()->generatorTypeSupportsResolver($type)) {
+			$this->_classComposer->generateResolverForGenerator($type);
+		}
 	}
 
 	public function finalize() {
-		$stubFile = $this->getTypeStoreStub();
-
-		$this->writeTypeStoreNamespace($stubFile);
-		$this->writeTypeStoreFromStub($stubFile);
-		$this->replaceResolvedTokens();
+		$this->_classComposer->writeClasses();
 	}
 
 	/**
-	 * @param ClassStubFile $stubFile
+	 * @return ClassComposer
 	 */
-	protected function writeTypeStoreFromStub($stubFile) {
-		$fullPath = $this->_context->getFilePath("TypeStore.php");
-		$typeStoreContent = $stubFile->getContent();
-		$this->_context->writeFile($fullPath, $typeStoreContent);
+	public function getClassComposer() {
+		return $this->_classComposer;
 	}
 
 	/**
-	 * @param ClassStubFile $stubFile
+	 * @param ClassComposer $classComposer
 	 */
-	protected function writeTypeStoreNamespace($stubFile) {
-		$standardizedFullNS = $this->_context->resolver->joinAndStandardizeNamespaces($this->_context->namespace);
-		$stubFile->writeOrStripNamespace($standardizedFullNS);
-	}
-
-	/**
-	 * @return ClassStubFile
-	 */
-	protected function getTypeStoreStub() {
-		$stubFile = new ClassStubFile($this->_context);
-
-		$stubFilePath = $this->_context->getStubFilePath('typestore.stub');
-		$content = $this->_context->readFileContentToString($stubFilePath);
-		$stubFile->setFileContent($content);
-
-		return $stubFile;
-	}
-
-	protected function replaceResolvedTokens() {
-		foreach($this->_context->resolver->getAllResolvedTokens() as $token => $fqn) {
-			$this->resolveResolvedTokensForSpecificFQN($token, $fqn);
-		}
-	}
-
-	protected function resolveResolvedTokensForSpecificFQN($token, $fqn) {
-		$filePath = $this->getFilePathForFQN($fqn) . ".php";
-
-		if ($this->_context->fileExists($filePath)) {
-			$fileContent = $this->_context->readFileContentToString($filePath);
-			$fileContent = $this->replaceResolvedTokensInString($fileContent);
-
-			$this->_context->writeFile($filePath, $fileContent, true);
-		}
-	}
-
-	/**
-	 * @param string $string
-	 * @return string
-	 */
-	protected function replaceResolvedTokensInString($string) {
-		foreach($this->_context->resolver->getAllResolvedTokens() as $token => $fqn) {
-			$string = str_replace($token, "use " . $fqn . ";", $string);
-		}
-
-		return $string;
-	}
-
-	/**
-	 * @param string $fqn
-	 * @return string
-	 */
-	protected function getFilePathForFQN($fqn) {
-		$filePathSuffix = $this->_context->resolver->getFilePathSuffixForFQN($fqn);
-
-		return $this->_context->getFilePath($fqn);
+	public function setClassComposer($classComposer) {
+		$this->_classComposer = $classComposer;
 	}
 }

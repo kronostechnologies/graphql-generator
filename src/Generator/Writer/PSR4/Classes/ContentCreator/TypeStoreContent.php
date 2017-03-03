@@ -33,37 +33,21 @@ class TypeStoreContent extends BaseContentCreator {
 	public function getContent() {
 		$lineSeparatedContent = [];
 
-		foreach ($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
+		foreach($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
 			$lineSeparatedContent[] = $this->getFunctionForType($typeToImplement);
 		}
 
 		return implode("\n", $lineSeparatedContent);
 	}
 
-	/**
-	 * @param ObjectType $type
-	 * @return string
-	 */
-	protected function getFunctionForType(ObjectType $type) {
-		return "public static function \${$type->getClassName()}() { if (self::\${$type->getClassName()} === null) { self::\${$type->getClassName()} = new {$type->getClassName()}(); } return self::\${$type->getClassName()}; }";
-	}
-
 	public function getVariables() {
 		$lineSeparatedVariables = [];
 
-		foreach ($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
+		foreach($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
 			$lineSeparatedContent[] = $this->getVariableForType($typeToImplement);
 		}
 
 		return implode("\n", $lineSeparatedVariables);
-	}
-
-	/**
-	 * @param ObjectType $type
-	 * @return string
-	 */
-	protected function getVariableForType(ObjectType $type) {
-		return "private static \${$type->getClassName()};";
 	}
 
 	/**
@@ -78,5 +62,21 @@ class TypeStoreContent extends BaseContentCreator {
 	 */
 	public function getClassName() {
 		return $this->getTypeStoreClass()->getClassName();
+	}
+
+	/**
+	 * @param ObjectType $type
+	 * @return string
+	 */
+	protected function getFunctionForType(ObjectType $type) {
+		return "public static function \${$type->getClassName()}() { if (self::\${$type->getClassName()} === null) { self::\${$type->getClassName()} = new {$type->getClassName()}(); } return self::\${$type->getClassName()}; }";
+	}
+
+	/**
+	 * @param ObjectType $type
+	 * @return string
+	 */
+	protected function getVariableForType(ObjectType $type) {
+		return "private static \${$type->getClassName()};";
 	}
 }

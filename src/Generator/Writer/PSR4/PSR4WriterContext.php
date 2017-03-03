@@ -17,11 +17,6 @@ class PSR4WriterContext extends WriterContext {
 	public $namespace;
 
 	/**
-	 * @var PSR4Resolver
-	 */
-	public $resolver;
-
-	/**
 	 * @param Command $cmd
 	 */
 	public function configureCLI($cmd) {
@@ -39,8 +34,6 @@ class PSR4WriterContext extends WriterContext {
 		parent::executeCLI($input, $output);
 
 		$this->namespace = $input->getOption('psr4-namespace');
-
-		$this->resolver = new PSR4Resolver($this->namespace);
 	}
 
 	/**
@@ -48,7 +41,7 @@ class PSR4WriterContext extends WriterContext {
 	 * @return string
 	 */
 	public function getStubFilePath($stubFileName) {
-		if ($this->stubsDir === null) {
+		if($this->stubsDir === null) {
 			return __DIR__ . "/stubs/" . $stubFileName;
 		}
 

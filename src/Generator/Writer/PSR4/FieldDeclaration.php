@@ -34,12 +34,26 @@ class FieldDeclaration {
 	}
 
 	/**
+	 * @return array
+	 */
+	public static function getPrimaryTypesAnnotationMappings() {
+		return [
+			'ID' => 'int',
+			'Int' => 'int',
+			'String' => 'string',
+			'Float' => 'float',
+			'Bool' => 'bool',
+			'Boolean' => 'bool',
+		];
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getFieldDeclaration() {
 		$variableString = $this->getVariableString();
 
-		if ($this->_showAnnotations) {
+		if($this->_showAnnotations) {
 			$annotationString = $this->getAnnotationString();
 
 			return "{$annotationString}\n{$variableString}";
@@ -89,7 +103,7 @@ class FieldDeclaration {
 	protected function getAnnotationFieldNameFragment() {
 		$primaryTypesMappings = self::getPrimaryTypesAnnotationMappings();
 
-		if (key_exists($this->_field->fieldType->typeName, $primaryTypesMappings)) {
+		if(key_exists($this->_field->fieldType->typeName, $primaryTypesMappings)) {
 			return $primaryTypesMappings[$this->_field->fieldType->typeName];
 		}
 
@@ -108,19 +122,5 @@ class FieldDeclaration {
 	 */
 	protected function getNullAnnotationFragment() {
 		return ($this->_field->fieldType->isTypeNullable ? '|null' : '');
-	}
-
-	/**
-	 * @return array
-	 */
-	public static function getPrimaryTypesAnnotationMappings() {
-		return [
-			'ID' => 'int',
-			'Int' => 'int',
-			'String' => 'string',
-			'Float' => 'float',
-			'Bool' => 'bool',
-			'Boolean' => 'bool',
-		];
 	}
 }
