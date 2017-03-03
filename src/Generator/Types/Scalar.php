@@ -38,9 +38,9 @@ class Scalar implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
+		$formattedDescription = $this->formatter->standardizeDescription($this->description);
 
-		return "[ 'name' => '{$this->name}',{$formattedDescription} 'serialize' => [__CLASS__, 'serialize'], 'parseValue' => [__CLASS__, 'parseValue'], 'parseLiteral' => [__CLASS__, 'parseLiteral']];";
+		return "\$this->name = '{$this->name}'; \$this->description = '{$formattedDescription}';";
 	}
 
 	/**

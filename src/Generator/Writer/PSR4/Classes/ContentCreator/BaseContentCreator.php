@@ -12,4 +12,6 @@ abstract class BaseContentCreator {
 	public abstract function getNamespace();
 
 	public abstract function getClassName();
+
+	public abstract function getParentClassName();
 }

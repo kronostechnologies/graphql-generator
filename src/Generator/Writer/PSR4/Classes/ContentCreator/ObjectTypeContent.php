@@ -4,8 +4,10 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use GraphQL\Type\Definition\ScalarType;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
+use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
@@ -42,11 +44,20 @@ class ObjectTypeContent extends BaseContentCreator {
 		$contentAsLines = [];
 		$resolverName = $this->getGeneratorType()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
+		$contentAsLines[] = "public function __construct() {";
 		if (in_array(get_class($this->getGeneratorType()), [InterfaceDeclaration::class, Type::class])) {
-			$contentAsLines[] = "public function __construct() { \$this->resolver = new {$resolverName}(); }";
+			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
 		}
-		$contentAsLines[] = "public static function getTypeDefinition() {";
-		$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
+
+		if (get_class($this->getGeneratorType()) == Scalar::class) {
+			$contentAsLines[] = 'parent::__construct();';
+			$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
+		} else {
+			$contentAsLines[] = "parent::__construct(";
+			$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
+			$contentAsLines[] = ");";
+		}
+
 		$contentAsLines[] = "}";
 
 		return implode("\n", $contentAsLines);
@@ -92,5 +103,12 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getParentClassName() {
+		return $this->getObjectTypeClass()->getParentClassName();
 	}
 }

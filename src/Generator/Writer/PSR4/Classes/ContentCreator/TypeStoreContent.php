@@ -72,7 +72,7 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	protected function getFunctionForType(ObjectType $type) {
-		return "public static function {$type->getClassName()}() { if (self::\${$type->getClassName()} === null) { self::\${$type->getClassName()} = new {$type->getClassName()}(); } return self::\${$type->getClassName()}; }";
+		return "public static function {$type->getGeneratorType()->getName()}() { return self::\${$type->getGeneratorType()->getName()} ?: (self::\${$type->getGeneratorType()->getName()} = new {$type->getClassName()}()); }";
 	}
 
 	/**
@@ -80,6 +80,13 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	protected function getVariableForType(ObjectType $type) {
-		return "private static \${$type->getClassName()};";
+		return "private static \${$type->getGeneratorType()->getName()};";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getParentClassName() {
+		return "";
 	}
 }

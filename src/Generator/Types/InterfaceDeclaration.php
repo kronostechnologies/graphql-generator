@@ -49,7 +49,7 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
 		$fields = $this->getFieldsDefinitions();
 
-		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [{$fields}], ];";
+		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [{$fields}], ]";
 	}
 
 	/**

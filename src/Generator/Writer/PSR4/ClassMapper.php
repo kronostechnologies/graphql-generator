@@ -48,6 +48,10 @@ class ClassMapper {
 
 	public function setInitialMappings() {
 		$this->resolveDependency("Type", 'GraphQL\Type\Definition\Type');
+		$this->resolveDependency("EnumType", 'GraphQL\Type\Definition\EnumType');
+		$this->resolveDependency("ScalarType", 'GraphQL\Type\Definition\ScalarType');
+		$this->resolveDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
+		$this->resolveDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
 	}
 
 	/**
@@ -99,6 +103,26 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
 			default:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace);
+		}
+	}
+
+	/**
+	 * @param BaseTypeGeneratorInterface $type
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getParentDependencyForGenerator(BaseTypeGeneratorInterface $type) {
+		switch(get_class($type)) {
+			case Type::class:
+				return "ObjectType";
+			case Scalar::class:
+				return "ScalarType";
+			case Enum::class:
+				return "EnumType";
+			case InterfaceDeclaration::class:
+				return "InterfaceType";
+			default:
+				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));
 		}
 	}
 
@@ -175,8 +199,6 @@ class ClassMapper {
 	public function mapClass($dependencyName, SingleClass $class, $asTypeImplementation) {
 		$this->resolveDependency($dependencyName, $class->getFullQualifiedName());
 		$this->addClass($class);
-
-		echo $dependencyName;
 
 		if($asTypeImplementation) {
 			/** @var ObjectType $class */

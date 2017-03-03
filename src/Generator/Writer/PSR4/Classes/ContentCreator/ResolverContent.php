@@ -41,7 +41,6 @@ class ResolverContent extends BaseContentCreator {
 	public function getContent() {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
-		echo $typeGeneratorClass . "\n";
 
 		if(in_array($typeGeneratorClass, [InterfaceDeclaration::class, Type::class])) {
 			/** @var InterfaceDeclaration|Type $typeGenerator */
@@ -100,5 +99,12 @@ class ResolverContent extends BaseContentCreator {
 		}
 
 		return get_class($this->_typeGenerator);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getParentClassName() {
+		return "";
 	}
 }

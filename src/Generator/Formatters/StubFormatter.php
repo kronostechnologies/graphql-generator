@@ -53,13 +53,17 @@ class StubFormatter {
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
 	}
 
+	public function standardizeDescription($description) {
+		$trimmedDescription = trim($description);
+		$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
+		$descriptionSlashed = addslashes($singleLineDescription);
+
+		return $descriptionSlashed;
+	}
+
 	public function getDescriptionValue($description) {
 		if(!is_null($description)) {
-			$trimmedDescription = trim($description);
-			$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
-			$descriptionSlashed = addslashes($singleLineDescription);
-
-			return "'description' => '{$descriptionSlashed}',";
+			return "'description' => '{$this->standardizeDescription($description)}',";
 		}
 
 		return "";

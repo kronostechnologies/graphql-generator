@@ -39,10 +39,16 @@ class ClassesWriter {
 			$stubFile = new ClassStubFile();
 			$stubFile->setFileContent($stubContent);
 			$stubFile->writeContent($contentCreator->getContent());
-			$stubFile->writeNamespace($contentCreator->getNamespace()); // ToDo: Check for blank namespace
 			$stubFile->writeClassName($contentCreator->getClassName());
 			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
 			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
+			$stubFile->writeParentClassName($contentCreator->getParentClassName());
+
+			if (empty($contentCreator->getNamespace())) {
+				$stubFile->removeNamespace();
+			} else {
+				$stubFile->writeNamespace($contentCreator->getNamespace()); // ToDo: Check for blank namespace
+			}
 
 			$this->_writerContext->makeFileDirectory($destinationPath);
 			$this->_writerContext->writeFile($destinationPath, $stubFile->getFileContent());

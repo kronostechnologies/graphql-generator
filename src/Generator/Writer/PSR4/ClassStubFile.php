@@ -26,6 +26,7 @@ class ClassStubFile extends StubFile {
 	const DUMMY_CLASSNAME = "ClassName";
 	const DUMMY_NAMESPACE = "LocalNamespace";
 	const VARIABLES_DECLARATION = "// @generate:Variables";
+	const EXTENDS_CLASSNAME = "ParentClass";
 
 	/**
 	 * @return null|string
@@ -39,6 +40,13 @@ class ClassStubFile extends StubFile {
 	 */
 	public function getDummyClassNameLine() {
 		return $this->getLineWithText(self::DUMMY_CLASSNAME);
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getExtendsClassNameLine() {
+		return $this->getLineWithText(self::EXTENDS_CLASSNAME);
 	}
 
 	/**
@@ -68,6 +76,13 @@ class ClassStubFile extends StubFile {
 	 */
 	public function writeVariablesDeclarations($formattedContent) {
 		$this->replaceTextInStub(ClassStubFile::VARIABLES_DECLARATION, $formattedContent);
+	}
+
+	/**
+	 * @param string $className
+	 */
+	public function writeParentClassName($className) {
+		$this->replaceTextInStub(ClassStubFile::EXTENDS_CLASSNAME, $className);
 	}
 
 	/**

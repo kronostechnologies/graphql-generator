@@ -51,7 +51,7 @@ class Enum implements BaseTypeGeneratorInterface {
 		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
 		$values = $this->getConstantValuesArray();
 
-		return "[ 'name' => '{$this->name}', {$formattedDescription} 'values' => [{$values}] ];";
+		return "[ 'name' => '{$this->name}', {$formattedDescription} 'values' => [{$values}] ]";
 	}
 
 	/**

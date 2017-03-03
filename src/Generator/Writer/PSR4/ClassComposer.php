@@ -45,6 +45,7 @@ class ClassComposer {
 		// Create generator class
 		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
+		$generatorClass->setParentClassName($this->getClassMapper()->getParentDependencyForGenerator($type));
 
 		// Add dependency to TypeStore
 		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
@@ -55,6 +56,7 @@ class ClassComposer {
 		}
 		$generatorClass->addDependency(self::TYPE_STORE_CLASS_NAME);
 		$generatorClass->addDependency(self::TYPE_CLASS_NAME);
+		$generatorClass->addDependency($generatorClass->getParentClassName());
 
 		// Map class
 		$this->getClassMapper()->mapClass($type->getName(), $generatorClass, true);

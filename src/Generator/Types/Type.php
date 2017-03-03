@@ -49,7 +49,7 @@ class Type implements BaseTypeGeneratorInterface {
 		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
 		$fieldsDefinitions = $this->getFieldsDefinitions();
 
-		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [$fieldsDefinitions], ];";
+		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [$fieldsDefinitions], ]";
 	}
 
 	/**

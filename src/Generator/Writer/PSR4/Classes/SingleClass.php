@@ -35,6 +35,11 @@ abstract class SingleClass {
 	protected $_variables;
 
 	/**
+	 * @var string
+	 */
+	protected $_parentClassName;
+
+	/**
 	 * @return string
 	 */
 	public function getClassName() {
@@ -115,4 +120,18 @@ abstract class SingleClass {
 	 * @return BaseContentCreator
 	 */
 	public abstract function getContentCreator();
+
+	/**
+	 * @return string
+	 */
+	public function getParentClassName() {
+		return $this->_parentClassName;
+	}
+
+	/**
+	 * @param string $parentClassName
+	 */
+	public function setParentClassName($parentClassName) {
+		$this->_parentClassName = $parentClassName;
+	}
 }
