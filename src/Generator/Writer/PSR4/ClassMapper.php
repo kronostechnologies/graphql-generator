@@ -200,4 +200,19 @@ class ClassMapper {
 	public function getResolvedDependencies() {
 		return $this->_resolvedDependencies;
 	}
+
+	/**
+	 * @param string $dependencyName
+	 * @param SingleClass $class
+	 * @param bool $asTypeImplementation
+	 */
+	public function mapClass($dependencyName, SingleClass $class, $asTypeImplementation) {
+		$this->resolveDependency($dependencyName, $class->getFullQualifiedName());
+		$this->addClass($class);
+
+		if ($asTypeImplementation) {
+			/** @var ObjectType $class */
+			$this->getTypeStore()->addTypeImplementation($class);
+		}
+	}
 }

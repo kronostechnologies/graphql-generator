@@ -7,10 +7,6 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 /**
  * Generates individual classes entities.
@@ -29,44 +25,51 @@ class ClassComposer {
 	protected $_classMapper;
 
 	/**
+	 * @var PSR4Factory
+	 */
+	protected $_factory;
+
+	/**
+	 * ClassComposer constructor.
+	 * @param PSR4Factory $factory
+	 */
+	public function __construct($factory = null) {
+		$this->_factory = $factory ?: new PSR4Factory();
+	}
+
+	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 */
 	public function generateClassForGenerator(BaseTypeGeneratorInterface $type) {
-		$generatorClass = new ObjectType();
+		// Create generator class
+		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
-		$generatorClass->setClassName($type->getName() . self::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
-		$generatorClass->setGeneratorType($type);
 
+		// Write dependencies
 		foreach($type->getDependencies() as $dependency) {
 			$generatorClass->addDependency($dependency);
 		}
 
+		// Add resolver dependency
 		if ($this->generatorTypeSupportsResolver($type)) {
-			// Always add resolver as dependency
 			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
 
-		$this->getClassMapper()->resolveDependency($type->getName(), $generatorClass->getFullQualifiedName());
-		$this->getClassMapper()->addClass($generatorClass);
-		$this->getClassMapper()->getTypeStore()->addTypeImplementation($generatorClass);
+		// Map class
+		$this->getClassMapper()->mapClass($type->getName(), $generatorClass, true);
 	}
-
-
-
 
 
 	/**
 	 * @param BaseTypeGeneratorInterface $type
 	 */
 	public function generateResolverForGenerator(BaseTypeGeneratorInterface $type) {
-		$resolverClass = new Resolver();
+		// Create resolver class
+		$resolverClass = $this->getFactory()->createResolverClass($type);
 		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($type));
-		$resolverClass->setClassName($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
-		$resolverClass->setGeneratorType($type);
 
-		// Notice the key of the dependency here is the type name instead of the class name
-		$this->getClassMapper()->resolveDependency($resolverClass->getClassName(), $resolverClass->getFullQualifiedName());
-		$this->getClassMapper()->addClass($resolverClass);
+		// Map class
+		$this->getClassMapper()->mapClass($resolverClass->getClassName(), $resolverClass, false);
 	}
 
 	/**
@@ -77,21 +80,16 @@ class ClassComposer {
 		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class]);
 	}
 
-
-
-
-
-	public function generateTypeStore() {
-		$typeStoreClass = new TypeStore();
+	public function generateUniqueTypeStore() {
+		// Create type store class
+		$typeStoreClass = $this->getFactory()->createTypeStoreClass();
 		$typeStoreClass->setNamespace($this->getClassMapper()->getBaseNamespace());
-		$typeStoreClass->setClassName(self::TYPE_STORE_CLASS_NAME);
 
-		$typeStoreContent = new TypeStoreContent();
-		$typeStoreContent->setTypeStoreClass($typeStoreClass);
-
+		// Sets type store
 		$this->getClassMapper()->setTypeStore($typeStoreClass);
-		$this->getClassMapper()->addClass($typeStoreClass);
-		$this->getClassMapper()->resolveDependency($typeStoreClass->getClassName(), $typeStoreClass->getFullQualifiedName());
+
+		// Map class
+		$this->getClassMapper()->mapClass($typeStoreClass->getClassName(), $typeStoreClass, false);
 	}
 
 	public function writeClasses() {
@@ -133,5 +131,12 @@ class ClassComposer {
 	 */
 	public function setClassMapper($classMapper) {
 		$this->_classMapper = $classMapper;
+	}
+
+	/**
+	 * @return PSR4Factory
+	 */
+	public function getFactory() {
+		return $this->_factory;
 	}
 }

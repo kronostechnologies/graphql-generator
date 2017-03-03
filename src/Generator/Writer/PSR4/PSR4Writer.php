@@ -40,7 +40,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$this->_classComposer->getClassMapper()->setBaseNamespace($this->_context->namespace);
 		$this->_classComposer->getClassMapper()->setInitialMappings();
 
-		$this->_classComposer->generateTypeStore();
+		$this->_classComposer->generateUniqueTypeStore();
 	}
 
 	/**
