@@ -3,6 +3,8 @@
 
 namespace GraphQLGen\Generator\Writer\PSR4;
 
+use GraphQLGen\Generator\Formatters\ClassFormatter;
+
 
 /**
  * Takes care of writing classes to stub files, then to disk through the context. Also resolves PSR-4 namespaces to filenames.
@@ -29,7 +31,11 @@ class ClassesWriter {
 			// Resolve dependencies
 			$resolvedDependencies = $this->resolveDependenciesAsContent($class->getDependencies());
 
-			// ToDo: Writer content formatting
+			$contentFormatter = new ClassFormatter();
+			$contentFormatter->setBuffer($contentCreator->getContent());
+			$contentFormatter->setUseSpaces($this->_writerContext->formatter->useSpaces);
+			$contentFormatter->setTabSize($this->_writerContext->formatter->tabSize);
+			$formattedContent = $contentFormatter->format(1);
 
 			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
 			$destinationPath = $this->mapFQNToFilePath($class->getFullQualifiedName());
@@ -38,7 +44,7 @@ class ClassesWriter {
 
 			$stubFile = new ClassStubFile();
 			$stubFile->setFileContent($stubContent);
-			$stubFile->writeContent($contentCreator->getContent());
+			$stubFile->writeContent($formattedContent);
 			$stubFile->writeClassName($contentCreator->getClassName());
 			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
 			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
