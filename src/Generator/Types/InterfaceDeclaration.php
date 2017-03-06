@@ -68,8 +68,9 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 		foreach($this->fields as $field) {
 			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
 			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
+			$resolve = $this->formatter->fieldTypeFormatter->getResolveSnippet($field->fieldType);
 
-			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$formattedDescription}],";
+			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$formattedDescription},{$resolve}],";
 		}
 
 		return implode('', $fields);

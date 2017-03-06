@@ -32,10 +32,9 @@ class ClassesWriter {
 			$resolvedDependencies = $this->resolveDependenciesAsContent($class->getDependencies());
 
 			$contentFormatter = new ClassFormatter();
-			$contentFormatter->setBuffer($contentCreator->getContent());
 			$contentFormatter->setUseSpaces($this->_writerContext->formatter->useSpaces);
 			$contentFormatter->setTabSize($this->_writerContext->formatter->tabSize);
-			$formattedContent = $contentFormatter->format(1);
+			$formattedContent = $contentFormatter->format($contentCreator->getContent(), 1);
 
 			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
 			$destinationPath = $this->mapFQNToFilePath($class->getFullQualifiedName());

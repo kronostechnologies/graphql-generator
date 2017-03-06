@@ -30,11 +30,6 @@ class ClassFormatter {
 	protected $_tabSize;
 
 	/**
-	 * @var string
-	 */
-	protected $_buffer;
-
-	/**
 	 * @return bool
 	 */
 	public function usesSpaces() {
@@ -46,13 +41,6 @@ class ClassFormatter {
 	 */
 	public function setUseSpaces($useSpaces) {
 		$this->_useSpaces = $useSpaces;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getBuffer() {
-		return $this->_buffer;
 	}
 
 	/**
@@ -69,125 +57,140 @@ class ClassFormatter {
 		$this->_tabSize = $tabSize;
 	}
 
-	/**
-	 * @param string $buffer
-	 */
-	public function setBuffer($buffer) {
-		$this->_buffer = $buffer;
-	}
+	protected function minifyBuffer($classContent) {
+		$minifiedBuffer = str_replace("\n", "", $classContent);
 
-	protected function minifyBuffer() {
-		$minifiedBuffer = $this->getBuffer();
-		$minifiedBuffer = str_replace("\n", "", $minifiedBuffer);
-
-		$this->setBuffer($minifiedBuffer);
+		return $minifiedBuffer;
 	}
 
 	/**
 	 * @param int $initialIndentSize
 	 * @return string
 	 */
-	public function format($initialIndentSize = 0) {
-		// Minify buffer
-		$this->minifyBuffer();
+	public function format($classContent, $initialIndentSize = 0) {
+		$minifiedClassContent = $this->minifyBuffer($classContent);
 
-		$bufferSplit = str_split($this->getBuffer());
-		$endBuffer = "";
+		$bufferSplit = str_split($minifiedClassContent);
 
-		$escapeString = false;
-		$stringContext = false;
-		$afterNewLine = true;
-		$indentSize = $initialIndentSize;
-		$arrayContextEnd = -1;
+		$context = new ClassFormatterContext($initialIndentSize);
+		$context->setInitialBuffer($minifiedClassContent);
 
 		// Advance token-by-token
 		foreach($bufferSplit as $idx => $char) {
-			// If in array context, skip everything
-			if ($idx <= $arrayContextEnd) {
-				continue;
-			}
-
-			// If in string context, upon reaching \\, escape next string token
-			if (strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
-				$escapeString = !$escapeString;
-				$endBuffer .= $char;
-
-				continue;
-			}
-
-			// If not escaping next string token, upon reaching " or ', toggle string context
-			if (!$escapeString && strpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
-				$stringContext = !$stringContext;
-				$endBuffer .= $char;
-
-				continue;
-			}
-
-			// If in string context, append the token and stop processing it
-			if ($stringContext) {
-				$escapeString = false;
-				$endBuffer .= $char;
-
-				continue;
-			}
-
-			// Upon reaching ;, break to new line
-			if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
-				$endBuffer .= $char . "\n" . $this->getTab($indentSize);
-				$afterNewLine = true;
-
-				continue;
-			}
-
-			// Upon reaching {, insert space, write character, increment indent and start a new line
-			if (strpos(self::INDENT_TOKENS, $char) !== false) {
-				$endBuffer .= "{";
-				$indentSize++;
-				$endBuffer .= "\n" . $this->getTab($indentSize);
-				$afterNewLine = true;
-
-				continue;
-			}
-
-			// Upon reaching }, decrement indent, write character, and start a new line
-			if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
-				$indentSize--;
-				$endBuffer .= "\n";
-				$endBuffer .= $this->getTab($indentSize) . "}\n";
-
-				continue;
-			}
-
-			// Upon reaching [, find ] and apply array formatter to it
-			if (strpos("[", $char) !== false) {
-				$startIdx = $idx;
-				$endIdx = $this->findArrayEndIdx($startIdx);
-
-				$arraySubstr = substr($this->getBuffer(), $startIdx, ($endIdx - $startIdx + 1));
-
-				$arrayFormatter = new GeneratorArrayFormatter($this->usesSpaces(), $this->getTabSize());
-				$formattedArray = $arrayFormatter->formatArray($arraySubstr, $indentSize);
-
-				$endBuffer .= trim($formattedArray);
-				$arrayContextEnd = $endIdx;
-
-				continue;
-			}
-
-			// Don't add blank characters after new line
-			if (($afterNewLine && strpos($char, " ") === false) || !$afterNewLine) {
-				$endBuffer .= $char;
-				$afterNewLine = false;
-			}
+			$this->skipIfInArray($context, $idx) &&
+			$this->toggleStringContext($context, $char) &&
+			$this->appendStringContextTokenAndSkip($context, $char) &&
+			$this->lineDelimiterNewLine($context, $char) &&
+			$this->addOpeningBrace($context, $char) &&
+			$this->addClosingBrace($context, $char) &&
+			$this->checkForArrayFormatterSection($context, $char, $idx) &&
+			$this->addCharIfNotTrimmed($context, $char);
 		}
 
-		return $endBuffer;
+		return $context->getBuffer();
 	}
 
-	protected function findArrayEndIdx($startPos) {
+	protected function skipIfInArray(ClassFormatterContext $context, $idx) {
+		return ($idx > $context->getArrayContextEnd());
+	}
+
+	protected function toggleStringContext(ClassFormatterContext $context, $char) {
+		if (!$context->doEscapeNext() && strpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
+			$context->toggleStringContext();
+		}
+
+		return true;
+	}
+
+	protected function escapeNextStringToken(ClassFormatterContext $context, $char) {
+		if ($context->isInStringContext() && strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
+			$context->toggleDoEscapeNext();
+		}
+
+		return true;
+	}
+
+	protected function appendStringContextTokenAndSkip(ClassFormatterContext $context, $char) {
+		if ($context->isInStringContext()) {
+			$context->toggleDoEscapeNext();
+			$context->appendCharacter($char);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
+		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
+			$context->appendCharacter($char . "\n" . $this->getTab($context->getIndentLevel()));
+			echo $char . "\n" . $this->getTab($context->getIndentLevel() . "\n");
+			$context->setIsAfterNewLine(true);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function addOpeningBrace(ClassFormatterContext $context, $char) {
+		if (strpos(self::INDENT_TOKENS, $char) !== false) {
+			$context->appendCharacter($char);
+			$context->increaseIndentLevel();
+			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
+			$context->setIsAfterNewLine(true);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function addClosingBrace(ClassFormatterContext $context, $char) {
+		if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
+			$context->decreaseIndentLevel();
+			if ($context->isAfterNewLine()) {
+				$context->appendCharacter($char . "\n");
+			} else {
+				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n" . $this->getTab($context->getIndentLevel()));
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function checkForArrayFormatterSection(ClassFormatterContext $context, $char, $idx) {
+		if (strpos("[", $char) !== false) {
+			$startIdx = $idx;
+			$endIdx = $this->findArrayEndIdx($context, $startIdx);
+
+			$arraySubstr = substr($context->getInitialBuffer(), $startIdx, ($endIdx - $startIdx + 1));
+
+			$arrayFormatter = new GeneratorArrayFormatter($this->usesSpaces(), $this->getTabSize());
+			$formattedArray = $arrayFormatter->formatArray($arraySubstr, $context->getIndentLevel());
+
+			$context->appendCharacter(trim($formattedArray));
+			$context->setArrayContextEnd($endIdx);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function addCharIfNotTrimmed(ClassFormatterContext $context, $char) {
+		if (($context->isAfterNewLine() && strpos($char, " ") === false) || !$context->isAfterNewLine()) {
+			$context->appendCharacter($char);
+			$context->setIsAfterNewLine(false);
+		}
+	}
+
+	protected function findArrayEndIdx(ClassFormatterContext $context, $startPos) {
 		$arrayLvl = 0;
 
-		$bufferSplit = str_split(substr($this->getBuffer(), $startPos));
+		$bufferSplit = str_split(substr($context->getInitialBuffer(), $startPos));
 
 		$stringContext = false;
 		$escapeString = false;

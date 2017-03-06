@@ -43,4 +43,8 @@ class BaseTypeFormatter {
 	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
 		return $fieldType->typeName;
 	}
+
+	public function getResolveSnippet($fieldType) {
+		return '';
+	}
 }
