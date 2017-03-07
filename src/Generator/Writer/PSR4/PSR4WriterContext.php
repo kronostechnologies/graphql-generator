@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
+use GraphQLGen\Generator\Formatters\ClassFormatter;
 use GraphQLGen\Generator\Writer\WriterContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -52,5 +53,16 @@ class PSR4WriterContext extends WriterContext {
 		}
 
 		return $this->stubsDir . $stubFileName;
+	}
+
+	/**
+	 * @return ClassFormatter
+	 */
+	public function getConfiguredClassFormatter() {
+		$classFormatter = new ClassFormatter();
+		$classFormatter->setUseSpaces($this->formatter->useSpaces);
+		$classFormatter->setTabSize($this->formatter->tabSize);
+
+		return $classFormatter;
 	}
 }

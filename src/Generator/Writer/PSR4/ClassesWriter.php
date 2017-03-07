@@ -4,6 +4,8 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Formatters\ClassFormatter;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 
 
 /**
@@ -26,45 +28,103 @@ class ClassesWriter {
 
 	public function writeClasses() {
 		foreach($this->_classMapper->getClasses() as $class) {
-			$contentCreator = $class->getContentCreator();
+			$this->writeIndividualClass($class);
+		}
+	}
 
-			// Resolve dependencies
-			$resolvedDependencies = $this->resolveDependenciesAsContent($class->getDependencies());
+	/**
+	 * @param SingleClass $class
+	 */
+	public function writeIndividualClass(SingleClass $class) {
+		$contentCreator = $class->getContentCreator();
+		$classFormatter = $this->_writerContext->getConfiguredClassFormatter();
 
-			$contentFormatter = new ClassFormatter();
-			$contentFormatter->setUseSpaces($this->_writerContext->formatter->useSpaces);
-			$contentFormatter->setTabSize($this->_writerContext->formatter->tabSize);
-			$formattedContent = $contentFormatter->format($contentCreator->getContent(), 1);
+		$stubFileDirectory = $this->fetchStubFileDirectory($class);
+		$stubFilePath = $this->fetchStubFilePath($class);
 
-			$variablesFormatter = new ClassFormatter();
-			$variablesFormatter->setUseSpaces($this->_writerContext->formatter->useSpaces);
-			$variablesFormatter->setTabSize($this->_writerContext->formatter->tabSize);
-			$formattedVariables = $variablesFormatter->format($contentCreator->getVariables(), 1);
+		$stubFile = $this->createClassStubFileFromPath($stubFilePath);
 
-			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
-			$destinationPath = $this->mapFQNToFilePath($class->getFullQualifiedName());
-			$stubFileFullPath = $this->_writerContext->getStubFilePath($stubFileName);
-			$stubContent = $this->_writerContext->readFileContentToString($stubFileFullPath);
+		$this->writeContent($contentCreator, $classFormatter, $stubFile);
+		$this->writeVariables($contentCreator, $classFormatter, $stubFile);
+		$this->writeDependencies($class, $stubFile);
+		$this->writeNamespace($contentCreator, $stubFile);
 
-			$stubFile = new ClassStubFile();
-			$stubFile->setFileContent($stubContent);
-			$stubFile->writeContent($formattedContent);
-			$stubFile->writeClassName($contentCreator->getClassName());
-			$stubFile->writeVariablesDeclarations($formattedVariables);
-			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
-			$stubFile->writeParentClassName($contentCreator->getParentClassName());
+		$stubFile->writeClassName($contentCreator->getClassName());
+		$stubFile->writeParentClassName($contentCreator->getParentClassName());
 
-			if (empty($contentCreator->getNamespace())) {
-				$stubFile->removeNamespace();
-			} else {
-				$stubFile->writeNamespace($contentCreator->getNamespace()); // ToDo: Check for blank namespace
-			}
+		$this->_writerContext->makeFileDirectory($stubFileDirectory);
+		$this->_writerContext->writeFile($stubFileDirectory, $stubFile->getFileContent());
+	}
 
-			$this->_writerContext->makeFileDirectory($destinationPath);
-			$this->_writerContext->writeFile($destinationPath, $stubFile->getFileContent());
+	/**
+	 * @param SingleClass $class
+	 * @return string
+	 */
+	public function fetchStubFileDirectory(SingleClass $class) {
+		return $this->mapFQNToFilePath($class->getFullQualifiedName());
+	}
 
-			// ToDo: Save stub file
+	/**
+	 * @param SingleClass $class
+	 * @return string
+	 */
+	public function fetchStubFilePath(SingleClass $class) {
+		$stubFileName = ClassStubFile::getStubFilenameForClass($class);
 
+		return $this->_writerContext->getStubFilePath($stubFileName);
+	}
+
+	/**
+	 * @param $stubFilePath
+	 * @return ClassStubFile
+	 */
+	protected function createClassStubFileFromPath($stubFilePath) {
+		$stubContent = $this->_writerContext->readFileContentToString($stubFilePath);
+		$stubFile = new ClassStubFile();
+		$stubFile->setFileContent($stubContent);
+
+		return $stubFile;
+	}
+
+	/**
+	 * @param BaseContentCreator $contentCreator
+	 * @param ClassFormatter $formatter
+	 * @param ClassStubFile $stubFile
+	 */
+	protected function writeContent(BaseContentCreator $contentCreator, ClassFormatter $formatter, ClassStubFile $stubFile) {
+		$formattedContent = $formatter->format($contentCreator->getContent(), 1);
+		$stubFile->writeContent($formattedContent);
+	}
+
+	/**
+	 * @param BaseContentCreator $contentCreator
+	 * @param ClassFormatter $formatter
+	 * @param ClassStubFile $stubFile
+	 */
+	protected function writeVariables(BaseContentCreator $contentCreator, ClassFormatter $formatter, ClassStubFile $stubFile) {
+		$formattedVariables = $formatter->format($contentCreator->getVariables(), 1);
+		$stubFile->writeVariablesDeclarations($formattedVariables);
+	}
+
+	/**
+	 * @param SingleClass $class
+	 * @param ClassStubFile $stubFile
+	 */
+	protected function writeDependencies(SingleClass $class, ClassStubFile $stubFile) {
+		$resolvedDependencies = $this->resolveDependenciesAsContent($class->getDependencies());
+		$stubFile->writeDependenciesDeclaration($resolvedDependencies);
+	}
+
+	/**
+	 * @param BaseContentCreator $contentCreator
+	 * @param ClassStubFile $stubFile
+	 */
+	protected function writeNamespace(BaseContentCreator $contentCreator, ClassStubFile $stubFile) {
+		if(empty($contentCreator->getNamespace())) {
+			$stubFile->removeNamespace();
+		}
+		else {
+			$stubFile->writeNamespace($contentCreator->getNamespace());
 		}
 	}
 
