@@ -57,6 +57,10 @@ class ClassFormatter {
 		$this->_tabSize = $tabSize;
 	}
 
+	/**
+	 * @param string $classContent
+	 * @return string
+	 */
 	protected function minifyBuffer($classContent) {
 		$minifiedBuffer = str_replace("\n", "", $classContent);
 
@@ -64,6 +68,7 @@ class ClassFormatter {
 	}
 
 	/**
+	 * @param string $classContent
 	 * @param int $initialIndentSize
 	 * @return string
 	 */
@@ -90,10 +95,20 @@ class ClassFormatter {
 		return $context->getBuffer();
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param int $idx
+	 * @return bool
+	 */
 	protected function skipIfInArray(ClassFormatterContext $context, $idx) {
 		return ($idx > $context->getArrayContextEnd());
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function toggleStringContext(ClassFormatterContext $context, $char) {
 		if (!$context->doEscapeNext() && strpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
 			$context->toggleStringContext();
@@ -102,6 +117,11 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function escapeNextStringToken(ClassFormatterContext $context, $char) {
 		if ($context->isInStringContext() && strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
 			$context->toggleDoEscapeNext();
@@ -110,6 +130,11 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function appendStringContextTokenAndSkip(ClassFormatterContext $context, $char) {
 		if ($context->isInStringContext()) {
 			$context->toggleDoEscapeNext();
@@ -133,6 +158,11 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function addOpeningBrace(ClassFormatterContext $context, $char) {
 		if (strpos(self::INDENT_TOKENS, $char) !== false) {
 			$context->appendCharacter($char);
@@ -146,6 +176,11 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function addClosingBrace(ClassFormatterContext $context, $char) {
 		if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
 			$context->decreaseIndentLevel();
@@ -161,6 +196,12 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @param int $idx
+	 * @return bool
+	 */
 	protected function checkForArrayFormatterSection(ClassFormatterContext $context, $char, $idx) {
 		if (strpos("[", $char) !== false) {
 			$startIdx = $idx;
@@ -180,6 +221,10 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 */
 	protected function addCharIfNotTrimmed(ClassFormatterContext $context, $char) {
 		if (($context->isAfterNewLine() && strpos($char, " ") === false) || !$context->isAfterNewLine()) {
 			$context->appendCharacter($char);
@@ -187,6 +232,11 @@ class ClassFormatter {
 		}
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param int $startPos
+	 * @return int
+	 */
 	protected function findArrayEndIdx(ClassFormatterContext $context, $startPos) {
 		$arrayLvl = 0;
 
