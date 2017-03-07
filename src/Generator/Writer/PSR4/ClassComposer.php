@@ -26,16 +26,16 @@ class ClassComposer {
 	protected $_classMapper;
 
 	/**
-	 * @var PSR4Factory
+	 * @var ClassesFactory
 	 */
 	protected $_factory;
 
 	/**
 	 * ClassComposer constructor.
-	 * @param PSR4Factory $factory
+	 * @param ClassesFactory $factory
 	 */
 	public function __construct($factory = null) {
-		$this->_factory = $factory ?: new PSR4Factory();
+		$this->_factory = $factory ?: new ClassesFactory();
 	}
 
 	/**
@@ -95,8 +95,6 @@ class ClassComposer {
 		$this->getClassMapper()->mapClass($typeStoreClass->getClassName(), $typeStoreClass, false);
 	}
 
-
-
 	/**
 	 * @return ClassMapper
 	 */
@@ -112,7 +110,7 @@ class ClassComposer {
 	}
 
 	/**
-	 * @return PSR4Factory
+	 * @return ClassesFactory
 	 */
 	public function getFactory() {
 		return $this->_factory;

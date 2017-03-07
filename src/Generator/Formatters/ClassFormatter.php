@@ -84,6 +84,7 @@ class ClassFormatter {
 
 		$context = new ClassFormatterContext($initialIndentSize);
 		$context->setInitialBuffer($minifiedClassContent);
+		$context->setIsNewLineIndented(false);
 
 		// Advance token-by-token
 		foreach($bufferSplit as $idx => $char) {
@@ -97,7 +98,7 @@ class ClassFormatter {
 			$this->addCharIfNotTrimmed($context, $char);
 		}
 
-		return $context->getBuffer();
+		return rtrim($context->getBuffer());
 	}
 
 	/**
@@ -129,7 +130,10 @@ class ClassFormatter {
 	 */
 	protected function escapeNextStringToken(ClassFormatterContext $context, $char) {
 		if ($context->isInStringContext() && strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
-			$context->toggleDoEscapeNext();
+			$context->setDoEscapeNext(true);
+			$context->appendCharacter($char);
+
+			return false;
 		}
 
 		return true;
@@ -142,7 +146,7 @@ class ClassFormatter {
 	 */
 	protected function appendStringContextTokenAndSkip(ClassFormatterContext $context, $char) {
 		if ($context->isInStringContext()) {
-			$context->toggleDoEscapeNext();
+			$context->setDoEscapeNext(false);
 			$context->appendCharacter($char);
 
 			return false;

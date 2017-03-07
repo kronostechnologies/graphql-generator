@@ -110,8 +110,8 @@ class ClassFormatterContext {
 		$this->_isInStringContext = !$this->_isInStringContext;
 	}
 
-	public function toggleDoEscapeNext() {
-		$this->_doEscapeNext = !$this->_doEscapeNext;
+	public function setDoEscapeNext($value) {
+		$this->_doEscapeNext = $value;
 	}
 
 	public function setIsAfterNewLine($value) {
