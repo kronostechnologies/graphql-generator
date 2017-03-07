@@ -36,6 +36,11 @@ class ClassesWriter {
 			$contentFormatter->setTabSize($this->_writerContext->formatter->tabSize);
 			$formattedContent = $contentFormatter->format($contentCreator->getContent(), 1);
 
+			$variablesFormatter = new ClassFormatter();
+			$variablesFormatter->setUseSpaces($this->_writerContext->formatter->useSpaces);
+			$variablesFormatter->setTabSize($this->_writerContext->formatter->tabSize);
+			$formattedVariables = $variablesFormatter->format($contentCreator->getVariables(), 1);
+
 			$stubFileName = ClassStubFile::getStubFilenameForClass($class);
 			$destinationPath = $this->mapFQNToFilePath($class->getFullQualifiedName());
 			$stubFileFullPath = $this->_writerContext->getStubFilePath($stubFileName);
@@ -45,7 +50,7 @@ class ClassesWriter {
 			$stubFile->setFileContent($stubContent);
 			$stubFile->writeContent($formattedContent);
 			$stubFile->writeClassName($contentCreator->getClassName());
-			$stubFile->writeVariablesDeclarations($contentCreator->getVariables());
+			$stubFile->writeVariablesDeclarations($formattedVariables);
 			$stubFile->writeDependenciesDeclaration($resolvedDependencies);
 			$stubFile->writeParentClassName($contentCreator->getParentClassName());
 

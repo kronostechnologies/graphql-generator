@@ -26,6 +26,11 @@ class ClassFormatterContext {
 	protected $_isAfterNewLine = false;
 
 	/**
+	 * @var bool
+	 */
+	protected $_isNewLineIndented = true;
+
+	/**
 	 * @var int
 	 */
 	protected $_arrayContextEnd = -1;
@@ -132,5 +137,19 @@ class ClassFormatterContext {
 	 */
 	public function getInitialBuffer() {
 		return $this->_initialBuffer;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isNewLineIndented() {
+		return $this->_isNewLineIndented;
+	}
+
+	/**
+	 * @param bool $isNewLineIndented
+	 */
+	public function setIsNewLineIndented($isNewLineIndented) {
+		$this->_isNewLineIndented = $isNewLineIndented;
 	}
 }

@@ -75,6 +75,11 @@ class ClassFormatter {
 	public function format($classContent, $initialIndentSize = 0) {
 		$minifiedClassContent = $this->minifyBuffer($classContent);
 
+		// Content can be empty, and str_split will return an empty-valued array instead of null
+		if (empty($minifiedClassContent)) {
+			return "";
+		}
+
 		$bufferSplit = str_split($minifiedClassContent);
 
 		$context = new ClassFormatterContext($initialIndentSize);
@@ -146,11 +151,21 @@ class ClassFormatter {
 		return true;
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
 	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
 		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
-			$context->appendCharacter($char . "\n" . $this->getTab($context->getIndentLevel()));
-			echo $char . "\n" . $this->getTab($context->getIndentLevel() . "\n");
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
+
+			$context->appendCharacter($char . "\n");
 			$context->setIsAfterNewLine(true);
+			$context->setIsNewLineIndented(false);
 
 			return false;
 		}
@@ -165,10 +180,16 @@ class ClassFormatter {
 	 */
 	protected function addOpeningBrace(ClassFormatterContext $context, $char) {
 		if (strpos(self::INDENT_TOKENS, $char) !== false) {
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
+
 			$context->appendCharacter($char);
 			$context->increaseIndentLevel();
-			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
+			$context->appendCharacter("\n");
 			$context->setIsAfterNewLine(true);
+			$context->setIsNewLineIndented(false);
 
 			return false;
 		}
@@ -184,11 +205,19 @@ class ClassFormatter {
 	protected function addClosingBrace(ClassFormatterContext $context, $char) {
 		if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
 			$context->decreaseIndentLevel();
+
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
+
 			if ($context->isAfterNewLine()) {
 				$context->appendCharacter($char . "\n");
 			} else {
-				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n" . $this->getTab($context->getIndentLevel()));
+				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n");
 			}
+
+			$context->setIsNewLineIndented(false);
 
 			return false;
 		}
@@ -212,6 +241,11 @@ class ClassFormatter {
 			$arrayFormatter = new GeneratorArrayFormatter($this->usesSpaces(), $this->getTabSize());
 			$formattedArray = $arrayFormatter->formatArray($arraySubstr, $context->getIndentLevel());
 
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
+
 			$context->appendCharacter(trim($formattedArray));
 			$context->setArrayContextEnd($endIdx);
 
@@ -227,6 +261,11 @@ class ClassFormatter {
 	 */
 	protected function addCharIfNotTrimmed(ClassFormatterContext $context, $char) {
 		if (($context->isAfterNewLine() && strpos($char, " ") === false) || !$context->isAfterNewLine()) {
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
+
 			$context->appendCharacter($char);
 			$context->setIsAfterNewLine(false);
 		}
