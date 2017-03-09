@@ -9,6 +9,8 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 
 class Resolver extends SingleClass {
 
+	const STUB_FILE = 'resolver.stub';
+
 	/**
 	 * @var BaseTypeGeneratorInterface
 	 */
@@ -43,6 +45,6 @@ class Resolver extends SingleClass {
 	 * @return string
 	 */
 	public function getStubFileName() {
-		return 'resolver.stub';
+		return self::STUB_FILE;
 	}
 }

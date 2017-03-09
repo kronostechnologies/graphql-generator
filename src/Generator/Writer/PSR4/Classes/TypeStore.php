@@ -7,6 +7,8 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
 
 class TypeStore extends SingleClass {
+	const STUB_FILE = 'typestore.stub';
+
 	/**
 	 * @var ObjectType[]
 	 */
@@ -40,6 +42,6 @@ class TypeStore extends SingleClass {
 	 * @return string
 	 */
 	public function getStubFileName() {
-		return 'typestore.stub';
+		return self::STUB_FILE;
 	}
 }

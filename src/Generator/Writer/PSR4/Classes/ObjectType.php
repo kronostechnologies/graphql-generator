@@ -18,6 +18,11 @@ class ObjectType extends SingleClass {
 	 */
 	protected $_generatorType;
 
+	const ENUM_STUB = 'enum.stub';
+	const OBJECT_STUB = 'object.stub';
+	const SCALAR_STUB = 'scalar.stub';
+	const INTERFACE_STUB = 'interface.stub';
+
 	/**
 	 * @return BaseTypeGeneratorInterface
 	 */
@@ -45,17 +50,18 @@ class ObjectType extends SingleClass {
 
 	/**
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getStubFileName() {
 		switch(get_class($this->getGeneratorType())) {
 			case Enum::class:
-				return 'enum.stub';
+				return self::ENUM_STUB;
 			case Type::class:
-				return 'object.stub';
+				return self::OBJECT_STUB;
 			case Scalar::class:
-				return 'scalar.stub';
+				return self::SCALAR_STUB;
 			case InterfaceDeclaration::class:
-				return 'interface.stub';
+				return self::INTERFACE_STUB;
 			default:
 				throw new Exception("Stub not implemented for generator type " . get_class($this->getGeneratorType()));
 		}
