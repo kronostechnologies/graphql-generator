@@ -6,6 +6,11 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\Scalar;
+use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
+use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
+use GraphQLGen\Generator\Writer\PSR4\ClassesWriter;
+use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Resolver;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
@@ -13,6 +18,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'ScalarType';
+	const BASE_NS = 'A\\Base\\Namespace';
+
 	/**
 	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -24,20 +31,50 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	protected $_psr4Writer;
 
 	/**
-	 * @var PSR4Resolver|PHPUnit_Framework_MockObject_MockObject
+	 * @var ClassComposer|PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $_psr4Resolver;
+	protected $_classComposer;
+
+	/**
+	 * @var ClassesFactory|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_factory;
+
+	/**
+	 * @var ClassMapper|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_classMapper;
+
+	/**
+	 * @var TypeStore|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_typeStore;
+
+	/**
+	 * @var PSR4Writer|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_classesWriter;
 
 	public function setUp() {
-		$this->_psr4Resolver = $this->createMock(PSR4Resolver::class);
-		$this->_psr4Resolver->method('generateTokensFromDependencies')->willReturn([]);
+		$this->_classMapper = $this->createMock(ClassMapper::class);
+		$this->_classesWriter = $this->createMock(ClassesWriter::class);
+		$this->_typeStore = $this->createMock(TypeStore::class);
+
+		$this->_classComposer = $this->createMock(ClassComposer::class);
+		$this->_classComposer->method('getClassMapper')->willReturn($this->_classMapper);
 
 		$this->_psr4WriterContext = $this->createMock(PSR4WriterContext::class);
-		$this->_psr4WriterContext->resolver = $this->_psr4Resolver;
 		$this->_psr4WriterContext->formatter = new StubFormatter();
 
-		$this->_psr4Writer = new PSR4Writer($this->_psr4WriterContext);
+		$this->_factory = $this->createMock(ClassesFactory::class);
+		$this->_factory->method('createClassComposer')->willReturn($this->_classComposer);
+		$this->_factory->method('createTypeStoreClass')->willReturn($this->_typeStore);
+		$this->_factory->method('createClassesWriter')->willReturn($this->_classesWriter);
+
+		$this->_psr4Writer = new PSR4Writer($this->_psr4WriterContext, $this->_factory);
+		$this->_psr4Writer->setClassComposer($this->_classComposer);
 	}
+
 
 	public function test_GivenNothing_initialize_WillCreateDirectoryStructure() {
 		$this->_psr4WriterContext->expects($this->any())->method('createDirectoryIfNonExistant');
@@ -45,49 +82,48 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_psr4Writer->initialize();
 	}
 
+	public function test_GivenSettings_initialize_WillSetClassMapper() {
+		$this->_psr4WriterContext->namespace = self::BASE_NS;
+
+		$this->_classMapper->expects($this->once())->method('setBaseNamespace')->with(self::BASE_NS);
+		$this->_classMapper->expects($this->once())->method('setInitialMappings');
+
+		$this->_psr4Writer->initialize();
+	}
+
+	public function test_GivenSettings_initialize_WillGenerateTypeStore() {
+		$this->_classComposer->expects($this->once())->method('generateUniqueTypeStore');
+
+		$this->_psr4Writer->initialize();
+	}
+
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGetProperStubFileName() {
 		$scalarType = $this->GivenScalarType();
 
-		$this->_psr4Resolver->expects($this->once())->method('getStubFilenameForType');
+		$this->_classComposer->expects($this->once())->method('generateClassForGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
 
-
-	public function test_GivenScalarType_generateFileForTypeGenerator_WillStoreFQNToken() {
+	public function test_GivenScalarType_generateFileForTypeGenerator_WillGenerateClass() {
 		$scalarType = $this->GivenScalarType();
 
-		$this->_psr4Resolver->expects($this->once())->method('storeFQNTokenForType');
+		$this->_classComposer->expects($this->once())->method('generateClassForGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
 
-	public function test_GivenScalarType_generateFileForTypeGenerator_WillWriteClassFile() {
+	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateResolver() {
 		$scalarType = $this->GivenScalarType();
+		$this->_classComposer->method('generatorTypeSupportsResolver')->willReturn(true);
 
-		$this->_psr4WriterContext->expects($this->once())->method('writeFile');
+		$this->_classComposer->expects($this->once())->method('generateResolverForGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
 
-	public function test_GivenNothing_finalize_WillGetResolvedTokens() {
-		$this->_psr4Resolver->expects($this->any())->method('getAllResolvedTokens')->willReturn([]);
-
-		$this->_psr4Writer->finalize();
-	}
-
-	public function test_GivenAtLeastOneResolveToken_finalize_WillCheckIfFQNExists() {
-		$this->GivenAtLeastOneResolveToken();
-
-		$this->_psr4WriterContext->expects($this->once())->method('fileExists');
-
-		$this->_psr4Writer->finalize();
-	}
-
-	public function test_GivenAtLeastOneResolveToken_finalize_WillReplaceFile() {
-		$this->GivenAtLeastOneResolveToken();
-
-		$this->_psr4WriterContext->expects($this->once())->method('writeFile');
+	public function test_GivenNothing_finalize_WillWriteClasses() {
+		$this->_classesWriter->expects($this->once())->method('writeClasses');
 
 		$this->_psr4Writer->finalize();
 	}
@@ -100,6 +136,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenAtLeastOneResolveToken() {
-		$this->_psr4Resolver->method('getAllResolvedTokens')->willReturn([ '123' => 'NS\123']);
+		$this->_classComposer->method('getAllResolvedTokens')->willReturn([ '123' => 'NS\123']);
 	}
+
 }

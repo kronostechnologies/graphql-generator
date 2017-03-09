@@ -26,17 +26,23 @@ class PSR4Writer implements GeneratorWriterInterface {
 	protected $_classComposer;
 
 	/**
+	 * @var ClassesFactory
+	 */
+	protected $_factory;
+
+	/**
 	 * PSR4Writer constructor.
 	 * @param PSR4WriterContext $context
+	 * @param ClassesFactory $factory
 	 */
-	public function __construct(PSR4WriterContext $context) {
+	public function __construct(PSR4WriterContext $context, $factory = null) {
 		$this->_context = $context;
+		$this->_factory = $factory ?: new ClassesFactory();
 	}
 
 	public function initialize() {
-		$this->_classComposer = new ClassComposer();
-		$this->_classComposer->setClassMapper(new ClassMapper());
-		$this->_classComposer->getClassMapper()->setTypeStore(new TypeStore());
+		$this->_classComposer = $this->_factory->createClassComposer();
+		$this->_classComposer->setClassMapper($this->_factory->createClassMapper());
 		$this->_classComposer->getClassMapper()->setBaseNamespace($this->_context->namespace);
 		$this->_classComposer->getClassMapper()->setInitialMappings();
 
@@ -56,7 +62,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	public function finalize() {
-		$writer = new ClassesWriter();
+		$writer = $this->_factory->createClassesWriter();
 		$writer->setClassMapper($this->_classComposer->getClassMapper());
 		$writer->setWriterContext($this->_context);
 		$writer->writeClasses();

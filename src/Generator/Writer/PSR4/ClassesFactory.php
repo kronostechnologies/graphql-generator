@@ -52,4 +52,32 @@ class ClassesFactory {
 
 		return $stubFile;
 	}
+
+	/**
+	 * @return ClassComposer
+	 */
+	public function createClassComposer() {
+		$classComposer = new ClassComposer($this);
+
+		return $classComposer;
+	}
+
+	/**
+	 * @return ClassesWriter
+	 */
+	public function createClassesWriter() {
+		$classesWriter = new ClassesWriter($this);
+
+		return $classesWriter;
+	}
+
+	/**
+	 * @return ClassMapper
+	 */
+	public function createClassMapper() {
+		$classMapper = new ClassMapper();
+
+		return $classMapper;
+	}
+
 }
