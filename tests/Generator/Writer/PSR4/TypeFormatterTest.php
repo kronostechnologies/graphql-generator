@@ -7,9 +7,9 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
-class PSR4TypeFormatterTest extends \PHPUnit_Framework_TestCase {
+class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'TypeName';
-	const EXPECTED_TYPE_DEFINITION = 'TypeStore::getTypeDefinition(TypeName::class)';
+	const EXPECTED_TYPE_DEFINITION = 'TypeStore::TypeName()';
 
 	/**
 	 * @var TypeFormatter

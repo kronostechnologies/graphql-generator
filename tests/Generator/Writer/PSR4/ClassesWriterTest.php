@@ -177,7 +177,7 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenSingleClass_writeIndividualClass_WillWriteParentClassName() {
 		$class = $this->GivenSingleClass();
 
-		$this->_stubFile->expects($this->once())->method('writeParentClassName')->with(self::PARENT_CLASS_NAME);
+		$this->_stubFile->expects($this->once())->method('writeExtendsClassName')->with(self::PARENT_CLASS_NAME);
 
 		$this->_classesWriter->writeIndividualClass($class);
 	}
