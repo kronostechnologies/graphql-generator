@@ -58,7 +58,7 @@ class ClassesWriter {
 		$this->writeNamespace($contentCreator, $stubFile);
 
 		$stubFile->writeClassName($contentCreator->getClassName());
-		$stubFile->writeParentClassName($contentCreator->getParentClassName());
+		$stubFile->writeExtendsClassName($contentCreator->getParentClassName());
 
 		$this->_writerContext->makeFileDirectory($stubFileDirectory);
 		$this->_writerContext->writeFile($stubFileDirectory, $stubFile->getFileContent());

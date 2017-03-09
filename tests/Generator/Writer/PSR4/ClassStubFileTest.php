@@ -8,7 +8,7 @@ use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
 use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
+class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_FILE_LINE_1 = "FirstLine;";
 	const STUB_FILE_LINE_2 = "namespace LocalNamespace;";
 	const STUB_FILE_LINE_3 = "class ClassName extends ParentClass {";
@@ -16,7 +16,7 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 
 	const NAMESPACE_NEW = "TestNamespace";
 	const CLASS_NEW = "NewClass";
-	const PARENT_CLASS_NEW = "NewParentClass";
+	const EXTENDS_CLASS_NEW = "NewParentClass";
 
 	const VARIABLES_DECLARATIONS = "var aVariable = 123;";
 
@@ -45,8 +45,8 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::STUB_FILE_LINE_2, $retVal);
 	}
 
-	public function test_GivenStubFile_getDummyClassNameLine_WillReturnRightLine() {
-		$retVal = $this->_givenStubFile->getDummyClassNameLine();
+	public function test_GivenStubFile_getClassNameLine_WillReturnRightLine() {
+		$retVal = $this->_givenStubFile->getClassNameLine();
 
 		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
 	}
@@ -78,11 +78,11 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::CLASS_NEW, $retVal);
 	}
 
-	public function test_GivenStubFile_writeParentClassName_WillReplaceRightLine() {
-		$this->_givenStubFile->writeParentClassName(self::PARENT_CLASS_NEW);
+	public function test_GivenStubFile_writeExtendsClassName_WillReplaceRightLine() {
+		$this->_givenStubFile->writeExtendsClassName(self::EXTENDS_CLASS_NEW);
 		$retVal = $this->_givenStubFile->getFileContent();
 
-		$this->assertContains(self::PARENT_CLASS_NEW, $retVal);
+		$this->assertContains(self::EXTENDS_CLASS_NEW, $retVal);
 	}
 
 	public function test_GivenStubFile_writeVariablesDeclarations_WillReplaceRightLine() {

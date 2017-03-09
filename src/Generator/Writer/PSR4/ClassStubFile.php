@@ -38,7 +38,7 @@ class ClassStubFile extends StubFile {
 	/**
 	 * @return null|string
 	 */
-	public function getDummyClassNameLine() {
+	public function getClassNameLine() {
 		return $this->getLineWithText(self::DUMMY_CLASSNAME);
 	}
 
@@ -81,7 +81,7 @@ class ClassStubFile extends StubFile {
 	/**
 	 * @param string $className
 	 */
-	public function writeParentClassName($className) {
+	public function writeExtendsClassName($className) {
 		$this->replaceTextInStub(ClassStubFile::EXTENDS_CLASSNAME, $className);
 	}
 }
