@@ -13,8 +13,8 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_LINE_2 = "SecondLine = 2; Set 2;";
 	const STUB_LINE_3 = "ThirdLine = 3; Set 1;";
 	const STUB_LINE_4 = "FourthLine = 4; Set 2;";
-	const STUB_LINE_5 = "SomeUsesGoesHere 'UsesDeclarations';";
-	const STUB_LINE_6 = "TypeDefinitionGoesHere 'TypeDefinitionDeclaration';";
+	const STUB_LINE_5 = "SomeUsesGoesHere // @generate:Dependencies";
+	const STUB_LINE_6 = "TypeDefinitionGoesHere // @generate:Content";
 	const ALTERED_TEXT = "Altered text here";
 	const ALTERED_LINE_1 = "FirstLine Altered text here; Set 1;";
 	const ALTERED_LINE_5 = "SomeUsesGoesHere Altered text here";

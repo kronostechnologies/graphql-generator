@@ -1,4 +1,4 @@
 FirstLine;
-namespace DummyNamespace;
-class DummyClass {
-'VariablesDeclarations';
+namespace LocalNamespace;
+class ClassName extends ParentClass {
+// @generate:Variables

@@ -2,5 +2,5 @@ FirstLine = 1; Set 1;
 SecondLine = 2; Set 2;
 ThirdLine = 3; Set 1;
 FourthLine = 4; Set 2;
-SomeUsesGoesHere 'UsesDeclarations';
-TypeDefinitionGoesHere 'TypeDefinitionDeclaration';
+SomeUsesGoesHere // @generate:Dependencies
+TypeDefinitionGoesHere // @generate:Content

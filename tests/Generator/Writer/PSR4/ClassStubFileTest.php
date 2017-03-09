@@ -10,13 +10,16 @@ use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_FILE_LINE_1 = "FirstLine;";
-	const STUB_FILE_LINE_2 = "namespace DummyNamespace;";
-	const STUB_FILE_LINE_3 = "class DummyClass {";
-	const STUB_FILE_LINE_4 = "'VariablesDeclarations';";
+	const STUB_FILE_LINE_2 = "namespace LocalNamespace;";
+	const STUB_FILE_LINE_3 = "class ClassName extends ParentClass {";
+	const STUB_FILE_LINE_4 = "// @generate:Variables";
 
 	const NAMESPACE_NEW = "TestNamespace";
 	const CLASS_NEW = "NewClass";
+	const PARENT_CLASS_NEW = "NewParentClass";
+
 	const VARIABLES_DECLARATIONS = "var aVariable = 123;";
+
 
 	/**
 	 * @var ClassStubFile
@@ -48,6 +51,12 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
 	}
 
+	public function test_GivenStubFile_getExtendsClassNameLine_WillReturnRightLine() {
+		$retVal = $this->_givenStubFile->getExtendsClassNameLine();
+
+		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
+	}
+
 	public function test_GivenStubFile_getVariablesDeclarationLine_WillReturnRightLine() {
 		$retVal = $this->_givenStubFile->getVariablesDeclarationLine();
 
@@ -56,7 +65,7 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function test_GivenStubFile_writeNamespace_WillReplaceRightLine() {
-		$this->_givenStubFile->writeOrStripNamespace(self::NAMESPACE_NEW);
+		$this->_givenStubFile->writeNamespace(self::NAMESPACE_NEW);
 		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::NAMESPACE_NEW, $retVal);
@@ -67,6 +76,13 @@ class PSR4StubFileTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::CLASS_NEW, $retVal);
+	}
+
+	public function test_GivenStubFile_writeParentClassName_WillReplaceRightLine() {
+		$this->_givenStubFile->writeParentClassName(self::PARENT_CLASS_NEW);
+		$retVal = $this->_givenStubFile->getFileContent();
+
+		$this->assertContains(self::PARENT_CLASS_NEW, $retVal);
 	}
 
 	public function test_GivenStubFile_writeVariablesDeclarations_WillReplaceRightLine() {
