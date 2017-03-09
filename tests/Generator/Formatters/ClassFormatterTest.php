@@ -155,4 +155,42 @@ function secondFunction() {
     return \$localVar;
 }";
 	}
+
+	public function test_GivenFunctionDefinitionWithEscapedString_indent_WillEscapeStringCorrectly() {
+		$givenString = $this->GivenFunctionDefinitionWithEscapedString();
+
+		$retVal = $this->_formatter->format($givenString);
+
+		$this->assertEquals($this->GivenFunctionDefinitionWithEscapedString_Expected(), $retVal);
+	}
+
+	protected function GivenFunctionDefinitionWithEscapedString() {
+		return "function escapeMe() { echo 'I contain an \\', which must be escaped.'; }";
+	}
+
+	protected function GivenFunctionDefinitionWithEscapedString_Expected() {
+		return "function escapeMe() {
+    echo 'I contain an \\', which must be escaped.';
+}";
+	}
+
+	public function test_GivenFunctionContainingAnArray_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenFunctionContainingAnArray();
+
+		$retVal = $this->_formatter->format($givenString);
+
+		$this->assertEquals($this->GivenFunctionContainingAnArray_Expected(), $retVal);
+	}
+
+	protected function GivenFunctionContainingAnArray() {
+		return "function funcWithAnArray() { return [ 'arraykey' => 'arrayvalue' ]; }";
+	}
+
+	protected function GivenFunctionContainingAnArray_Expected() {
+		return "function funcWithAnArray() {
+    return [
+        'arraykey' => 'arrayvalue'
+    ];
+}";
+	}
 }

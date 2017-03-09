@@ -90,6 +90,7 @@ class ClassFormatter {
 		foreach($bufferSplit as $idx => $char) {
 			$this->skipIfInArray($context, $idx) &&
 			$this->toggleStringContext($context, $char) &&
+			$this->escapeNextStringToken($context, $char) &&
 			$this->appendStringContextTokenAndSkip($context, $char) &&
 			$this->lineDelimiterNewLine($context, $char) &&
 			$this->addOpeningBrace($context, $char) &&
