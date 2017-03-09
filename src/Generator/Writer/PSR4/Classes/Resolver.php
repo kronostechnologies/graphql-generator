@@ -38,4 +38,11 @@ class Resolver extends SingleClass {
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getStubFileName() {
+		return 'resolver.stub';
+	}
 }

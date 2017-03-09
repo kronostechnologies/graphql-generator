@@ -35,4 +35,11 @@ class TypeStore extends SingleClass {
 
 		return $typeStoreContent;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getStubFileName() {
+		return 'typestore.stub';
+	}
 }

@@ -43,4 +43,13 @@ class ClassesFactory {
 
 		return $typeStoreClass;
 	}
+
+	/**
+	 * @return ClassStubFile
+	 */
+	public function createStubFile() {
+		$stubFile = new ClassStubFile();
+
+		return $stubFile;
+	}
 }

@@ -134,4 +134,9 @@ abstract class SingleClass {
 	public function setParentClassName($parentClassName) {
 		$this->_parentClassName = $parentClassName;
 	}
+
+	/**
+	 * @return string
+	 */
+	public abstract function getStubFileName();
 }

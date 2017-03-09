@@ -84,44 +84,4 @@ class ClassStubFile extends StubFile {
 	public function writeParentClassName($className) {
 		$this->replaceTextInStub(ClassStubFile::EXTENDS_CLASSNAME, $className);
 	}
-
-	/**
-	 * @param SingleClass $class
-	 * @return string
-	 * @throws Exception
-	 */
-	public static function getStubFilenameForClass(SingleClass $class) {
-		switch(get_class($class)) {
-			case TypeStore::class:
-				return 'typestore.stub';
-			case Resolver::class:
-				return 'resolver.stub';
-			case ObjectType::class:
-				/** @var ObjectType $class */
-				return self::getStubFilenameForGeneratorType($class->getGeneratorType());
-			default:
-				throw new Exception("Stub not implemented for class generator type " . get_class($class));
-		}
-	}
-
-	/**
-	 * @param BaseTypeGeneratorInterface $type
-	 * @return string
-	 * @throws Exception
-	 */
-	public static function getStubFilenameForGeneratorType(BaseTypeGeneratorInterface $type) {
-		switch(get_class($type)) {
-			case Enum::class:
-				return 'enum.stub';
-			case Type::class:
-				return 'object.stub';
-			case Scalar::class:
-				return 'scalar.stub';
-			case InterfaceDeclaration::class:
-				return 'interface.stub';
-			default:
-				throw new Exception("Stub not implemented for generator type " . get_class($type));
-		}
-	}
-
 }

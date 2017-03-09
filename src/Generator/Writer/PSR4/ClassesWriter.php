@@ -25,6 +25,14 @@ class ClassesWriter {
 	 */
 	protected $_writerContext;
 
+	/**
+	 * @var ClassesFactory
+	 */
+	protected $_factory;
+
+	public function __construct($factory = null) {
+		$this->_factory = $factory ?: new ClassesFactory();
+	}
 
 	public function writeClasses() {
 		foreach($this->_classMapper->getClasses() as $class) {
@@ -69,7 +77,7 @@ class ClassesWriter {
 	 * @return string
 	 */
 	public function fetchStubFilePath(SingleClass $class) {
-		$stubFileName = ClassStubFile::getStubFilenameForClass($class);
+		$stubFileName = $class->getStubFileName();
 
 		return $this->_writerContext->getStubFilePath($stubFileName);
 	}
@@ -80,7 +88,7 @@ class ClassesWriter {
 	 */
 	protected function createClassStubFileFromPath($stubFilePath) {
 		$stubContent = $this->_writerContext->readFileContentToString($stubFilePath);
-		$stubFile = new ClassStubFile();
+		$stubFile = $this->_factory->createStubFile();
 		$stubFile->setFileContent($stubContent);
 
 		return $stubFile;
@@ -168,7 +176,7 @@ class ClassesWriter {
 		// Removes base namespace part
 		$baseNSStandardized = $this->getWriterContext()->namespace;
 		$baseNSStandardized = trim($baseNSStandardized, "\\");
-		$nonPrefixedFQN = substr($fqn, strlen($baseNSStandardized));
+		$nonPrefixedFQN = substr($standardizedFQN, strlen($baseNSStandardized));
 		$nonPrefixedFQN = ltrim($nonPrefixedFQN, "\\");
 
 		// Appends .php
