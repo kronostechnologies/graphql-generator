@@ -8,32 +8,32 @@ use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Writer\PSR4\FieldDeclaration;
 
-class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
+class FieldDeclarationTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_NAME = "AFieldName";
 	const PRIMARY_FIELD_TYPE_OLD = "ID";
 	const PRIMARY_FIELD_TYPE_NEW = "int";
 	const TYPE_NAME = "ATypeName";
 
-	public function test_GivenNullableField_getAnnotationString_ContainsNullFragment() {
+	public function test_GivenNullableField_getFieldDeclarationVariable_ContainsNullFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
-		$retVal = $fieldDeclaration->getAnnotationString();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertContains("|null", $retVal);
 	}
 
-	public function test_GivenNonNullableField_getAnnotationString_DoesNotContainNullFragment() {
+	public function test_GivenNonNullableField_getFieldDeclarationVariable_DoesNotContainNullFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNonNullableField(), true);
 
-		$retVal = $fieldDeclaration->getAnnotationString();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertNotContains("|null", $retVal);
 	}
 
-	public function test_GivenNullableListField_getAnnotationString_ContainsArrayFragment() {
+	public function test_GivenNullableListField_getFieldDeclarationVariable_ContainsArrayFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableListField(), true);
 
-		$retVal = $fieldDeclaration->getAnnotationString();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertContains("[]", $retVal);
 	}
@@ -41,12 +41,12 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenNullableField_getVariableString_ContainsFieldNameFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
-		$retVal = $fieldDeclaration->getVariableString();
+		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
 
 		$this->assertContains(self::FIELD_NAME, $retVal);
 	}
 
-	public function test_GivenNullableFieldWithAnnotationsOn_getFieldDeclaration_ContainsAnnotationFragment() {
+	public function test_GivenNullableFieldWithAnnotationsOn_getFieldDeclarationVariable_ContainsAnnotationFragment() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenNullableField(), true);
 
 		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
@@ -62,7 +62,7 @@ class PSR4FieldFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNotContains("@var", $retVal);
 	}
 
-	public function test_GivenPrimaryTypedField_getAnnotationString_WillContainReplacementType() {
+	public function test_GivenPrimaryTypedField_getFieldDeclarationVariable_WillContainReplacementType() {
 		$fieldDeclaration = new FieldDeclaration($this->GivenPrimaryTypedField(), true);
 
 		$retVal = $fieldDeclaration->getFieldDeclarationVariable();
