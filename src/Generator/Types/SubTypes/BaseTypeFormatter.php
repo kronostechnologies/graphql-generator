@@ -44,7 +44,11 @@ class BaseTypeFormatter {
 		return $fieldType->typeName;
 	}
 
-	public function getResolveSnippet($fieldType) {
+	/**
+	 * @param Field $field
+	 * @return string
+	 */
+	public function getResolveSnippet($field) {
 		return '';
 	}
 }

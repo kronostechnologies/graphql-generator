@@ -4,6 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
+use Exception;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
@@ -11,6 +12,7 @@ use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
 
 class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 	const ENUM_NAME = 'AnEnum';
@@ -66,6 +68,14 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(BaseContentCreator::class, $retVal);
 	}
 
+	public function test_GivenInvalidGeneratorType_getStubFileName_WillThrowException() {
+		$this->GivenInvalidGeneratorType();
+
+		$this->expectException(Exception::class);
+
+		$this->_objectType->getStubFileName();
+	}
+
 	protected function GivenEnumGeneratorType() {
 		$this->_objectType->setGeneratorType(new Enum(
 			self::ENUM_NAME,
@@ -95,5 +105,9 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 			[],
 			new StubFormatter()
 		));
+	}
+
+	protected function GivenInvalidGeneratorType() {
+		$this->_objectType->setGeneratorType(new InvalidGeneratorType());
 	}
 }

@@ -6,5 +6,6 @@ namespace LocalNamespace;
 
 class ClassName extends ParentClass {
     // @generate:Variables
+
     // @generate:Content
 }

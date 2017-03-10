@@ -6,5 +6,6 @@ namespace LocalNamespace;
 
 class ClassName {
     // @generate:Variables
+
     // @generate:Content
 }

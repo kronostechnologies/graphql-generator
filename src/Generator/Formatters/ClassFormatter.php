@@ -163,11 +163,6 @@ class ClassFormatter {
 	 */
 	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
 		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
-			if (!$context->isNewLineIndented()) {
-				$context->appendCharacter($this->getTab($context->getIndentLevel()));
-				$context->setIsNewLineIndented(true);
-			}
-
 			$context->appendCharacter($char . "\n");
 			$context->setIsAfterNewLine(true);
 			$context->setIsNewLineIndented(false);
@@ -185,11 +180,6 @@ class ClassFormatter {
 	 */
 	protected function addOpeningBrace(ClassFormatterContext $context, $char) {
 		if (strpos(self::INDENT_TOKENS, $char) !== false) {
-			if (!$context->isNewLineIndented()) {
-				$context->appendCharacter($this->getTab($context->getIndentLevel()));
-				$context->setIsNewLineIndented(true);
-			}
-
 			$context->appendCharacter($char);
 			$context->increaseIndentLevel();
 			$context->appendCharacter("\n");

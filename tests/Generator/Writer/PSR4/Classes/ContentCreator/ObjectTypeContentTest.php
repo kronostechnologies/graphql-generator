@@ -9,6 +9,7 @@ use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 
 class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';
@@ -19,7 +20,14 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_objectTypeContent;
 
+	/**
+	 * @var ObjectType|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_objectTypeClass;
+
 	public function setUp() {
+		$this->_objectTypeClass = $this->createMock(ObjectType::class);
+
 		$this->_objectTypeContent = new ObjectTypeContent();
 	}
 
@@ -71,6 +79,39 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('$resolver', $retVal);
 	}
 
+	public function test_GivenSetObjectTypeClass_getObjectTypeClass_WillReturnObjectTypeClass() {
+		$objTypeClass = $this->GivenObjectTypeClass();
+
+		$this->_objectTypeContent->setObjectTypeClass($objTypeClass);
+		$retVal = $this->_objectTypeContent->getObjectTypeClass();
+
+		$this->assertEquals($objTypeClass, $retVal);
+	}
+
+	public function test_GivenObjectTypeClassMock_getNamespace_WillFetchObjectTypeNS() {
+		$this->GivenObjectTypeClassMock();
+
+		$this->_objectTypeClass->expects($this->once())->method('getNamespace');
+
+		$this->_objectTypeContent->getNamespace();
+	}
+
+	public function test_GivenObjectTypeClassMock_getClassName_WillFetchObjectTypeClassName() {
+		$this->GivenObjectTypeClassMock();
+
+		$this->_objectTypeClass->expects($this->once())->method('getClassName');
+
+		$this->_objectTypeContent->getClassName();
+	}
+
+	public function test_GivenObjectTypeClassMock_getParentClassName_WillFetchObjectTypeClassName() {
+		$this->GivenObjectTypeClassMock();
+
+		$this->_objectTypeClass->expects($this->once())->method('getParentClassName');
+
+		$this->_objectTypeContent->getParentClassName();
+	}
+
 	protected function GivenScalarGeneratorType() {
 		$this->_objectTypeContent->setGeneratorType(new Scalar(
 			self::SCALAR_NAME,
@@ -92,5 +133,13 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 			[],
 			new StubFormatter()
 		));
+	}
+
+	protected function GivenObjectTypeClass() {
+		return new ObjectType();
+	}
+
+	protected function GivenObjectTypeClassMock() {
+		$this->_objectTypeContent->setObjectTypeClass($this->_objectTypeClass);
 	}
 }
