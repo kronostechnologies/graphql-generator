@@ -119,4 +119,32 @@ class GeneratorArrayFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expectedString, $retVal);
 	}
+
+	public function test_GivenFunctionWithParamsInArray_formatArray_WillFormatCorrectly() {
+		$initialString = "[ 'test' => function (\$param1, \$param2) { \$this->localFunction(\"123\", \$param1, \$param2); } ];";
+		$expectedString =
+			"[
+    'test' => function (\$param1, \$param2) {
+        \$this->localFunction(\"123\", \$param1, \$param2);
+    }
+];";
+
+		$retVal = $this->_formatter->formatArray($initialString, 0);
+
+		$this->assertEquals($expectedString, $retVal);
+	}
+
+	public function test_GivenFunctionWithParamsInArrayWithStringDefaultParam_formatArray_WillFormatCorrectly() {
+		$initialString = "[ 'test' => function (\$param1, \$param2 = \"defaultparam\", \$param3 = 0) { \$this->localFunction(\"123\", \$param1, \$param2); } ];";
+		$expectedString =
+			"[
+    'test' => function (\$param1, \$param2 = \"defaultparam\", \$param3 = 0) {
+        \$this->localFunction(\"123\", \$param1, \$param2);
+    }
+];";
+
+		$retVal = $this->_formatter->formatArray($initialString, 0);
+
+		$this->assertEquals($expectedString, $retVal);
+	}
 }

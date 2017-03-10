@@ -31,6 +31,11 @@ class GeneratorArrayContext {
 	protected $_buffer = '';
 
 	/**
+	 * @var bool
+	 */
+	protected $_inFunctionArgs = false;
+
+	/**
 	 * @param int $initialIndentLevel
 	 */
 	public function __construct($initialIndentLevel) {
@@ -79,6 +84,13 @@ class GeneratorArrayContext {
 		return $this->_isAfterNewLine;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function inFunctionArgs() {
+		return $this->_inFunctionArgs;
+	}
+
 	public function decreaseIndentLevel() {
 		$this->_indentLevel--;
 	}
@@ -93,6 +105,10 @@ class GeneratorArrayContext {
 
 	public function toggleDoEscapeNext() {
 		$this->_doEscapeNext = !$this->_doEscapeNext;
+	}
+
+	public function toggleFunctionArgs() {
+		$this->_inFunctionArgs = !$this->_inFunctionArgs;
 	}
 
 	public function setIsAfterNewLine($value) {

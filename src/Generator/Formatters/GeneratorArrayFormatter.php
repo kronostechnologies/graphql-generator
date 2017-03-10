@@ -6,11 +6,12 @@ namespace GraphQLGen\Generator\Formatters;
 
 class GeneratorArrayFormatter {
 	const INDENT_TOKENS = '[{';
-	const UNINDENT_TOKENS = ']';
-	const NEWLINE_AFTER_TOKENS = '[,';
-	const NEWLINE_BEFORE_TOKENS = ']';
+	const UNINDENT_TOKENS = ']}';
+	const NEWLINE_AFTER_TOKENS = '[{,';
+	const NEWLINE_BEFORE_TOKENS = ']}';
 	const STR_CONTEXT_TOKENS = '"\'';
 	const STR_ESCAPE_TOKENS = "\\";
+	const FUNCTION_ARGS_TOKENS = "()";
 	const IGNORE_AFTER_NEW_LINE_TOKENS = " ";
 
 	/**
@@ -53,6 +54,8 @@ class GeneratorArrayFormatter {
 			$this->stopAndEscapeNextCharIfInStringContextAndTokenMatches($context, $char) &&
 			$this->escapeCurrentCharAndStopIfRequestedTo($context, $char) &&
 			$this->addCharacterAndStopIfInStringContext($context, $char) &&
+			$this->toggleFunctionContext($context, $char) &&
+			$this->skipCharacterIfInFunctionArgs($context, $char) &&
 			$this->increaseIndentLevelIfIndentTokenFound($context, $char) &&
 			$this->decreaseIndentLevelIfUnindentTokenFound($context, $char) &&
 			$this->increaseIndentBeforeNewLineAndToggleNewLineContext($context, $char) &&
@@ -241,5 +244,33 @@ class GeneratorArrayFormatter {
 		$contentAsLines = array_filter($contentAsLines, function ($line) {
 			return !empty($line);
 		});
+	}
+
+	/**
+	 * @param GeneratorArrayContext $context
+	 * @param $char
+	 * @return bool
+	 */
+	protected function toggleFunctionContext($context, $char) {
+		if (strpos(self::FUNCTION_ARGS_TOKENS, $char) !== false) {
+			$context->toggleFunctionArgs();
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param GeneratorArrayContext $context
+	 * @param $char
+	 * @return bool
+	 */
+	protected function skipCharacterIfInFunctionArgs($context, $char) {
+		if ($context->inFunctionArgs()) {
+			$context->appendCharacter($char);
+
+			return false;
+		}
+
+		return true;
 	}
 }
