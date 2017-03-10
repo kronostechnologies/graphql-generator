@@ -5,6 +5,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class TypeStoreTest extends \PHPUnit_Framework_TestCase {
@@ -28,6 +29,19 @@ class TypeStoreTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $this->_typeStore->getContentCreator();
 
 		$this->assertInstanceOf(BaseContentCreator::class, $retVal);
+	}
+
+	public function test_GivenNewTypeImplementation_getTypesToImplement_WillContainType() {
+		$givenTypeImplementation = $this->GivenTypeImplementation();
+		$this->_typeStore->addTypeImplementation($givenTypeImplementation);
+
+		$retVal = $this->_typeStore->getTypesToImplement();
+
+		$this->assertContains($givenTypeImplementation, $retVal);
+	}
+
+	protected function GivenTypeImplementation() {
+		return new ObjectType();
 	}
 
 
