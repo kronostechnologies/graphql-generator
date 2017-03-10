@@ -55,6 +55,22 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('parent::__construct();', $retVal);
 	}
 
+	public function test_GivenInterfaceGeneratorType_getContent_WillContainResolverNew() {
+		$this->GivenInterfaceGeneratorType();
+
+		$retVal = $this->_objectTypeContent->getContent();
+
+		$this->assertContains("\$this->resolver = new", $retVal);
+	}
+
+	public function test_GivenScalarGeneratorType_getContent_WontContainResolverNew() {
+		$this->GivenScalarGeneratorType();
+
+		$retVal = $this->_objectTypeContent->getContent();
+
+		$this->assertNotContains("\$this->resolver = new", $retVal);
+	}
+
 	public function test_GivenEnumGeneratorType_getContent_WillContainParentComplexConstructor() {
 		$this->GivenEnumGeneratorType();
 

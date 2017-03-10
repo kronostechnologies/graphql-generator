@@ -10,6 +10,7 @@ use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
+use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 
 class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';
@@ -67,6 +68,21 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(Scalar::class, $retVal);
 	}
 
+	public function test_GivenSetResolverClass_getResolverClass_WillReturnResolverClass() {
+		$resolverClass = $this->GivenResolverClass();
+		$this->_resolverContent->setResolverClass($resolverClass);
+
+		$retVal = $this->_resolverContent->getResolverClass();
+
+		$this->assertEquals($resolverClass, $retVal);
+	}
+
+	public function test_GivenNothing_getParentClassName_WillBeEmpty() {
+		$retVal = $this->_resolverContent->getParentClassName();
+
+		$this->assertEmpty($retVal);
+	}
+
 	protected function GivenScalarGeneratorType() {
 		$this->_resolverContent->setTypeGenerator(new Scalar(
 			self::SCALAR_NAME,
@@ -88,5 +104,9 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 			new StubFormatter(),
 			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NAME_TYPE, false, false, false), [])]
 		));
+	}
+
+	private function GivenResolverClass() {
+		return new Resolver();
 	}
 }
