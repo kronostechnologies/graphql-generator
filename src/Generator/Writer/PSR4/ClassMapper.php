@@ -83,7 +83,7 @@ class ClassMapper {
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
 			default:
-				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace);
+				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
 		}
 	}
 
@@ -102,7 +102,7 @@ class ClassMapper {
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
 			default:
-				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace);
+				throw new Exception("getResolverNamespaceFromGenerator not supported for type " . get_class($type));
 		}
 	}
 

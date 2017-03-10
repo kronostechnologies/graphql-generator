@@ -71,6 +71,13 @@ class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::NAMESPACE_NEW, $retVal);
 	}
 
+	public function test_GivenStubFile_removeNamespace_WillRemoveLine() {
+		$this->_givenStubFile->removeNamespace();
+		$retVal = $this->_givenStubFile->getFileContent();
+
+		$this->assertNotContains(self::STUB_FILE_LINE_2, $retVal);
+	}
+
 	public function test_GivenStubFile_writeClassName_WillReplaceRightLine() {
 		$this->_givenStubFile->writeClassName(self::CLASS_NEW);
 		$retVal = $this->_givenStubFile->getFileContent();

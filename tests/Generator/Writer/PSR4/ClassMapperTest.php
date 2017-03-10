@@ -13,6 +13,7 @@ use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
+use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
 
 class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	const BASE_NS_VALID = 'Acme\\Test';
@@ -21,6 +22,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	const ENUM_NAME = 'AnEnumeration';
 	const INTERFACE_NAME = 'InterfaceType';
 	const OBJ_TYPE_CLASS_NAME = 'AnObjType';
+
 	/**
 	 * @var ClassMapper
 	 */
@@ -79,6 +81,14 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertStringEndsWith("Interfaces", $retVal);
 	}
 
+	public function test_GivenInvalidGeneratorType_getNamespaceForGenerator_WillThrowException() {
+		$givenType = $this->GivenInvalidGeneratorType();
+
+		$this->expectException(Exception::class);
+
+		$this->_classMapper->getNamespaceForGenerator($givenType);
+	}
+
 	public function test_GivenType_getResolverNamespaceFromGenerator_WillEndWithResolversType() {
 		$givenType = $this->GivenType();
 
@@ -111,6 +121,14 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertStringEndsWith("Resolvers\\Types\\Interfaces", $retVal);
 	}
 
+	public function test_GivenInvalidGeneratorType_getResolverNamespaceFromGenerator_WillThrowException() {
+		$givenType = $this->GivenInvalidGeneratorType();
+
+		$this->expectException(Exception::class);
+
+		$this->_classMapper->getResolverNamespaceFromGenerator($givenType);
+	}
+
 	public function test_GivenType_getParentDependencyForGenerator_WillReturnCorrectDependency() {
 		$givenType = $this->GivenType();
 
@@ -141,6 +159,14 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $this->_classMapper->getParentDependencyForGenerator($givenType);
 
 		$this->assertEquals("InterfaceType", $retVal);
+	}
+
+	public function test_GivenInvalidGeneratorType_getParentDependencyForGenerator_WillThrowException() {
+		$givenType = $this->GivenInvalidGeneratorType();
+
+		$this->expectException(Exception::class);
+
+		$this->_classMapper->getParentDependencyForGenerator($givenType);
 	}
 
 	public function test_GivenTwiceSameClass_addClass_WillCollide() {
@@ -187,6 +213,22 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->_classMapper->mapClass("", $this->GivenObjectClass(), false);
 	}
 
+	public function test_GivenNothing_setInitialMappings_WillSucceed() {
+		try {
+			$this->_classMapper->setInitialMappings();
+		} catch (Exception $ex) {
+			$this->fail($ex->getMessage());
+		}
+	}
+
+	public function test_GivenSetNamespace_getBaseNamespace_WillReturnNamespace() {
+		$this->_classMapper->setBaseNamespace(self::BASE_NS_VALID);
+
+		$retVal = $this->_classMapper->getBaseNamespace();
+
+		$this->assertEquals(self::BASE_NS_VALID, $retVal);
+	}
+
 	protected function GivenType() {
 		return new Type(
 			self::TYPE_NAME,
@@ -216,6 +258,10 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 			[],
 			new StubFormatter()
 		);
+	}
+
+	protected function GivenInvalidGeneratorType() {
+		return new InvalidGeneratorType();
 	}
 
 	protected function GivenObjectClass() {

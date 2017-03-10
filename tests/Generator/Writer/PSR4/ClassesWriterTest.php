@@ -198,6 +198,15 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesWriter->writeIndividualClass($class);
 	}
 
+	public function test_GivenSetClassWriter_getClassMapper_WillReturnClassMapper() {
+		// Classmapper is already set, set it again
+		$this->_classesWriter->setClassMapper($this->_classMapper);
+
+		$retVal = $this->_classesWriter->getClassMapper();
+
+		$this->assertEquals($this->_classMapper, $retVal);
+	}
+
 	protected function GivenMultipleClasses() {
 		$this->_classMapper->method('getClasses')->willReturn(
 			[
