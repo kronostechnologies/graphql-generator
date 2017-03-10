@@ -5,6 +5,6 @@ namespace LocalNamespace;
 // @generate:Dependencies
 
 class ClassName {
-	// @generate:Variables
+    // @generate:Variables
     // @generate:Content
 }
