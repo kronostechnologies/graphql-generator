@@ -75,7 +75,7 @@ class ClassStubFile extends StubFile {
 	 * @param string $formattedContent
 	 */
 	public function writeVariablesDeclarations($formattedContent) {
-		$this->replaceTextInStub(ClassStubFile::VARIABLES_DECLARATION, $formattedContent);
+		$this->replaceTextInStub($this->getVariablesDeclarationLine(), $formattedContent);
 	}
 
 	/**

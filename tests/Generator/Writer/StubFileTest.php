@@ -17,8 +17,8 @@ class StubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_LINE_6 = "TypeDefinitionGoesHere // @generate:Content";
 	const ALTERED_TEXT = "Altered text here";
 	const ALTERED_LINE_1 = "FirstLine Altered text here; Set 1;";
-	const ALTERED_LINE_5 = "SomeUsesGoesHere Altered text here";
-	const ALTERED_LINE_6 = "TypeDefinitionGoesHere Altered text here";
+	const ALTERED_LINE_5 = "Altered text here";
+	const ALTERED_LINE_6 = "Altered text here";
 	const STUB_LINE_1_SUB = "= 1";
 	const STUB_LINE_2_SUB = "= 2";
 	const STUB_LINE_SUB_SET_1 = "Set 1;";

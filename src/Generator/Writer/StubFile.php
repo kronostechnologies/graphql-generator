@@ -82,14 +82,14 @@ class StubFile {
 	 * @param string $formattedContent
 	 */
 	public function writeContent($formattedContent) {
-		$this->replaceTextInStub(StubFile::CONTENT_DECLARATION, $formattedContent);
+		$this->replaceTextInStub($this->getContentDeclarationLine(), $formattedContent);
 	}
 
 	/**
 	 * @param string $formattedContent
 	 */
 	public function writeDependenciesDeclaration($formattedContent) {
-		$this->replaceTextInStub(StubFile::DEPENDENCIES_DECLARATION, $formattedContent);
+		$this->replaceTextInStub($this->getDependenciesDeclarationLine(), $formattedContent);
 	}
 
 	public function setFileContent($content) {
