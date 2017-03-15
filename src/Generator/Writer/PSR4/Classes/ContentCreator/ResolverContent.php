@@ -47,7 +47,8 @@ class ResolverContent extends BaseContentCreator {
 			$typeGenerator = $this->getTypeGenerator();
 
 			foreach($typeGenerator->fields as $field) {
-				$contentAsLines[] = "function resolve{$field->name}(\$root, \$args) { /** ToDo: Implement */ }";
+			    $fieldNameFirstLetterCapped = ucwords($field->name);
+				$contentAsLines[] = "function resolve{$fieldNameFirstLetterCapped}(\$root, \$args) { /** ToDo: Implement */ }";
 			}
 		}
 

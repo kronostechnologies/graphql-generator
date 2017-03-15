@@ -21,4 +21,15 @@ class TypeFormatter extends BaseTypeFormatter {
 	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
 		return ClassComposer::TYPE_STORE_CLASS_NAME . '::' . $fieldType->typeName . '()';
 	}
+
+    /**
+     * @param string $fieldName
+     * @return string
+     */
+	public function getResolveSnippet($fieldName)
+    {
+        $fieldNameUpperCased = ucwords($fieldName);
+
+        return "'resolver' => function (\$root, \$args) { \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
+    }
 }

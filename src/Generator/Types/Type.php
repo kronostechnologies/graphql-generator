@@ -96,8 +96,7 @@ class Type implements BaseTypeGeneratorInterface {
 		foreach($this->fields as $field) {
 			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
 			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
-			$resolver = $this->formatter->fieldTypeFormatter->getResolveSnippet($field);
-			$resolver = "'resolver' => function (\$root, \$args) { \$this->resolver->resolve{$field->name}(\$root, \$args); }";
+			$resolver = $this->formatter->fieldTypeFormatter->getResolveSnippet($field->name);
 
 			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$resolver},{$formattedDescription}],";
 		}

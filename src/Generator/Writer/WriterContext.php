@@ -96,6 +96,9 @@ class WriterContext {
 		return file_get_contents($fileName);
 	}
 
+    /**
+     * @param string $fileName
+     */
 	public function makeFileDirectory($fileName) {
 		// Removes filename + extension
 		$directory = dirname($fileName);
@@ -125,6 +128,9 @@ class WriterContext {
 		file_put_contents($fileName, $content);
 	}
 
+    /**
+     * @param string $directory
+     */
 	public function createDirectoryIfNonExistant($directory) {
 		if (is_dir($directory)) {
 			return;

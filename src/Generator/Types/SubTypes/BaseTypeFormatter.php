@@ -45,10 +45,10 @@ class BaseTypeFormatter {
 	}
 
 	/**
-	 * @param Field $field
+	 * @param string $fieldName
 	 * @return string
 	 */
-	public function getResolveSnippet($field) {
+	public function getResolveSnippet($fieldName) {
 		return '';
 	}
 }
