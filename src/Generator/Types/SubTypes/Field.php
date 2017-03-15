@@ -32,7 +32,7 @@ class Field {
 	 * @param TypeUsage $fieldType
 	 * @param FieldArgument[] $arguments
 	 */
-	public function __construct($name, $description, $fieldType, $arguments) {
+	public function __construct($name, $description, $fieldType, Array $arguments) {
 		$this->name = $name;
 		$this->description = $description;
 		$this->fieldType = $fieldType;

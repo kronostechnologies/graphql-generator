@@ -88,7 +88,7 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 	protected function GivenInterfaceDeclaration() {
 		return new InterfaceDeclaration(
 			self::VALID_NAME,
-			null,
+			[],
 			new StubFormatter(),
 			null
 		);
@@ -97,7 +97,7 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 	protected function GivenInterfaceDeclarationWithDescription() {
 		return new InterfaceDeclaration(
 			self::VALID_NAME,
-			null,
+			[],
 			new StubFormatter(),
 			self::VALID_DESCRIPTION
 		);

@@ -46,7 +46,7 @@ class Type implements BaseTypeGeneratorInterface {
 	public function __construct($name, StubFormatter $formatter, Array $fields, Array $interfaceNames, $description = null) {
 		$this->name = $name;
 		$this->description = $description;
-		$this->fields = $fields ?: [];
+		$this->fields = $fields;
 		$this->formatter = $formatter;
 		$this->interfaceNames = $interfaceNames;
 	}
