@@ -44,7 +44,8 @@ class GenerateClassesCommand extends Command {
 			->addOption("writer", "w", InputArgument::OPTIONAL, "Optional. Classes used for generating the output files. [psr4] Default: psr4", "psr4")
 			->addOption("formatter-use-tabs", "ft", null, "Optional. Output formatter will use tabs instead of spaces.")
 			->addOption("formatter-indent-spaces", "fi", InputArgument::OPTIONAL, "Optional. If formatter isn't using tabs, number of spaces per indent block.", 4)
-			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",");
+			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",")
+			->addOption("formatter-optimize-enums", null, null, "Optional. If enabled, enum constants will be assigned integer values instead of string values.");
 
 		foreach(self::getWriterMappings() as $mapping) {
 			/** @var WriterContext $context */
@@ -71,7 +72,9 @@ class GenerateClassesCommand extends Command {
 			!$input->getOption('formatter-use-tabs'),
 			$input->getOption('formatter-indent-spaces'),
 			$input->getOption('formatter-line-merge'),
-			$this->generateWriterTypeFormatter($writerName)
+			$this->generateWriterTypeFormatter($writerName),
+            true,
+            $input->getOption('formatter-optimize-enums')
 		);
 		$writerContext->formatter = $genContext->formatter;
 		$genContext->writer = $this->generateWriter($writerName, $writerContext);

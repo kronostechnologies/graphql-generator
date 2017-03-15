@@ -42,7 +42,6 @@ class FieldDeclaration {
 			'Int' => 'int',
 			'String' => 'string',
 			'Float' => 'float',
-			'Bool' => 'bool',
 			'Boolean' => 'bool',
 		];
 	}

@@ -37,7 +37,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @param StubFormatter $formatter
 	 * @param string|null $description
 	 */
-	public function __construct($name, $values, StubFormatter $formatter, $description = null) {
+	public function __construct($name, Array $values, StubFormatter $formatter, $description = null) {
 		$this->formatter = $formatter;
 		$this->name = $name;
 		$this->values = $values;
@@ -62,16 +62,42 @@ class Enum implements BaseTypeGeneratorInterface {
 	}
 
 	/**
-	 * @return string|null
+	 * @return string
 	 */
 	public function getVariablesDeclarations() {
-		$constants = "";
-		foreach($this->values as $value) {
-			$constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = '{$value->name}';\n";
-		}
-
-		return $constants;
+        if ($this->formatter->optimizeEnums) {
+            return $this->getVariablesDeclarationsOptimized();
+        }
+        else {
+            return $this->getVariablesDeclarationsStandard();
+        }
 	}
+
+    /**
+     * @return string
+     */
+	protected function getVariablesDeclarationsOptimized() {
+        $constants = "";
+        $i = 1;
+        foreach($this->values as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = {$i};\n";
+            $i++;
+        }
+
+        return $constants;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getVariablesDeclarationsStandard() {
+        $constants = "";
+        foreach($this->values as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = '{$value->name}';\n";
+        }
+
+        return $constants;
+    }
 
 	/**
 	 * @return string[]
@@ -95,10 +121,6 @@ class Enum implements BaseTypeGeneratorInterface {
 	protected function getSingleConstantValueEntry($value) {
 		$formattedDescription = $this->formatter->getDescriptionValue($value->description);
 
-		if($this->formatter->useConstantsForEnums) {
-			return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$formattedDescription} ],";
-		}
-
-		return "'{$value->name}' => [ 'value' => '{$value->name}', {$formattedDescription} ],";
+        return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$formattedDescription} ],";
 	}
 }

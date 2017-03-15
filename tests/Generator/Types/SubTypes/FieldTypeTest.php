@@ -7,7 +7,7 @@ namespace GraphQLGen\Tests\Generator\Types\SubTypes;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class FieldTypeTest extends \PHPUnit_Framework_TestCase {
-	const PRIMARY_FIELD_TYPE = "Bool";
+	const PRIMARY_FIELD_TYPE = "Boolean";
 	const SECONDARY_FIELD_TYPE = "SecondaryType";
 	const PRIMARY_TYPE_DEPENDENCY = "Type";
 

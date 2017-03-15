@@ -28,29 +28,28 @@ class StubFormatter {
 	public $fieldTypeFormatter;
 
 	/**
-	 * @var bool
-	 */
-	public $useConstantsForEnums;
-
-	/**
 	 * @var GeneratorArrayFormatter
 	 */
 	public $arrayFormatter;
+
+    /**
+     * @var bool
+     */
+	public $optimizeEnums;
 
 	/**
 	 * @param bool $useSpaces
 	 * @param int $tabSize
 	 * @param string $descriptionLineMergeChars
 	 * @param BaseTypeFormatter|null $fieldTypeFormatter
-	 * @param bool $useConstantsForEnums
 	 */
-	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $useConstantsForEnums = true) {
+	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $optimizeEnums = false) {
 		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
 		$this->useSpaces = $useSpaces;
 		$this->tabSize = $tabSize;
 		$this->fieldTypeFormatter = $fieldTypeFormatter;
-		$this->useConstantsForEnums = $useConstantsForEnums;
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
+		$this->optimizeEnums = $optimizeEnums;
 	}
 
 	public function standardizeDescription($description) {
