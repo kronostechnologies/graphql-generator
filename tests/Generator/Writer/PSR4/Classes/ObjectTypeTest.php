@@ -88,7 +88,8 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$this->_objectType->setGeneratorType(new Type(
 			self::TYPE_NAME,
 			new StubFormatter(),
-			[]
+			[],
+            []
 		));
 	}
 

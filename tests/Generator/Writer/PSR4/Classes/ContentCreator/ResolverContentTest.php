@@ -94,7 +94,8 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$this->_resolverContent->setTypeGenerator(new Type(
 			self::TYPE_NAME,
 			new StubFormatter(),
-			[]
+			[],
+            []
 		));
 	}
 
@@ -102,7 +103,8 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$this->_resolverContent->setTypeGenerator(new Type(
 			self::TYPE_NAME,
 			new StubFormatter(),
-			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NAME_TYPE, false, false, false), [])]
+			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NAME_TYPE, false, false, false), [])],
+            []
 		));
 	}
 

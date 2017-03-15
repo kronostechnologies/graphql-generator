@@ -79,7 +79,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			self::VALID_NAME,
 			new StubFormatter(),
 			[],
-			null
+			[]
 		);
 	}
 
@@ -88,6 +88,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			self::VALID_NAME,
 			new StubFormatter(),
 			[],
+            [],
 			self::VALID_DESCRIPTION
 		);
 	}
@@ -97,7 +98,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			self::VALID_NAME,
 			new StubFormatter(),
 			[],
-			null
+            []
 		);
 	}
 
@@ -130,7 +131,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			self::VALID_NAME,
 			new StubFormatter(),
 			[$field1, $field2],
-			null
+			[]
 		);
 	}
 }

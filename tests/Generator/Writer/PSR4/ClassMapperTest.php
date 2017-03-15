@@ -233,7 +233,8 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		return new Type(
 			self::TYPE_NAME,
 			new StubFormatter(),
-			[]
+			[],
+            []
 		);
 	}
 

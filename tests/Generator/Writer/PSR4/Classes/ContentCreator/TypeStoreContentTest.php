@@ -67,7 +67,7 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenOneTypeToImplement() {
 		$objectType = new ObjectType();
-		$objectType->setGeneratorType(new Type(self::TYPE_NAME, new StubFormatter(), []));
+		$objectType->setGeneratorType(new Type(self::TYPE_NAME, new StubFormatter(), [], []));
 
 		$this->_typeStore->method('getTypesToImplement')->willReturn([
 			$objectType

@@ -239,7 +239,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenObjectType() {
-		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [], self::OBJ_TYPE_DESC);
+		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [], [], self::OBJ_TYPE_DESC);
 	}
 
 	protected function GivenInterfaceObjectType() {

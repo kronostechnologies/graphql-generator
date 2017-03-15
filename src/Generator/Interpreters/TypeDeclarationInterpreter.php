@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
+use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\Type;
@@ -38,8 +39,14 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 			$fieldInterpreter = new FieldInterpreter($fieldNode);
 
 			return $fieldInterpreter->generateType();
-		}, $this->_astNode->fields);
+		}, $this->_astNode->fields ?: []);
 	}
+
+	public function getInterfacesNames() {
+	    return array_map(function (NamedTypeNode $interfaceNameNode) {
+            return $interfaceNameNode->name;
+        }, $this->_astNode->interfaces);
+    }
 
 	/**
 	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
@@ -50,6 +57,7 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 			$this->getName(),
 			$formatter,
 			$this->getFields(),
+            $this->getInterfacesNames(),
 			$this->getDescription()
 		);
 	}

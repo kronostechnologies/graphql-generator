@@ -28,18 +28,27 @@ class Type implements BaseTypeGeneratorInterface {
 	 */
 	public $formatter;
 
+    /**
+     * @var \string[]
+     */
+	public $interfaceNames;
+
+
+
 	/**
 	 * ObjectType constructor.
 	 * @param string $name
 	 * @param StubFormatter $formatter
 	 * @param Field[] $fields
+	 * @param string[] $interfaceNames
 	 * @param string|null $description
 	 */
-	public function __construct($name, StubFormatter $formatter, $fields, $description = null) {
+	public function __construct($name, StubFormatter $formatter, Array $fields, Array $interfaceNames, $description = null) {
 		$this->name = $name;
 		$this->description = $description;
 		$this->fields = $fields ?: [];
 		$this->formatter = $formatter;
+		$this->interfaceNames = $interfaceNames;
 	}
 
 	/**
@@ -94,11 +103,16 @@ class Type implements BaseTypeGeneratorInterface {
 		$fields = [];
 
 		foreach($this->fields as $field) {
-			$typeDeclaration = $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
+			$typeDeclaration = "'type' => " . $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
 			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
 			$resolver = $this->formatter->fieldTypeFormatter->getResolveSnippet($field->name);
 
-			$fields[] = "'{$field->name}' => [ 'type' => {$typeDeclaration},{$resolver},{$formattedDescription}],";
+			$commaSplitVals = [$typeDeclaration, $formattedDescription, $resolver];
+			$commaSplitVals = array_filter($commaSplitVals);
+
+			$vals = implode(",", $commaSplitVals);
+
+			$fields[] = "'{$field->name}' => [{$vals}],";
 		}
 
 		return implode('', $fields);
