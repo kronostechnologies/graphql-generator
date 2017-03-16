@@ -6,16 +6,11 @@ namespace GraphQLGen\Generator\Types;
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
 
-class Scalar implements BaseTypeGeneratorInterface {
+class Scalar extends BaseTypeGenerator {
 	/**
 	 * @var null|string
 	 */
 	public $description;
-
-	/**
-	 * @var \GraphQLGen\Generator\Formatters\StubFormatter
-	 */
-	public $formatter;
 
 	/**
 	 * @var string
@@ -38,9 +33,9 @@ class Scalar implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$formattedDescription = $this->formatter->standardizeDescription($this->description);
+		$descriptionFragment = $this->getDescriptionFragment($this->description);
 
-		return "\$this->name = '{$this->name}'; \$this->description = '{$formattedDescription}';";
+		return "\$this->name = '{$this->name}'; {$descriptionFragment}";
 	}
 
 	/**
@@ -62,5 +57,18 @@ class Scalar implements BaseTypeGeneratorInterface {
 	 */
 	public function getDependencies() {
 		return [];
+	}
+
+	/**
+	 * @param string $description
+	 * @return string
+	 */
+	protected function getDescriptionFragment($description) {
+		if (empty($description)) {
+			return "";
+		}
+		else {
+			return "\$this->description = '" . $this->formatter->standardizeDescription($description) . "';";
+		}
 	}
 }

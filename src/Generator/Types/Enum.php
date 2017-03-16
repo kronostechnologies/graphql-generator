@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Types;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
-class Enum implements BaseTypeGeneratorInterface {
+class Enum extends BaseTypeGenerator {
 	/**
 	 * @var string
 	 */
@@ -23,10 +23,6 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	public $description;
 
-	/**
-	 * @var StubFormatter
-	 */
-	public $formatter;
 
 	const ENUM_VAL_PREFIX = 'VAL_';
 
@@ -49,7 +45,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	public function generateTypeDefinition() {
 	    $name = "'name' => '{$this->name}'";
-		$formattedDescription = $this->formatter->standardizeDescription($this->description);
+		$formattedDescription = $this->getDescriptionFragment($this->description);
 		$values = "'values' => [" . $this->getConstantValuesArray() . "]";
 
 		$commaSplitVals = [$name, $formattedDescription, $values];
@@ -125,7 +121,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {
-		$formattedDescription = $this->formatter->standardizeDescription($value->description);
+		$formattedDescription = $this->getDescriptionFragment($value->description);
 
         return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$formattedDescription} ],";
 	}

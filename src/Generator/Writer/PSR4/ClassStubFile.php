@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use Exception;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;

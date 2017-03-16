@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
 use Exception;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
@@ -14,7 +14,7 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
 
 class ObjectType extends SingleClass {
 	/**
-	 * @var BaseTypeGeneratorInterface
+	 * @var BaseTypeGenerator
 	 */
 	protected $_generatorType;
 
@@ -24,16 +24,16 @@ class ObjectType extends SingleClass {
 	const INTERFACE_STUB = 'interface.stub';
 
 	/**
-	 * @return BaseTypeGeneratorInterface
+	 * @return BaseTypeGenerator
 	 */
 	public function getGeneratorType() {
 		return $this->_generatorType;
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $generatorType
+	 * @param BaseTypeGenerator $generatorType
 	 */
-	public function setGeneratorType(BaseTypeGeneratorInterface $generatorType) {
+	public function setGeneratorType(BaseTypeGenerator $generatorType) {
 		$this->_generatorType = $generatorType;
 	}
 

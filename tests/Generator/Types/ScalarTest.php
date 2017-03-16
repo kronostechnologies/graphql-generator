@@ -51,6 +51,30 @@ class ScalarTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNull($retVal);
 	}
 
+	public function test_GivenScalar_generateTypeDefinition_WillContainNameFragment() {
+		$scalar = $this->GivenScalar();
+
+		$retVal = $scalar->generateTypeDefinition();
+
+		$this->assertContains("\$this->name", $retVal);
+	}
+
+	public function test_GivenScalarWithDescription_generateTypeDefinition_WontContainDescriptionFragment() {
+		$scalar = $this->GivenScalar();
+
+		$retVal = $scalar->generateTypeDefinition();
+
+		$this->assertNotContains("\$this->description", $retVal);
+	}
+
+	public function test_GivenScalarWithDescription_generateTypeDefinition_WillContainDescriptionFragment() {
+		$scalar = $this->GivenScalarWithDescription();
+
+		$retVal = $scalar->generateTypeDefinition();
+
+		$this->assertContains("\$this->description", $retVal);
+	}
+
 	protected function GivenScalar() {
 		return new Scalar(
 			self::VALID_NAME,

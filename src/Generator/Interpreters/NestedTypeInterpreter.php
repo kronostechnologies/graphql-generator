@@ -4,11 +4,11 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 
 abstract class NestedTypeInterpreter extends Interpreter {
 	/**
-	 * @return BaseTypeGeneratorInterface
+	 * @return BaseTypeGenerator
 	 */
 	public abstract function generateType();
 }

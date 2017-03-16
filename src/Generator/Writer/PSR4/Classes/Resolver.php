@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 
 class Resolver extends SingleClass {
@@ -12,7 +12,7 @@ class Resolver extends SingleClass {
 	const STUB_FILE = 'resolver.stub';
 
 	/**
-	 * @var BaseTypeGeneratorInterface
+	 * @var BaseTypeGenerator
 	 */
 	protected $_generatorType;
 
@@ -28,14 +28,14 @@ class Resolver extends SingleClass {
 	}
 
 	/**
-	 * @return BaseTypeGeneratorInterface
+	 * @return BaseTypeGenerator
 	 */
 	public function getGeneratorType() {
 		return $this->_generatorType;
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $generatorType
+	 * @param BaseTypeGenerator $generatorType
 	 */
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;

@@ -90,6 +90,38 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::VALID_NAME, $retVal);
 	}
 
+	public function test_GivenEnum_generateTypeDefinition_WillContainNameFragment() {
+		$enum = $this->GivenEnumWithNoValues();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertContains("'name'", $retVal);
+	}
+
+	public function test_GivenEnumWithNoDescription_generateTypeDefinition_WontContainDescriptionFragment() {
+		$enum = $this->GivenEnumWithNoValues();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertNotContains("'description'", $retVal);
+	}
+
+	public function test_GivenEnumWithDescription_generateTypeDefinition_WillContainDescriptionFragment() {
+		$enum = $this->GivenEnumWithDescriptionNoLineJump();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertContains("'description'", $retVal);
+	}
+
+	public function test_GivenEnum_generateTypeDefinition_WillContainValuesFragment() {
+		$enum = $this->GivenEnumWithDescriptionNoLineJump();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertContains("'values'", $retVal);
+	}
+
 	public function test_GivenEnumWithDescriptionNoLineJump_generateTypeDefinition_WillContainDescription() {
 		$enum = $this->GivenEnumWithDescriptionNoLineJump();
 

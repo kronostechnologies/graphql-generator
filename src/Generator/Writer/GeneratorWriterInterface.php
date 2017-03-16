@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Writer;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 
 interface GeneratorWriterInterface {
 	public function initialize();
@@ -12,7 +12,7 @@ interface GeneratorWriterInterface {
 	public function finalize();
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return string
 	 */
 	public function generateFileForTypeGenerator($type);

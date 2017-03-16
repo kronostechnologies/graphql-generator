@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -50,7 +50,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return string|void
 	 */
 	public function generateFileForTypeGenerator($type) {

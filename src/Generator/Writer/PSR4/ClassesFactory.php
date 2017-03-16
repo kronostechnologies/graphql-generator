@@ -4,17 +4,17 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class ClassesFactory {
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return ObjectType
 	 */
-	public function createObjectTypeClass(BaseTypeGeneratorInterface $type) {
+	public function createObjectTypeClass(BaseTypeGenerator $type) {
 		$generatorClass = new ObjectType();
 		$generatorClass->setClassName($type->getName() . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
 		$generatorClass->setGeneratorType($type);
@@ -23,10 +23,10 @@ class ClassesFactory {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return Resolver
 	 */
-	public function createResolverClass(BaseTypeGeneratorInterface $type) {
+	public function createResolverClass(BaseTypeGenerator $type) {
 		$resolverClass = new Resolver();
 		$resolverClass->setClassName($type->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX);
 		$resolverClass->setGeneratorType($type);

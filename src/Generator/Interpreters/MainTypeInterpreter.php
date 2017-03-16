@@ -5,12 +5,12 @@ namespace GraphQLGen\Generator\Interpreters;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 
 abstract class MainTypeInterpreter extends Interpreter {
 	/**
 	 * @param StubFormatter $formatter
-	 * @return BaseTypeGeneratorInterface
+	 * @return BaseTypeGenerator
 	 */
 	public abstract function generateType($formatter);
 }

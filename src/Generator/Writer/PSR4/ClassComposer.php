@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
 
@@ -39,9 +39,9 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 */
-	public function generateClassForGenerator(BaseTypeGeneratorInterface $type) {
+	public function generateClassForGenerator(BaseTypeGenerator $type) {
 		// Create generator class
 		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
@@ -64,9 +64,9 @@ class ClassComposer {
 
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 */
-	public function generateResolverForGenerator(BaseTypeGeneratorInterface $type) {
+	public function generateResolverForGenerator(BaseTypeGenerator $type) {
 		// Create resolver class
 		$resolverClass = $this->getFactory()->createResolverClass($type);
 		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($type));
@@ -76,10 +76,10 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return bool
 	 */
-	public function generatorTypeSupportsResolver(BaseTypeGeneratorInterface $type) {
+	public function generatorTypeSupportsResolver(BaseTypeGenerator $type) {
 		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class]);
 	}
 

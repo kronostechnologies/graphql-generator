@@ -17,7 +17,7 @@ use GraphQLGen\Generator\Interpreters\Interpreter;
 use GraphQLGen\Generator\Interpreters\MainTypeInterpreter;
 use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
 use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -80,7 +80,7 @@ class Generator implements LoggerAwareInterface {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $typeGenerator
+	 * @param BaseTypeGenerator $typeGenerator
 	 */
 	protected function generateClassFromType($typeGenerator) {
 		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);

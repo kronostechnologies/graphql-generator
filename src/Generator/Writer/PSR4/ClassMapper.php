@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use Exception;
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
@@ -69,10 +69,10 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return string
 	 */
-	public function getNamespaceForGenerator(BaseTypeGeneratorInterface $type) {
+	public function getNamespaceForGenerator(BaseTypeGenerator $type) {
 		switch(get_class($type)) {
 			case Type::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
@@ -88,10 +88,10 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return string
 	 */
-	public function getResolverNamespaceFromGenerator(BaseTypeGeneratorInterface $type) {
+	public function getResolverNamespaceFromGenerator(BaseTypeGenerator $type) {
 		switch(get_class($type)) {
 			case Type::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
@@ -107,11 +107,11 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGeneratorInterface $type
+	 * @param BaseTypeGenerator $type
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getParentDependencyForGenerator(BaseTypeGeneratorInterface $type) {
+	public function getParentDependencyForGenerator(BaseTypeGenerator $type) {
 		switch(get_class($type)) {
 			case Type::class:
 				return "ObjectType";

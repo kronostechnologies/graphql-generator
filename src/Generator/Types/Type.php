@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Types;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
-class Type implements BaseTypeGeneratorInterface {
+class Type extends BaseTypeGenerator {
 	/**
 	 * @var string
 	 */
@@ -23,10 +23,7 @@ class Type implements BaseTypeGeneratorInterface {
 	 */
 	public $fields;
 
-	/**
-	 * @var \GraphQLGen\Generator\Formatters\StubFormatter
-	 */
-	public $formatter;
+
 
     /**
      * @var \string[]
@@ -155,16 +152,5 @@ class Type implements BaseTypeGeneratorInterface {
 		return "'fields' => [" . $this->getFieldsDefinitions() . "]";
 	}
 
-	/**
-	 * @param string $description
-	 * @return string
-	 */
-	protected function getDescriptionFragment($description) {
-		if (empty($description)) {
-			return "";
-		}
-		else {
-			return "'description' => '" . $this->formatter->standardizeDescription($description) . "'";
-		}
-	}
+
 }

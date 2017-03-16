@@ -4,9 +4,13 @@
 namespace GraphQLGen\Tests\Mocks;
 
 
-use GraphQLGen\Generator\Types\BaseTypeGeneratorInterface;
+use GraphQLGen\Generator\Types\BaseTypeGenerator;
 
-class InvalidGeneratorType implements BaseTypeGeneratorInterface {
+/**
+ * Used for testing thrown exceptions by various type testing methods.
+ * @package GraphQLGen\Tests\Mocks
+ */
+class InvalidGeneratorType extends BaseTypeGenerator {
 
 	/**
 	 * @return string

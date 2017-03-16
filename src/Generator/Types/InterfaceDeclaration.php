@@ -7,7 +7,7 @@ namespace GraphQLGen\Generator\Types;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 
-class InterfaceDeclaration implements BaseTypeGeneratorInterface {
+class InterfaceDeclaration extends BaseTypeGenerator {
 	/**
 	 * @var string
 	 */
@@ -17,11 +17,6 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 * @var null|string
 	 */
 	public $description;
-
-	/**
-	 * @var StubFormatter
-	 */
-	public $formatter;
 
 	/**
 	 * @var Field[]
@@ -47,7 +42,7 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 */
 	public function generateTypeDefinition() {
 		$name = "'name' => '{$this->name}'";
-		$formattedDescription = $this->formatter->standardizeDescription($this->description);
+		$formattedDescription = $this->getDescriptionFragment($this->description);
 		$fields = $this->getFieldsDefinitions();
 
 		$commaSplitVals = [$name, $formattedDescription, $fields];
@@ -72,7 +67,7 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 		$fields = [];
 
 		foreach($this->fields as $field) {
-			$formattedDescription = $this->formatter->standardizeDescription($field->description);
+			$formattedDescription = $this->getDescriptionFragment($field->description);
 			$typeDeclaration = "'type' => " . $this->formatter->getFieldTypeDeclaration($field->fieldType);
 			$resolve = $this->formatter->getResolveSnippet($field->fieldType->typeName);
 
