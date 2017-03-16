@@ -46,7 +46,7 @@ class ResolverContent extends BaseContentCreator {
 			/** @var InterfaceDeclaration|Type $typeGenerator */
 			$typeGenerator = $this->getTypeGenerator();
 
-			foreach($typeGenerator->fields as $field) {
+			foreach($typeGenerator->getFields() as $field) {
 			    $fieldNameFirstLetterCapped = ucwords($field->name);
 				$contentAsLines[] = "function resolve{$fieldNameFirstLetterCapped}(\$root, \$args) { /** ToDo: Implement */ }";
 			}

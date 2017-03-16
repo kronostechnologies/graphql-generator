@@ -35,7 +35,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenEnumWith3ValuesNonOptimized_getConstantsDeclaration_WillContainValuesNames() {
 	    $enum = $this->GivenEnumWith3Values();
-	    $enum->formatter->optimizeEnums = false;
+	    $enum->getFormatter()->optimizeEnums = false;
 
 	    $retVal = $enum->getVariablesDeclarations();
 
@@ -46,7 +46,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenEnumWith3ValuesNonOptimized_getConstantsDeclaration_WontContainValuesNames() {
 	    $enum = $this->GivenEnumWith3Values();
-        $enum->formatter->optimizeEnums = true;
+        $enum->getFormatter()->optimizeEnums = true;
 
 	    $retVal = $enum->getVariablesDeclarations();
 
@@ -57,7 +57,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenEnumWith3ValuesNonOptimized_getConstantsDeclaration_WillContainNumbers() {
 	    $enum = $this->GivenEnumWith3Values();
-        $enum->formatter->optimizeEnums = true;
+        $enum->getFormatter()->optimizeEnums = true;
 
 	    $retVal = $enum->getVariablesDeclarations();
 

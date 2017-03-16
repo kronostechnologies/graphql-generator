@@ -8,41 +8,31 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 
 class Scalar extends BaseTypeGenerator {
 	/**
-	 * @var null|string
-	 */
-	public $description;
-
-	/**
-	 * @var string
-	 */
-	public $name;
-
-	/**
 	 * ScalarType constructor.
 	 * @param string $name
 	 * @param StubFormatter $formatter
 	 * @param string|null $description
 	 */
 	public function __construct($name, StubFormatter $formatter, $description = null) {
-		$this->formatter = $formatter;
-		$this->name = $name;
-		$this->description = $description;
+		$this->_formatter = $formatter;
+		$this->_name = $name;
+		$this->_description = $description;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$descriptionFragment = $this->getDescriptionFragment($this->description);
+		$descriptionFragment = $this->getDescriptionFragment($this->_description);
 
-		return "\$this->name = '{$this->name}'; {$descriptionFragment}";
+		return "\$this->name = '{$this->_name}'; {$descriptionFragment}";
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getName() {
-		return $this->name;
+		return $this->_name;
 	}
 
 	/**
@@ -68,7 +58,7 @@ class Scalar extends BaseTypeGenerator {
 			return "";
 		}
 		else {
-			return "\$this->description = '" . $this->formatter->standardizeDescription($description) . "';";
+			return "\$this->description = '" . $this->_formatter->standardizeDescription($description) . "';";
 		}
 	}
 }
