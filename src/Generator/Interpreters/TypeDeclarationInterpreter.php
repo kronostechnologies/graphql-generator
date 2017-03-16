@@ -42,9 +42,12 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 		}, $this->_astNode->fields ?: []);
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getInterfacesNames() {
 	    return array_map(function (NamedTypeNode $interfaceNameNode) {
-            return $interfaceNameNode->name;
+            return $interfaceNameNode->name->value;
         }, $this->_astNode->interfaces);
     }
 

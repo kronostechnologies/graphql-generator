@@ -33,8 +33,6 @@ class Type implements BaseTypeGeneratorInterface {
      */
 	public $interfaceNames;
 
-
-
 	/**
 	 * ObjectType constructor.
 	 * @param string $name
@@ -55,11 +53,12 @@ class Type implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = "'name' => '{$this->name}'";
-		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
-		$fieldsDefinitions = $this->getFieldsDefinitions();
+		$name = $this->getNameFragment();
+		$formattedDescription = $this->getDescriptionFragment($this->description);
+		$fieldsDefinitions = $this->getFieldsFragment();
+		$interfacesDeclaration = $this->getInterfacesFragment();
 
-		$commaSplitVals = [$name, $formattedDescription, $fieldsDefinitions];
+		$commaSplitVals = [$name, $formattedDescription, $fieldsDefinitions, $interfacesDeclaration];
 		$commaSplitVals = array_filter($commaSplitVals);
 
 		$vals = implode(",", $commaSplitVals);
@@ -85,7 +84,7 @@ class Type implements BaseTypeGeneratorInterface {
 	 * @return string[]
 	 */
 	public function getDependencies() {
-		$dependencies = [];
+		$dependencies = $this->interfaceNames;
 
 		foreach($this->fields as $field) {
 			$fieldDependencies = $field->fieldType->getDependencies();
@@ -93,6 +92,24 @@ class Type implements BaseTypeGeneratorInterface {
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterfacesFragment() {
+		if (!empty($this->interfaceNames)) {
+			$interfaceNamesFormatted = array_map(function ($interfaceName) {
+				return $this->formatter->getFieldTypeDeclarationNonPrimaryType($interfaceName);
+			}, $this->interfaceNames);
+
+			$joinedInterfaceNames = implode(", ", $interfaceNamesFormatted);
+
+			return "'interfaces' => [{$joinedInterfaceNames}]";
+		}
+		else {
+			return "";
+		}
 	}
 
 	/**
@@ -109,9 +126,9 @@ class Type implements BaseTypeGeneratorInterface {
 		$fields = [];
 
 		foreach($this->fields as $field) {
-			$typeDeclaration = "'type' => " . $this->formatter->fieldTypeFormatter->getFieldTypeDeclaration($field->fieldType);
-			$formattedDescription = $this->formatter->getDescriptionValue($field->description);
-			$resolver = $this->formatter->fieldTypeFormatter->getResolveSnippet($field->name);
+			$typeDeclaration = "'type' => " . $this->formatter->getFieldTypeDeclaration($field->fieldType);
+			$formattedDescription = $this->getDescriptionFragment($field->description);
+			$resolver = $this->formatter->getResolveSnippet($field->name);
 
 			$commaSplitVals = [$typeDeclaration, $formattedDescription, $resolver];
 			$commaSplitVals = array_filter($commaSplitVals);
@@ -122,5 +139,32 @@ class Type implements BaseTypeGeneratorInterface {
 		}
 
 		return implode('', $fields);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getNameFragment() {
+		return "'name' => '{$this->name}'";
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getFieldsFragment() {
+		return "'fields' => [" . $this->getFieldsDefinitions() . "]";
+	}
+
+	/**
+	 * @param string $description
+	 * @return string
+	 */
+	protected function getDescriptionFragment($description) {
+		if (empty($description)) {
+			return "";
+		}
+		else {
+			return "'description' => '" . $this->formatter->standardizeDescription($description) . "'";
+		}
 	}
 }

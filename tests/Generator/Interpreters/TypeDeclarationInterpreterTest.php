@@ -19,6 +19,7 @@ use GraphQLGen\Generator\Types\Type;
 class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
 	const VALID_NAME = 'TestName';
+	const INTERFACE_NODE = 'InterfaceNode';
 
 	protected $_interpreter;
 
@@ -64,6 +65,17 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(Type::class, $retVal);
 	}
 
+	public function test_GivenNodeWithInterface_generateType_WillContainInterfaceAsDependency() {
+		$objectTypeNode = new ObjectTypeDefinitionNode([]);
+		$this->GivenNodeWithName($objectTypeNode);
+		$this->GivenNodeWithInterface($objectTypeNode);
+
+		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
+		$retVal = $interpreter->generateType(new StubFormatter());
+
+		$this->assertContains(self::INTERFACE_NODE, $retVal->getDependencies());
+	}
+
 	protected function GivenNodeWithName($node) {
 		$node->name = new NameNode([]);
 		$node->name->value = self::VALID_NAME;
@@ -71,6 +83,14 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenNodeWithDescription($node) {
 		$node->description = self::VALID_DESCRIPTION;
+	}
+
+	protected function GivenNodeWithInterface($node) {
+		$interfaceNode = new NamedTypeNode([]);
+		$interfaceNode->name = new NameNode([]);
+		$interfaceNode->name->value = self::INTERFACE_NODE;
+
+		$node->interfaces[] = $interfaceNode;
 	}
 
 	/**

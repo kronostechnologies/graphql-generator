@@ -49,7 +49,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 */
 	public function generateTypeDefinition() {
 	    $name = "'name' => '{$this->name}'";
-		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
+		$formattedDescription = $this->formatter->standardizeDescription($this->description);
 		$values = "'values' => [" . $this->getConstantValuesArray() . "]";
 
 		$commaSplitVals = [$name, $formattedDescription, $values];
@@ -125,7 +125,7 @@ class Enum implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {
-		$formattedDescription = $this->formatter->getDescriptionValue($value->description);
+		$formattedDescription = $this->formatter->standardizeDescription($value->description);
 
         return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$formattedDescription} ],";
 	}

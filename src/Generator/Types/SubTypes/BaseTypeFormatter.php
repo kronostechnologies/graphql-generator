@@ -15,7 +15,7 @@ class BaseTypeFormatter {
 			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName];
 		}
 		else {
-			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType);
+			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType->typeName);
 		}
 
 		// Is base object nullable?
@@ -37,18 +37,18 @@ class BaseTypeFormatter {
 	}
 
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param string $typeName
 	 * @return string
 	 */
-	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
-		return $fieldType->typeName;
+	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
+		return $typeName;
 	}
 
 	/**
-	 * @param string $fieldName
+	 * @param string $typeName
 	 * @return string
 	 */
-	public function getResolveSnippet($fieldName) {
+	public function getResolveSnippet($typeName) {
 		return '';
 	}
 }

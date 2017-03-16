@@ -5,9 +5,11 @@ namespace GraphQLGen\Tests\Generator\Types;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
 class TypeTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'DeclaredType';
@@ -17,6 +19,64 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_TYPE_NAME_1 = 'Int';
 	const FIELD_NAME_2 = 'SecondField';
 	const FIELD_TYPE_NAME_2 = 'Money';
+	const INTERFACE_NAME = 'AnInterface';
+
+	/**
+	 * @var StubFormatter|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_stubFormatterMock;
+
+	public function setUp() {
+		$this->_stubFormatterMock = $this->createMock(StubFormatter::class);
+	}
+
+	public function test_GivenType_generateTypeDefinition_WillContainNameFragment() {
+		$type = $this->GivenType();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'name'", $retVal);
+	}
+
+	public function test_GivenTypeWithDescription_generateTypeDefinition_WillContainDescriptionFragment() {
+		$type = $this->GivenTypeWithDescriptionNoLineBreak();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'description'", $retVal);
+	}
+
+	public function test_GivenTypeWithoutDescription_generateTypeDefinition_WontContainDescriptionFragment() {
+		$type = $this->GivenType();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertNotContains("'description'", $retVal);
+	}
+
+	public function test_GivenTypeWithInterface_generateTypeDefinition_WillContainInterfaceTag() {
+		$type = $this->GivenTypeWithInterface();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'interfaces'", $retVal);
+	}
+
+	public function test_GivenTypeWithNoInterface_generateTypeDefinition_WontContainInterfaceTag() {
+		$type = $this->GivenType();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertNotContains("'interfaces'", $retVal);
+	}
+
+	public function test_GivenTypeWithFields_generateTypeDefinition_WillContainFieldsFragment() {
+		$type = $this->GivenTypeWith2DistinctTypeFields();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'fields'", $retVal);
+	}
 
 	public function test_GivenType_getName_WillReturnName() {
 		$type = $this->GivenType();
@@ -58,6 +118,14 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNotEquals($retVal[0], $retVal[1]);
 	}
 
+	public function test_GivenTypeWith2DistinctTypeFields_generateTypeDefinition_WillContainTypeFragment() {
+		$type = $this->GivenTypeWith2DistinctTypeFields();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'type'", $retVal);
+	}
+
 	public function test_GivenType_generateTypeDefinition_WillContainName() {
 		$type = $this->GivenType();
 
@@ -66,18 +134,30 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::VALID_NAME, $retVal);
 	}
 
-	public function test_GivenTypeWithDescriptionNoLineBreak_generateTypeDefinition_WillContainDescription() {
+	public function test_GivenTypeWithDescriptionNoLineBreak_generateTypeDefinition_WillFetchDescriptionValue() {
 		$type = $this->GivenTypeWithDescriptionNoLineBreak();
 
-		$retVal = $type->generateTypeDefinition();
+		$this
+			->_stubFormatterMock
+			->expects($this->once())
+			->method('standardizeDescription')
+			->with(self::VALID_DESCRIPTION);
 
-		$this->assertContains(self::VALID_DESCRIPTION, $retVal);
+		$type->generateTypeDefinition();
+	}
+
+	public function test_GivenTypeWithInterface_getDependencies_WillContainInterface() {
+		$type = $this->GivenTypeWithInterface();
+
+		$retVal = $type->getDependencies();
+
+		$this->assertContains(self::INTERFACE_NAME, $retVal);
 	}
 
 	protected function GivenType() {
 		return new Type(
 			self::VALID_NAME,
-			new StubFormatter(),
+			$this->_stubFormatterMock,
 			[],
 			[]
 		);
@@ -86,7 +166,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 	protected function GivenTypeWithDescriptionNoLineBreak() {
 		return new Type(
 			self::VALID_NAME,
-			new StubFormatter(),
+			$this->_stubFormatterMock,
 			[],
             [],
 			self::VALID_DESCRIPTION
@@ -96,7 +176,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 	protected function GivenTypeWithNoFields() {
 		return new Type(
 			self::VALID_NAME,
-			new StubFormatter(),
+			$this->_stubFormatterMock,
 			[],
             []
 		);
@@ -129,9 +209,18 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 
 		return new Type(
 			self::VALID_NAME,
-			new StubFormatter(),
+			$this->_stubFormatterMock,
 			[$field1, $field2],
 			[]
+		);
+	}
+
+	protected function GivenTypeWithInterface() {
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[],
+			[self::INTERFACE_NAME]
 		);
 	}
 }

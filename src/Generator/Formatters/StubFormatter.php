@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Formatters;
 
 
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class StubFormatter {
 	/**
@@ -23,11 +24,6 @@ class StubFormatter {
 	public $tabSize;
 
 	/**
-	 * @var BaseTypeFormatter
-	 */
-	public $fieldTypeFormatter;
-
-	/**
 	 * @var GeneratorArrayFormatter
 	 */
 	public $arrayFormatter;
@@ -36,6 +32,11 @@ class StubFormatter {
      * @var bool
      */
 	public $optimizeEnums;
+
+	/**
+	 * @var BaseTypeFormatter
+	 */
+	private $_fieldTypeFormatter;
 
 	/**
 	 * @param bool $useSpaces
@@ -47,25 +48,21 @@ class StubFormatter {
 		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
 		$this->useSpaces = $useSpaces;
 		$this->tabSize = $tabSize;
-		$this->fieldTypeFormatter = $fieldTypeFormatter;
+		$this->_fieldTypeFormatter = $fieldTypeFormatter;
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
 		$this->optimizeEnums = $optimizeEnums;
 	}
 
+	/**
+	 * @param string $description
+	 * @return string
+	 */
 	public function standardizeDescription($description) {
 		$trimmedDescription = trim($description);
 		$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
 		$descriptionSlashed = addslashes($singleLineDescription);
 
 		return $descriptionSlashed;
-	}
-
-	public function getDescriptionValue($description) {
-		if(!is_null($description)) {
-			return "'description' => '{$this->standardizeDescription($description)}'";
-		}
-
-		return "";
 	}
 
 	/**
@@ -107,5 +104,29 @@ class StubFormatter {
 		}
 
 		return str_repeat("\t", $size);
+	}
+
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
+		return $this->_fieldTypeFormatter->getFieldTypeDeclarationNonPrimaryType($typeName);
+	}
+
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function getResolveSnippet($typeName) {
+		return $this->_fieldTypeFormatter->getResolveSnippet($typeName);
+	}
+
+	/**
+	 * @param TypeUsage $fieldType
+	 * @return string
+	 */
+	public function getFieldTypeDeclaration($fieldType) {
+		return $this->_fieldTypeFormatter->getFieldTypeDeclaration($fieldType);
 	}
 }

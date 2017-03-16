@@ -15,20 +15,20 @@ use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
  */
 class TypeFormatter extends BaseTypeFormatter {
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param string $typeName
 	 * @return string
 	 */
-	public function getFieldTypeDeclarationNonPrimaryType($fieldType) {
-		return ClassComposer::TYPE_STORE_CLASS_NAME . '::' . $fieldType->typeName . '()';
+	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
+		return ClassComposer::TYPE_STORE_CLASS_NAME . '::' . $typeName . '()';
 	}
 
     /**
-     * @param string $fieldName
+     * @param string $typeName
      * @return string
      */
-	public function getResolveSnippet($fieldName)
+	public function getResolveSnippet($typeName)
     {
-        $fieldNameUpperCased = ucwords($fieldName);
+        $fieldNameUpperCased = ucwords($typeName);
 
         return "'resolver' => function (\$root, \$args) { \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
     }
