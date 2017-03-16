@@ -46,10 +46,16 @@ class InterfaceDeclaration implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
+		$name = "'name' => '{$this->name}'";
 		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
 		$fields = $this->getFieldsDefinitions();
 
-		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [{$fields}], ]";
+		$commaSplitVals = [$name, $formattedDescription, $fields];
+		$commaSplitVals = array_filter($commaSplitVals);
+
+		$vals = implode(",", $commaSplitVals);
+
+		return "[ {$vals} ]";
 	}
 
 	/**

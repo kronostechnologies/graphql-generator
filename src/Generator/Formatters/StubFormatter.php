@@ -62,7 +62,7 @@ class StubFormatter {
 
 	public function getDescriptionValue($description) {
 		if(!is_null($description)) {
-			return "'description' => '{$this->standardizeDescription($description)}',";
+			return "'description' => '{$this->standardizeDescription($description)}'";
 		}
 
 		return "";

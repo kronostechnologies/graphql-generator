@@ -55,10 +55,16 @@ class Type implements BaseTypeGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
+		$name = "'name' => '{$this->name}'";
 		$formattedDescription = $this->formatter->getDescriptionValue($this->description);
 		$fieldsDefinitions = $this->getFieldsDefinitions();
 
-		return "[ 'name' => '{$this->name}',{$formattedDescription} 'fields' => [$fieldsDefinitions], ]";
+		$commaSplitVals = [$name, $formattedDescription, $fieldsDefinitions];
+		$commaSplitVals = array_filter($commaSplitVals);
+
+		$vals = implode(",", $commaSplitVals);
+
+		return "[ {$vals}  ]";
 	}
 
 	/**
