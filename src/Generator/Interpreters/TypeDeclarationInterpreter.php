@@ -20,21 +20,21 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function getDescription() {
+	public function interpretDescription() {
 		return $this->_astNode->description;
 	}
 
 	/**
 	 * @return Field[]
 	 */
-	public function getFields() {
+	public function interpretFields() {
 		return array_map(function ($fieldNode) {
 			$fieldInterpreter = new FieldInterpreter($fieldNode);
 
@@ -45,7 +45,7 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	/**
 	 * @return string[]
 	 */
-	public function getInterfacesNames() {
+	public function interpretInterfacesNames() {
 	    return array_map(function (NamedTypeNode $interfaceNameNode) {
             return $interfaceNameNode->name->value;
         }, $this->_astNode->interfaces);
@@ -57,11 +57,11 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new Type(
-			$this->getName(),
+			$this->interpretName(),
 			$formatter,
-			$this->getFields(),
-            $this->getInterfacesNames(),
-			$this->getDescription()
+			$this->interpretFields(),
+            $this->interpretInterfacesNames(),
+			$this->interpretDescription()
 		);
 	}
 }

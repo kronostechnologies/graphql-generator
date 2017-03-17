@@ -27,7 +27,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithName($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedName = $interpreter->getName();
+		$interpretedName = $interpreter->interpretName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
@@ -47,7 +47,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithEmptyValues($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedValues = $interpreter->getEnumValues();
+		$interpretedValues = $interpreter->interpretValues();
 
 		$this->assertEmpty($interpretedValues);
 	}
@@ -61,7 +61,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithSingleEnumValue($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedValues = $interpreter->getEnumValues();
+		$interpretedValues = $interpreter->interpretValues();
 
 		$this->assertCount(1, $interpretedValues);
 	}
@@ -82,7 +82,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithSingleEnumValue($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedValues = $interpreter->getEnumValues();
+		$interpretedValues = $interpreter->interpretValues();
 
 		$this->assertContainsOnly(
 			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
@@ -95,7 +95,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedValues = $interpreter->getEnumValues();
+		$interpretedValues = $interpreter->interpretValues();
 
 		$this->assertCount(3, $interpretedValues);
 	}
@@ -105,7 +105,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithMultipleEnumValue($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedValues = $interpreter->getEnumValues();
+		$interpretedValues = $interpreter->interpretValues();
 
 		$this->assertContains(
 			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),

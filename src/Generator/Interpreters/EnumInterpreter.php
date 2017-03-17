@@ -19,20 +19,20 @@ class EnumInterpreter extends MainTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
 
 	/**
 	 * @return EnumValue[]
 	 */
-	public function getEnumValues() {
+	public function interpretValues() {
 		$enumValues = [];
 
-		foreach($this->_astNode->values as $possibleValue) {
+		foreach($this->_astNode->values as $value) {
 			$enumValues[] = new EnumValue(
-				$possibleValue->name->value,
-				$possibleValue->description
+				$value->name->value,
+				$value->description
 			);
 		}
 
@@ -52,8 +52,8 @@ class EnumInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new Enum(
-			$this->getName(),
-			$this->getEnumValues(),
+			$this->interpretName(),
+			$this->interpretValues(),
 			$formatter,
 			$this->getDescription()
 		);

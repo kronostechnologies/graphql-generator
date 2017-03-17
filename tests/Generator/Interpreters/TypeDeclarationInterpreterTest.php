@@ -28,7 +28,7 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithName($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$interpretedName = $interpreter->getName();
+		$interpretedName = $interpreter->interpretName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
@@ -38,7 +38,7 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithDescription($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$interpretedDescription = $interpreter->getDescription();
+		$interpretedDescription = $interpreter->interpretDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
 	}
@@ -48,7 +48,7 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithField($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$retVal = $interpreter->getFields();
+		$retVal = $interpreter->interpretFields();
 
 		$this->assertCount(1, $retVal);
 		$this->assertInstanceOf(Field::class, array_shift($retVal));

@@ -18,14 +18,14 @@ class ScalarInterpreter extends MainTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function getDescription() {
+	public function interpretDescription() {
 		return $this->_astNode->description;
 	}
 
@@ -35,9 +35,9 @@ class ScalarInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new Scalar(
-			$this->getName(),
+			$this->interpretName(),
 			$formatter,
-			$this->getDescription()
+			$this->interpretDescription()
 		);
 	}
 }

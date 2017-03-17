@@ -21,7 +21,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenValidName($node);
 
 		$interpreter = new FieldArgumentInterpreter($node);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::VALID_NAME, $retVal);
 	}
@@ -31,7 +31,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenValidDescription($node);
 
 		$interpreter = new FieldArgumentInterpreter($node);
-		$retVal = $interpreter->getDescription();
+		$retVal = $interpreter->interpretDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $retVal);
 	}
@@ -41,7 +41,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenValidName($node);
 
 		$interpreter =  new FieldArgumentInterpreter($node);
-		$retVal = $interpreter->getDefaultValue();
+		$retVal = $interpreter->interpretDefaultValue();
 
 		$this->assertNull($retVal);
 	}
@@ -51,7 +51,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenDefaultValue($node);
 
 		$interpreter = new FieldArgumentInterpreter($node);
-		$retVal = $interpreter->getDefaultValue();
+		$retVal = $interpreter->interpretDefaultValue();
 
 		$this->assertEquals(self::VALID_DEFAULT_VALUE, $retVal);
 	}
@@ -61,7 +61,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenValidType($node);
 
 		$interpreter = new FieldArgumentInterpreter($node);
-		$retVal = $interpreter->getType();
+		$retVal = $interpreter->interpretType();
 
 		$this->assertEquals(self::VALID_TYPE_NAME, $retVal->typeName);
 	}

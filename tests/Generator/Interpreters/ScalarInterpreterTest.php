@@ -19,7 +19,7 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithName($scalarNode);
 
 		$interpreter = new ScalarInterpreter($scalarNode);
-		$interpretedName = $interpreter->getName();
+		$interpretedName = $interpreter->interpretName();
 
 		$this->assertEquals(self::VALID_NAME, $interpretedName);
 	}
@@ -29,7 +29,7 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithDescription($scalarNode);
 
 		$interpreter = new ScalarInterpreter($scalarNode);
-		$interpretedDescription = $interpreter->getDescription();
+		$interpretedDescription = $interpreter->interpretDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
 	}

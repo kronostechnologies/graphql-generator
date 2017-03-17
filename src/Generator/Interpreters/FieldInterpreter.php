@@ -19,7 +19,7 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @return FieldArgument[]
 	 */
-	public function getArguments() {
+	public function interpretArguments() {
 		return array_map(function ($argumentNode) {
 			$argumentInterpreter = new FieldArgumentInterpreter($argumentNode);
 
@@ -30,21 +30,21 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getDescription() {
+	public function interpretDescription() {
 		return $this->_astNode->description;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
 
 	/**
 	 * @return \GraphQLGen\Generator\Types\SubTypes\TypeUsage
 	 */
-	public function getType() {
+	public function interpretType() {
 		$typeUsageInterpreter = new TypeUsageInterpreter($this->_astNode->type);
 
 		return $typeUsageInterpreter->generateType();
@@ -55,10 +55,10 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	 */
 	public function generateType() {
 		return new Field(
-			$this->getName(),
-			$this->getDescription(),
-			$this->getType(),
-			$this->getArguments()
+			$this->interpretName(),
+			$this->interpretDescription(),
+			$this->interpretType(),
+			$this->interpretArguments()
 		);
 	}
 }

@@ -25,7 +25,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithName($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::VALID_FIELD_NAME, $retVal);
 	}
@@ -35,7 +35,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithDescription($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getDescription();
+		$retVal = $interpreter->interpretDescription();
 
 		$this->assertEquals(self::VALID_FIELD_DESC, $retVal);
 	}
@@ -45,7 +45,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithType($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getType();
+		$retVal = $interpreter->interpretType();
 
 		$this->assertEquals(self::VALID_FIELD_TYPE_NAME, $retVal->typeName);
 	}
@@ -56,7 +56,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithAdditionalArgument($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getArguments();
+		$retVal = $interpreter->interpretArguments();
 
 		$this->assertInstanceOf(FieldArgument::class, $retVal[0]);
 	}
@@ -67,7 +67,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithAdditionalArgument($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getArguments();
+		$retVal = $interpreter->interpretArguments();
 
 		$this->assertCount(1, $retVal);
 	}
@@ -80,7 +80,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithAdditionalArgument($node);
 
 		$interpreter = new FieldInterpreter($node);
-		$retVal = $interpreter->getArguments();
+		$retVal = $interpreter->interpretArguments();
 
 		$this->assertCount(3, $retVal);
 	}

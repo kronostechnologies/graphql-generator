@@ -19,21 +19,21 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function getDescription() {
+	public function interpretDescription() {
 		return $this->_astNode->description;
 	}
 
 	/**
 	 * @return Field[]
 	 */
-	public function getFields() {
+	public function interpretFields() {
 		return array_map(function ($fieldNode) {
 			$fieldInterpreter = new FieldInterpreter($fieldNode);
 
@@ -47,10 +47,10 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new InterfaceDeclaration(
-			$this->getName(),
-			$this->getFields(),
+			$this->interpretName(),
+			$this->interpretFields(),
 			$formatter,
-			$this->getDescription()
+			$this->interpretDescription()
 		);
 	}
 }
