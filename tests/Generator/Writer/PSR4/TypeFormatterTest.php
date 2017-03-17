@@ -24,7 +24,7 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$type = new TypeUsage(self::TYPE_NAME, false, false, false);
 		$typeFormatter = new TypeFormatter();
 
-		$retVal = $typeFormatter->getFieldTypeDeclarationNonPrimaryType($type->typeName);
+		$retVal = $typeFormatter->getFieldTypeDeclarationNonPrimaryType($type->getTypeName());
 
 		$this->assertEquals(self::EXPECTED_TYPE_DEFINITION, $retVal);
 	}

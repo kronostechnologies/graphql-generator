@@ -89,4 +89,21 @@ abstract class BaseTypeGenerator {
 			return "'description' => '" . $this->_formatter->standardizeDescription($description) . "'";
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	protected function getNameFragment() {
+		return "'name' => '{$this->_name}'";
+	}
+
+	/**
+	 * @param string[] $fragments
+	 * @return string
+	 */
+	protected function joinArrayFragments($fragments) {
+		$commaSplitVals = array_filter($fragments);
+
+		return implode(",", $commaSplitVals);
+	}
 }

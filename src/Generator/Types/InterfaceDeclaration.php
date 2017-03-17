@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Types;
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class InterfaceDeclaration extends BaseTypeGenerator {
 	/**
@@ -31,14 +32,11 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = "'name' => '{$this->_name}'";
+		$name = $this->getNameFragment();
 		$formattedDescription = $this->getDescriptionFragment($this->_description);
 		$fields = $this->getFieldsDefinitions();
 
-		$commaSplitVals = [$name, $formattedDescription, $fields];
-		$commaSplitVals = array_filter($commaSplitVals);
-
-		$vals = implode(",", $commaSplitVals);
+		$vals = $this->joinArrayFragments([$name, $formattedDescription, $fields]);
 
 		return "[ {$vals} ]";
 	}
@@ -63,17 +61,14 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	protected function getFieldsDefinitions() {
 		$fields = [];
 
-		foreach($this->_fields as $field) {
-			$formattedDescription = $this->getDescriptionFragment($field->description);
-			$typeDeclaration = "'type' => " . $this->_formatter->getFieldTypeDeclaration($field->fieldType);
-			$resolve = $this->_formatter->getResolveSnippet($field->fieldType->typeName);
+		foreach($this->getFields() as $field) {
+			$descriptionFragment = $this->getDescriptionFragment($field->_description);
+			$typeDeclarationFragment = $this->getTypeDeclarationFragment($field);
+			$resolveFragment = $this->getFormatter()->getResolveFragment($field->_fieldType->getTypeName());
 
-			$commaSplitVals = [$typeDeclaration, $formattedDescription, $resolve];
-			$commaSplitVals = array_filter($commaSplitVals);
+			$vals = $this->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolveFragment]);
 
-			$vals = implode(",", $commaSplitVals);
-
-			$fields[] = "'{$field->name}' => [ {$vals}],";
+			$fields[] = "'{$field->_name}' => [ {$vals}],";
 		}
 
 		return implode('', $fields);
@@ -99,11 +94,19 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	public function getDependencies() {
 		$dependencies = [];
 
-		foreach($this->_fields as $field) {
-			$fieldDependencies = $field->fieldType->getDependencies();
+		foreach($this->getFields() as $field) {
+			$fieldDependencies = $field->_fieldType->getDependencies();
 			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @param Field $field
+	 * @return string
+	 */
+	protected function getTypeDeclarationFragment($field) {
+		return "'type' => " . $this->_formatter->getFieldTypeDeclaration($field->_fieldType);
 	}
 }

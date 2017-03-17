@@ -39,7 +39,7 @@ class Type extends BaseTypeGenerator {
 	 */
 	public function generateTypeDefinition() {
 		$name = $this->getNameFragment();
-		$formattedDescription = $this->getDescriptionFragment($this->_description);
+		$formattedDescription = $this->getDescriptionFragment($this->getDescription());
 		$fieldsDefinitions = $this->getFieldsFragment();
 		$interfacesDeclaration = $this->getInterfacesFragment();
 
@@ -69,10 +69,10 @@ class Type extends BaseTypeGenerator {
 	 * @return string[]
 	 */
 	public function getDependencies() {
-		$dependencies = $this->_interfacesNames;
+		$dependencies = $this->getInterfacesNames();
 
-		foreach($this->_fields as $field) {
-			$fieldDependencies = $field->fieldType->getDependencies();
+		foreach($this->getFields() as $field) {
+			$fieldDependencies = $field->_fieldType->getDependencies();
 			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
@@ -83,10 +83,10 @@ class Type extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function getInterfacesFragment() {
-		if (!empty($this->_interfacesNames)) {
+		if (!empty($this->getInterfacesNames())) {
 			$interfaceNamesFormatted = array_map(function ($interfaceName) {
 				return $this->_formatter->getFieldTypeDeclarationNonPrimaryType($interfaceName);
-			}, $this->_interfacesNames);
+			}, $this->getInterfacesNames());
 
 			$joinedInterfaceNames = implode(", ", $interfaceNamesFormatted);
 
@@ -131,27 +131,17 @@ class Type extends BaseTypeGenerator {
 	protected function getFieldsDefinitions() {
 		$fields = [];
 
-		foreach($this->_fields as $field) {
-			$typeDeclaration = "'type' => " . $this->_formatter->getFieldTypeDeclaration($field->fieldType);
-			$formattedDescription = $this->getDescriptionFragment($field->description);
-			$resolver = $this->_formatter->getResolveSnippet($field->name);
+		foreach($this->getFields() as $field) {
+			$typeDeclaration = $this->getTypeDeclarationFragment($field);
+			$formattedDescription = $this->getDescriptionFragment($field->_description);
+			$resolver = $this->getResolveFragment($field->_name);
 
-			$commaSplitVals = [$typeDeclaration, $formattedDescription, $resolver];
-			$commaSplitVals = array_filter($commaSplitVals);
+			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $resolver]);
 
-			$vals = implode(",", $commaSplitVals);
-
-			$fields[] = "'{$field->name}' => [{$vals}],";
+			$fields[] = "'{$field->_name}' => [{$vals}],";
 		}
 
 		return implode('', $fields);
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function getNameFragment() {
-		return "'name' => '{$this->_name}'";
 	}
 
 	/**
@@ -161,5 +151,19 @@ class Type extends BaseTypeGenerator {
 		return "'fields' => [" . $this->getFieldsDefinitions() . "]";
 	}
 
+	/**
+	 * @param Field $field
+	 * @return string
+	 */
+	protected function getTypeDeclarationFragment($field) {
+		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->_fieldType);
+	}
 
+	/**
+	 * @param string $fieldName
+	 * @return string
+	 */
+	protected function getResolveFragment($fieldName) {
+		return "'resolver' => " . $this->getFormatter()->getResolveFragment($fieldName);
+	}
 }

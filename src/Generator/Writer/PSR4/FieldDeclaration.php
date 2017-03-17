@@ -65,7 +65,7 @@ class FieldDeclaration {
 	 * @return string
 	 */
 	protected function getVariableString() {
-		return "public \${$this->_field->name};";
+		return "public \${$this->_field->_name};";
 	}
 
 	/**
@@ -88,24 +88,24 @@ class FieldDeclaration {
 	protected function getAnnotationFieldNameFragment() {
 		$primaryTypesMappings = self::getPrimaryTypesAnnotationMappings();
 
-		if(key_exists($this->_field->fieldType->typeName, $primaryTypesMappings)) {
-			return $primaryTypesMappings[$this->_field->fieldType->typeName];
+		if(key_exists($this->_field->_fieldType->getTypeName(), $primaryTypesMappings)) {
+			return $primaryTypesMappings[$this->_field->_fieldType->getTypeName()];
 		}
 
-		return $this->_field->fieldType->typeName;
+		return $this->_field->_fieldType->getTypeName();
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getInListAnnotationFragment() {
-		return ($this->_field->fieldType->inList ? '[]' : '');
+		return ($this->_field->_fieldType->isInList() ? '[]' : '');
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getNullAnnotationFragment() {
-		return ($this->_field->fieldType->isTypeNullable ? '|null' : '');
+		return ($this->_field->_fieldType->isTypeNullable() ? '|null' : '');
 	}
 }

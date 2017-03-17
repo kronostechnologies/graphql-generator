@@ -11,25 +11,25 @@ class BaseTypeFormatter {
 	 */
 	public function getFieldTypeDeclaration($fieldType) {
 		// Primary type check
-		if(isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName])) {
-			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->typeName];
+		if(isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()])) {
+			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()];
 		}
 		else {
-			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType->typeName);
+			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType->getTypeName());
 		}
 
 		// Is base object nullable?
-		if(!$fieldType->isTypeNullable) {
+		if(!$fieldType->isTypeNullable()) {
 			$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
 		}
 
 		// Is in list?
-		if($fieldType->inList) {
+		if($fieldType->isInList()) {
 			$typeDeclaration = 'Type::listOf(' . $typeDeclaration . ')';
 		}
 
 		// Is list nullable?
-		if($fieldType->inList && !$fieldType->isListNullable) {
+		if($fieldType->isInList() && !$fieldType->isListNullable()) {
 			$typeDeclaration = 'Type::nonNull(' . $typeDeclaration . ')';
 		}
 

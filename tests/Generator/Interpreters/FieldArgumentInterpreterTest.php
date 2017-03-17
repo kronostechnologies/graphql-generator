@@ -63,7 +63,7 @@ class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpreter = new FieldArgumentInterpreter($node);
 		$retVal = $interpreter->interpretType();
 
-		$this->assertEquals(self::VALID_TYPE_NAME, $retVal->typeName);
+		$this->assertEquals(self::VALID_TYPE_NAME, $retVal->getTypeName());
 	}
 
 	protected function GivenValidName($node) {

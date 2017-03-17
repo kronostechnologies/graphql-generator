@@ -34,14 +34,11 @@ class Enum extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-	    $name = "'name' => '{$this->_name}'";
-		$formattedDescription = $this->getDescriptionFragment($this->_description);
-		$values = "'values' => [" . $this->getConstantValuesArray() . "]";
+	    $nameFragment = $this->getNameFragment();
+		$formattedDescription = $this->getDescriptionFragment($this->getDescription());
+		$valuesFragment = $this->getValuesFragment();
 
-		$commaSplitVals = [$name, $formattedDescription, $values];
-		$commaSplitVals = array_filter($commaSplitVals);
-
-		$vals = implode(",", $commaSplitVals);
+		$vals = $this->joinArrayFragments([$nameFragment, $formattedDescription, $valuesFragment]);
 
 		return "[{$vals}]";
 	}
@@ -85,8 +82,8 @@ class Enum extends BaseTypeGenerator {
 	protected function getVariablesDeclarationsOptimized() {
         $constants = "";
         $i = 1;
-        foreach($this->_values as $value) {
-            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = {$i};\n";
+        foreach($this->getValues() as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = {$i};\n";
             $i++;
         }
 
@@ -98,8 +95,8 @@ class Enum extends BaseTypeGenerator {
      */
     protected function getVariablesDeclarationsStandard() {
         $constants = "";
-        foreach($this->_values as $value) {
-            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->name} = '{$value->name}';\n";
+        foreach($this->getValues() as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = '{$value->getName()}';\n";
         }
 
         return $constants;
@@ -112,10 +109,13 @@ class Enum extends BaseTypeGenerator {
 		return [];
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getConstantValuesArray() {
 		$valuesNames = array_map(function ($value) {
 			return $this->getSingleConstantValueEntry($value);
-		}, $this->_values ?: []);
+		}, $this->getValues());
 
 		return implode("", $valuesNames);
 	}
@@ -125,8 +125,15 @@ class Enum extends BaseTypeGenerator {
 	 * @return string
 	 */
 	protected function getSingleConstantValueEntry($value) {
-		$formattedDescription = $this->getDescriptionFragment($value->description);
+		$formattedDescription = $this->getDescriptionFragment($value->getDescription());
 
-        return "'{$value->name}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->name}, {$formattedDescription} ],";
+        return "'{$value->getName()}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->getName()}, {$formattedDescription} ],";
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getValuesFragment() {
+		return "'values' => [" . $this->getConstantValuesArray() . "]";
 	}
 }

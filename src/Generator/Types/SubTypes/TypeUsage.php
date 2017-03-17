@@ -16,22 +16,22 @@ class TypeUsage {
 	/**
 	 * @var string
 	 */
-	public $typeName;
+	protected $_typeName;
 
 	/**
 	 * @var bool
 	 */
-	public $inList;
+	protected $_inList;
 
 	/**
 	 * @var bool
 	 */
-	public $isTypeNullable;
+	protected $_isTypeNullable;
 
 	/**
 	 * @var bool
 	 */
-	public $isListNullable;
+	protected $_isListNullable;
 
 	/**
 	 * FieldType constructor.
@@ -41,10 +41,10 @@ class TypeUsage {
 	 * @param bool $is_list_nullable
 	 */
 	public function __construct($type_name, $is_type_nullable, $in_list, $is_list_nullable) {
-		$this->typeName = $type_name;
-		$this->isTypeNullable = $is_type_nullable;
-		$this->inList = $in_list;
-		$this->isListNullable = $is_list_nullable;
+		$this->_typeName = $type_name;
+		$this->_isTypeNullable = $is_type_nullable;
+		$this->_inList = $in_list;
+		$this->_isListNullable = $is_list_nullable;
 	}
 
 	/**
@@ -53,28 +53,84 @@ class TypeUsage {
 	public function getDependencies() {
 		$dependencies = [];
 
-		if(isset(self::$PRIMARY_TYPES_MAPPINGS[$this->typeName])) {
+		if(isset(self::$PRIMARY_TYPES_MAPPINGS[$this->_typeName])) {
 			$dependencies[] = 'Type';
 		}
 		else {
-			$dependencies[] = $this->typeName;
+			$dependencies[] = $this->_typeName;
 		}
 
 		// Is base object nullable?
-		if(!$this->isTypeNullable) {
+		if(!$this->_isTypeNullable) {
 			$dependencies[] = 'Type';
 		}
 
 		// Is in list?
-		if($this->inList) {
+		if($this->_inList) {
 			$dependencies[] = 'Type';
 		}
 
 		// Is list nullable?
-		if($this->inList && !$this->isListNullable) {
+		if($this->_inList && !$this->_isListNullable) {
 			$dependencies[] = 'Type';
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTypeName() {
+		return $this->_typeName;
+	}
+
+	/**
+	 * @param string $typeName
+	 */
+	public function setTypeName($typeName) {
+		$this->_typeName = $typeName;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInList() {
+		return $this->_inList;
+	}
+
+	/**
+	 * @param bool $inList
+	 */
+	public function setInList($inList) {
+		$this->_inList = $inList;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTypeNullable() {
+		return $this->_isTypeNullable;
+	}
+
+	/**
+	 * @param bool $isTypeNullable
+	 */
+	public function setIsTypeNullable($isTypeNullable) {
+		$this->_isTypeNullable = $isTypeNullable;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isListNullable() {
+		return $this->_isListNullable;
+	}
+
+	/**
+	 * @param bool $isListNullable
+	 */
+	public function setIsListNullable($isListNullable) {
+		$this->_isListNullable = $isListNullable;
 	}
 }

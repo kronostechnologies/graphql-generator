@@ -23,9 +23,10 @@ class Scalar extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$descriptionFragment = $this->getDescriptionFragment($this->_description);
+		$nameFragment = $this->getNameFragment();
+		$descriptionFragment = $this->getDescriptionFragment($this->getDescription());
 
-		return "\$this->name = '{$this->_name}'; {$descriptionFragment}";
+		return "{$nameFragment}{$descriptionFragment}";
 	}
 
 	/**
@@ -60,5 +61,9 @@ class Scalar extends BaseTypeGenerator {
 		else {
 			return "\$this->description = '" . $this->_formatter->standardizeDescription($description) . "';";
 		}
+	}
+
+	protected function getNameFragment() {
+		return "\$this->name = '{$this->getName()}';";
 	}
 }

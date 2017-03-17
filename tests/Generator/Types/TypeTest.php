@@ -78,6 +78,14 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains("'fields'", $retVal);
 	}
 
+	public function test_GivenTypeWithFields_generateTypeDefinition_WillContainResolverFragment() {
+		$type = $this->GivenTypeWith2DistinctTypeFields();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'resolver'", $retVal);
+	}
+
 	public function test_GivenType_getName_WillReturnName() {
 		$type = $this->GivenType();
 

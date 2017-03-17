@@ -118,7 +118,7 @@ class StubFormatter {
 	 * @param string $typeName
 	 * @return string
 	 */
-	public function getResolveSnippet($typeName) {
+	public function getResolveFragment($typeName) {
 		return $this->_fieldTypeFormatter->getResolveSnippet($typeName);
 	}
 
