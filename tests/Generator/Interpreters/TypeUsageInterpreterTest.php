@@ -49,7 +49,7 @@ class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNamedTypeNode($node);
 
 		$interpreter = new TypeUsageInterpreter($node->type);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
 	}
@@ -96,7 +96,7 @@ class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenListlessNonNullableTypeNode($node);
 
 		$interpreter = new TypeUsageInterpreter($node->type);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
 	}
@@ -144,7 +144,7 @@ class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenWithListAllNullableTypeNode($node);
 
 		$interpreter = new TypeUsageInterpreter($node->type);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
 	}
@@ -192,7 +192,7 @@ class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenWithNonNullableListAndNonNullableObject($node);
 
 		$interpreter = new TypeUsageInterpreter($node->type);
-		$retVal = $interpreter->getName();
+		$retVal = $interpreter->interpretName();
 
 		$this->assertEquals(self::NODE_NAME, $retVal);
 	}

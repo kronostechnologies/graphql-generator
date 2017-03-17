@@ -17,13 +17,6 @@ class EnumInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		return $this->_astNode->name->value;
-	}
-
-	/**
 	 * @return EnumValue[]
 	 */
 	public function interpretValues() {
@@ -40,13 +33,6 @@ class EnumInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @return string|null
-	 */
-	public function getDescription() {
-		return $this->_astNode->description;
-	}
-
-	/**
 	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @return Enum
 	 */
@@ -55,7 +41,7 @@ class EnumInterpreter extends MainTypeInterpreter {
 			$this->interpretName(),
 			$this->interpretValues(),
 			$formatter,
-			$this->getDescription()
+			$this->interpretDescription()
 		);
 	}
 }

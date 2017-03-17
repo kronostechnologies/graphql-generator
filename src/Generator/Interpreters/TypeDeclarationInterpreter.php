@@ -18,20 +18,6 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		return $this->_astNode->name->value;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function interpretDescription() {
-		return $this->_astNode->description;
-	}
-
-	/**
 	 * @return Field[]
 	 */
 	public function interpretFields() {

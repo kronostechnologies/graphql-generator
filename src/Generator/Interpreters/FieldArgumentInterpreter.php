@@ -16,20 +16,6 @@ class FieldArgumentInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		return $this->_astNode->name->value;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function interpretDescription() {
-		return $this->_astNode->description;
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function interpretDefaultValue() {

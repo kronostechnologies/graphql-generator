@@ -28,20 +28,6 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function interpretDescription() {
-		return $this->_astNode->description;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		return $this->_astNode->name->value;
-	}
-
-	/**
 	 * @return \GraphQLGen\Generator\Types\SubTypes\TypeUsage
 	 */
 	public function interpretType() {

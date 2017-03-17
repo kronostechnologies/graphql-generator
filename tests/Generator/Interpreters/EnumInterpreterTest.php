@@ -37,7 +37,7 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithDescription($enumNode);
 
 		$interpreter = new EnumInterpreter($enumNode);
-		$interpretedDescription = $interpreter->getDescription();
+		$interpretedDescription = $interpreter->interpretDescription();
 
 		$this->assertEquals(self::VALID_DESCRIPTION, $interpretedDescription);
 	}

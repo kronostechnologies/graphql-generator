@@ -59,7 +59,7 @@ class TypeUsageInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function interpretName() {
 		// Finds name node
 		$nameNode = $this->_astNode;
 		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
@@ -70,11 +70,18 @@ class TypeUsageInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function interpretDescription() {
+		return "";
+	}
+
+	/**
 	 * @return TypeUsage
 	 */
 	public function generateType() {
 		return new TypeUsage(
-			$this->getName(),
+			$this->interpretName(),
 			$this->isNullableObject(),
 			$this->isInList(),
 			$this->isNullableList()
