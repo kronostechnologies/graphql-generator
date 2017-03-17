@@ -37,10 +37,39 @@ class BaseTypeFormatter {
 	}
 
 	/**
+	 * @param TypeUsage $fieldType
+	 * @return string
+	 */
+	public function resolveFieldTypeDocComment($fieldType) {
+		// Primary type check
+		if(isset(TypeUsage::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()])) {
+			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()];
+		}
+		else {
+			$typeDeclaration = $this->resolveFieldTypeDeclarationDocComment($fieldType->getTypeName());
+		}
+
+		// Append array notation
+		if($fieldType->isInList()) {
+			$typeDeclaration .= '[]';
+		}
+
+		return $typeDeclaration;
+	}
+
+	/**
 	 * @param string $typeName
 	 * @return string
 	 */
 	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
+		return $typeName;
+	}
+
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function resolveFieldTypeDeclarationDocComment($typeName) {
 		return $typeName;
 	}
 

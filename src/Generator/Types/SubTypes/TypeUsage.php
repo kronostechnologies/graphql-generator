@@ -13,6 +13,14 @@ class TypeUsage {
 		'Boolean' => 'Type::boolean()',
 	];
 
+	public static $PRIMARY_TYPES_DOCCOMMENTS = [
+		'ID' => 'int',
+		'Int' => 'int',
+		'String' => 'string',
+		'Float' => 'float',
+		'Boolean' => 'bool',
+	];
+
 	/**
 	 * @var string
 	 */

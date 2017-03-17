@@ -7,6 +7,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 
 class ResolverTest extends \PHPUnit_Framework_TestCase {
@@ -31,7 +32,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase {
 
 		$retVal = $this->_resolver->getContentCreator();
 
-		$this->assertInstanceOf(BaseContentCreator::class, $retVal);
+		$this->assertInstanceOf(ResolverContent::class, $retVal);
 	}
 
 	protected function GivenScalarGeneratorType() {

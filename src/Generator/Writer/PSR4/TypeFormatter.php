@@ -22,6 +22,14 @@ class TypeFormatter extends BaseTypeFormatter {
 		return ClassComposer::TYPE_STORE_CLASS_NAME . '::' . $typeName . '()';
 	}
 
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function resolveFieldTypeDeclarationDocComment($typeName) {
+		return $typeName . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX;
+	}
+
     /**
      * @param string $typeName
      * @return string
