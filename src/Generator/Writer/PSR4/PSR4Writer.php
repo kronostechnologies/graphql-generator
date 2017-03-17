@@ -56,8 +56,9 @@ class PSR4Writer implements GeneratorWriterInterface {
 	public function generateFileForTypeGenerator($type) {
 		$this->_classComposer->generateClassForGenerator($type);
 
-		if ($this->getClassComposer()->generatorTypeSupportsResolver($type)) {
+		if ($this->getClassComposer()->generatorTypeSupportsResolverOrDTO($type)) {
 			$this->_classComposer->generateResolverForGenerator($type);
+			$this->_classComposer->generateDTOForGenerator($type);
 		}
 	}
 

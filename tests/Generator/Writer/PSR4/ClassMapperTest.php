@@ -97,22 +97,6 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertStringEndsWith("Resolvers\\Types", $retVal);
 	}
 
-	public function test_GivenScalar_getResolverNamespaceFromGenerator_WillEndWithResolversTypeScalar() {
-		$givenType = $this->GivenScalar();
-
-		$retVal = $this->_classMapper->getResolverNamespaceFromGenerator($givenType);
-
-		$this->assertStringEndsWith("Resolvers\\Types\\Scalars", $retVal);
-	}
-
-	public function test_GivenEnum_getResolverNamespaceFromGenerator_WillEndWithResolversTypeEnum() {
-		$givenType = $this->GivenEnum();
-
-		$retVal = $this->_classMapper->getResolverNamespaceFromGenerator($givenType);
-
-		$this->assertStringEndsWith("Resolvers\\Types\\Enums", $retVal);
-	}
-
 	public function test_GivenInterface_getResolverNamespaceFromGenerator_WillEndWithResolversTypeEnum() {
 		$givenType = $this->GivenInterface();
 

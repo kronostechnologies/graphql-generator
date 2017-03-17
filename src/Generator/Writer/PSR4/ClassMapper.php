@@ -95,10 +95,6 @@ class ClassMapper {
 		switch(get_class($type)) {
 			case Type::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
-			case Scalar::class:
-				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Scalars");
-			case Enum::class:
-				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Enums");
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
 			default:
@@ -203,6 +199,17 @@ class ClassMapper {
 		if($asTypeImplementation) {
 			/** @var ObjectType $class */
 			$this->getTypeStore()->addTypeImplementation($class);
+		}
+	}
+
+	public function getDTONamespaceFromGenerator($type) {
+		switch(get_class($type)) {
+			case Type::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO");
+			case InterfaceDeclaration::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Interfaces");
+			default:
+				throw new Exception("getDTONamespaceFromGenerator not supported for type " . get_class($type));
 		}
 	}
 }

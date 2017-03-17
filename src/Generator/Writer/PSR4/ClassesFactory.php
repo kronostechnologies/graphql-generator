@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
@@ -78,6 +79,18 @@ class ClassesFactory {
 		$classMapper = new ClassMapper();
 
 		return $classMapper;
+	}
+
+	/**
+	 * @param BaseTypeGenerator $type
+	 * @return DTO
+	 */
+	public function createDTOClass($type) {
+		$dtoClass = new DTO();
+		$dtoClass->setClassName($type->getName() . ClassComposer::DTO_CLASS_NAME_SUFFIX);
+		$dtoClass->setGeneratorType($type);
+
+		return $dtoClass;
 	}
 
 }

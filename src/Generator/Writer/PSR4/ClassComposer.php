@@ -15,6 +15,7 @@ use GraphQLGen\Generator\Types\Type;
  * @package GraphQLGen\Generator\Writer\PSR4
  */
 class ClassComposer {
+	const DTO_CLASS_NAME_SUFFIX = 'DTO';
 	const RESOLVER_CLASS_NAME_SUFFIX = 'Resolver';
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';
 	const TYPE_STORE_CLASS_NAME = 'TypeStore';
@@ -51,9 +52,10 @@ class ClassComposer {
 		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
 
 		// Add resolver dependency
-		if ($this->generatorTypeSupportsResolver($type)) {
+		if ($this->generatorTypeSupportsResolverOrDTO($type)) {
 			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
+
 		$generatorClass->addDependency(self::TYPE_STORE_CLASS_NAME);
 		$generatorClass->addDependency(self::TYPE_CLASS_NAME);
 		$generatorClass->addDependency($generatorClass->getParentClassName());
@@ -77,9 +79,21 @@ class ClassComposer {
 
 	/**
 	 * @param BaseTypeGenerator $type
+	 */
+	public function generateDTOForGenerator(BaseTypeGenerator $type) {
+		// Create DTO class
+		$dtoClass = $this->getFactory()->createDTOClass($type);
+		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($type));
+
+		// Map class
+		$this->getClassMapper()->mapClass($dtoClass->getClassName(), $dtoClass, false);
+	}
+
+	/**
+	 * @param BaseTypeGenerator $type
 	 * @return bool
 	 */
-	public function generatorTypeSupportsResolver(BaseTypeGenerator $type) {
+	public function generatorTypeSupportsResolverOrDTO(BaseTypeGenerator $type) {
 		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class]);
 	}
 
