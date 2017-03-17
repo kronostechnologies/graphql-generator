@@ -8,22 +8,22 @@ class Field {
 	/**
 	 * @var string
 	 */
-	public $_name;
+	protected $_name;
 
 	/**
 	 * @var string|null
 	 */
-	public $_description;
+	protected $_description;
 
 	/**
 	 * @var TypeUsage
 	 */
-	public $_fieldType;
+	protected $_fieldType;
 
 	/**
 	 * @var FieldArgument[]
 	 */
-	public $_arguments = [];
+	protected $_arguments = [];
 
 	/**
 	 * Field constructor.

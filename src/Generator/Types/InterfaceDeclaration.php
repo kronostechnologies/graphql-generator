@@ -62,13 +62,13 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 		$fields = [];
 
 		foreach($this->getFields() as $field) {
-			$descriptionFragment = $this->getDescriptionFragment($field->_description);
+			$descriptionFragment = $this->getDescriptionFragment($field->getDescription());
 			$typeDeclarationFragment = $this->getTypeDeclarationFragment($field);
-			$resolveFragment = $this->getFormatter()->getResolveFragment($field->_fieldType->getTypeName());
+			$resolveFragment = $this->getFormatter()->getResolveFragment($field->getFieldType()->getTypeName());
 
 			$vals = $this->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolveFragment]);
 
-			$fields[] = "'{$field->_name}' => [ {$vals}],";
+			$fields[] = "'{$field->getName()}' => [ {$vals}],";
 		}
 
 		return implode('', $fields);
@@ -95,7 +95,7 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 		$dependencies = [];
 
 		foreach($this->getFields() as $field) {
-			$fieldDependencies = $field->_fieldType->getDependencies();
+			$fieldDependencies = $field->getFieldType()->getDependencies();
 			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
@@ -107,6 +107,6 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	 * @return string
 	 */
 	protected function getTypeDeclarationFragment($field) {
-		return "'type' => " . $this->_formatter->getFieldTypeDeclaration($field->_fieldType);
+		return "'type' => " . $this->_formatter->getFieldTypeDeclaration($field->getFieldType());
 	}
 }

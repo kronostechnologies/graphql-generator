@@ -72,7 +72,7 @@ class Type extends BaseTypeGenerator {
 		$dependencies = $this->getInterfacesNames();
 
 		foreach($this->getFields() as $field) {
-			$fieldDependencies = $field->_fieldType->getDependencies();
+			$fieldDependencies = $field->getFieldType()->getDependencies();
 			$dependencies = array_merge($dependencies, $fieldDependencies);
 		}
 
@@ -133,12 +133,12 @@ class Type extends BaseTypeGenerator {
 
 		foreach($this->getFields() as $field) {
 			$typeDeclaration = $this->getTypeDeclarationFragment($field);
-			$formattedDescription = $this->getDescriptionFragment($field->_description);
-			$resolver = $this->getResolveFragment($field->_name);
+			$formattedDescription = $this->getDescriptionFragment($field->getDescription());
+			$resolver = $this->getResolveFragment($field->getName());
 
 			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $resolver]);
 
-			$fields[] = "'{$field->_name}' => [{$vals}],";
+			$fields[] = "'{$field->getName()}' => [{$vals}],";
 		}
 
 		return implode('', $fields);
@@ -156,7 +156,7 @@ class Type extends BaseTypeGenerator {
 	 * @return string
 	 */
 	protected function getTypeDeclarationFragment($field) {
-		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->_fieldType);
+		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->getFieldType());
 	}
 
 	/**
