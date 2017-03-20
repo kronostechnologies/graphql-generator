@@ -20,13 +20,6 @@ class InvalidGeneratorType extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getName() {
-		// TODO: Implement getName() method.
-	}
-
-	/**
 	 * @return string|null
 	 */
 	public function getVariablesDeclarations() {
