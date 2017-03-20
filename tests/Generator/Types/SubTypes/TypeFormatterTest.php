@@ -6,6 +6,7 @@ namespace GraphQLGen\Tests\Generator\Types\SubTypes;
 
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Tests\Mocks\Types\SubTypes\TestableBaseTypeFormatter;
 
 class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'TypeTest';
@@ -22,7 +23,7 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	protected $_typeFormatter;
 
 	public function setUp() {
-		$this->_typeFormatter = new BaseTypeFormatter();
+		$this->_typeFormatter = new TestableBaseTypeFormatter();
 	}
 
 	public function test_GivenAllNullableNoList_getFieldTypeDeclaration_WillReturnRightString() {

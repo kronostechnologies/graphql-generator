@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
-class BaseTypeFormatter {
+abstract class BaseTypeFormatter {
 	/**
 	 * @param TypeUsage $fieldType
 	 * @return string
@@ -84,7 +84,5 @@ class BaseTypeFormatter {
 	 * @param string $typeName
 	 * @return string
 	 */
-	public function getResolveSnippet($typeName) {
-		return '';
-	}
+	public abstract function getResolveSnippet($typeName);
 }
