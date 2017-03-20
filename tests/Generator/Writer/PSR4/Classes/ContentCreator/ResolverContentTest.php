@@ -4,6 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use Exception;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\SubTypes\Field;
@@ -21,6 +22,8 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_NAME_TYPE = 'AFieldNameType';
 	const FIELD_PRIMARY_TYPE = 'ID';
 	const FIELD_NON_PRIMARY_TYPE = 'ANonPrimaryType';
+	const CLASS_NAME = 'Class123';
+	const CLASS_NS = 'A\\Namespace';
 	/**
 	 * @var ResolverContent
 	 */
@@ -101,6 +104,33 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty($retVal);
 	}
 
+	public function test_GivenResolverClass_getTypeGeneratorClass_WillCrash() {
+		$resolverClass = $this->GivenResolverClass();
+		$this->_resolverContent->setResolverClass($resolverClass);
+
+		$this->expectException(Exception::class);
+
+		$this->_resolverContent->getTypeGeneratorClass();
+	}
+
+	public function test_GivenResolverClassMock_getClassName_WillProxyThroughResolverClass() {
+		$resolverClass = $this->GivenResolverClassMock();
+		$this->_resolverContent->setResolverClass($resolverClass);
+
+		$resolverClass->expects($this->once())->method('getClassName');
+
+		$this->_resolverContent->getClassName();
+	}
+
+	public function test_GivenResolverClassMock_getNamespace_WillProxyThroughResolverClass() {
+		$resolverClass = $this->GivenResolverClassMock();
+		$this->_resolverContent->setResolverClass($resolverClass);
+
+		$resolverClass->expects($this->once())->method('getNamespace');
+
+		$this->_resolverContent->getNamespace();
+	}
+
 	protected function GivenScalarGeneratorType() {
 		$this->_resolverContent->setTypeGenerator(new Scalar(
 			self::SCALAR_NAME,
@@ -128,6 +158,10 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 	private function GivenResolverClass() {
 		return new Resolver();
+	}
+
+	private function GivenResolverClassMock() {
+		return $this->createMock(Resolver::class);
 	}
 
 	private function GivenPrimaryType() {

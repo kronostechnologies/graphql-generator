@@ -61,6 +61,24 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains("\$", $retVal);
 	}
 
+	public function test_GivenTypeStoreClassMock_getClassName_WillProxyThroughClass() {
+		$this->_typeStore->expects($this->once())->method('getClassName');
+
+		$this->_typeStoreContent->getClassName();
+	}
+
+	public function test_GivenTypeStoreClassMock_getNamespace_WillProxyThroughClass() {
+		$this->_typeStore->expects($this->once())->method('getNamespace');
+
+		$this->_typeStoreContent->getNamespace();
+	}
+
+	public function test_GivenNothing_getParentClassName_WillBeEmpty() {
+		$retVal = $this->_typeStoreContent->getParentClassName();
+
+		$this->assertEmpty($retVal);
+	}
+
 	protected function GivenNoTypeToImplement() {
 		$this->_typeStore->method('getTypesToImplement')->willReturn([]);
 	}

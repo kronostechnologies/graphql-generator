@@ -99,7 +99,7 @@ class ResolverContent extends BaseContentCreator {
 	 * @throws Exception
 	 */
 	public function getTypeGeneratorClass() {
-		if ($this->_typeGenerator === null) {
+		if ($this->getTypeGenerator() === null) {
 			throw new Exception("Internal Exception: Type generator is not defined for {$this->getResolverClass()->getClassName()}");
 		}
 
