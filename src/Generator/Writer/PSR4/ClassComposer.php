@@ -86,9 +86,9 @@ class ClassComposer {
 		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($type));
 
 		// Fetches dependencies
-		/*foreach ($type->getDependencies() as $dependency) {
+		foreach ($type->getDependencies() as $dependency) {
 			$dtoClass->addDependency($dependency);
-		}*/
+		}
 
 		// Map class
 		$this->getClassMapper()->mapClass($dtoClass->getClassName(), $dtoClass, false);

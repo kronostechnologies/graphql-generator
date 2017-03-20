@@ -7,8 +7,11 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
+use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
+use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
@@ -56,13 +59,20 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_objTypeMock;
 
+	/**
+	 * @var DTO|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_dtoTypeMock;
+
 	public function setUp() {
+		$this->_dtoTypeMock = $this->createMock(DTO::class);
 		$this->_objTypeMock = $this->createMock(ObjectType::class);
 		$this->_objTypeMock->method('getParentClassName')->willReturn(self::PARENT_CLASS_NAME);
 		$this->_resolverMock = $this->createMock(Resolver::class);
 		$this->_typeStoreMock = $this->createMock(TypeStore::class);
 
 		$this->_factory = $this->createMock(ClassesFactory::class);
+		$this->_factory->method('createDTOClass')->willReturn($this->_dtoTypeMock);
 		$this->_factory->method('createObjectTypeClass')->willReturn($this->_objTypeMock);
 		$this->_factory->method('createResolverClass')->willReturn($this->_resolverMock);
 		$this->_factory->method('createTypeStoreClass')->willReturn($this->_typeStoreMock);
@@ -238,8 +248,57 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->generateUniqueTypeStore();
 	}
 
+	public function test_GivenAnything_generateDTOForGenerator_WillCreateDTOClass() {
+		$givenObjectType = $this->GivenObjectType();
+
+		$this->_factory
+			->expects($this->once())
+			->method('createDTOClass');
+
+		$this->_classesComposer->generateDTOForGenerator($givenObjectType);
+	}
+
+	public function test_GivenAnything_generateDTOForGenerator_WillSetNamespace() {
+		$givenObjectType = $this->GivenObjectType();
+
+		$this->_dtoTypeMock
+			->expects($this->once())
+			->method('setNamespace');
+
+		$this->_classesComposer->generateDTOForGenerator($givenObjectType);
+	}
+
+	public function test_GivenObjectTypeWithDependencies_generateDTOForGenerator_WillAddDependencies() {
+		$givenObjectType = $this->GivenObjectTypeWithDependencies();
+
+		$this->_dtoTypeMock
+			->expects($this->any())
+			->method('addDependency');
+
+		$this->_classesComposer->generateDTOForGenerator($givenObjectType);
+	}
+
+	public function test_GivenAnything_generateDTOForGenerator_WillMapClass() {
+		$givenObjectType = $this->GivenObjectType();
+
+		$this->_classMapper
+			->expects($this->once())
+			->method('mapClass')
+			->with($this->_dtoTypeMock->getClassName(), $this->_dtoTypeMock, false);;
+
+		$this->_classesComposer->generateDTOForGenerator($givenObjectType);
+	}
+
 	protected function GivenObjectType() {
 		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [], [], self::OBJ_TYPE_DESC);
+	}
+
+	protected function GivenObjectTypeWithDependencies() {
+		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [
+			new Field("", "", new TypeUsage(
+				"ADep", false, false, false
+			), [])
+		], [], self::OBJ_TYPE_DESC);
 	}
 
 	protected function GivenInterfaceObjectType() {

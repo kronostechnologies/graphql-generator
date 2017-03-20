@@ -202,6 +202,12 @@ class ClassMapper {
 		}
 	}
 
+	/**
+	 * @param BaseTypeGenerator $type
+	 * @return string
+	 * @throws Exception
+	 *
+	 */
 	public function getDTONamespaceFromGenerator($type) {
 		switch(get_class($type)) {
 			case Type::class:
