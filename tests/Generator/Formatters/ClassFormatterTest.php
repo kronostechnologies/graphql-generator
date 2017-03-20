@@ -193,4 +193,95 @@ function secondFunction() {
     ];
 }";
 	}
+
+	public function test_GivenAnnotationWithVariableFollowUp_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenAnnotationWithVariableFollowUp();
+
+		$retVal = $this->_formatter->format($givenString);
+
+		$this->assertEquals($this->GivenAnnotationWithVariableFollowUp_Expected(), $retVal);
+	}
+
+	protected function GivenAnnotationWithVariableFollowUp() {
+		return "/** AnAnnotation */public \$var;";
+	}
+
+	protected function GivenAnnotationWithVariableFollowUp_Expected() {
+		return "/** AnAnnotation */
+public \$var;";
+	}
+
+	public function test_GivenAnnotationWithVariableFollowUpTabbed_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenAnnotationWithVariableFollowUpTabbed();
+
+		$retVal = $this->_formatter->format($givenString, 1);
+
+		$this->assertEquals($this->GivenAnnotationWithVariableFollowUpTabbed_Expected(), $retVal);
+	}
+
+	protected function GivenAnnotationWithVariableFollowUpTabbed() {
+		return "/** AnAnnotation */public \$var;";
+	}
+
+	protected function GivenAnnotationWithVariableFollowUpTabbed_Expected() {
+		return "    /** AnAnnotation */
+    public \$var;";
+	}
+
+	public function test_GivenMultipleAnnotationsWithVariableFollowUp_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenMultipleAnnotationsWithVariableFollowUp();
+
+		$retVal = $this->_formatter->format($givenString);
+
+		$this->assertEquals($this->GivenMultipleAnnotationsWithVariableFollowUp_Expected(), $retVal);
+	}
+
+	protected function GivenMultipleAnnotationsWithVariableFollowUp() {
+		return "/** AnAnnotation */public \$var;
+/** SecondAnnotation */public \$var2;";
+	}
+
+	protected function GivenMultipleAnnotationsWithVariableFollowUp_Expected() {
+		return "/** AnAnnotation */
+public \$var;
+/** SecondAnnotation */
+public \$var2;";
+	}
+
+	public function test_GivenMultipleAnnotationsWithVariableFollowUpTabbed_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenMultipleAnnotationsWithVariableFollowUpTabbed();
+
+		$retVal = $this->_formatter->format($givenString, 1);
+
+		$this->assertEquals($this->GivenMultipleAnnotationsWithVariableFollowUpTabbed_Expected(), $retVal);
+	}
+
+	protected function GivenMultipleAnnotationsWithVariableFollowUpTabbed() {
+		return "/** AnAnnotation */public \$var;
+/** SecondAnnotation */public \$var2;";
+	}
+
+	protected function GivenMultipleAnnotationsWithVariableFollowUpTabbed_Expected() {
+		return "    /** AnAnnotation */
+    public \$var;
+    /** SecondAnnotation */
+    public \$var2;";
+	}
+
+	public function test_GivenAnnotationInStringContextExiting_indent_WillIndentArrayCorrectly() {
+		$givenString = $this->GivenAnnotationInStringContextExiting();
+
+		$retVal = $this->_formatter->format($givenString);
+
+		$this->assertEquals($this->GivenAnnotationInStringContextExiting_Expected(), $retVal);
+	}
+
+	protected function GivenAnnotationInStringContextExiting() {
+		return "\$aVariable = \"/** AnAnnotationStart\"; /** Real Annotation */";
+	}
+
+	protected function GivenAnnotationInStringContextExiting_Expected() {
+		return "\$aVariable = \"/** AnAnnotationStart\";
+/** Real Annotation */";
+	}
 }

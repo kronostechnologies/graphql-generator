@@ -84,14 +84,23 @@ class ClassFormatter {
 
 		$context = new ClassFormatterContext($initialIndentSize);
 		$context->setInitialBuffer($minifiedClassContent);
-		$context->setIsNewLineIndented(false);
 
 		// Advance token-by-token
 		foreach($bufferSplit as $idx => $char) {
+			// Preamble
 			$this->skipIfInArray($context, $idx) &&
+			$this->indentFirstLine($context, $idx) &&
+
+			// Long comments fragments
+			$this->checkLongCommentStartAndSkip($context, $bufferSplit, $idx) &&
+			$this->checkLongCommentEndAndSkip($context, $bufferSplit, $idx) &&
+
+			// String context
 			$this->toggleStringContext($context, $char) &&
 			$this->escapeNextStringToken($context, $char) &&
 			$this->appendStringContextTokenAndSkip($context, $char) &&
+
+			// Delimiters
 			$this->lineDelimiterNewLine($context, $char) &&
 			$this->addOpeningBrace($context, $char) &&
 			$this->addClosingBrace($context, $char) &&
@@ -329,5 +338,99 @@ class ClassFormatter {
 		return str_repeat("\t", $size);
 	}
 
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string[] $bufferSplit
+	 * @param int $idx
+	 * @return bool
+	 */
+	protected function checkLongCommentStartAndSkip($context, $bufferSplit, $idx) {
+		if ($context->isInStringContext()) {
+			return true;
+		}
 
+		if (!$context->isInCommentContext()) {
+			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx, 3);
+
+			if ($chars === '/**') {
+				$context->toggleCommentContext();
+
+				if ($context->isAfterNewLine()) {
+					$context->appendCharacter($this->getTab($context->getIndentLevel()));
+
+					$context->setIsNewLineIndented(true);
+				}
+
+				$context->appendCharacter($bufferSplit[$idx]);
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string[] $bufferSplit
+	 * @param int $idx
+	 * @return bool
+	 */
+	protected function checkLongCommentEndAndSkip($context, $bufferSplit, $idx) {
+		if ($context->isInStringContext()) {
+			return true;
+		}
+
+		if ($context->isInCommentContext()) {
+			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx - 1, 2);
+
+			if ($chars === '*/') {
+				$context->toggleCommentContext();
+
+				$context->appendCharacter($bufferSplit[$idx]);
+				$context->appendCharacter("\n");
+
+				$context->setIsNewLineIndented(false);
+
+				return false;
+			}
+
+			$context->appendCharacter($bufferSplit[$idx]);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string[] $bufferSplit
+	 * @param int $offset
+	 * @param int $length
+	 * @return string
+	 */
+	protected function getBufferCharsOrNothing($bufferSplit, $offset, $length) {
+		if ($offset < 0 || count($bufferSplit) < $offset + $length) {
+			return "";
+		}
+
+		$concatVal = "";
+		for ($i = $offset; $i < $offset + $length; $i++) {
+			$concatVal .= $bufferSplit[$i];
+		}
+
+		return $concatVal;
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param int $idx
+	 */
+	private function indentFirstLine($context, $idx) {
+		if ($idx === 0) {
+			$context->appendCharacter($this->getTab($context->getIndentLevel()));
+		}
+
+		return true;
+	}
 }

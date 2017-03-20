@@ -31,6 +31,11 @@ class ClassFormatterContext {
 	protected $_isNewLineIndented = true;
 
 	/**
+	 * @var bool
+	 */
+	protected $_isInCommentContext = false;
+
+	/**
 	 * @var int
 	 */
 	protected $_arrayContextEnd = -1;
@@ -110,6 +115,10 @@ class ClassFormatterContext {
 		$this->_isInStringContext = !$this->_isInStringContext;
 	}
 
+	public function toggleCommentContext() {
+		$this->_isInCommentContext = !$this->_isInCommentContext;
+	}
+
 	public function setDoEscapeNext($value) {
 		$this->_doEscapeNext = $value;
 	}
@@ -151,5 +160,12 @@ class ClassFormatterContext {
 	 */
 	public function setIsNewLineIndented($isNewLineIndented) {
 		$this->_isNewLineIndented = $isNewLineIndented;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInCommentContext() {
+		return $this->_isInCommentContext;
 	}
 }
