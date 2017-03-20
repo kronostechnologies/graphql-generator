@@ -49,10 +49,10 @@ class TypeUsage {
 	 * @param bool $is_list_nullable
 	 */
 	public function __construct($type_name, $is_type_nullable, $in_list, $is_list_nullable) {
-		$this->_typeName = $type_name;
-		$this->_isTypeNullable = $is_type_nullable;
-		$this->_inList = $in_list;
-		$this->_isListNullable = $is_list_nullable;
+		$this->setTypeName($type_name);
+		$this->setIsTypeNullable($is_type_nullable);
+		$this->setInList($in_list);
+		$this->setIsListNullable($is_list_nullable);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class TypeUsage {
 	/**
 	 * @param bool $inList
 	 */
-	public function setInList($inList) {
+	protected function setInList($inList) {
 		$this->_inList = $inList;
 	}
 
@@ -124,7 +124,7 @@ class TypeUsage {
 	/**
 	 * @param bool $isTypeNullable
 	 */
-	public function setIsTypeNullable($isTypeNullable) {
+	protected function setIsTypeNullable($isTypeNullable) {
 		$this->_isTypeNullable = $isTypeNullable;
 	}
 
@@ -138,7 +138,7 @@ class TypeUsage {
 	/**
 	 * @param bool $isListNullable
 	 */
-	public function setIsListNullable($isListNullable) {
+	protected function setIsListNullable($isListNullable) {
 		$this->_isListNullable = $isListNullable;
 	}
 

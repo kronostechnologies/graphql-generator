@@ -33,10 +33,10 @@ class Field {
 	 * @param FieldArgument[] $arguments
 	 */
 	public function __construct($name, $description, $fieldType, Array $arguments) {
-		$this->_name = $name;
-		$this->_description = $description;
-		$this->_fieldType = $fieldType;
-		$this->_arguments = $arguments;
+		$this->setName($name);
+		$this->setDescription($description);
+		$this->setFieldType($fieldType);
+		$this->setArguments($arguments);
 	}
 
 	/**

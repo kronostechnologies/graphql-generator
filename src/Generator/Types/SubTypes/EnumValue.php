@@ -21,8 +21,8 @@ class EnumValue {
 	 * @param string $description
 	 */
 	public function __construct($name, $description) {
-		$this->_name = $name;
-		$this->_description = $description;
+		$this->setName($name);
+		$this->setDescription($description);
 	}
 
 	/**
