@@ -85,6 +85,16 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::VALID_DESCRIPTION, $retVal);
 	}
 
+	public function test_GivenInterfaceDeclaration_setFieldsThenGetFields_WillReturnRightFields() {
+		$interface = $this->GivenInterfaceDeclaration();
+		$givenFields = $this->GivenFields();
+
+		$interface->setFields($givenFields);
+		$retVal = $interface->getFields();
+
+		$this->assertEquals($givenFields, $retVal);
+	}
+
 	protected function GivenInterfaceDeclaration() {
 		return new InterfaceDeclaration(
 			self::VALID_NAME,
@@ -149,5 +159,9 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 			),
 			null
 		);
+	}
+
+	private function GivenFields() {
+		return [];
 	}
 }

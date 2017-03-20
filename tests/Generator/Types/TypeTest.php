@@ -180,6 +180,26 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::INTERFACE_NAME, $retVal);
 	}
 
+	public function test_GivenType_setInterfacesNamesThenGetInterfacesNames_WillReturnRightName() {
+		$type = $this->GivenType();
+		$givenInterfacesNames = $this->GivenInterfacesNames();
+
+		$type->setInterfacesNames($givenInterfacesNames);
+		$retVal = $type->getInterfacesNames();
+
+		$this->assertEquals($givenInterfacesNames, $retVal);
+	}
+
+	public function test_GivenType_setFieldsThenGetFields_WillReturnRightFields() {
+		$type = $this->GivenType();
+		$givenFields = $this->GivenFields();
+
+		$type->setFields($givenFields);
+		$retVal = $type->getFields();
+
+		$this->assertEquals($givenFields, $retVal);
+	}
+
 	protected function GivenType() {
 		return new Type(
 			self::VALID_NAME,
@@ -290,5 +310,13 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			[$field1],
 			[]
 		);
+	}
+
+	private function GivenInterfacesNames() {
+		return [];
+	}
+
+	private function GivenFields() {
+		return [];
 	}
 }
