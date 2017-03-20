@@ -134,7 +134,7 @@ class Type extends BaseTypeGenerator {
 		foreach($this->getFields() as $field) {
 			$typeDeclaration = $this->getTypeDeclarationFragment($field);
 			$formattedDescription = $this->getDescriptionFragment($field->getDescription());
-			$resolver = $this->getResolveFragment($field->getName());
+			$resolver = $this->getResolveFragment($field);
 
 			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $resolver]);
 
@@ -160,10 +160,14 @@ class Type extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @param string $fieldName
+	 * @param Field $field
 	 * @return string
 	 */
-	protected function getResolveFragment($fieldName) {
-		return "'resolver' => " . $this->getFormatter()->getResolveFragment($fieldName);
+	protected function getResolveFragment($field) {
+		if (!$field->getFieldType()->isPrimaryType()) {
+			return "'resolver' => " . $this->getFormatter()->getResolveFragment($field->getName());
+		}
+
+		return "";
 	}
 }

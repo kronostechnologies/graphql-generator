@@ -19,6 +19,8 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'AType';
 	const FIELD_NAME = 'AFieldName';
 	const FIELD_NAME_TYPE = 'AFieldNameType';
+	const FIELD_PRIMARY_TYPE = 'ID';
+	const FIELD_NON_PRIMARY_TYPE = 'ANonPrimaryType';
 	/**
 	 * @var ResolverContent
 	 */
@@ -46,6 +48,22 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeWithFieldsGeneratorType_getContent_WillContainResolve() {
 		$this->GivenTypeWithFieldsGeneratorType();
+
+		$retVal = $this->_resolverContent->getContent();
+
+		$this->assertContains('resolve', $retVal);
+	}
+
+	public function test_GivenPrimaryType_getContent_WontContainResolve() {
+		$this->GivenPrimaryType();
+
+		$retVal = $this->_resolverContent->getContent();
+
+		$this->assertNotContains('resolve', $retVal);
+	}
+
+	public function test_GivenNonPrimaryType_getContent_WillContainResolve() {
+		$this->GivenNonPrimaryType();
 
 		$retVal = $this->_resolverContent->getContent();
 
@@ -110,5 +128,23 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 	private function GivenResolverClass() {
 		return new Resolver();
+	}
+
+	private function GivenPrimaryType() {
+		$this->_resolverContent->setTypeGenerator(new Type(
+			self::TYPE_NAME,
+			new StubFormatter(),
+			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_PRIMARY_TYPE, false, false, false), [])],
+			[]
+		));
+	}
+
+	private function GivenNonPrimaryType() {
+		$this->_resolverContent->setTypeGenerator(new Type(
+			self::TYPE_NAME,
+			new StubFormatter(),
+			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NON_PRIMARY_TYPE, false, false, false), [])],
+			[]
+		));
 	}
 }

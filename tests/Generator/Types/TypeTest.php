@@ -20,6 +20,8 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_NAME_2 = 'SecondField';
 	const FIELD_TYPE_NAME_2 = 'Money';
 	const INTERFACE_NAME = 'AnInterface';
+	const FIELD_TYPE_PRIMARY = 'ID';
+	const FIELD_TYPE_NON_PRIMARY = 'ANonPrimaryField';
 
 	/**
 	 * @var StubFormatter|\PHPUnit_Framework_MockObject_MockObject
@@ -80,6 +82,22 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeWithFields_generateTypeDefinition_WillContainResolverFragment() {
 		$type = $this->GivenTypeWith2DistinctTypeFields();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'resolver'", $retVal);
+	}
+
+	public function test_GivenTypeWithPrimaryField_generateTypeDefinition_WontContainResolverFragment() {
+		$type = $this->GivenTypeWithPrimaryField();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertNotContains("'resolver'", $retVal);
+	}
+
+	public function test_GivenTypeWithNonPrimaryField_generateTypeDefinition_WillContainResolverFragment() {
+		$type = $this->GivenTypeWithNonPrimaryField();
 
 		$retVal = $type->generateTypeDefinition();
 
@@ -229,6 +247,48 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			$this->_stubFormatterMock,
 			[],
 			[self::INTERFACE_NAME]
+		);
+	}
+
+	private function GivenTypeWithNonPrimaryField() {
+		$field1 = new Field(
+			self::FIELD_NAME_1,
+			self::FIELD_DESCRIPTION_1,
+			new TypeUsage(
+				self::FIELD_TYPE_NON_PRIMARY,
+				false,
+				false,
+				false
+			),
+			[]
+		);
+
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[$field1],
+			[]
+		);
+	}
+
+	private function GivenTypeWithPrimaryField() {
+		$field1 = new Field(
+			self::FIELD_NAME_1,
+			self::FIELD_DESCRIPTION_1,
+			new TypeUsage(
+				self::FIELD_TYPE_PRIMARY,
+				false,
+				false,
+				false
+			),
+			[]
+		);
+
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[$field1],
+			[]
 		);
 	}
 }

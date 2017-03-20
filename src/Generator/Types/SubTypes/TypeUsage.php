@@ -141,4 +141,11 @@ class TypeUsage {
 	public function setIsListNullable($isListNullable) {
 		$this->_isListNullable = $isListNullable;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPrimaryType() {
+		return array_key_exists($this->_typeName, self::$PRIMARY_TYPES_MAPPINGS);
+	}
 }
