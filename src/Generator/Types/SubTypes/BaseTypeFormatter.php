@@ -54,6 +54,13 @@ class BaseTypeFormatter {
 			$typeDeclaration .= '[]';
 		}
 
+		// Append null notation
+		if (($fieldType->isInList() && $fieldType->isListNullable()) ||
+			(!$fieldType->isInList() && $fieldType->isTypeNullable())) {
+			$typeDeclaration .= "|null";
+		}
+
+
 		return $typeDeclaration;
 	}
 

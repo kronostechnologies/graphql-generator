@@ -14,6 +14,7 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const OBJ_NOT_NULLABLE_NO_LIST = 'Type::nonNull(TypeTest)';
 	const OBJ_NOT_NULLABLE_WITH_LIST = 'Type::listOf(Type::nonNull(TypeTest))';
 	const OBJ_LIST_NOT_NULLABLE = 'Type::nonNull(Type::listOf(Type::nonNull(TypeTest)))';
+	const INT_TYPE_NAME = 'Int';
 
 	/**
 	 * @var BaseTypeFormatter
@@ -56,6 +57,62 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::OBJ_LIST_NOT_NULLABLE, $retVal);
 	}
 
+	public function test_GivenAllNullableNoList_resolveFieldTypeDocComment_WontContainArrayTokens() {
+		$typeUsage = $this->GivenAllNullableNoList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertNotContains("[]", $retVal);
+	}
+
+	public function test_GivenObjectNotNullableListNotNullable_resolveFieldTypeDocComment_WillContainArrayTokens() {
+		$typeUsage = $this->GivenObjectNotNullableListNotNullable();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertContains("[]", $retVal);
+	}
+
+	public function test_GivenAllNullableNoList_resolveFieldTypeDocComment_WillContainNullToken() {
+		$typeUsage = $this->GivenAllNullableNoList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertContains("null", $retVal);
+	}
+
+	public function test_GivenAllNullableInList_resolveFieldTypeDocComment_WillContainNullToken() {
+		$typeUsage = $this->GivenAllNullableInList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertContains("null", $retVal);
+	}
+
+	public function test_GivenObjectNotNullableNoList_resolveFieldTypeDocComment_WontContainNullToken() {
+		$typeUsage = $this->GivenObjectNotNullableNoList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertNotContains("null", $retVal);
+	}
+
+	public function test_GivenIntPrimaryTypeAllNullableNoList_resolveFieldTypeDocComment_WillConvertTypeName() {
+		$typeUsage = $this->GivenIntPrimaryTypeAllNullableNoList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertContains('int', $retVal);
+	}
+
+	public function test_GivenNonPrimaryTypeAllNullableNoList_resolveFieldTypeDocComment_WillContainTypeName() {
+		$typeUsage = $this->GivenNonPrimaryTypeAllNullableNoList();
+
+		$retVal = $this->_typeFormatter->resolveFieldTypeDocComment($typeUsage);
+
+		$this->assertContains(self::TYPE_NAME, $retVal);
+	}
+
 	protected function GivenAllNullableNoList() {
 		return new TypeUsage(
 			self::TYPE_NAME,
@@ -89,6 +146,33 @@ class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 			false,
 			true,
 			false
+		);
+	}
+
+	private function GivenAllNullableInList() {
+		return new TypeUsage(
+			self::TYPE_NAME,
+			true,
+			true,
+			true
+		);
+	}
+
+	private function GivenIntPrimaryTypeAllNullableNoList() {
+		return new TypeUsage(
+			self::INT_TYPE_NAME,
+			true,
+			false,
+			true
+		);
+	}
+
+	private function GivenNonPrimaryTypeAllNullableNoList() {
+		return new TypeUsage(
+			self::TYPE_NAME,
+			true,
+			false,
+			true
 		);
 	}
 }
