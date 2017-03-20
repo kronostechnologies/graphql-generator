@@ -130,6 +130,32 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::VALID_DESCRIPTION, $retVal);
 	}
 
+	public function test_GivenEnum_setValuesAndGetValues_WillReturnRightValues() {
+		$enum = $this->GivenEnumWithNoValues();
+		$givenValues = $this->GivenValues();
+
+		$enum->setValues($givenValues);
+		$retVal = $enum->getValues();
+
+		$this->assertEquals($givenValues, $retVal);
+	}
+
+	public function test_GivenEnumWith3Values_generateTypeDefinition_WillContainConstants() {
+		$enum = $this->GivenEnumWith3Values();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertContains("self::", $retVal);
+	}
+
+	public function test_GivenEnumWithNoValues_generateTypeDefinition_WontContainConstants() {
+		$enum = $this->GivenEnumWithNoValues();
+
+		$retVal = $enum->generateTypeDefinition();
+
+		$this->assertNotContains("self::", $retVal);
+	}
+
 	protected function GivenEnumWithNoValues() {
 		return new Enum(
 			self::VALID_NAME,
@@ -187,5 +213,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 			[$enumValue1, $enumValue2, $enumValue3],
 			new StubFormatter(true, 4, ",", null, false)
 		);
+	}
+
+	private function GivenValues() {
+		return [];
 	}
 }
