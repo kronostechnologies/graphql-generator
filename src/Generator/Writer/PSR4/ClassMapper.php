@@ -7,6 +7,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 use Exception;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
@@ -52,6 +53,7 @@ class ClassMapper {
 		$this->resolveDependency("ScalarType", 'GraphQL\Type\Definition\ScalarType');
 		$this->resolveDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
 		$this->resolveDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
+		$this->resolveDependency("InputObjectType", 'GraphQL\Type\Definition\InterfaceType');
 	}
 
 	/**
@@ -82,6 +84,8 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Enums");
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
+			case Input::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Input");
 			default:
 				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
 		}
@@ -97,6 +101,8 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
+			case Input::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Inputs");
 			default:
 				throw new Exception("getResolverNamespaceFromGenerator not supported for type " . get_class($type));
 		}
@@ -117,6 +123,8 @@ class ClassMapper {
 				return "EnumType";
 			case InterfaceDeclaration::class:
 				return "InterfaceType";
+			case Input::class:
+				return "InputObjectType";
 			default:
 				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));
 		}
@@ -214,6 +222,8 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO");
 			case InterfaceDeclaration::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Interfaces");
+			case Input::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Inputs");
 			default:
 				throw new Exception("getDTONamespaceFromGenerator not supported for type " . get_class($type));
 		}

@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
+use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
 
@@ -52,7 +53,7 @@ class ClassComposer {
 		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
 
 		// Add resolver dependency
-		if ($this->generatorTypeSupportsResolverOrDTO($type)) {
+		if ($this->generatorTypeIsInputType($type)) {
 			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
 
@@ -98,8 +99,8 @@ class ClassComposer {
 	 * @param BaseTypeGenerator $type
 	 * @return bool
 	 */
-	public function generatorTypeSupportsResolverOrDTO(BaseTypeGenerator $type) {
-		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class]);
+	public function generatorTypeIsInputType(BaseTypeGenerator $type) {
+		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class, Input::class]);
 	}
 
 	public function generateUniqueTypeStore() {

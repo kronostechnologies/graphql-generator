@@ -115,7 +115,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateResolver() {
 		$scalarType = $this->GivenScalarType();
-		$this->_classComposer->method('generatorTypeSupportsResolverOrDTO')->willReturn(true);
+		$this->_classComposer->method('generatorTypeIsInputType')->willReturn(true);
 
 		$this->_classComposer->expects($this->once())->method('generateResolverForGenerator')->with($scalarType);
 
@@ -124,7 +124,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateDTO() {
 		$scalarType = $this->GivenScalarType();
-		$this->_classComposer->method('generatorTypeSupportsResolverOrDTO')->willReturn(true);
+		$this->_classComposer->method('generatorTypeIsInputType')->willReturn(true);
 
 		$this->_classComposer->expects($this->once())->method('generateDTOForGenerator')->with($scalarType);
 

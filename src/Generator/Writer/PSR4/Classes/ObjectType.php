@@ -7,6 +7,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 use Exception;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
+use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
@@ -22,6 +23,7 @@ class ObjectType extends SingleClass {
 	const OBJECT_STUB = 'object.stub';
 	const SCALAR_STUB = 'scalar.stub';
 	const INTERFACE_STUB = 'interface.stub';
+	const INPUT_STUB = 'input.stub';
 
 	/**
 	 * @return BaseTypeGenerator
@@ -62,6 +64,8 @@ class ObjectType extends SingleClass {
 				return self::SCALAR_STUB;
 			case InterfaceDeclaration::class:
 				return self::INTERFACE_STUB;
+			case Input::class:
+				return self::INPUT_STUB;
 			default:
 				throw new Exception("Stub not implemented for generator type " . get_class($this->getGeneratorType()));
 		}
