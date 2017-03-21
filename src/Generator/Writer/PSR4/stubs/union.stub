@@ -1,0 +1,11 @@
+<?php
+
+namespace LocalNamespace;
+
+// @generate:Dependencies
+
+class ClassName extends ParentClass {
+	// @generate:Variables
+
+	// @generate:Content
+}

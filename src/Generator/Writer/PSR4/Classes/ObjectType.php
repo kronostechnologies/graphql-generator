@@ -11,6 +11,7 @@ use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
 
 class ObjectType extends SingleClass {
@@ -24,6 +25,7 @@ class ObjectType extends SingleClass {
 	const SCALAR_STUB = 'scalar.stub';
 	const INTERFACE_STUB = 'interface.stub';
 	const INPUT_STUB = 'input.stub';
+	const UNION_STUB = 'union.stub';
 
 	/**
 	 * @return BaseTypeGenerator
@@ -66,6 +68,8 @@ class ObjectType extends SingleClass {
 				return self::INTERFACE_STUB;
 			case Input::class:
 				return self::INPUT_STUB;
+			case Union::class:
+				return self::UNION_STUB;
 			default:
 				throw new Exception("Stub not implemented for generator type " . get_class($this->getGeneratorType()));
 		}

@@ -11,6 +11,7 @@ use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
@@ -54,6 +55,7 @@ class ClassMapper {
 		$this->resolveDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
 		$this->resolveDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
 		$this->resolveDependency("InputObjectType", 'GraphQL\Type\Definition\InterfaceType');
+		$this->resolveDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
 	}
 
 	/**
@@ -86,6 +88,8 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
 			case Input::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Input");
+			case Union::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Unions");
 			default:
 				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
 		}
@@ -125,6 +129,8 @@ class ClassMapper {
 				return "InterfaceType";
 			case Input::class:
 				return "InputObjectType";
+			case Union::class:
+				return "UnionObjectType";
 			default:
 				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));
 		}
