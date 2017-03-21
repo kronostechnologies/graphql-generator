@@ -12,8 +12,18 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	/**
 	 * @param InterfaceTypeDefinitionNode $astNode
 	 */
-	public function __construct(InterfaceTypeDefinitionNode $astNode) {
+	public function __construct($astNode) {
 		$this->_astNode = $astNode;
+	}
+
+	/**
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
+	 * @return InterfaceDeclaration
+	 */
+	public function generateType($formatter) {
+		return new InterfaceDeclaration(
+			$this->interpretName(), $formatter, $this->interpretFields(), $this->interpretDescription()
+		);
 	}
 
 	/**
@@ -25,15 +35,5 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 
 			return $fieldInterpreter->generateType();
 		}, $this->_astNode->fields);
-	}
-
-	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return InterfaceDeclaration
-	 */
-	public function generateType($formatter) {
-		return new InterfaceDeclaration(
-			$this->interpretName(), $formatter, $this->interpretFields(), $this->interpretDescription()
-		);
 	}
 }

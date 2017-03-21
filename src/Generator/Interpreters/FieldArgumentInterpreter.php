@@ -11,7 +11,7 @@ class FieldArgumentInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @param InputValueDefinitionNode $astNode
 	 */
-	public function __construct(InputValueDefinitionNode $astNode) {
+	public function __construct($astNode) {
 		$this->_astNode = $astNode;
 	}
 

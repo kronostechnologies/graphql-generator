@@ -11,61 +11,21 @@ namespace GraphQLGen\Generator\Formatters;
  * @package GraphQLGen\Generator\Formatters
  */
 class ClassFormatter {
+	const ENDLINE_TOKENS = ";";
 	const INDENT_TOKENS = '{';
-	const UNINDENT_TOKENS = '}';
 	const NEWLINE_AFTER_TOKENS = '{';
 	const NEWLINE_BEFORE_TOKENS = '}';
 	const STR_CONTEXT_TOKENS = '"\'';
 	const STR_ESCAPE_TOKENS = "\\";
-	const ENDLINE_TOKENS = ";";
-
-	/**
-	 * @var bool
-	 */
-	protected $_useSpaces;
-
+	const UNINDENT_TOKENS = '}';
 	/**
 	 * @var int
 	 */
 	protected $_tabSize;
-
 	/**
-	 * @return bool
+	 * @var bool
 	 */
-	public function usesSpaces() {
-		return $this->_useSpaces;
-	}
-
-	/**
-	 * @param bool $useSpaces
-	 */
-	public function setUseSpaces($useSpaces) {
-		$this->_useSpaces = $useSpaces;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTabSize() {
-		return $this->_tabSize;
-	}
-
-	/**
-	 * @param int $tabSize
-	 */
-	public function setTabSize($tabSize) {
-		$this->_tabSize = $tabSize;
-	}
-
-	/**
-	 * @param string $classContent
-	 * @return string
-	 */
-	protected function minifyBuffer($classContent) {
-		$minifiedBuffer = str_replace("\n", "", $classContent);
-
-		return $minifiedBuffer;
-	}
+	protected $_useSpaces;
 
 	/**
 	 * @param string $classContent
@@ -112,41 +72,47 @@ class ClassFormatter {
 	}
 
 	/**
-	 * @param ClassFormatterContext $context
-	 * @param int $idx
+	 * @return int
+	 */
+	public function getTabSize() {
+		return $this->_tabSize;
+	}
+
+	/**
+	 * @param int $tabSize
+	 */
+	public function setTabSize($tabSize) {
+		$this->_tabSize = $tabSize;
+	}
+
+	/**
+	 * @param bool $useSpaces
+	 */
+	public function setUseSpaces($useSpaces) {
+		$this->_useSpaces = $useSpaces;
+	}
+
+	/**
 	 * @return bool
 	 */
-	protected function skipIfInArray(ClassFormatterContext $context, $idx) {
-		return ($idx > $context->getArrayContextEnd());
+	public function usesSpaces() {
+		return $this->_useSpaces;
 	}
 
 	/**
 	 * @param ClassFormatterContext $context
 	 * @param string $char
-	 * @return bool
 	 */
-	protected function toggleStringContext(ClassFormatterContext $context, $char) {
-		if (!$context->doEscapeNext() && strpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
-			$context->toggleStringContext();
-		}
+	protected function addCharIfNotTrimmed(ClassFormatterContext $context, $char) {
+		if (($context->isAfterNewLine() && strpos($char, " ") === false) || !$context->isAfterNewLine()) {
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
 
-		return true;
-	}
-
-	/**
-	 * @param ClassFormatterContext $context
-	 * @param string $char
-	 * @return bool
-	 */
-	protected function escapeNextStringToken(ClassFormatterContext $context, $char) {
-		if ($context->isInStringContext() && strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
-			$context->setDoEscapeNext(true);
 			$context->appendCharacter($char);
-
-			return false;
+			$context->setIsAfterNewLine(false);
 		}
-
-		return true;
 	}
 
 	/**
@@ -154,26 +120,21 @@ class ClassFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	protected function appendStringContextTokenAndSkip(ClassFormatterContext $context, $char) {
-		if ($context->isInStringContext()) {
-			$context->setDoEscapeNext(false);
-			$context->appendCharacter($char);
+	protected function addClosingBrace(ClassFormatterContext $context, $char) {
+		if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
+			$context->decreaseIndentLevel();
 
-			return false;
-		}
+			if (!$context->isNewLineIndented()) {
+				$context->appendCharacter($this->getTab($context->getIndentLevel()));
+				$context->setIsNewLineIndented(true);
+			}
 
-		return true;
-	}
+			if ($context->isAfterNewLine()) {
+				$context->appendCharacter($char . "\n");
+			} else {
+				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n");
+			}
 
-	/**
-	 * @param ClassFormatterContext $context
-	 * @param string $char
-	 * @return bool
-	 */
-	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
-		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
-			$context->appendCharacter($char . "\n");
-			$context->setIsAfterNewLine(true);
 			$context->setIsNewLineIndented(false);
 
 			return false;
@@ -206,22 +167,10 @@ class ClassFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	protected function addClosingBrace(ClassFormatterContext $context, $char) {
-		if (strpos(self::UNINDENT_TOKENS, $char) !== false) {
-			$context->decreaseIndentLevel();
-
-			if (!$context->isNewLineIndented()) {
-				$context->appendCharacter($this->getTab($context->getIndentLevel()));
-				$context->setIsNewLineIndented(true);
-			}
-
-			if ($context->isAfterNewLine()) {
-				$context->appendCharacter($char . "\n");
-			} else {
-				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n");
-			}
-
-			$context->setIsNewLineIndented(false);
+	protected function appendStringContextTokenAndSkip(ClassFormatterContext $context, $char) {
+		if ($context->isInStringContext()) {
+			$context->setDoEscapeNext(false);
+			$context->appendCharacter($char);
 
 			return false;
 		}
@@ -261,18 +210,83 @@ class ClassFormatter {
 
 	/**
 	 * @param ClassFormatterContext $context
-	 * @param string $char
+	 * @param string[] $bufferSplit
+	 * @param int $idx
+	 * @return bool
 	 */
-	protected function addCharIfNotTrimmed(ClassFormatterContext $context, $char) {
-		if (($context->isAfterNewLine() && strpos($char, " ") === false) || !$context->isAfterNewLine()) {
-			if (!$context->isNewLineIndented()) {
-				$context->appendCharacter($this->getTab($context->getIndentLevel()));
-				$context->setIsNewLineIndented(true);
+	protected function checkLongCommentEndAndSkip($context, $bufferSplit, $idx) {
+		if ($context->isInStringContext()) {
+			return true;
+		}
+
+		if ($context->isInCommentContext()) {
+			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx - 1, 2);
+
+			if ($chars === '*/') {
+				$context->toggleCommentContext();
+
+				$context->appendCharacter($bufferSplit[$idx]);
+				$context->appendCharacter("\n");
+
+				$context->setIsNewLineIndented(false);
+
+				return false;
 			}
 
-			$context->appendCharacter($char);
-			$context->setIsAfterNewLine(false);
+			$context->appendCharacter($bufferSplit[$idx]);
+
+			return false;
 		}
+
+		return true;
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string[] $bufferSplit
+	 * @param int $idx
+	 * @return bool
+	 */
+	protected function checkLongCommentStartAndSkip($context, $bufferSplit, $idx) {
+		if ($context->isInStringContext()) {
+			return true;
+		}
+
+		if (!$context->isInCommentContext()) {
+			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx, 3);
+
+			if ($chars === '/**') {
+				$context->toggleCommentContext();
+
+				if ($context->isAfterNewLine()) {
+					$context->appendCharacter($this->getTab($context->getIndentLevel()));
+
+					$context->setIsNewLineIndented(true);
+				}
+
+				$context->appendCharacter($bufferSplit[$idx]);
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
+	protected function escapeNextStringToken(ClassFormatterContext $context, $char) {
+		if ($context->isInStringContext() && strpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
+			$context->setDoEscapeNext(true);
+			$context->appendCharacter($char);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -327,83 +341,6 @@ class ClassFormatter {
 	}
 
 	/**
-	 * @param int $size
-	 * @return string
-	 */
-	protected function getTab($size) {
-		if($this->usesSpaces()) {
-			return str_repeat(' ', $size * $this->getTabSize());
-		}
-
-		return str_repeat("\t", $size);
-	}
-
-	/**
-	 * @param ClassFormatterContext $context
-	 * @param string[] $bufferSplit
-	 * @param int $idx
-	 * @return bool
-	 */
-	protected function checkLongCommentStartAndSkip($context, $bufferSplit, $idx) {
-		if ($context->isInStringContext()) {
-			return true;
-		}
-
-		if (!$context->isInCommentContext()) {
-			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx, 3);
-
-			if ($chars === '/**') {
-				$context->toggleCommentContext();
-
-				if ($context->isAfterNewLine()) {
-					$context->appendCharacter($this->getTab($context->getIndentLevel()));
-
-					$context->setIsNewLineIndented(true);
-				}
-
-				$context->appendCharacter($bufferSplit[$idx]);
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param ClassFormatterContext $context
-	 * @param string[] $bufferSplit
-	 * @param int $idx
-	 * @return bool
-	 */
-	protected function checkLongCommentEndAndSkip($context, $bufferSplit, $idx) {
-		if ($context->isInStringContext()) {
-			return true;
-		}
-
-		if ($context->isInCommentContext()) {
-			$chars = $this->getBufferCharsOrNothing($bufferSplit, $idx - 1, 2);
-
-			if ($chars === '*/') {
-				$context->toggleCommentContext();
-
-				$context->appendCharacter($bufferSplit[$idx]);
-				$context->appendCharacter("\n");
-
-				$context->setIsNewLineIndented(false);
-
-				return false;
-			}
-
-			$context->appendCharacter($bufferSplit[$idx]);
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * @param string[] $bufferSplit
 	 * @param int $offset
 	 * @param int $length
@@ -420,6 +357,67 @@ class ClassFormatter {
 		}
 
 		return $concatVal;
+	}
+
+	/**
+	 * @param int $size
+	 * @return string
+	 */
+	protected function getTab($size) {
+		if($this->usesSpaces()) {
+			return str_repeat(' ', $size * $this->getTabSize());
+		}
+
+		return str_repeat("\t", $size);
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
+	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
+		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
+			$context->appendCharacter($char . "\n");
+			$context->setIsAfterNewLine(true);
+			$context->setIsNewLineIndented(false);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string $classContent
+	 * @return string
+	 */
+	protected function minifyBuffer($classContent) {
+		$minifiedBuffer = str_replace("\n", "", $classContent);
+
+		return $minifiedBuffer;
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param int $idx
+	 * @return bool
+	 */
+	protected function skipIfInArray(ClassFormatterContext $context, $idx) {
+		return ($idx > $context->getArrayContextEnd());
+	}
+
+	/**
+	 * @param ClassFormatterContext $context
+	 * @param string $char
+	 * @return bool
+	 */
+	protected function toggleStringContext(ClassFormatterContext $context, $char) {
+		if (!$context->doEscapeNext() && strpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
+			$context->toggleStringContext();
+		}
+
+		return true;
 	}
 
 	/**

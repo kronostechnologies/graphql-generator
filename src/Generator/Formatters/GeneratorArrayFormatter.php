@@ -5,24 +5,22 @@ namespace GraphQLGen\Generator\Formatters;
 
 
 class GeneratorArrayFormatter {
+	const FUNCTION_ARGS_TOKENS = "()";
+	const IGNORE_AFTER_NEW_LINE_TOKENS = " ";
 	const INDENT_TOKENS = '[{';
-	const UNINDENT_TOKENS = ']}';
 	const NEWLINE_AFTER_TOKENS = '[{,';
 	const NEWLINE_BEFORE_TOKENS = ']}';
 	const STR_CONTEXT_TOKENS = '"\'';
 	const STR_ESCAPE_TOKENS = "\\";
-	const FUNCTION_ARGS_TOKENS = "()";
-	const IGNORE_AFTER_NEW_LINE_TOKENS = " ";
-
-	/**
-	 * @var bool
-	 */
-	public $useSpaces;
-
+	const UNINDENT_TOKENS = ']}';
 	/**
 	 * @var int
 	 */
 	public $tabSize;
+	/**
+	 * @var bool
+	 */
+	public $useSpaces;
 
 	/**
 	 * GeneratorArrayFormatter constructor.
@@ -86,19 +84,28 @@ class GeneratorArrayFormatter {
 
 	/**
 	 * @param GeneratorArrayContext $context
-	 * @param string $char
+	 * @param $char
 	 * @return bool
 	 */
-	private function skipIfAfterNewLineAndIsIgnoredToken($context, $char) {
-		return !($context->isAfterNewLine() && strrpos(self::IGNORE_AFTER_NEW_LINE_TOKENS, $char) !== false);
+	protected function skipCharacterIfInFunctionArgs($context, $char) {
+		if ($context->inFunctionArgs()) {
+			$context->appendCharacter($char);
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
 	 * @param GeneratorArrayContext $context
+	 * @param $char
 	 * @return bool
 	 */
-	private function setNotAfterNewLineAndContinue($context) {
-		$context->setIsAfterNewLine(false);
+	protected function toggleFunctionContext($context, $char) {
+		if (strpos(self::FUNCTION_ARGS_TOKENS, $char) !== false) {
+			$context->toggleFunctionArgs();
+		}
 
 		return true;
 	}
@@ -108,9 +115,8 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function toggleStringContextAndStopIfStringToken($context, $char) {
-		if(!$context->doEscapeNext() && strrpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
-			$context->toggleStringContext();
+	private function addCharacterAndStopIfInStringContext($context, $char) {
+		if($context->isInStringContext()) {
 			$context->appendCharacter($char);
 			return false;
 		}
@@ -123,11 +129,20 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function stopAndEscapeNextCharIfInStringContextAndTokenMatches($context, $char) {
-		if(!$context->doEscapeNext() && $context->isInStringContext() && strrpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
-			$context->toggleDoEscapeNext();
-			$context->appendCharacter($char);
-			return false;
+	private function appendCharacterAndContinue($context, $char) {
+		$context->appendCharacter($char);
+
+		return true;
+	}
+
+	/**
+	 * @param GeneratorArrayContext $context
+	 * @param string $char
+	 * @return bool
+	 */
+	private function decreaseIndentLevelIfUnindentTokenFound($context, $char) {
+		if(strrpos(self::UNINDENT_TOKENS, $char) !== false) {
+			$context->decreaseIndentLevel();
 		}
 
 		return true;
@@ -153,36 +168,10 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function addCharacterAndStopIfInStringContext($context, $char) {
-		if($context->isInStringContext()) {
-			$context->appendCharacter($char);
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param GeneratorArrayContext $context
-	 * @param string $char
-	 * @return bool
-	 */
-	private function increaseIndentLevelIfIndentTokenFound($context, $char) {
-		if(strrpos(self::INDENT_TOKENS, $char) !== false) {
-			$context->increaseIndentLevel();
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param GeneratorArrayContext $context
-	 * @param string $char
-	 * @return bool
-	 */
-	private function decreaseIndentLevelIfUnindentTokenFound($context, $char) {
-		if(strrpos(self::UNINDENT_TOKENS, $char) !== false) {
-			$context->decreaseIndentLevel();
+	private function increaseIndentAfterNewLineAndToggleNewLineContext($context, $char) {
+		if(strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
+			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
+			$context->setIsAfterNewLine(true);
 		}
 
 		return true;
@@ -207,24 +196,21 @@ class GeneratorArrayFormatter {
 	 * @param string $char
 	 * @return bool
 	 */
-	private function appendCharacterAndContinue($context, $char) {
-		$context->appendCharacter($char);
+	private function increaseIndentLevelIfIndentTokenFound($context, $char) {
+		if(strrpos(self::INDENT_TOKENS, $char) !== false) {
+			$context->increaseIndentLevel();
+		}
 
 		return true;
 	}
 
 	/**
-	 * @param GeneratorArrayContext $context
-	 * @param string $char
-	 * @return bool
+	 * @param string[] $contentAsLines
 	 */
-	private function increaseIndentAfterNewLineAndToggleNewLineContext($context, $char) {
-		if(strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
-			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
-			$context->setIsAfterNewLine(true);
-		}
-
-		return true;
+	private function removeBlankLines(&$contentAsLines) {
+		$contentAsLines = array_filter($contentAsLines, function ($line) {
+			return !empty($line);
+		});
 	}
 
 	/**
@@ -238,22 +224,34 @@ class GeneratorArrayFormatter {
 	}
 
 	/**
-	 * @param string[] $contentAsLines
+	 * @param GeneratorArrayContext $context
+	 * @return bool
 	 */
-	private function removeBlankLines(&$contentAsLines) {
-		$contentAsLines = array_filter($contentAsLines, function ($line) {
-			return !empty($line);
-		});
+	private function setNotAfterNewLineAndContinue($context) {
+		$context->setIsAfterNewLine(false);
+
+		return true;
 	}
 
 	/**
 	 * @param GeneratorArrayContext $context
-	 * @param $char
+	 * @param string $char
 	 * @return bool
 	 */
-	protected function toggleFunctionContext($context, $char) {
-		if (strpos(self::FUNCTION_ARGS_TOKENS, $char) !== false) {
-			$context->toggleFunctionArgs();
+	private function skipIfAfterNewLineAndIsIgnoredToken($context, $char) {
+		return !($context->isAfterNewLine() && strrpos(self::IGNORE_AFTER_NEW_LINE_TOKENS, $char) !== false);
+	}
+
+	/**
+	 * @param GeneratorArrayContext $context
+	 * @param string $char
+	 * @return bool
+	 */
+	private function stopAndEscapeNextCharIfInStringContextAndTokenMatches($context, $char) {
+		if(!$context->doEscapeNext() && $context->isInStringContext() && strrpos(self::STR_ESCAPE_TOKENS, $char) !== false) {
+			$context->toggleDoEscapeNext();
+			$context->appendCharacter($char);
+			return false;
 		}
 
 		return true;
@@ -261,13 +259,13 @@ class GeneratorArrayFormatter {
 
 	/**
 	 * @param GeneratorArrayContext $context
-	 * @param $char
+	 * @param string $char
 	 * @return bool
 	 */
-	protected function skipCharacterIfInFunctionArgs($context, $char) {
-		if ($context->inFunctionArgs()) {
+	private function toggleStringContextAndStopIfStringToken($context, $char) {
+		if(!$context->doEscapeNext() && strrpos(self::STR_CONTEXT_TOKENS, $char) !== false) {
+			$context->toggleStringContext();
 			$context->appendCharacter($char);
-
 			return false;
 		}
 

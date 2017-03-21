@@ -15,16 +15,16 @@ abstract class Interpreter {
 	protected $_astNode;
 
 	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		return $this->_astNode->name->value;
-	}
-
-	/**
 	 * @return string|null
 	 */
 	public function interpretDescription() {
 		return $this->_astNode->description;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function interpretName() {
+		return $this->_astNode->name->value;
 	}
 }

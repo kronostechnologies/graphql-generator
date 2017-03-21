@@ -12,8 +12,20 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	/**
 	 * @param FieldDefinitionNode $astNode
 	 */
-	public function __construct(FieldDefinitionNode $astNode) {
+	public function __construct($astNode) {
 		$this->_astNode = $astNode;
+	}
+
+	/**
+	 * @return Field
+	 */
+	public function generateType() {
+		return new Field(
+			$this->interpretName(),
+			$this->interpretDescription(),
+			$this->interpretType(),
+			$this->interpretArguments()
+		);
 	}
 
 	/**
@@ -34,17 +46,5 @@ class FieldInterpreter extends NestedTypeInterpreter {
 		$typeUsageInterpreter = new TypeUsageInterpreter($this->_astNode->type);
 
 		return $typeUsageInterpreter->generateType();
-	}
-
-	/**
-	 * @return Field
-	 */
-	public function generateType() {
-		return new Field(
-			$this->interpretName(),
-			$this->interpretDescription(),
-			$this->interpretType(),
-			$this->interpretArguments()
-		);
 	}
 }

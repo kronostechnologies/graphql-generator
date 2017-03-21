@@ -21,6 +21,38 @@ class TypeUsageInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
+	 * @return TypeUsage
+	 */
+	public function generateType() {
+		return new TypeUsage(
+			$this->interpretName(),
+			$this->isNullableObject(),
+			$this->isInList(),
+			$this->isNullableList()
+		);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function interpretDescription() {
+		return "";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function interpretName() {
+		// Finds name node
+		$nameNode = $this->_astNode;
+		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
+			$nameNode = $nameNode->type;
+		}
+
+		return $nameNode->name->value;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isInList() {
@@ -54,37 +86,5 @@ class TypeUsageInterpreter extends NestedTypeInterpreter {
 		}
 
 		return $this->isInList() ? $this->_astNode->type->kind !== NodeKind::NON_NULL_TYPE : true;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function interpretName() {
-		// Finds name node
-		$nameNode = $this->_astNode;
-		while($nameNode->kind !== NodeKind::NAMED_TYPE) {
-			$nameNode = $nameNode->type;
-		}
-
-		return $nameNode->name->value;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function interpretDescription() {
-		return "";
-	}
-
-	/**
-	 * @return TypeUsage
-	 */
-	public function generateType() {
-		return new TypeUsage(
-			$this->interpretName(),
-			$this->isNullableObject(),
-			$this->isInList(),
-			$this->isNullableList()
-		);
 	}
 }

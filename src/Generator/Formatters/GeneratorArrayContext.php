@@ -6,34 +6,29 @@ namespace GraphQLGen\Generator\Formatters;
 
 class GeneratorArrayContext {
 	/**
-	 * @var int
+	 * @var string
 	 */
-	protected $_indentLevel;
-
-	/**
-	 * @var bool
-	 */
-	protected $_isInStringContext = false;
-
+	protected $_buffer = '';
 	/**
 	 * @var bool
 	 */
 	protected $_doEscapeNext = false;
-
-	/**
-	 * @var bool
-	 */
-	protected $_isAfterNewLine = false;
-
-	/**
-	 * @var string
-	 */
-	protected $_buffer = '';
-
 	/**
 	 * @var bool
 	 */
 	protected $_inFunctionArgs = false;
+	/**
+	 * @var int
+	 */
+	protected $_indentLevel;
+	/**
+	 * @var bool
+	 */
+	protected $_isAfterNewLine = false;
+	/**
+	 * @var bool
+	 */
+	protected $_isInStringContext = false;
 
 	/**
 	 * @param int $initialIndentLevel
@@ -47,6 +42,17 @@ class GeneratorArrayContext {
 	 */
 	public function appendCharacter($character) {
 		$this->_buffer .= $character;
+	}
+
+	public function decreaseIndentLevel() {
+		$this->_indentLevel--;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function doEscapeNext() {
+		return $this->_doEscapeNext;
 	}
 
 	/**
@@ -66,15 +72,12 @@ class GeneratorArrayContext {
 	/**
 	 * @return bool
 	 */
-	public function isInStringContext() {
-		return $this->_isInStringContext;
+	public function inFunctionArgs() {
+		return $this->_inFunctionArgs;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function doEscapeNext() {
-		return $this->_doEscapeNext;
+	public function increaseIndentLevel() {
+		$this->_indentLevel++;
 	}
 
 	/**
@@ -87,20 +90,15 @@ class GeneratorArrayContext {
 	/**
 	 * @return bool
 	 */
-	public function inFunctionArgs() {
-		return $this->_inFunctionArgs;
+	public function isInStringContext() {
+		return $this->_isInStringContext;
 	}
 
-	public function decreaseIndentLevel() {
-		$this->_indentLevel--;
-	}
-
-	public function increaseIndentLevel() {
-		$this->_indentLevel++;
-	}
-
-	public function toggleStringContext() {
-		$this->_isInStringContext = !$this->_isInStringContext;
+	/**
+	 * @param bool $value
+	 */
+	public function setIsAfterNewLine($value) {
+		$this->_isAfterNewLine = $value;
 	}
 
 	public function toggleDoEscapeNext() {
@@ -111,7 +109,7 @@ class GeneratorArrayContext {
 		$this->_inFunctionArgs = !$this->_inFunctionArgs;
 	}
 
-	public function setIsAfterNewLine($value) {
-		$this->_isAfterNewLine = $value;
+	public function toggleStringContext() {
+		$this->_isInStringContext = !$this->_isInStringContext;
 	}
 }

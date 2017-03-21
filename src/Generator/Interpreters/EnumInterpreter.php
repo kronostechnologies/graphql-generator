@@ -12,8 +12,18 @@ class EnumInterpreter extends MainTypeInterpreter {
 	/**
 	 * @param EnumTypeDefinitionNode $astNode
 	 */
-	public function __construct(EnumTypeDefinitionNode $astNode) {
+	public function __construct($astNode) {
 		$this->_astNode = $astNode;
+	}
+
+	/**
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
+	 * @return Enum
+	 */
+	public function generateType($formatter) {
+		return new Enum(
+			$this->interpretName(), $formatter, $this->interpretValues(), $this->interpretDescription()
+		);
 	}
 
 	/**
@@ -30,15 +40,5 @@ class EnumInterpreter extends MainTypeInterpreter {
 		}
 
 		return $enumValues;
-	}
-
-	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return Enum
-	 */
-	public function generateType($formatter) {
-		return new Enum(
-			$this->interpretName(), $formatter, $this->interpretValues(), $this->interpretDescription()
-		);
 	}
 }

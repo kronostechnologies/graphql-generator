@@ -13,8 +13,22 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	/**
 	 * @param ObjectTypeDefinitionNode $astNode
 	 */
-	public function __construct(ObjectTypeDefinitionNode $astNode) {
+	public function __construct($astNode) {
 		$this->_astNode = $astNode;
+	}
+
+	/**
+	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
+	 * @return Type
+	 */
+	public function generateType($formatter) {
+		return new Type(
+			$this->interpretName(),
+			$formatter,
+			$this->interpretFields(),
+            $this->interpretInterfacesNames(),
+			$this->interpretDescription()
+		);
 	}
 
 	/**
@@ -36,18 +50,4 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
             return $interfaceNameNode->name->value;
         }, $this->_astNode->interfaces);
     }
-
-	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return Type
-	 */
-	public function generateType($formatter) {
-		return new Type(
-			$this->interpretName(),
-			$formatter,
-			$this->interpretFields(),
-            $this->interpretInterfacesNames(),
-			$this->interpretDescription()
-		);
-	}
 }
