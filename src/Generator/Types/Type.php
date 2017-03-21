@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Types;
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class Type extends BaseTypeGenerator {
 	/**
@@ -132,11 +133,12 @@ class Type extends BaseTypeGenerator {
 		$fields = [];
 
 		foreach($this->getFields() as $field) {
-			$typeDeclaration = $this->getTypeDeclarationFragment($field);
+			$typeDeclaration = $this->getTypeDeclarationFragment($field->getFieldType());
 			$formattedDescription = $this->getDescriptionFragment($field->getDescription());
 			$resolver = $this->getResolveFragment($field);
+			$args = $this->getArgsFragment($field);
 
-			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $resolver]);
+			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $args, $resolver]);
 
 			$fields[] = "'{$field->getName()}' => [{$vals}],";
 		}
@@ -164,10 +166,47 @@ class Type extends BaseTypeGenerator {
 	}
 
 	/**
+	 * @param TypeUsage $type
+	 * @return string
+	 */
+	protected function getTypeDeclarationFragment($type) {
+		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($type);
+	}
+
+	/**
+	 * @param object $value
+	 * @return string
+	 */
+	protected function getDefaultValueFragment($value) {
+		if ($value !== null) {
+			return "'defaultValue' => '{$value}'";
+		}
+	}
+
+	/**
 	 * @param Field $field
 	 * @return string
 	 */
-	protected function getTypeDeclarationFragment($field) {
-		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->getFieldType());
+	private function getArgsFragment($field) {
+		if (count($field->getArguments()) == 0) {
+			return "";
+		}
+
+		$args = [];
+
+		foreach ($field->getArguments() as $argument) {
+			$argType = $this->getTypeDeclarationFragment($argument->getType());
+			$defaultValue = $this->getDefaultValueFragment($argument->getDefaultValue());
+
+			$argFragmentsJoined = $this->joinArrayFragments([$argType, $defaultValue]);
+
+			$arg = "'{$argument->getName()}' => [{$argFragmentsJoined}]";
+
+			$args[] = $arg;
+		}
+
+		$argsFragmentsJoined = $this->joinArrayFragments($args);
+
+		return "'args' => [{$argsFragmentsJoined}]";
 	}
 }

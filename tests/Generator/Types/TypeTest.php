@@ -7,11 +7,16 @@ namespace GraphQLGen\Tests\Generator\Types;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
 class TypeTest extends \PHPUnit_Framework_TestCase {
+	const FIELD_ARG_DEFAULT_VAL = '1231111';
+	const FIELD_ARG_NAME = 'FieldArg';
+	const FIELD_ARG_DESC = 'A Description';
+	const FIELD_ARG_TYPE = 'NonPrimaryType';
 	const VALID_NAME = 'DeclaredType';
 	const VALID_DESCRIPTION = 'This is a description test for the declared type.';
 	const FIELD_NAME_1 = 'FirstField';
@@ -152,6 +157,38 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains("'type'", $retVal);
 	}
 
+	public function test_GivenTypeWithNoArgsField_generateTypeDefinition_WontContainArgsFragment() {
+		$type = $this->GivenTypeWithNoArgsField();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertNotContains("'args'", $retVal);
+	}
+
+	public function test_GivenTypeWithArgsField_generateTypeDefinition_WillContainArgsFragment() {
+		$type = $this->GivenTypeWithArgsField();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'args'", $retVal);
+	}
+
+	public function test_GivenTypeWithArgsField_generateTypeDefinition_WillContainArgsFieldType() {
+		$type = $this->GivenTypeWithArgsField();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'args'", $retVal);
+	}
+
+	public function test_GivenTypeWithArgsFieldAndDefaultValue_generateTypeDefinition_WillContainArgsDefaultValue() {
+		$type = $this->GivenTypeWithArgsFieldAndDefaultValue();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains(self::FIELD_ARG_DEFAULT_VAL, $retVal);
+	}
+
 	public function test_GivenType_generateTypeDefinition_WillContainName() {
 		$type = $this->GivenType();
 
@@ -267,6 +304,83 @@ class TypeTest extends \PHPUnit_Framework_TestCase {
 			$this->_stubFormatterMock,
 			[],
 			[self::INTERFACE_NAME]
+		);
+	}
+
+	private function GivenTypeWithArgsField() {
+		$fieldArg1 = new FieldArgument(
+			self::FIELD_ARG_NAME,
+			self::FIELD_ARG_DESC,
+			new TypeUsage(self::FIELD_ARG_TYPE, false, false, false),
+			""
+		);
+
+		$field1 = new Field(
+			self::FIELD_NAME_1,
+			self::FIELD_DESCRIPTION_1,
+			new TypeUsage(
+				self::FIELD_TYPE_NON_PRIMARY,
+				false,
+				false,
+				false
+			),
+			[$fieldArg1]
+		);
+
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[$field1],
+			[]
+		);
+	}
+
+	private function GivenTypeWithArgsFieldAndDefaultValue() {
+		$fieldArg1 = new FieldArgument(
+			self::FIELD_ARG_NAME,
+			self::FIELD_ARG_DESC,
+			new TypeUsage(self::FIELD_ARG_TYPE, false, false, false),
+			self::FIELD_ARG_DEFAULT_VAL
+		);
+
+		$field1 = new Field(
+			self::FIELD_NAME_1,
+			self::FIELD_DESCRIPTION_1,
+			new TypeUsage(
+				self::FIELD_TYPE_NON_PRIMARY,
+				false,
+				false,
+				false
+			),
+			[$fieldArg1]
+		);
+
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[$field1],
+			[]
+		);
+	}
+
+	private function GivenTypeWithNoArgsField() {
+		$field1 = new Field(
+			self::FIELD_NAME_1,
+			self::FIELD_DESCRIPTION_1,
+			new TypeUsage(
+				self::FIELD_TYPE_NON_PRIMARY,
+				false,
+				false,
+				false
+			),
+			[]
+		);
+
+		return new Type(
+			self::VALID_NAME,
+			$this->_stubFormatterMock,
+			[$field1],
+			[]
 		);
 	}
 
