@@ -44,10 +44,7 @@ class Type extends BaseTypeGenerator {
 		$fieldsDefinitions = $this->getFieldsFragment();
 		$interfacesDeclaration = $this->getInterfacesFragment();
 
-		$commaSplitVals = [$name, $formattedDescription, $fieldsDefinitions, $interfacesDeclaration];
-		$commaSplitVals = array_filter($commaSplitVals);
-
-		$vals = implode(",", $commaSplitVals);
+		$vals = $this->joinArrayFragments([$name, $formattedDescription, $fieldsDefinitions, $interfacesDeclaration]);
 
 		return "[ {$vals}  ]";
 	}

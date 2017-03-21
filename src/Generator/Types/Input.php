@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Types;
 
 
 use GraphQLGen\Generator\Types\SubTypes\InputField;
+use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class Input extends BaseTypeGenerator {
 
@@ -24,14 +25,27 @@ class Input extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		// TODO: Implement generateTypeDefinition() method.
+		$name = $this->getNameFragment();
+		$formattedDescription = $this->getDescriptionFragment($this->getDescription());
+		$fieldsDefinitions = $this->getFieldsFragment();
+
+		$vals = $this->joinArrayFragments([$name, $formattedDescription, $fieldsDefinitions]);
+
+		return "[ {$vals}  ]";
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function getDependencies() {
-		// TODO: Implement getDependencies() method.
+		$dependencies = [];
+
+		foreach($this->getFields() as $field) {
+			$fieldDependencies = $field->getFieldType()->getDependencies();
+			$dependencies = array_merge($dependencies, $fieldDependencies);
+		}
+
+		return array_unique($dependencies);
 	}
 
 	/**
@@ -45,7 +59,34 @@ class Input extends BaseTypeGenerator {
 	 * @return string|null
 	 */
 	public function getVariablesDeclarations() {
-		// TODO: Implement getVariablesDeclarations() method.
+		return null;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getFieldsFragment() {
+		return "'fields' => [" . $this->getFieldsDefinitions() . "]";
+	}
+
+	/**
+	 * @param InputField $field
+	 * @return string
+	 */
+	protected function getResolveFragment($field) {
+		if (!$field->getFieldType()->isPrimaryType()) {
+			return "'resolver' => " . $this->getFormatter()->getResolveFragment($field->getName());
+		}
+
+		return "";
+	}
+
+	/**
+	 * @param TypeUsage $type
+	 * @return string
+	 */
+	protected function getTypeDeclarationFragment($type) {
+		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($type);
 	}
 
 	/**
@@ -53,5 +94,21 @@ class Input extends BaseTypeGenerator {
 	 */
 	public function setFields($fields) {
 		$this->_fields = $fields;
+	}
+
+	protected function getFieldsDefinitions() {
+		$fields = [];
+
+		foreach($this->getFields() as $field) {
+			$typeDeclaration = $this->getTypeDeclarationFragment($field->getFieldType());
+			$formattedDescription = $this->getDescriptionFragment($field->getDescription());
+			$resolver = $this->getResolveFragment($field);
+
+			$vals = $this->joinArrayFragments([$typeDeclaration, $formattedDescription, $resolver]);
+
+			$fields[] = "'{$field->getName()}' => [{$vals}],";
+		}
+
+		return implode('', $fields);
 	}
 }
