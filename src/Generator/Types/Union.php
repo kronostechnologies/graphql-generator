@@ -24,14 +24,22 @@ class Union extends BaseTypeGenerator {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		// TODO: Implement generateTypeDefinition() method.
+		$name = $this->getNameFragment();
+		$formattedDescription = $this->getDescriptionFragment($this->getDescription());
+		$typesDefinitions = $this->getTypesDefinitionsFragment();
+
+		$vals = $this->joinArrayFragments([$name, $formattedDescription, $typesDefinitions]);
+
+		return "[ {$vals}  ]";
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function getDependencies() {
-		// ToDo: Enumerate types
+		return array_map(function (TypeUsage $type) {
+			return $type->getTypeName();
+		}, $this->getTypes());
 	}
 
 	/**
@@ -53,5 +61,18 @@ class Union extends BaseTypeGenerator {
 	 */
 	public function setTypes($types) {
 		$this->_types = $types;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getTypesDefinitionsFragment() {
+		$typesDefinitions = array_map(function (TypeUsage $type) {
+			return $this->getFormatter()->getFieldTypeDeclaration($type);
+		}, $this->getTypes());
+
+		$typesDefinitionsJoined = $this->joinArrayFragments($typesDefinitions);
+
+		return "'types' => [{$typesDefinitionsJoined}]";
 	}
 }
