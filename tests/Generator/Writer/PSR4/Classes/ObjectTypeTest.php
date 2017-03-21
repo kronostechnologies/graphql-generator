@@ -78,9 +78,7 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenEnumGeneratorType() {
 		$this->_objectType->setGeneratorType(new Enum(
-			self::ENUM_NAME,
-			[],
-			new StubFormatter()
+			self::ENUM_NAME, new StubFormatter(), []
 		));
 	}
 
@@ -102,9 +100,7 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenInterfaceGeneratorType() {
 		$this->_objectType->setGeneratorType(new InterfaceDeclaration(
-			self::INTERFACE_NAME,
-			[],
-			new StubFormatter()
+			self::INTERFACE_NAME, new StubFormatter(), []
 		));
 	}
 

@@ -37,6 +37,28 @@ abstract class BaseTypeFormatter {
 	}
 
 	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
+		return $typeName;
+	}
+
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public abstract function getResolveSnippet($typeName);
+
+	/**
+	 * @param string $typeName
+	 * @return string
+	 */
+	public function resolveFieldTypeDeclarationDocComment($typeName) {
+		return $typeName;
+	}
+
+	/**
 	 * @param TypeUsage $fieldType
 	 * @return string
 	 */
@@ -63,26 +85,4 @@ abstract class BaseTypeFormatter {
 
 		return $typeDeclaration;
 	}
-
-	/**
-	 * @param string $typeName
-	 * @return string
-	 */
-	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
-		return $typeName;
-	}
-
-	/**
-	 * @param string $typeName
-	 * @return string
-	 */
-	public function resolveFieldTypeDeclarationDocComment($typeName) {
-		return $typeName;
-	}
-
-	/**
-	 * @param string $typeName
-	 * @return string
-	 */
-	public abstract function getResolveSnippet($typeName);
 }

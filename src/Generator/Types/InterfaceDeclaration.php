@@ -17,15 +17,15 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	/**
 	 * InterfaceDeclaration constructor.
 	 * @param string $name
-	 * @param Field[] $fields
 	 * @param StubFormatter $formatter
+	 * @param Field[] $fields
 	 * @param string|null $description
 	 */
-	public function __construct($name, Array $fields, StubFormatter $formatter, $description = null) {
-		$this->_name = $name;
-		$this->_fields = $fields;
-		$this->_formatter = $formatter;
-		$this->_description = $description;
+	public function __construct($name, StubFormatter $formatter, Array $fields, $description = null) {
+		$this->setName($name);
+		$this->setFormatter($formatter);
+		$this->setFields($fields);
+		$this->setDescription($description);
 	}
 
 	/**
@@ -39,6 +39,20 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 		$vals = $this->joinArrayFragments([$name, $formattedDescription, $fields]);
 
 		return "[ {$vals} ]";
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDependencies() {
+		$dependencies = [];
+
+		foreach($this->getFields() as $field) {
+			$fieldDependencies = $field->getFieldType()->getDependencies();
+			$dependencies = array_merge($dependencies, $fieldDependencies);
+		}
+
+		return array_unique($dependencies);
 	}
 
 	/**
@@ -58,6 +72,20 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 	/**
 	 * @return string
 	 */
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getVariablesDeclarations() {
+		return null;
+	}
+
+	/**
+	 * @return string
+	 */
 	protected function getFieldsDefinitions() {
 		$fields = [];
 
@@ -72,34 +100,6 @@ class InterfaceDeclaration extends BaseTypeGenerator {
 		}
 
 		return implode('', $fields);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->_name;
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getVariablesDeclarations() {
-		return null;
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencies() {
-		$dependencies = [];
-
-		foreach($this->getFields() as $field) {
-			$fieldDependencies = $field->getFieldType()->getDependencies();
-			$dependencies = array_merge($dependencies, $fieldDependencies);
-		}
-
-		return array_unique($dependencies);
 	}
 
 	/**

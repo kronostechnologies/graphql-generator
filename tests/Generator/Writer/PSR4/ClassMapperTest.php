@@ -231,17 +231,13 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenEnum() {
 		return new Enum(
-			self::ENUM_NAME,
-			[],
-			new StubFormatter()
+			self::ENUM_NAME, new StubFormatter(), []
 		);
 	}
 
 	protected function GivenInterface() {
 		return new InterfaceDeclaration(
-			self::INTERFACE_NAME,
-			[],
-			new StubFormatter()
+			self::INTERFACE_NAME, new StubFormatter(), []
 		);
 	}
 

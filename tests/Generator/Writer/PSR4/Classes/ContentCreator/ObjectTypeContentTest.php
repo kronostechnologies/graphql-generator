@@ -137,17 +137,13 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenEnumGeneratorType() {
 		$this->_objectTypeContent->setGeneratorType(new Enum(
-			self::ENUM_NAME,
-			[],
-			new StubFormatter()
+			self::ENUM_NAME, new StubFormatter(), []
 		));
 	}
 
 	protected function GivenInterfaceGeneratorType() {
 		$this->_objectTypeContent->setGeneratorType(new InterfaceDeclaration(
-			self::INTERFACE_NAME,
-			[],
-			new StubFormatter()
+			self::INTERFACE_NAME, new StubFormatter(), []
 		));
 	}
 

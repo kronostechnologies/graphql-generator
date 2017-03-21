@@ -14,9 +14,9 @@ class Scalar extends BaseTypeGenerator {
 	 * @param string|null $description
 	 */
 	public function __construct($name, StubFormatter $formatter, $description = null) {
-		$this->_formatter = $formatter;
-		$this->_name = $name;
-		$this->_description = $description;
+		$this->setName($name);
+		$this->setFormatter($formatter);
+		$this->setDescription($description);
 	}
 
 	/**
@@ -27,6 +27,13 @@ class Scalar extends BaseTypeGenerator {
 		$descriptionFragment = $this->getDescriptionFragment($this->getDescription());
 
 		return "{$nameFragment}{$descriptionFragment}";
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDependencies() {
+		return [];
 	}
 
 	/**
@@ -41,13 +48,6 @@ class Scalar extends BaseTypeGenerator {
 	 */
 	public function getVariablesDeclarations() {
 		return null;
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getDependencies() {
-		return [];
 	}
 
 	/**

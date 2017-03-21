@@ -302,11 +302,11 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenInterfaceObjectType() {
-		return new InterfaceDeclaration(self::IFACE_TYPE_NAME, [], new StubFormatter(), self::IFACE_TYPE_DESC);
+		return new InterfaceDeclaration(self::IFACE_TYPE_NAME, new StubFormatter(), [], self::IFACE_TYPE_DESC);
 	}
 
 	protected function GivenEnumObjectType() {
-		return new Enum(self::ENUM_NAME, [], new StubFormatter(), self::ENUM_DESC);
+		return new Enum(self::ENUM_NAME, new StubFormatter(), [], self::ENUM_DESC);
 	}
 
 }

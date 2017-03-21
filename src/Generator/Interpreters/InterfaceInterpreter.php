@@ -33,10 +33,7 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new InterfaceDeclaration(
-			$this->interpretName(),
-			$this->interpretFields(),
-			$formatter,
-			$this->interpretDescription()
+			$this->interpretName(), $formatter, $this->interpretFields(), $this->interpretDescription()
 		);
 	}
 }

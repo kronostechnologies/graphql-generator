@@ -5,14 +5,6 @@ namespace GraphQLGen\Generator\Types\SubTypes;
 
 
 class TypeUsage {
-	public static $PRIMARY_TYPES_MAPPINGS = [
-		'ID' => 'Type::id()',
-		'Int' => 'Type::int()',
-		'String' => 'Type::string()',
-		'Float' => 'Type::float()',
-		'Boolean' => 'Type::boolean()',
-	];
-
 	public static $PRIMARY_TYPES_DOCCOMMENTS = [
 		'ID' => 'int',
 		'Int' => 'int',
@@ -20,39 +12,42 @@ class TypeUsage {
 		'Float' => 'float',
 		'Boolean' => 'bool',
 	];
-
+	public static $PRIMARY_TYPES_MAPPINGS = [
+		'ID' => 'Type::id()',
+		'Int' => 'Type::int()',
+		'String' => 'Type::string()',
+		'Float' => 'Type::float()',
+		'Boolean' => 'Type::boolean()',
+	];
+	/**
+	 * @var bool
+	 */
+	protected $_inList;
+	/**
+	 * @var bool
+	 */
+	protected $_isListNullable;
+	/**
+	 * @var bool
+	 */
+	protected $_isTypeNullable;
 	/**
 	 * @var string
 	 */
 	protected $_typeName;
 
 	/**
-	 * @var bool
-	 */
-	protected $_inList;
-
-	/**
-	 * @var bool
-	 */
-	protected $_isTypeNullable;
-
-	/**
-	 * @var bool
-	 */
-	protected $_isListNullable;
-
-	/**
 	 * FieldType constructor.
-	 * @param string $type_name
-	 * @param bool $is_type_nullable
-	 * @param bool $in_list
-	 * @param bool $is_list_nullable
+	 * @param string $typeName
+	 * @param bool $isTypeNullable
+	 * @param bool $inList
+	 * @param bool $isListNullable
 	 */
-	public function __construct($type_name, $is_type_nullable, $in_list, $is_list_nullable) {
-		$this->setTypeName($type_name);
-		$this->setIsTypeNullable($is_type_nullable);
-		$this->setInList($in_list);
-		$this->setIsListNullable($is_list_nullable);
+	public function __construct($typeName, $isTypeNullable, $inList, $isListNullable) {
+		$this->setTypeName($typeName);
+		$this->setIsTypeNullable($isTypeNullable);
+		$this->setInList($inList);
+		$this->setIsListNullable($isListNullable);
 	}
 
 	/**
@@ -117,22 +112,22 @@ class TypeUsage {
 	/**
 	 * @return bool
 	 */
-	public function isTypeNullable() {
-		return $this->_isTypeNullable;
-	}
-
-	/**
-	 * @param bool $isTypeNullable
-	 */
-	protected function setIsTypeNullable($isTypeNullable) {
-		$this->_isTypeNullable = $isTypeNullable;
+	public function isListNullable() {
+		return $this->_isListNullable;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isListNullable() {
-		return $this->_isListNullable;
+	public function isPrimaryType() {
+		return array_key_exists($this->_typeName, self::$PRIMARY_TYPES_MAPPINGS);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTypeNullable() {
+		return $this->_isTypeNullable;
 	}
 
 	/**
@@ -143,9 +138,9 @@ class TypeUsage {
 	}
 
 	/**
-	 * @return bool
+	 * @param bool $isTypeNullable
 	 */
-	public function isPrimaryType() {
-		return array_key_exists($this->_typeName, self::$PRIMARY_TYPES_MAPPINGS);
+	protected function setIsTypeNullable($isTypeNullable) {
+		$this->_isTypeNullable = $isTypeNullable;
 	}
 }

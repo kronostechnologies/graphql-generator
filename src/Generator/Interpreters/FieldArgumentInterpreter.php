@@ -40,10 +40,7 @@ class FieldArgumentInterpreter extends NestedTypeInterpreter {
 	 */
 	public function generateType() {
 		return new FieldArgument(
-			$this->interpretDescription(),
-			$this->interpretName(),
-			$this->interpretType(),
-			$this->interpretDefaultValue()
+			$this->interpretName(), $this->interpretDescription(), $this->interpretType(), $this->interpretDefaultValue()
 		);
 	}
 }

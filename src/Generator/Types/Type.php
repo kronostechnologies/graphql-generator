@@ -27,11 +27,11 @@ class Type extends BaseTypeGenerator {
 	 * @param string|null $description
 	 */
 	public function __construct($name, StubFormatter $formatter, Array $fields, Array $interfaceNames, $description = null) {
-		$this->_name = $name;
-		$this->_description = $description;
-		$this->_fields = $fields;
-		$this->_formatter = $formatter;
-		$this->_interfacesNames = $interfaceNames;
+		$this->setName($name);
+		$this->setFormatter($formatter);
+		$this->setFields($fields);
+		$this->setInterfacesNames($interfaceNames);
+		$this->setDescription($description);
 	}
 
 	/**
@@ -52,20 +52,6 @@ class Type extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->_name;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getVariablesDeclarations() {
-		return null;
-	}
-
-	/**
 	 * @return string[]
 	 */
 	public function getDependencies() {
@@ -77,6 +63,20 @@ class Type extends BaseTypeGenerator {
 		}
 
 		return array_unique($dependencies);
+	}
+
+	/**
+	 * @return Field[]
+	 */
+	public function getFields() {
+		return $this->_fields;
+	}
+
+	/**
+	 * @param Field[] $fields
+	 */
+	public function setFields($fields) {
+		$this->_fields = $fields;
 	}
 
 	/**
@@ -98,13 +98,6 @@ class Type extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @return Field[]
-	 */
-	public function getFields() {
-		return $this->_fields;
-	}
-
-	/**
 	 * @return \string[]
 	 */
 	public function getInterfacesNames() {
@@ -119,10 +112,17 @@ class Type extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @param Field[] $fields
+	 * @return string
 	 */
-	public function setFields($fields) {
-		$this->_fields = $fields;
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getVariablesDeclarations() {
+		return null;
 	}
 
 	/**
@@ -155,19 +155,19 @@ class Type extends BaseTypeGenerator {
 	 * @param Field $field
 	 * @return string
 	 */
-	protected function getTypeDeclarationFragment($field) {
-		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->getFieldType());
-	}
-
-	/**
-	 * @param Field $field
-	 * @return string
-	 */
 	protected function getResolveFragment($field) {
 		if (!$field->getFieldType()->isPrimaryType()) {
 			return "'resolver' => " . $this->getFormatter()->getResolveFragment($field->getName());
 		}
 
 		return "";
+	}
+
+	/**
+	 * @param Field $field
+	 * @return string
+	 */
+	protected function getTypeDeclarationFragment($field) {
+		return "'type' => " . $this->getFormatter()->getFieldTypeDeclaration($field->getFieldType());
 	}
 }

@@ -8,12 +8,11 @@ class EnumValue {
 	/**
 	 * @var string
 	 */
-	protected $_name;
-
+	protected $_description;
 	/**
 	 * @var string
 	 */
-	protected $_description;
+	protected $_name;
 
 	/**
 	 * EnumTypeValue constructor.
@@ -28,20 +27,6 @@ class EnumValue {
 	/**
 	 * @return string
 	 */
-	public function getName() {
-		return $this->_name;
-	}
-
-	/**
-	 * @param string $_name
-	 */
-	public function setName($_name) {
-		$this->_name = $_name;
-	}
-
-	/**
-	 * @return string
-	 */
 	public function getDescription() {
 		return $this->_description;
 	}
@@ -51,5 +36,19 @@ class EnumValue {
 	 */
 	public function setDescription($_description) {
 		$this->_description = $_description;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
+	 * @param string $_name
+	 */
+	public function setName($_name) {
+		$this->_name = $_name;
 	}
 }

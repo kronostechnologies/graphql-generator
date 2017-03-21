@@ -158,18 +158,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenEnumWithNoValues() {
 		return new Enum(
-			self::VALID_NAME,
-			[],
-			new StubFormatter()
+			self::VALID_NAME, new StubFormatter(), []
 		);
 	}
 
 	protected function GivenEnumWithDescriptionNoLineJump() {
 		return new Enum(
-			self::VALID_NAME,
-			[],
-			new StubFormatter(),
-			self::VALID_DESCRIPTION
+			self::VALID_NAME, new StubFormatter(), [], self::VALID_DESCRIPTION
 		);
 	}
 
@@ -188,9 +183,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return new Enum(
-			self::VALID_NAME,
-			[$enumValue1, $enumValue2, $enumValue3],
-			new StubFormatter()
+			self::VALID_NAME, new StubFormatter(), [$enumValue1, $enumValue2, $enumValue3]
 		);
 	}
 
@@ -209,9 +202,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return new Enum(
-			self::VALID_NAME,
-			[$enumValue1, $enumValue2, $enumValue3],
-			new StubFormatter(true, 4, ",", null, false)
+			self::VALID_NAME, new StubFormatter(true, 4, ",", null, false), [$enumValue1, $enumValue2, $enumValue3]
 		);
 	}
 

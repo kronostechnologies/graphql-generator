@@ -6,24 +6,21 @@ namespace GraphQLGen\Generator\Types\SubTypes;
 
 class Field {
 	/**
-	 * @var string
+	 * @var FieldArgument[]
 	 */
-	protected $_name;
-
+	protected $_arguments = [];
 	/**
 	 * @var string|null
 	 */
 	protected $_description;
-
 	/**
 	 * @var TypeUsage
 	 */
 	protected $_fieldType;
-
 	/**
-	 * @var FieldArgument[]
+	 * @var string
 	 */
-	protected $_arguments = [];
+	protected $_name;
 
 	/**
 	 * Field constructor.
@@ -40,17 +37,17 @@ class Field {
 	}
 
 	/**
-	 * @return string
+	 * @return FieldArgument[]
 	 */
-	public function getName() {
-		return $this->_name;
+	public function getArguments() {
+		return $this->_arguments;
 	}
 
 	/**
-	 * @param string $name
+	 * @param FieldArgument[] $arguments
 	 */
-	public function setName($name) {
-		$this->_name = $name;
+	public function setArguments(Array $arguments) {
+		$this->_arguments = $arguments;
 	}
 
 	/**
@@ -82,16 +79,18 @@ class Field {
 	}
 
 	/**
-	 * @return FieldArgument[]
+	 * @return string
 	 */
-	public function getArguments() {
-		return $this->_arguments;
+	public function getName() {
+		return $this->_name;
 	}
 
 	/**
-	 * @param FieldArgument[] $arguments
+	 * @param string $name
 	 */
-	public function setArguments(Array $arguments) {
-		$this->_arguments = $arguments;
+	public function setName($name) {
+		$this->_name = $name;
 	}
+
+
 }

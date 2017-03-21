@@ -27,12 +27,12 @@ class FieldArgument {
 
 	/**
 	 * FieldArgument constructor.
-	 * @param string $description
 	 * @param string $name
+	 * @param string $description
 	 * @param TypeUsage $type
 	 * @param string $defaultValue
 	 */
-	public function __construct($description, $name, $type, $defaultValue) {
+	public function __construct($name, $description, $type, $defaultValue) {
 		$this->setDescription($description);
 		$this->setName($name);
 		$this->setType($type);

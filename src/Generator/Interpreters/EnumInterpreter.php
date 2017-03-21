@@ -38,10 +38,7 @@ class EnumInterpreter extends MainTypeInterpreter {
 	 */
 	public function generateType($formatter) {
 		return new Enum(
-			$this->interpretName(),
-			$this->interpretValues(),
-			$formatter,
-			$this->interpretDescription()
+			$this->interpretName(), $formatter, $this->interpretValues(), $this->interpretDescription()
 		);
 	}
 }

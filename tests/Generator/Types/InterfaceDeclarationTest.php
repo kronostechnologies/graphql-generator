@@ -97,28 +97,19 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenInterfaceDeclaration() {
 		return new InterfaceDeclaration(
-			self::VALID_NAME,
-			[],
-			new StubFormatter(),
-			null
+			self::VALID_NAME, new StubFormatter(), [], null
 		);
 	}
 
 	protected function GivenInterfaceDeclarationWithDescription() {
 		return new InterfaceDeclaration(
-			self::VALID_NAME,
-			[],
-			new StubFormatter(),
-			self::VALID_DESCRIPTION
+			self::VALID_NAME, new StubFormatter(), [], self::VALID_DESCRIPTION
 		);
 	}
 
 	protected function GivenInterfaceDeclarationWithNoFields() {
 		return new InterfaceDeclaration(
-			self::VALID_NAME,
-			[],
-			new StubFormatter(),
-			null
+			self::VALID_NAME, new StubFormatter(), [], null
 		);
 	}
 
@@ -148,16 +139,13 @@ class InterfaceDeclarationTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		return new InterfaceDeclaration(
-			self::VALID_NAME,
-			[$field1, $field2],
-			new StubFormatter(
-				true,
-				4,
-				",",
-				new TypeFormatter(),
-				true
-			),
-			null
+			self::VALID_NAME, new StubFormatter(
+			true,
+			4,
+			",",
+			new TypeFormatter(),
+			true
+		), [$field1, $field2], null
 		);
 	}
 

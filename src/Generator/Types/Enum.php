@@ -8,26 +8,24 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class Enum extends BaseTypeGenerator {
+	const ENUM_VAL_PREFIX = 'VAL_';
 	/**
 	 * @var EnumValue[]
 	 */
 	protected $_values;
 
-
-	const ENUM_VAL_PREFIX = 'VAL_';
-
 	/**
 	 * EnumType constructor.
 	 * @param string $name
-	 * @param EnumValue[] $values
 	 * @param StubFormatter $formatter
+	 * @param EnumValue[] $values
 	 * @param string|null $description
 	 */
-	public function __construct($name, Array $values, StubFormatter $formatter, $description = null) {
-		$this->_formatter = $formatter;
-		$this->_name = $name;
-		$this->_values = $values;
-		$this->_description = $description;
+	public function __construct($name, StubFormatter $formatter, Array $values, $description = null) {
+		$this->setName($name);
+		$this->setFormatter($formatter);
+		$this->setValues($values);
+		$this->setDescription($description);
 	}
 
 	/**
@@ -44,22 +42,17 @@ class Enum extends BaseTypeGenerator {
 	}
 
 	/**
-	 * @return string
+	 * @return string[]
 	 */
-	public function getName() {
-		return $this->_name;
+	public function getDependencies() {
+		return [];
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getVariablesDeclarations() {
-        if ($this->_formatter->optimizeEnums) {
-            return $this->getVariablesDeclarationsOptimized();
-        }
-        else {
-            return $this->getVariablesDeclarationsStandard();
-        }
+	public function getName() {
+		return $this->_name;
 	}
 
 	/**
@@ -77,36 +70,15 @@ class Enum extends BaseTypeGenerator {
 	}
 
 	/**
-     * @return string
-     */
-	protected function getVariablesDeclarationsOptimized() {
-        $constants = "";
-        $i = 1;
-        foreach($this->getValues() as $value) {
-            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = {$i};\n";
-            $i++;
-        }
-
-        return $constants;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getVariablesDeclarationsStandard() {
-        $constants = "";
-        foreach($this->getValues() as $value) {
-            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = '{$value->getName()}';\n";
-        }
-
-        return $constants;
-    }
-
-	/**
-	 * @return string[]
+	 * @return string
 	 */
-	public function getDependencies() {
-		return [];
+	public function getVariablesDeclarations() {
+        if ($this->_formatter->optimizeEnums) {
+            return $this->getVariablesDeclarationsOptimized();
+        }
+        else {
+            return $this->getVariablesDeclarationsStandard();
+        }
 	}
 
 	/**
@@ -136,4 +108,30 @@ class Enum extends BaseTypeGenerator {
 	protected function getValuesFragment() {
 		return "'values' => [" . $this->getConstantValuesArray() . "]";
 	}
+
+	/**
+     * @return string
+     */
+	protected function getVariablesDeclarationsOptimized() {
+        $constants = "";
+        $i = 1;
+        foreach($this->getValues() as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = {$i};\n";
+            $i++;
+        }
+
+        return $constants;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getVariablesDeclarationsStandard() {
+        $constants = "";
+        foreach($this->getValues() as $value) {
+            $constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = '{$value->getName()}';\n";
+        }
+
+        return $constants;
+    }
 }

@@ -4,21 +4,21 @@
 namespace GraphQLGen\Generator\Types;
 
 
+use GraphQLGen\Generator\Formatters\StubFormatter;
+
 abstract class BaseTypeGenerator {
-	/**
-	 * @var \GraphQLGen\Generator\Formatters\StubFormatter
-	 */
-	protected $_formatter;
-
-	/**
-	 * @var string
-	 */
-	protected $_name;
-
 	/**
 	 * @var null|string
 	 */
 	protected $_description;
+	/**
+	 * @var StubFormatter
+	 */
+	protected $_formatter;
+	/**
+	 * @var string
+	 */
+	protected $_name;
 
 	/**
 	 * @return string
@@ -26,24 +26,33 @@ abstract class BaseTypeGenerator {
 	public abstract function generateTypeDefinition();
 
 	/**
-	 * @return string|null
-	 */
-	public abstract function getVariablesDeclarations();
-
-	/**
 	 * @return string[]
 	 */
 	public abstract function getDependencies();
 
 	/**
-	 * @return \GraphQLGen\Generator\Formatters\StubFormatter
+	 * @return null|string
+	 */
+	public function getDescription() {
+		return $this->_description;
+	}
+
+	/**
+	 * @param null|string $description
+	 */
+	public function setDescription($description) {
+		$this->_description = $description;
+	}
+
+	/**
+	 * @return StubFormatter
 	 */
 	public function getFormatter() {
 		return $this->_formatter;
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
+	 * @param StubFormatter $formatter
 	 */
 	public function setFormatter($formatter) {
 		$this->_formatter = $formatter;
@@ -64,18 +73,9 @@ abstract class BaseTypeGenerator {
 	}
 
 	/**
-	 * @return null|string
+	 * @return string|null
 	 */
-	public function getDescription() {
-		return $this->_description;
-	}
-
-	/**
-	 * @param null|string $description
-	 */
-	public function setDescription($description) {
-		$this->_description = $description;
-	}
+	public abstract function getVariablesDeclarations();
 
 	/**
 	 * @param string $description
