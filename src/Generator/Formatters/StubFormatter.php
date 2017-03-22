@@ -72,6 +72,10 @@ class StubFormatter {
 		return $this->_fieldTypeFormatter->getResolveSnippet($typeName);
 	}
 
+	public function getResolveFragmentForUnion() {
+        return $this->_fieldTypeFormatter->getResolveSnippetForUnion();
+    }
+
 	/**
 	 * @param string $line
 	 * @return int

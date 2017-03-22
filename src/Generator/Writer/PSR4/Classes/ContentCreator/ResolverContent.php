@@ -8,6 +8,7 @@ use Exception;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 
 class ResolverContent extends BaseContentCreator {
@@ -41,6 +42,10 @@ class ResolverContent extends BaseContentCreator {
 	public function getContent() {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
+
+        if (in_array($typeGeneratorClass, [Union::class])) {
+            $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
+        }
 
 		if(in_array($typeGeneratorClass, [InterfaceDeclaration::class, Type::class])) {
 			/** @var InterfaceDeclaration|Type $typeGenerator */

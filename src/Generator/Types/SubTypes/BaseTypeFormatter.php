@@ -50,6 +50,11 @@ abstract class BaseTypeFormatter {
 	 */
 	public abstract function getResolveSnippet($typeName);
 
+    /**
+     * @return string
+     */
+    public abstract function getResolveSnippetForUnion();
+
 	/**
 	 * @param string $typeName
 	 * @return string

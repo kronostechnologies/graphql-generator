@@ -15,4 +15,11 @@ class TestableBaseTypeFormatter extends BaseTypeFormatter {
 	public function getResolveSnippet($typeName) {
 		return "";
 	}
+
+    /**
+     * @return string
+     */
+    public function getResolveSnippetForUnion() {
+        return "";
+    }
 }

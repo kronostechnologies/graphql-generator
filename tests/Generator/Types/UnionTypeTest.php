@@ -54,6 +54,14 @@ class UnionTypeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains("'types'", $retVal);
 	}
 
+	public function test_GivenTypeWithoutDescription_generateTypeDefinition_WillContainResolveTypeFragment() {
+		$type = $this->GivenTypeWithoutDescription();
+
+		$retVal = $type->generateTypeDefinition();
+
+		$this->assertContains("'resolveType'", $retVal);
+	}
+
 	public function test_GivenTypeWithoutTypes_getDependencies_WillBeEmpty() {
 		$type = $this->GivenTypeWithoutTypes();
 

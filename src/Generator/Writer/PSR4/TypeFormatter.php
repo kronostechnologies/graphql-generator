@@ -40,4 +40,12 @@ class TypeFormatter extends BaseTypeFormatter {
 
         return "function (\$root, \$args) { \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
     }
+
+    /**
+     * @return string
+     */
+    public function getResolveSnippetForUnion()
+    {
+        return "function (\$value, \$context, GraphQL\\Type\\Definition\\ResolveInfo \$info) { return \$this->resolver->resolve(\$value, \$context, \$info); }";
+    }
 }
