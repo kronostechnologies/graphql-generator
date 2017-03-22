@@ -162,7 +162,7 @@ class ClassesWriter {
 		}
 		$resolvedDependenciesAsLines = array_unique($resolvedDependenciesAsLines);
 
-		return implode("\n", $resolvedDependenciesAsLines);
+		return implode(PHP_EOL, $resolvedDependenciesAsLines);
 	}
 
 	/**

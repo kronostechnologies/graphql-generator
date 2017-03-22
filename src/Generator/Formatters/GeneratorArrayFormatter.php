@@ -62,11 +62,11 @@ class GeneratorArrayFormatter {
 		}
 
 		// rtrim & remove blank lines
-		$contentAsLines = explode("\n", $context->getBuffer());
+		$contentAsLines = explode(PHP_EOL, $context->getBuffer());
 		$this->rtrimLines($contentAsLines);
 		$this->removeBlankLines($contentAsLines);
 
-		return implode("\n", $contentAsLines);
+		return implode(PHP_EOL, $contentAsLines);
 	}
 
 	/**
@@ -170,7 +170,7 @@ class GeneratorArrayFormatter {
 	 */
 	private function increaseIndentAfterNewLineAndToggleNewLineContext($context, $char) {
 		if(strrpos(self::NEWLINE_AFTER_TOKENS, $char) !== false) {
-			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
+			$context->appendCharacter(PHP_EOL . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);
 		}
 
@@ -184,7 +184,7 @@ class GeneratorArrayFormatter {
 	 */
 	private function increaseIndentBeforeNewLineAndToggleNewLineContext($context, $char) {
 		if(strrpos(self::NEWLINE_BEFORE_TOKENS, $char) !== false) {
-			$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()));
+			$context->appendCharacter(PHP_EOL . $this->getTab($context->getIndentLevel()));
 			$context->setIsAfterNewLine(true);
 		}
 

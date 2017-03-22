@@ -93,12 +93,12 @@ class StubFormatter {
 	 * @return string
 	 */
 	public function indent($text, $tabsCount) {
-		$lines = explode("\n", $text);
+		$lines = explode(PHP_EOL, $text);
 		$tabbedLines = array_map(function ($line) use ($tabsCount) {
 			return $this->getTab($tabsCount) . $line;
 		}, $lines);
 
-		return implode("\n", $tabbedLines);
+		return implode(PHP_EOL, $tabbedLines);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class StubFormatter {
 	 */
 	public function standardizeDescription($description) {
 		$trimmedDescription = trim($description);
-		$singleLineDescription = str_replace("\n", $this->descriptionLineMergeChars, $trimmedDescription);
+		$singleLineDescription = str_replace(PHP_EOL, $this->descriptionLineMergeChars, $trimmedDescription);
 		$descriptionSlashed = addslashes($singleLineDescription);
 
 		return $descriptionSlashed;

@@ -56,7 +56,7 @@ class ResolverContent extends BaseContentCreator {
 			}
 		}
 
-		return implode("\n", $contentAsLines);
+		return implode(PHP_EOL, $contentAsLines);
 	}
 
 	/**

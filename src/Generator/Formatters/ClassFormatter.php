@@ -130,9 +130,9 @@ class ClassFormatter {
 			}
 
 			if ($context->isAfterNewLine()) {
-				$context->appendCharacter($char . "\n");
+				$context->appendCharacter($char . PHP_EOL);
 			} else {
-				$context->appendCharacter("\n" . $this->getTab($context->getIndentLevel()) . $char . "\n");
+				$context->appendCharacter(PHP_EOL . $this->getTab($context->getIndentLevel()) . $char . PHP_EOL);
 			}
 
 			$context->setIsNewLineIndented(false);
@@ -152,7 +152,7 @@ class ClassFormatter {
 		if (strpos(self::INDENT_TOKENS, $char) !== false) {
 			$context->appendCharacter($char);
 			$context->increaseIndentLevel();
-			$context->appendCharacter("\n");
+			$context->appendCharacter(PHP_EOL);
 			$context->setIsAfterNewLine(true);
 			$context->setIsNewLineIndented(false);
 
@@ -226,7 +226,7 @@ class ClassFormatter {
 				$context->toggleCommentContext();
 
 				$context->appendCharacter($bufferSplit[$idx]);
-				$context->appendCharacter("\n");
+				$context->appendCharacter(PHP_EOL);
 
 				$context->setIsNewLineIndented(false);
 
@@ -378,7 +378,7 @@ class ClassFormatter {
 	 */
 	protected function lineDelimiterNewLine(ClassFormatterContext $context, $char) {
 		if (strpos(self::ENDLINE_TOKENS, $char) !== false) {
-			$context->appendCharacter($char . "\n");
+			$context->appendCharacter($char . PHP_EOL);
 			$context->setIsAfterNewLine(true);
 			$context->setIsNewLineIndented(false);
 
@@ -393,7 +393,7 @@ class ClassFormatter {
 	 * @return string
 	 */
 	protected function minifyBuffer($classContent) {
-		$minifiedBuffer = str_replace("\n", "", $classContent);
+		$minifiedBuffer = str_replace(PHP_EOL, "", $classContent);
 
 		return $minifiedBuffer;
 	}

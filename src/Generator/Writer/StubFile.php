@@ -99,6 +99,6 @@ class StubFile {
 	}
 
 	private function splitContentAsLines() {
-		$this->_contentAsLines = explode("\n", $this->_content);
+		$this->_contentAsLines = explode(PHP_EOL, $this->_content);
 	}
 }

@@ -37,7 +37,7 @@ class TypeStoreContent extends BaseContentCreator {
 			$lineSeparatedContent[] = $this->getFunctionForType($typeToImplement);
 		}
 
-		return implode("\n", $lineSeparatedContent);
+		return implode(PHP_EOL, $lineSeparatedContent);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class TypeStoreContent extends BaseContentCreator {
 			$lineSeparatedVariables[] = $this->getVariableForType($typeToImplement);
 		}
 
-		return implode("\n", $lineSeparatedVariables);
+		return implode(PHP_EOL, $lineSeparatedVariables);
 	}
 
 	/**

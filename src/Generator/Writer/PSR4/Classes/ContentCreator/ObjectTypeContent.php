@@ -61,7 +61,7 @@ class ObjectTypeContent extends BaseContentCreator {
 
 		$contentAsLines[] = "}";
 
-		return implode("\n", $contentAsLines);
+		return implode(PHP_EOL, $contentAsLines);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class ObjectTypeContent extends BaseContentCreator {
 		}
 		$variableDeclarationsAsLines[] = $this->getGeneratorType()->getVariablesDeclarations();
 
-		return implode("\n", $variableDeclarationsAsLines);
+		return implode(PHP_EOL, $variableDeclarationsAsLines);
 	}
 
 	/**
