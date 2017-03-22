@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Tests\Generator\Interpreters;
+namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
