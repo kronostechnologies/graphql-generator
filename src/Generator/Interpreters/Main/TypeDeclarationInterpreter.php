@@ -1,11 +1,12 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Interpreters;
+namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\Type;
 

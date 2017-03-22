@@ -7,7 +7,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
 use GraphQLGen\Generator\Types\Scalar;
 
 class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {

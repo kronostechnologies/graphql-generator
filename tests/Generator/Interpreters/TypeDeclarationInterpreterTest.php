@@ -11,7 +11,7 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\Type;
 

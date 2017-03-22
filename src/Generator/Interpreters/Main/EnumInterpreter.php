@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Interpreters;
+namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;

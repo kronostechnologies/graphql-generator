@@ -1,11 +1,12 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Interpreters;
+namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
+use GraphQLGen\Generator\Interpreters\Nested\TypeUsageInterpreter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Union;

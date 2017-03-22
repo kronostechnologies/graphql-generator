@@ -9,9 +9,10 @@ use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Interpreters\InputInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
 use GraphQLGen\Generator\Types\Input;
 
+// ToDo: Standardize test relative to other interpreter tests
 class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_DESC = 'A Description';
 	const TYPE_NAME = 'AType';

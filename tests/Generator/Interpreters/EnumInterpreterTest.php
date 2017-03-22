@@ -8,7 +8,7 @@ use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Interpreters\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 

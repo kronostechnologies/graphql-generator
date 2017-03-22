@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Interpreters;
+namespace GraphQLGen\Generator\Interpreters\Nested;
 
 
 use GraphQL\Language\AST\FieldDefinitionNode;

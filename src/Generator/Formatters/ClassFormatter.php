@@ -423,6 +423,7 @@ class ClassFormatter {
 	/**
 	 * @param ClassFormatterContext $context
 	 * @param int $idx
+	 * @return bool
 	 */
 	private function indentFirstLine($context, $idx) {
 		if ($idx === 0) {

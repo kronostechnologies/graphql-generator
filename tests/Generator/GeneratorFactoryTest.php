@@ -5,15 +5,19 @@ namespace GraphQLGen\Tests\Generator;
 
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
+use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
 use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
+use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQLGen\Generator\GeneratorFactory;
-use GraphQLGen\Generator\Interpreters\EnumInterpreter;
-use GraphQLGen\Generator\Interpreters\InterfaceInterpreter;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
-use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 
 class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase {
@@ -58,6 +62,22 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(InterfaceInterpreter::class, $retVal);
 	}
 
+	public function test_GivenInputTypeNode_getCorrectInterpreter_ShouldReturnInputInterpreter() {
+		$node = $this->GivenInputNode();
+
+		$retVal = $this->_factory->getCorrectInterpreter($node);
+
+		$this->assertInstanceOf(InputInterpreter::class, $retVal);
+	}
+
+	public function test_GivenUnionTypeNode_getCorrectInterpreter_ShouldReturnUnionInterpreter() {
+		$node = $this->GivenUnionTypeNode();
+
+		$retVal = $this->_factory->getCorrectInterpreter($node);
+
+		$this->assertInstanceOf(UnionInterpreter::class, $retVal);
+	}
+
 	public function test_GivenUndefinedTypeNode_getCorrectInterpreter_ShouldReturnNull() {
 		$node = $this->GivenUndefinedTypeNode();
 
@@ -84,5 +104,13 @@ class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenUndefinedTypeNode() {
 		return new NamedTypeNode([]);
+	}
+
+	protected function GivenInputNode() {
+		return new InputObjectTypeDefinitionNode([]);
+	}
+
+	protected function GivenUnionTypeNode() {
+		return new UnionTypeDefinitionNode([]);
 	}
 }

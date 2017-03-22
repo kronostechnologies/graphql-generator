@@ -1,11 +1,12 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Interpreters;
+namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\Interpreters\Nested\InputFieldInterpreter;
 use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 

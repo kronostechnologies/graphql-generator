@@ -4,13 +4,12 @@
 namespace GraphQLGen\Tests\Generator\Interpreters;
 
 
-use GraphQL\Language\AST\ArgumentNode;
 use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedType;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\StringValueNode;
-use GraphQLGen\Generator\Interpreters\FieldInterpreter;
+use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
 class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {

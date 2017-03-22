@@ -8,7 +8,7 @@ use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\StringValueNode;
-use GraphQLGen\Generator\Interpreters\FieldArgumentInterpreter;
+use GraphQLGen\Generator\Interpreters\Nested\FieldArgumentInterpreter;
 
 class FieldArgumentInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'argument';

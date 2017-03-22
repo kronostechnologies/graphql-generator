@@ -10,7 +10,7 @@ use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\GeneratorLogger;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use PHPUnit_Framework_MockObject_MockObject;

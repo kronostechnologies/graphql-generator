@@ -12,13 +12,13 @@ use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
-use GraphQLGen\Generator\Interpreters\EnumInterpreter;
-use GraphQLGen\Generator\Interpreters\InputInterpreter;
-use GraphQLGen\Generator\Interpreters\InterfaceInterpreter;
-use GraphQLGen\Generator\Interpreters\MainTypeInterpreter;
-use GraphQLGen\Generator\Interpreters\ScalarInterpreter;
-use GraphQLGen\Generator\Interpreters\TypeDeclarationInterpreter;
-use GraphQLGen\Generator\Interpreters\UnionInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\MainTypeInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
+use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
 
 class GeneratorFactory {
 	/**
