@@ -8,6 +8,6 @@ use GraphQLGen\Generator\InterpretedTypes\DescribableTypeTrait;
 use GraphQLGen\Generator\InterpretedTypes\FieldTypeTrait;
 use GraphQLGen\Generator\InterpretedTypes\NamedTypeTrait;
 
-class InputField {
+class InputFieldInterpretedType {
 	use NamedTypeTrait, DescribableTypeTrait, FieldTypeTrait;
 }

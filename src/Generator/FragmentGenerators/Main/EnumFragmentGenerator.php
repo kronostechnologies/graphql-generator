@@ -4,18 +4,16 @@
 namespace GraphQLGen\Generator\FragmentGenerators\Main;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\DescriptionFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\NameFragmentTrait;
+use GraphQLGen\Generator\FragmentGenerators\Nested\EnumValueFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumType;
-use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class EnumFragmentGenerator implements FragmentGeneratorInterface, VariablesDefiningGeneratorInterface {
-	use FormatterDependantGeneratorTrait;
-
-	const ENUM_VAL_PREFIX = 'VAL_';
+	use FormatterDependantGeneratorTrait, NameFragmentTrait, DescriptionFragmentTrait;
 
 	/**
 	 * @var EnumInterpretedType
@@ -26,11 +24,18 @@ class EnumFragmentGenerator implements FragmentGeneratorInterface, VariablesDefi
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$nameFragment = $this->getNameFragment();
-		$formattedDescription = $this->getDescriptionFragment($this->getDescription());
+		$nameFragment = $this->getNameFragment($this->getEnumType()->getName());
+		$descriptionFragment = $this->getDescriptionFragment(
+			$this->getFormatter(),
+			$this->getEnumType()->getDescription()
+		);
 		$valuesFragment = $this->getValuesFragment();
 
-		$vals = $this->joinArrayFragments([$nameFragment, $formattedDescription, $valuesFragment]);
+		$vals = $this->getFormatter()->joinArrayFragments([
+			$nameFragment,
+			$descriptionFragment,
+			$valuesFragment
+		]);
 
 		return "[{$vals}]";
 	}
@@ -39,66 +44,39 @@ class EnumFragmentGenerator implements FragmentGeneratorInterface, VariablesDefi
 	 * @return string
 	 */
 	public function getVariablesDeclarations() {
-		if ($this->getStubFormatter()->optimizeEnums) {
-			return $this->getVariablesDeclarationsOptimized();
-		}
-		else {
-			return $this->getVariablesDeclarationsStandard();
-		}
+		$valuesGenerators = $this->getEnumValuesGenerators();
+		$valuesGeneratorsVariables = array_map(function (EnumValueFragmentGenerator $valueGenerator) {
+			return $valueGenerator->getVariablesDeclarations();
+		}, $valuesGenerators);
+		$valuesGeneratorsVariablesJoined = implode(" ", $valuesGeneratorsVariables);
+
+		return $valuesGeneratorsVariablesJoined;
 	}
 
 	/**
-	 * @return string
+	 * @return EnumValueFragmentGenerator[]
 	 */
-	protected function getConstantValuesArray() {
-		$valuesNames = array_map(function ($value) {
-			return $this->getSingleConstantValueEntry($value);
-		}, $this->getValues());
+	protected function getEnumValuesGenerators() {
+		return array_map(function ($enumValueFragment) {
+			$enumValueGenerator = new EnumValueFragmentGenerator();
+			$enumValueGenerator->setFormatter($this->getFormatter());
+			$enumValueGenerator->setEnumValue($enumValueFragment);
 
-		return implode("", $valuesNames);
-	}
-
-	/**
-	 * @param EnumValue $value
-	 * @return string
-	 */
-	protected function getSingleConstantValueEntry($value) {
-		$formattedDescription = $this->getDescriptionFragment($value->getDescription());
-
-		return "'{$value->getName()}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$value->getName()}, {$formattedDescription} ],";
+			return $enumValueGenerator;
+		}, $this->getEnumType()->getValues());
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getValuesFragment() {
-		return "'values' => [" . $this->getConstantValuesArray() . "]";
-	}
+		$valuesGenerators = $this->getEnumValuesGenerators();
+		$valuesGeneratedTypes = array_map(function (EnumValueFragmentGenerator $valueGenerator) {
+			return $valueGenerator->generateTypeDefinition();
+		}, $valuesGenerators);
+		$valuesGeneratedTypesDefinitionJoined = implode(",", $valuesGeneratedTypes);
 
-	/**
-	 * @return string
-	 */
-	protected function getVariablesDeclarationsOptimized() {
-		$constants = "";
-		$i = 1;
-		foreach($this->getValues() as $value) {
-			$constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = {$i};\n";
-			$i++;
-		}
-
-		return $constants;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function getVariablesDeclarationsStandard() {
-		$constants = "";
-		foreach($this->getValues() as $value) {
-			$constants .= "const " . self::ENUM_VAL_PREFIX . "{$value->getName()} = '{$value->getName()}';\n";
-		}
-
-		return $constants;
+		return "'values' => [{$valuesGeneratedTypesDefinitionJoined}]";
 	}
 
 	/**

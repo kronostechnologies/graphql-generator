@@ -4,23 +4,23 @@
 namespace GraphQLGen\Generator\InterpretedTypes;
 
 
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 trait FieldTypeTrait {
 	/**
-	 * @var TypeUsage
+	 * @var TypeUsageInterpretedType
 	 */
 	protected $_fieldType;
 
 	/**
-	 * @return TypeUsage
+	 * @return TypeUsageInterpretedType
 	 */
 	public function getFieldType() {
 		return $this->_fieldType;
 	}
 
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param TypeUsageInterpretedType $fieldType
 	 */
 	public function setFieldType($fieldType) {
 		$this->_fieldType = $fieldType;

@@ -4,9 +4,11 @@
 namespace GraphQLGen\Generator\Types\SubTypes;
 
 
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+
 abstract class BaseTypeFormatter {
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param TypeUsageInterpretedType $fieldType
 	 * @return string
 	 */
 	public function getFieldTypeDeclaration($fieldType) {

@@ -99,4 +99,35 @@ class TypeUsageInterpretedType {
 	protected function setIsTypeNullable($isTypeNullable) {
 		$this->_isTypeNullable = $isTypeNullable;
 	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getDependencies() {
+		$dependencies = [];
+
+		if(isset(self::$PRIMARY_TYPES_MAPPINGS[$this->_typeName])) {
+			$dependencies[] = 'Type';
+		}
+		else {
+			$dependencies[] = $this->_typeName;
+		}
+
+		// Is base object nullable?
+		if(!$this->_isTypeNullable) {
+			$dependencies[] = 'Type';
+		}
+
+		// Is in list?
+		if($this->_inList) {
+			$dependencies[] = 'Type';
+		}
+
+		// Is list nullable?
+		if($this->_inList && !$this->_isListNullable) {
+			$dependencies[] = 'Type';
+		}
+
+		return array_unique($dependencies);
+	}
 }

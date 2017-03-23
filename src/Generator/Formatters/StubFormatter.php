@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Formatters;
 
 
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
@@ -38,6 +39,7 @@ class StubFormatter {
 	 * @param int $tabSize
 	 * @param string $descriptionLineMergeChars
 	 * @param BaseTypeFormatter|null $fieldTypeFormatter
+	 * @param bool $optimizeEnums
 	 */
 	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $optimizeEnums = false) {
 		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
@@ -49,7 +51,7 @@ class StubFormatter {
 	}
 
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param TypeUsageInterpretedType $fieldType
 	 * @return string
 	 */
 	public function getFieldTypeDeclaration($fieldType) {
@@ -127,5 +129,15 @@ class StubFormatter {
 		}
 
 		return str_repeat("\t", $size);
+	}
+
+	/**
+	 * @param string[] $fragments
+	 * @return string
+	 */
+	public function joinArrayFragments($fragments) {
+		$commaSplitVals = array_filter($fragments);
+
+		return implode(",", $commaSplitVals);
 	}
 }
