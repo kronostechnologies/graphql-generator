@@ -1,93 +1,82 @@
 <?php
 
 
-namespace GraphQLGen\Tests\Generator\Types;
+namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Types\Scalar;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 
-class ScalarTest extends \PHPUnit_Framework_TestCase {
+class ScalarFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'ScalarDate';
 	const VALID_DESCRIPTION = 'This is a description for the scalar date type.';
 
-	public function test_GivenScalar_getName_WillReturnName() {
-		$scalar = $this->GivenScalar();
-
-		$retVal = $scalar->getName();
-
-		$this->assertEquals(self::VALID_NAME, $retVal);
-	}
-
 	public function test_GivenScalar_generateTypeDefinition_WillContainName() {
 		$scalar = $this->GivenScalar();
+		$generator = $this->GivenScalarGenerator($scalar);
 
-		$retVal = $scalar->generateTypeDefinition();
+		$retVal = $generator->generateTypeDefinition();
 
 		$this->assertContains(self::VALID_NAME, $retVal);
 	}
 
 	public function test_GivenScalarWithDescription_generateTypeDefinition_WillContainDescription() {
 		$scalar = $this->GivenScalarWithDescription();
+		$generator = $this->GivenScalarGenerator($scalar);
 
-		$retVal = $scalar->generateTypeDefinition();
+		$retVal = $generator->generateTypeDefinition();
 
 		$this->assertContains(self::VALID_DESCRIPTION, $retVal);
 	}
 
-	public function test_GivenScalar_getDependencies_WillBeEmpty() {
-		$scalar = $this->GivenScalar();
-
-		$retVal = $scalar->getDependencies();
-
-		$this->assertEmpty($retVal);
-	}
-
-	public function test_GivenScalar_getConstantsDeclaration_WillReturnNull() {
-		$scalar = $this->GivenScalar();
-
-		$retVal = $scalar->getVariablesDeclarations();
-
-		$this->assertNull($retVal);
-	}
-
 	public function test_GivenScalar_generateTypeDefinition_WillContainNameFragment() {
 		$scalar = $this->GivenScalar();
+		$generator = $this->GivenScalarGenerator($scalar);
 
-		$retVal = $scalar->generateTypeDefinition();
+		$retVal = $generator->generateTypeDefinition();
 
 		$this->assertContains("\$this->name", $retVal);
 	}
 
 	public function test_GivenScalarWithDescription_generateTypeDefinition_WontContainDescriptionFragment() {
 		$scalar = $this->GivenScalar();
+		$generator = $this->GivenScalarGenerator($scalar);
 
-		$retVal = $scalar->generateTypeDefinition();
+		$retVal = $generator->generateTypeDefinition();
 
 		$this->assertNotContains("\$this->description", $retVal);
 	}
 
 	public function test_GivenScalarWithDescription_generateTypeDefinition_WillContainDescriptionFragment() {
 		$scalar = $this->GivenScalarWithDescription();
+		$generator = $this->GivenScalarGenerator($scalar);
 
-		$retVal = $scalar->generateTypeDefinition();
+		$retVal = $generator->generateTypeDefinition();
 
 		$this->assertContains("\$this->description", $retVal);
 	}
 
 	protected function GivenScalar() {
-		return new Scalar(
-			self::VALID_NAME,
-			new StubFormatter(),
-			null
-		);
+		$scalar = new ScalarInterpretedType();
+		$scalar->setName(self::VALID_NAME);
+
+		return $scalar;
 	}
 
 	protected function GivenScalarWithDescription() {
-		return new Scalar(
-			self::VALID_NAME,
-			new StubFormatter(),
-			self::VALID_DESCRIPTION
-		);
+		$scalar = new ScalarInterpretedType();
+		$scalar->setName(self::VALID_NAME);
+		$scalar->setDescription(self::VALID_DESCRIPTION);
+
+		return $scalar;
+	}
+
+	protected function GivenScalarGenerator($scalar) {
+		$generator = new ScalarFragmentGenerator();
+		$generator->setScalarType($scalar);
+		$generator->setFormatter(new StubFormatter());
+
+		return $generator;
 	}
 }

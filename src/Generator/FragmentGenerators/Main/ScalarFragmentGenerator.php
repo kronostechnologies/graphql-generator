@@ -6,11 +6,10 @@ namespace GraphQLGen\Generator\FragmentGenerators\Main;
 
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\FragmentGenerators\NameFragmentTrait;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 
 class ScalarFragmentGenerator implements FragmentGeneratorInterface {
-	use FormatterDependantGeneratorTrait, NameFragmentTrait;
+	use FormatterDependantGeneratorTrait;
 
 	/**
 	 * @var ScalarInterpretedType
@@ -38,6 +37,14 @@ class ScalarFragmentGenerator implements FragmentGeneratorInterface {
 		else {
 			return "\$this->description = '" . $this->getFormatter()->standardizeDescription($description) . "';";
 		}
+	}
+
+	/**
+	 * @param string $name
+	 * @return string
+	 */
+	protected function getNameFragment($name) {
+		return "\$this->name = '" . $name . "';";
 	}
 
 	/**
