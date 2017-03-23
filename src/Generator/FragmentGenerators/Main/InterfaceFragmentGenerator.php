@@ -89,6 +89,6 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 		}, $fields);
 		$fieldsTypesDefinitionsJoined = implode(",", $fieldsTypesDefinitions);
 
-		return $fieldsTypesDefinitionsJoined;
+		return "'fields' => [{$fieldsTypesDefinitionsJoined}]";
 	}
 }
