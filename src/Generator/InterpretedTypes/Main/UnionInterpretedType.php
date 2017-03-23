@@ -14,7 +14,7 @@ class UnionInterpretedType {
 	/**
 	 * @var TypeUsageInterpretedType[]
 	 */
-	protected $_types;
+	protected $_types = [];
 
 	/**
 	 * @return TypeUsageInterpretedType[]
