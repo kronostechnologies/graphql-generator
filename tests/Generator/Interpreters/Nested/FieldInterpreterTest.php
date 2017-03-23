@@ -9,6 +9,7 @@ use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedType;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\StringValueNode;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
@@ -57,7 +58,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpreter = new FieldInterpreter($node);
 		$retVal = $interpreter->interpretArguments();
 
-		$this->assertInstanceOf(FieldArgument::class, $retVal[0]);
+		$this->assertInstanceOf(FieldArgumentInterpretedType::class, $retVal[0]);
 	}
 
 	public function test_GivenNodeWithOneArgument_getArguments_WillReturnOneItem() {

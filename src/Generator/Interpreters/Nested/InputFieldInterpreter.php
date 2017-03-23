@@ -5,6 +5,8 @@ namespace GraphQLGen\Generator\Interpreters\Nested;
 
 
 use GraphQL\Language\AST\InputValueDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\InputField;
 
 class InputFieldInterpreter extends NestedTypeInterpreter {
@@ -16,18 +18,19 @@ class InputFieldInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return InputField
+	 * @return InputFieldInterpretedType
 	 */
 	public function generateType() {
-		return new InputField(
-			$this->interpretName(),
-			$this->interpretDescription(),
-			$this->interpretType()
-		);
+		$interpretedType = new InputFieldInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setFieldType($this->interpretType());
+
+		return $interpretedType;
 	}
 
 	/**
-	 * @return \GraphQLGen\Generator\Types\SubTypes\TypeUsage
+	 * @return TypeUsageInterpretedType
 	 */
 	public function interpretType() {
 		$typeUsageInterpreter = new TypeUsageInterpreter($this->_astNode->type);

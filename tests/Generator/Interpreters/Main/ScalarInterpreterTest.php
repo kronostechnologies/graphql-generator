@@ -7,8 +7,8 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
-use GraphQLGen\Generator\Types\Scalar;
 
 class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';
@@ -39,9 +39,9 @@ class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithName($scalarNode);
 
 		$interpreter = new ScalarInterpreter($scalarNode);
-		$retVal = $interpreter->generateType(new StubFormatter());
+		$retVal = $interpreter->generateType();
 
-		$this->assertInstanceOf(Scalar::class, $retVal);
+		$this->assertInstanceOf(ScalarInterpretedType::class, $retVal);
 	}
 
 	protected function GivenNodeWithDescription($node) {

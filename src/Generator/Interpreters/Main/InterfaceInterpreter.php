@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
@@ -18,13 +19,15 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return InterfaceDeclaration
+	 * @return InterfaceDeclarationInterpretedType
 	 */
-	public function generateType($formatter) {
-		return new InterfaceDeclaration(
-			$this->interpretName(), $formatter, $this->interpretFields(), $this->interpretDescription()
-		);
+	public function generateType() {
+		$interpretedType = new InterfaceDeclarationInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setFields($this->interpretFields());
+
+		return $interpretedType;
 	}
 
 	/**

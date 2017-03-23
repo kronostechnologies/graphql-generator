@@ -5,6 +5,9 @@ namespace GraphQLGen\Generator\Interpreters\Nested;
 
 
 use GraphQL\Language\AST\FieldDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
@@ -17,19 +20,20 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return Field
+	 * @return FieldInterpretedType
 	 */
 	public function generateType() {
-		return new Field(
-			$this->interpretName(),
-			$this->interpretDescription(),
-			$this->interpretType(),
-			$this->interpretArguments()
-		);
+		$interpretedType = new FieldInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setFieldType($this->interpretType());
+		$interpretedType->setArguments($this->interpretArguments());
+
+		return $interpretedType;
 	}
 
 	/**
-	 * @return FieldArgument[]
+	 * @return FieldArgumentInterpretedType[]
 	 */
 	public function interpretArguments() {
 		return array_map(function ($argumentNode) {
@@ -40,7 +44,7 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return \GraphQLGen\Generator\Types\SubTypes\TypeUsage
+	 * @return TypeUsageInterpretedType
 	 */
 	public function interpretType() {
 		$typeUsageInterpreter = new TypeUsageInterpreter($this->_astNode->type);

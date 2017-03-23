@@ -9,6 +9,7 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQL\Language\AST\TypeNode;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class TypeUsageInterpreter extends NestedTypeInterpreter {
@@ -21,22 +22,16 @@ class TypeUsageInterpreter extends NestedTypeInterpreter {
 	}
 
 	/**
-	 * @return TypeUsage
+	 * @return TypeUsageInterpretedType
 	 */
 	public function generateType() {
-		return new TypeUsage(
-			$this->interpretName(),
-			$this->isNullableObject(),
-			$this->isInList(),
-			$this->isNullableList()
-		);
-	}
+		$interpretedType = new TypeUsageInterpretedType();
+		$interpretedType->setTypeName($this->interpretName());
+		$interpretedType->setInList($this->isInList());
+		$interpretedType->setIsListNullable($this->isNullableList());
+		$interpretedType->setIsTypeNullable($this->isNullableObject());
 
-	/**
-	 * @return string
-	 */
-	public function interpretDescription() {
-		return "";
+		return $interpretedType;
 	}
 
 	/**

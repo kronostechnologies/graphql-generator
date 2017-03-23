@@ -61,7 +61,7 @@ class TypeUsageInterpretedType {
 	/**
 	 * @param bool $inList
 	 */
-	protected function setInList($inList) {
+	public function setInList($inList) {
 		$this->_inList = $inList;
 	}
 
@@ -89,14 +89,14 @@ class TypeUsageInterpretedType {
 	/**
 	 * @param bool $isListNullable
 	 */
-	protected function setIsListNullable($isListNullable) {
+	public function setIsListNullable($isListNullable) {
 		$this->_isListNullable = $isListNullable;
 	}
 
 	/**
 	 * @param bool $isTypeNullable
 	 */
-	protected function setIsTypeNullable($isTypeNullable) {
+	public function setIsTypeNullable($isTypeNullable) {
 		$this->_isTypeNullable = $isTypeNullable;
 	}
 

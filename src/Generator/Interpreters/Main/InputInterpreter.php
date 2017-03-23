@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\InputFieldInterpreter;
 use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\SubTypes\Field;
@@ -20,15 +21,15 @@ class InputInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @param StubFormatter $formatter
-	 * @return Input
+	 * @return InputInterpretedType
 	 */
-	public function generateType($formatter) {
-		return new Input(
-			$this->interpretName(),
-			$formatter,
-			$this->interpretFields()
-		);
+	public function generateType() {
+		$interpretedType = new InputInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setFields($this->interpretFields());
+
+		return $interpretedType;
 	}
 
 	/**

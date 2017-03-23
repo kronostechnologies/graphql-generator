@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
@@ -17,13 +18,15 @@ class EnumInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return Enum
+	 * @return EnumInterpretedType
 	 */
-	public function generateType($formatter) {
-		return new Enum(
-			$this->interpretName(), $formatter, $this->interpretValues(), $this->interpretDescription()
-		);
+	public function generateType() {
+		$interpretedType = new EnumInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setValues($this->interpretValues());
+
+		return $interpretedType;
 	}
 
 	/**

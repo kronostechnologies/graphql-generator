@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Types\Scalar;
 
 class ScalarInterpreter extends MainTypeInterpreter {
@@ -17,13 +18,13 @@ class ScalarInterpreter extends MainTypeInterpreter {
 
 	/**
 	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return Scalar
+	 * @return ScalarInterpretedType
 	 */
-	public function generateType($formatter) {
-		return new Scalar(
-			$this->interpretName(),
-			$formatter,
-			$this->interpretDescription()
-		);
+	public function generateType() {
+		$interpretedType = new ScalarInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+
+		return $interpretedType;
 	}
 }

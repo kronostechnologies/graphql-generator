@@ -11,9 +11,10 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\Type;
 
 
 class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -51,7 +52,7 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $interpreter->interpretFields();
 
 		$this->assertCount(1, $retVal);
-		$this->assertInstanceOf(Field::class, array_shift($retVal));
+		$this->assertInstanceOf(FieldInterpretedType::class, array_shift($retVal));
 	}
 
 	public function test_GivenNodeWithName_generateType_WillReturnRightType() {
@@ -60,9 +61,9 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithField($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$retVal = $interpreter->generateType(new StubFormatter());
+		$retVal = $interpreter->generateType();
 
-		$this->assertInstanceOf(Type::class, $retVal);
+		$this->assertInstanceOf(TypeDeclarationInterpretedType::class, $retVal);
 	}
 
 	public function test_GivenNodeWithInterface_generateType_WillContainInterfaceAsDependency() {
@@ -71,9 +72,9 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithInterface($objectTypeNode);
 
 		$interpreter = new TypeDeclarationInterpreter($objectTypeNode);
-		$retVal = $interpreter->generateType(new StubFormatter());
+		$retVal = $interpreter->generateType();
 
-		$this->assertContains(self::INTERFACE_NODE, $retVal->getDependencies());
+		$this->assertContains(self::INTERFACE_NODE, $retVal->getInterfacesNames());
 	}
 
 	protected function GivenNodeWithName($node) {

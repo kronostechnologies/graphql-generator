@@ -6,6 +6,8 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
+use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\TypeUsageInterpreter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
@@ -20,20 +22,19 @@ class UnionInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
-	 * @return Union
+	 * @return UnionInterpretedType
 	 */
-	public function generateType($formatter) {
-		return new Union(
-			$this->interpretName(),
-			$formatter,
-			$this->interpretTypes(),
-			$this->interpretDescription()
-		);
+	public function generateType() {
+		$interpretedType = new UnionInterpretedType();
+		$interpretedType->setName($this->interpretName());
+		$interpretedType->setDescription($this->interpretDescription());
+		$interpretedType->setTypes($this->interpretTypes());
+
+		return $interpretedType;
 	}
 
 	/**
-	 * @return TypeUsage[]
+	 * @return TypeUsageInterpretedType[]
 	 */
 	public function interpretTypes() {
 		return array_map(function ($typeNode) {

@@ -9,8 +9,8 @@ use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
-use GraphQLGen\Generator\Types\Input;
 
 // ToDo: Standardize test relative to other interpreter tests
 class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -64,9 +64,9 @@ class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenTypeWithNoFields($type);
 		$interpreter = $this->GivenInterpreter($type);
 
-		$retVal = $interpreter->generateType(new StubFormatter());
+		$retVal = $interpreter->generateType();
 
-		$this->assertInstanceOf(Input::class, $retVal);
+		$this->assertInstanceOf(InputInterpretedType::class, $retVal);
 	}
 
 	protected function GivenType() {

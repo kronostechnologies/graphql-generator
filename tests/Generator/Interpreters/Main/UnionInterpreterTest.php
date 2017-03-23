@@ -8,8 +8,8 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
-use GraphQLGen\Generator\Types\Union;
 
 // ToDo: Standardize
 class UnionInterpreterTest extends \PHPUnit_Framework_TestCase {
@@ -62,9 +62,9 @@ class UnionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->GivenNodeWithNoTypes($node);
 		$interpreter = $this->GivenUnionInterpreter($node);
 
-		$retVal = $interpreter->generateType(new StubFormatter());
+		$retVal = $interpreter->generateType();
 
-		$this->assertInstanceOf(Union::class, $retVal);
+		$this->assertInstanceOf(UnionInterpretedType::class, $retVal);
 	}
 
 	protected function GivenNode() {
