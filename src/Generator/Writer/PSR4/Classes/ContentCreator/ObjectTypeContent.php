@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQL\Type\Definition\ScalarType;
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
@@ -21,7 +22,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	protected $_objectTypeClass;
 
 	/**
-	 * @var BaseTypeGenerator
+	 * @var FragmentGeneratorInterface
 	 */
 	protected $_generatorType;
 
@@ -94,14 +95,14 @@ class ObjectTypeContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return BaseTypeGenerator
+	 * @return FragmentGeneratorInterface
 	 */
 	public function getGeneratorType() {
 		return $this->_generatorType;
 	}
 
 	/**
-	 * @param BaseTypeGenerator $generatorType
+	 * @param FragmentGeneratorInterface $generatorType
 	 */
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;

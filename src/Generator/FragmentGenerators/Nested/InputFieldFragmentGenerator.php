@@ -56,4 +56,12 @@ class InputFieldFragmentGenerator implements FragmentGeneratorInterface {
 	public function setInputFieldType($inputFieldType) {
 		$this->_inputFieldType = $inputFieldType;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getInputFieldType()->getName();
+		// TODO: Implement getName() method.
+	}
 }

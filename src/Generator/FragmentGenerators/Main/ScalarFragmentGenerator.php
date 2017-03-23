@@ -20,7 +20,7 @@ class ScalarFragmentGenerator implements FragmentGeneratorInterface {
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$nameFragment = $this->getNameFragment($this->getScalarType()->getName());
+		$nameFragment = $this->getNameFragment($this->getName());
 		$descriptionFragment = $this->getDescriptionFragment($this->getScalarType()->getDescription());
 
 		return "{$nameFragment}{$descriptionFragment}";
@@ -59,5 +59,12 @@ class ScalarFragmentGenerator implements FragmentGeneratorInterface {
 	 */
 	public function setScalarType($scalarType) {
 		$this->_scalarType = $scalarType;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getScalarType()->getName();
 	}
 }

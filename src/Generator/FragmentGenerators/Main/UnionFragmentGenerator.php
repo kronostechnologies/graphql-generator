@@ -24,7 +24,7 @@ class UnionFragmentGenerator implements FragmentGeneratorInterface, DependentFra
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = $this->getNameFragment($this->getUnionType()->getName());
+		$name = $this->getNameFragment($this->getName());
 		$formattedDescription = $this->getDescriptionFragment($this->getFormatter(), $this->getUnionType()->getDescription());
 		$typesDefinitions = $this->getTypesDefinitionsFragment();
 		$resolveType = $this->getResolveTypeFragment();
@@ -75,5 +75,12 @@ class UnionFragmentGenerator implements FragmentGeneratorInterface, DependentFra
 	 */
 	protected function getResolveTypeFragment() {
 		return "'resolveType' => {$this->getFormatter()->getResolveFragmentForUnion()}";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getUnionType()->getName();
 	}
 }

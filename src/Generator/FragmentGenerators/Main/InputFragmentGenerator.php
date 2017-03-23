@@ -38,9 +38,7 @@ class InputFragmentGenerator implements FragmentGeneratorInterface, DependentFra
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = $this->getNameFragment(
-			$this->getInputType()->getName()
-		);
+		$name = $this->getNameFragment($this->getName());
 		$formattedDescription = $this->getDescriptionFragment(
 			$this->getFormatter(),
 			$this->getInputType()->getDescription()
@@ -97,5 +95,12 @@ class InputFragmentGenerator implements FragmentGeneratorInterface, DependentFra
 		$fieldsTypeDefinitionsJoined = implode(",", $fieldsTypeDefinitions);
 
 		return $fieldsTypeDefinitionsJoined;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getInputType()->getName();
 	}
 }

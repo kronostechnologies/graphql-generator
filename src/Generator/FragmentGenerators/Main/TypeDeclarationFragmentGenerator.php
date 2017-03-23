@@ -24,7 +24,7 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = $this->getNameFragment($this->getTypeDeclaration()->getName());
+		$name = $this->getNameFragment($this->getName());
 		$formattedDescription = $this->getDescriptionFragment(
 			$this->getFormatter(),
 			$this->getTypeDeclaration()->getDescription()
@@ -114,5 +114,12 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 
 			return $typeDeclarationFieldGenerator;
 		}, $this->getTypeDeclaration()->getFields());
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getTypeDeclaration()->getName();
 	}
 }

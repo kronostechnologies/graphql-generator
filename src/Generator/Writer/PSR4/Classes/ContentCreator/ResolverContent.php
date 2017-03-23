@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
@@ -18,7 +19,7 @@ class ResolverContent extends BaseContentCreator {
 	protected $_resolverClass;
 
 	/**
-	 * @var BaseTypeGenerator
+	 * @var FragmentGeneratorInterface
 	 */
 	protected $_typeGenerator;
 
@@ -86,16 +87,16 @@ class ResolverContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return BaseTypeGenerator
+	 * @return FragmentGeneratorInterface
 	 */
 	public function getTypeGenerator() {
 		return $this->_typeGenerator;
 	}
 
 	/**
-	 * @param BaseTypeGenerator $typeGenerator
+	 * @param FragmentGeneratorInterface $typeGenerator
 	 */
-	public function setTypeGenerator(BaseTypeGenerator $typeGenerator) {
+	public function setTypeGenerator(FragmentGeneratorInterface $typeGenerator) {
 		$this->_typeGenerator = $typeGenerator;
 	}
 

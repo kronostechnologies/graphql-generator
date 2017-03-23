@@ -38,7 +38,7 @@ class EnumValueFragmentGenerator implements FragmentGeneratorInterface, Variable
 	 * @return string
 	 */
 	public function getVariablesDeclarations() {
-		return "const " . self::ENUM_VAL_PREFIX . "{$this->getEnumValue()->getName()} = '{$this->getEnumValue()->getName()}';\n";
+		return "const " . self::ENUM_VAL_PREFIX . "{$this->getName()} = '{$this->getName()}';\n";
 	}
 
 	/**
@@ -50,6 +50,13 @@ class EnumValueFragmentGenerator implements FragmentGeneratorInterface, Variable
 			$this->getEnumValue()->getDescription()
 		);
 
-		return "'{$this->getEnumValue()->getName()}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$this->getEnumValue()->getName()}, {$formattedDescription} ]";
+		return "'{$this->getName()}' => [ 'value' => self::" . self::ENUM_VAL_PREFIX . "{$this->getName()}, {$formattedDescription} ]";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getEnumValue()->getName();
 	}
 }

@@ -47,4 +47,11 @@ class InterfaceFieldFragmentGenerator implements FragmentGeneratorInterface  {
 	public function setInterfaceFieldType($interfaceFieldType) {
 		$this->_interfaceFieldType = $interfaceFieldType;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getInterfaceFieldType()->getName();
+	}
 }

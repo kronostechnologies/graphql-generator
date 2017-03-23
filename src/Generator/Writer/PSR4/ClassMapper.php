@@ -5,6 +5,13 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use Exception;
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\Input;
@@ -73,22 +80,22 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 */
-	public function getNamespaceForGenerator(BaseTypeGenerator $type) {
+	public function getNamespaceForGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
-			case Type::class:
+			case TypeDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
-			case Scalar::class:
+			case ScalarInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Scalars");
-			case Enum::class:
+			case EnumInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Enums");
-			case InterfaceDeclaration::class:
+			case InterfaceDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
-			case Input::class:
+			case InputInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Input");
-			case Union::class:
+			case UnionInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Unions");
 			default:
 				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
@@ -96,16 +103,16 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 */
-	public function getResolverNamespaceFromGenerator(BaseTypeGenerator $type) {
+	public function getResolverNamespaceFromGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
-			case Type::class:
+			case TypeDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
-			case InterfaceDeclaration::class:
+			case InterfaceDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
-			case Input::class:
+			case InputInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Inputs");
 			default:
 				throw new Exception("getResolverNamespaceFromGenerator not supported for type " . get_class($type));
@@ -119,17 +126,17 @@ class ClassMapper {
 	 */
 	public function getParentDependencyForGenerator(BaseTypeGenerator $type) {
 		switch(get_class($type)) {
-			case Type::class:
+			case TypeDeclarationInterpretedType::class:
 				return "ObjectType";
-			case Scalar::class:
+			case ScalarInterpretedType::class:
 				return "ScalarType";
-			case Enum::class:
+			case EnumInterpretedType::class:
 				return "EnumType";
-			case InterfaceDeclaration::class:
+			case InterfaceDeclarationInterpretedType::class:
 				return "InterfaceType";
-			case Input::class:
+			case InputInterpretedType::class:
 				return "InputObjectType";
-			case Union::class:
+			case UnionInterpretedType::class:
 				return "UnionObjectType";
 			default:
 				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));
@@ -217,18 +224,18 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
 	 *
 	 */
 	public function getDTONamespaceFromGenerator($type) {
 		switch(get_class($type)) {
-			case Type::class:
+			case TypeDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO");
-			case InterfaceDeclaration::class:
+			case InterfaceDeclarationInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Interfaces");
-			case Input::class:
+			case InputInterpretedType::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Inputs");
 			default:
 				throw new Exception("getDTONamespaceFromGenerator not supported for type " . get_class($type));

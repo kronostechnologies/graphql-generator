@@ -67,9 +67,10 @@ class Generator implements LoggerAwareInterface {
 		$interpreter = $this->_factory->getCorrectInterpreter($astDefinition);
 
 		if(!is_null($interpreter)) {
-			$generatorType = $interpreter->generateType($this->_context->formatter);
+			$generatorType = $interpreter->generateType();
+			$fragmentGenerator = $this->_factory->createFragmentGenerator($this->_context->formatter, $generatorType);
 			$this->logger->info("Generating entry for {$generatorType->getName()}");
-			$this->generateClassFromType($generatorType);
+			$this->generateClassFromType($fragmentGenerator);
 		}
 	}
 
@@ -80,7 +81,7 @@ class Generator implements LoggerAwareInterface {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $typeGenerator
+	 * @param mixed $typeGenerator
 	 */
 	protected function generateClassFromType($typeGenerator) {
 		$this->_context->writer->generateFileForTypeGenerator($typeGenerator);

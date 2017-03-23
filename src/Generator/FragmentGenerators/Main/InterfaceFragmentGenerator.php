@@ -24,9 +24,7 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$name = $this->getNameFragment(
-			$this->getInterfaceType()->getName()
-		);
+		$name = $this->getNameFragment($this->getName());
 		$formattedDescription = $this->getDescriptionFragment(
 			$this->getFormatter(),
 			$this->getInterfaceType()->getDescription()
@@ -90,5 +88,12 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 		$fieldsTypesDefinitionsJoined = implode(",", $fieldsTypesDefinitions);
 
 		return "'fields' => [{$fieldsTypesDefinitionsJoined}]";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getInterfaceType()->getName();
 	}
 }

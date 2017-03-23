@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
@@ -12,7 +13,7 @@ class DTO extends SingleClass {
 	const STUB_FILE = 'dto.stub';
 
 	/**
-	 * @var BaseTypeGenerator
+	 * @var FragmentGeneratorInterface
 	 */
 	protected $_generatorType;
 
@@ -35,14 +36,14 @@ class DTO extends SingleClass {
 	}
 
 	/**
-	 * @return BaseTypeGenerator
+	 * @return FragmentGeneratorInterface
 	 */
 	public function getGeneratorType() {
 		return $this->_generatorType;
 	}
 
 	/**
-	 * @param BaseTypeGenerator $generatorType
+	 * @param FragmentGeneratorInterface $generatorType
 	 */
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;

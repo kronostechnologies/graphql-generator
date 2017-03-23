@@ -4,6 +4,8 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\NameFragmentTrait;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
@@ -12,10 +14,10 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class ClassesFactory {
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return ObjectType
 	 */
-	public function createObjectTypeClass(BaseTypeGenerator $type) {
+	public function createObjectTypeClass($type) {
 		$generatorClass = new ObjectType();
 		$generatorClass->setClassName($type->getName() . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
 		$generatorClass->setGeneratorType($type);
@@ -24,10 +26,10 @@ class ClassesFactory {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return Resolver
 	 */
-	public function createResolverClass(BaseTypeGenerator $type) {
+	public function createResolverClass(FragmentGeneratorInterface $type) {
 		$resolverClass = new Resolver();
 		$resolverClass->setClassName($type->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX);
 		$resolverClass->setGeneratorType($type);
@@ -82,7 +84,7 @@ class ClassesFactory {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return DTO
 	 */
 	public function createDTOClass($type) {

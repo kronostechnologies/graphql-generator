@@ -4,6 +4,10 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
@@ -41,9 +45,9 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param mixed $type
 	 */
-	public function generateClassForGenerator(BaseTypeGenerator $type) {
+	public function generateClassForGenerator($type) {
 		// Create generator class
 		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
 		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
@@ -67,9 +71,9 @@ class ClassComposer {
 
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 */
-	public function generateResolverForGenerator(BaseTypeGenerator $type) {
+	public function generateResolverForGenerator(FragmentGeneratorInterface $type) {
 		// Create resolver class
 		$resolverClass = $this->getFactory()->createResolverClass($type);
 		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($type));
@@ -79,9 +83,9 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 */
-	public function generateDTOForGenerator(BaseTypeGenerator $type) {
+	public function generateDTOForGenerator(FragmentGeneratorInterface $type) {
 		// Create DTO class
 		$dtoClass = $this->getFactory()->createDTOClass($type);
 		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($type));
@@ -96,11 +100,11 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return bool
 	 */
-	public function generatorTypeIsInputType(BaseTypeGenerator $type) {
-		return in_array(get_class($type), [InterfaceDeclaration::class, Type::class, Input::class]);
+	public function generatorTypeIsInputType(FragmentGeneratorInterface $type) {
+		return in_array(get_class($type), [InterfaceDeclarationInterpretedType::class, TypeDeclarationInterpretedType::class, InputInterpretedType::class]);
 	}
 
 	public function generateUniqueTypeStore() {

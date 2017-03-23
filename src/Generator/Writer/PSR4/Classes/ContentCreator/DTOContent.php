@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\Type;
@@ -18,7 +19,7 @@ class DTOContent extends BaseContentCreator {
 	protected $_dtoClass;
 
 	/**
-	 * @var Type
+	 * @var FragmentGeneratorInterface
 	 */
 	protected $_typeGenerator;
 
@@ -98,14 +99,14 @@ class DTOContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return Type
+	 * @return FragmentGeneratorInterface
 	 */
 	public function getTypeGenerator() {
 		return $this->_typeGenerator;
 	}
 
 	/**
-	 * @param Type $typeGenerator
+	 * @param FragmentGeneratorInterface $typeGenerator
 	 */
 	public function setTypeGenerator($typeGenerator) {
 		$this->_typeGenerator = $typeGenerator;

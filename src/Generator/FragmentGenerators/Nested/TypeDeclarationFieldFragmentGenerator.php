@@ -26,12 +26,12 @@ class TypeDeclarationFieldFragmentGenerator implements FragmentGeneratorInterfac
 	public function generateTypeDefinition() {
 		$typeDeclaration = $this->getTypeDeclarationFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType());
 		$formattedDescription = $this->getDescriptionFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getDescription());
-		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType(), $this->getTypeDeclarationFieldType()->getName());
+		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType(), $this->getName());
 		$args = $this->getArgsFragment();
 
 		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclaration, $formattedDescription, $args, $resolver]);
 
-		return "'{$this->getTypeDeclarationFieldType()->getName()}' => [{$vals}]";
+		return "'{$this->getName()}' => [{$vals}]";
 	}
 
 	/**
@@ -77,5 +77,12 @@ class TypeDeclarationFieldFragmentGenerator implements FragmentGeneratorInterfac
 		$argsTypeDefinitionsJoined = implode(",", $argsTypeDefinitions);
 
 		return "'args' => [{$argsTypeDefinitionsJoined}]";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getTypeDeclarationFieldType()->getName();
 	}
 }

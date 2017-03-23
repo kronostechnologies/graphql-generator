@@ -43,4 +43,11 @@ class FieldArgumentFragmentGenerator implements FragmentGeneratorInterface {
 	public function setFieldArgumentType($fieldArgumentType) {
 		$this->_fieldArgumentType = $fieldArgumentType;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getFieldArgumentType()->getName();
+	}
 }

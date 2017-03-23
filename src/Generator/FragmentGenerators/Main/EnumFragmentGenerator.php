@@ -24,7 +24,7 @@ class EnumFragmentGenerator implements FragmentGeneratorInterface, VariablesDefi
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		$nameFragment = $this->getNameFragment($this->getEnumType()->getName());
+		$nameFragment = $this->getNameFragment($this->getName());
 		$descriptionFragment = $this->getDescriptionFragment(
 			$this->getFormatter(),
 			$this->getEnumType()->getDescription()
@@ -91,5 +91,12 @@ class EnumFragmentGenerator implements FragmentGeneratorInterface, VariablesDefi
 	 */
 	public function setEnumType($enumType) {
 		$this->_enumType = $enumType;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->getEnumType()->getName();
 	}
 }
