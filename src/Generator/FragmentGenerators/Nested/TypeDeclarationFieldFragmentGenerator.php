@@ -49,13 +49,13 @@ class TypeDeclarationFieldFragmentGenerator implements FragmentGeneratorInterfac
 	}
 
 	/**
-	 * @return InterfaceFieldFragmentGenerator[]
+	 * @return FieldArgumentFragmentGenerator[]
 	 */
 	protected function getFieldArgumentsGenerators() {
 		return array_map(function ($fieldArgument) {
-			$enumValueGenerator = new InterfaceFieldFragmentGenerator();
+			$enumValueGenerator = new FieldArgumentFragmentGenerator();
 			$enumValueGenerator->setFormatter($this->getFormatter());
-			$enumValueGenerator->setInterfaceFieldType($fieldArgument);
+			$enumValueGenerator->setFieldArgumentType($fieldArgument);
 
 			return $enumValueGenerator;
 		}, $this->getTypeDeclarationFieldType()->getArguments());

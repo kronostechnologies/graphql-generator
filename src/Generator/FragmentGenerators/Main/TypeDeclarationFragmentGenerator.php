@@ -40,7 +40,7 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 	/**
 	 * @return string
 	 */
-	public function getInterfacesFragment() {
+	protected function getInterfacesFragment() {
 		if (!empty($this->getTypeDeclaration()->getInterfacesNames())) {
 			$interfaceNamesFormatted = array_map(function ($interfaceName) {
 				return $this->_formatter->getFieldTypeDeclarationNonPrimaryType($interfaceName);
