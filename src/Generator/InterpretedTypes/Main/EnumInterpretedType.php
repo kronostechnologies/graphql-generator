@@ -6,27 +6,27 @@ namespace GraphQLGen\Generator\InterpretedTypes\Main;
 
 use GraphQLGen\Generator\InterpretedTypes\DescribableTypeTrait;
 use GraphQLGen\Generator\InterpretedTypes\NamedTypeTrait;
-use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValue;
+use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 
 class EnumInterpretedType {
 	use NamedTypeTrait, DescribableTypeTrait;
 
 	/**
-	 * @var EnumValue[]
+	 * @var EnumValueInterpretedType[]
 	 */
 	protected $_values = [];
 
 	/**
-	 * @return EnumValue[]
+	 * @return EnumValueInterpretedType[]
 	 */
 	public function getValues() {
 		return $this->_values;
 	}
 
 	/**
-	 * @param EnumValue[] $values
+	 * @param EnumValueInterpretedType[] $values
 	 */
-	public function setValues($values) {
+	public function setValues(Array $values) {
 		$this->_values = $values;
 	}
 }

@@ -23,5 +23,4 @@ trait NamedTypeTrait {
 	public function setName($name) {
 		$this->_name = $name;
 	}
-
 }
