@@ -1,0 +1,7 @@
+- Rework BaseTypeFormatter.
+- Additional PSR4Writer options:
+	- Disable resolvers generation.
+	- Disable DTO generation.
+- Improved unit testing structure: repositories.
+- Improved error detection, exceptions thrown.
+- Implement namespaceless generator.
