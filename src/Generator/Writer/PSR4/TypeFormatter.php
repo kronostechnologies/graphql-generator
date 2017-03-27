@@ -3,8 +3,7 @@
 
 namespace GraphQLGen\Generator\Writer\PSR4;
 
-
-use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
+use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 
 /**
  * Required formatter for PSR-4 standards.

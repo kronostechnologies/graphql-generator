@@ -4,11 +4,11 @@
 namespace GraphQLGen\Generator\FragmentGenerators;
 
 
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterface;
 
 interface FieldsFetchableInterface {
 	/**
-	 * @return FieldInterpretedType[]
+	 * @return FieldInterface[]
 	 */
 	public function getFields();
 

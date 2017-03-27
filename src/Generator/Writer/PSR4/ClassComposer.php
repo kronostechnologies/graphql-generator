@@ -9,6 +9,7 @@ use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 
 /**
  * Generates individual classes entities.
@@ -54,7 +55,7 @@ class ClassComposer {
 		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
 
 		// Add resolver dependency
-		if ($this->generatorTypeIsInputType($type)) {
+		if ($this->generatorTypeIsInputType($type) || $type instanceof UnionFragmentGenerator) {
 			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
 

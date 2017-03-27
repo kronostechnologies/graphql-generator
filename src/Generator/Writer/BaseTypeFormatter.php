@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Types\SubTypes;
+namespace GraphQLGen\Generator\Writer;
 
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;

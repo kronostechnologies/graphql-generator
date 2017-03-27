@@ -57,7 +57,7 @@ class ClassMapper {
 		$this->resolveDependency("ScalarType", 'GraphQL\Type\Definition\ScalarType');
 		$this->resolveDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
 		$this->resolveDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
-		$this->resolveDependency("InputObjectType", 'GraphQL\Type\Definition\InterfaceType');
+		$this->resolveDependency("InputObjectType", 'GraphQL\Type\Definition\InputObjectType');
 		$this->resolveDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
 	}
 
@@ -111,6 +111,8 @@ class ClassMapper {
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
 			case InputFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Inputs");
+			case UnionFragmentGenerator::class:
+				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Unions");
 			default:
 				throw new Exception("getResolverNamespaceFromGenerator not supported for type " . get_class($type));
 		}
@@ -228,11 +230,11 @@ class ClassMapper {
 	 */
 	public function getDTONamespaceFromGenerator($type) {
 		switch(get_class($type)) {
-			case TypeDeclarationInterpretedType::class:
+			case TypeDeclarationFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO");
-			case InterfaceDeclarationInterpretedType::class:
+			case InterfaceFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Interfaces");
-			case InputInterpretedType::class:
+			case InputFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "DTO", "Inputs");
 			default:
 				throw new Exception("getDTONamespaceFromGenerator not supported for type " . get_class($type));

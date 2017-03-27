@@ -10,6 +10,6 @@ trait NameFragmentTrait {
 	 * @return string
 	 */
 	protected function getNameFragment($fieldName) {
-		return "'name' => {$fieldName}";
+		return "'name' => '{$fieldName}'";
 	}
 }

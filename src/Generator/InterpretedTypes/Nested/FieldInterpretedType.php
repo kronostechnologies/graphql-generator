@@ -8,7 +8,7 @@ use GraphQLGen\Generator\InterpretedTypes\DescribableTypeTrait;
 use GraphQLGen\Generator\InterpretedTypes\FieldTypeTrait;
 use GraphQLGen\Generator\InterpretedTypes\NamedTypeTrait;
 
-class FieldInterpretedType {
+class FieldInterpretedType implements FieldInterface {
 	use NamedTypeTrait, DescribableTypeTrait, FieldTypeTrait;
 
 	/**

@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
+use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
@@ -47,11 +48,11 @@ class ResolverContent extends BaseContentCreator {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
 
-        if (in_array($typeGeneratorClass, [UnionFragmentGenerator::class])) {
+        if ($this->getTypeGenerator() instanceof UnionFragmentGenerator) {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
         }
 
-		if(in_array($typeGeneratorClass, [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class])) {
+		if($this->getTypeGenerator() instanceof FieldsFetchableInterface) {
 			/** @var InterfaceFragmentGenerator|TypeDeclarationFragmentGenerator $typeGenerator */
 			$typeGenerator = $this->getTypeGenerator();
 

@@ -5,6 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
 
 /**
@@ -55,8 +56,11 @@ class PSR4Writer implements GeneratorWriterInterface {
 	public function generateFileForTypeGenerator($type) {
 		$this->_classComposer->generateClassForGenerator($type);
 
-		if ($this->getClassComposer()->generatorTypeIsInputType($type)) {
+		if ($this->getClassComposer()->generatorTypeIsInputType($type) || $type instanceof UnionFragmentGenerator) {
 			$this->_classComposer->generateResolverForGenerator($type);
+		}
+
+		if ($this->getClassComposer()->generatorTypeIsInputType($type)) {
 			$this->_classComposer->generateDTOForGenerator($type);
 		}
 	}
