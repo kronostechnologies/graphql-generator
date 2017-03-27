@@ -9,6 +9,7 @@ use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
 use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
@@ -84,8 +85,11 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->interpretValues();
 
+		$enumContains = new EnumValueInterpretedType();
+		$enumContains->setName(self::ENUM_VALUE_NAME_1);
+		$enumContains->setDescription(self::ENUM_VALUE_DESC_1);
 		$this->assertContainsOnly(
-			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			$enumContains,
 			$interpretedValues
 		);
 	}
@@ -107,22 +111,31 @@ class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interpreter = new EnumInterpreter($enumNode);
 		$interpretedValues = $interpreter->interpretValues();
 
+		$enumContains1 = new EnumValueInterpretedType();
+		$enumContains1->setName(self::ENUM_VALUE_NAME_1);
+		$enumContains1->setDescription(self::ENUM_VALUE_DESC_1);
 		$this->assertContains(
-			new EnumValue(self::ENUM_VALUE_NAME_1, self::ENUM_VALUE_DESC_1),
+			$enumContains1,
 			$interpretedValues,
 			'',
 			false,
 			false
 		);
+		$enumContains2 = new EnumValueInterpretedType();
+		$enumContains2->setName(self::ENUM_VALUE_NAME_2);
+		$enumContains2->setDescription(self::ENUM_VALUE_DESC_2);
 		$this->assertContains(
-			new EnumValue(self::ENUM_VALUE_NAME_2, self::ENUM_VALUE_DESC_2),
+			$enumContains2,
 			$interpretedValues,
 			'',
 			false,
 			false
 		);
+		$enumContains3 = new EnumValueInterpretedType();
+		$enumContains3->setName(self::ENUM_VALUE_NAME_3);
+		$enumContains3->setDescription(self::ENUM_VALUE_DESC_3);
 		$this->assertContains(
-			new EnumValue(self::ENUM_VALUE_NAME_3, self::ENUM_VALUE_DESC_3),
+			$enumContains3,
 			$interpretedValues,
 			'',
 			false,

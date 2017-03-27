@@ -118,13 +118,13 @@ class UnionFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenUnionTypeWithFields() {
-		$field1 = new TypeUsageInterpretedType();
-		$field2 = new TypeUsageInterpretedType();
+		$type1 = new TypeUsageInterpretedType();
+		$type2 = new TypeUsageInterpretedType();
 
 		$union = new UnionInterpretedType();
 		$union->setName(self::UNION_NAME);
 		$union->setDescription(self::UNION_DESCRIPTION);
-		$union->setTypes([$field1, $field2]);
+		$union->setTypes([$type1, $type2]);
 
 		return $union;
 	}

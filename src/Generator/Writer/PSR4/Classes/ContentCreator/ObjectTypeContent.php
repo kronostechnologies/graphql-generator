@@ -6,6 +6,13 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 use GraphQL\Type\Definition\ScalarType;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\Input;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
@@ -48,11 +55,11 @@ class ObjectTypeContent extends BaseContentCreator {
 		$resolverName = $this->getGeneratorType()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
 		$contentAsLines[] = "public function __construct() {";
-		if (in_array(get_class($this->getGeneratorType()), [InterfaceDeclaration::class, Type::class, Input::class, Union::class])) {
+		if (in_array(get_class($this->getGeneratorType()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
 			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
 		}
 
-		if (get_class($this->getGeneratorType()) == Scalar::class) {
+		if (get_class($this->getGeneratorType()) == ScalarFragmentGenerator::class) {
 			$contentAsLines[] = 'parent::__construct();';
 			$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
 		} else {
@@ -72,10 +79,14 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		if (in_array(get_class($this->getGeneratorType()), [InterfaceDeclaration::class, Type::class, Input::class, Union::class])) {
+		if (in_array(get_class($this->getGeneratorType()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
 			$variableDeclarationsAsLines[] = "public \$resolver;";
 		}
-		$variableDeclarationsAsLines[] = $this->getGeneratorType()->getVariablesDeclarations();
+
+		if ($this->getGeneratorType() instanceof VariablesDefiningGeneratorInterface) {
+			$variableDeclarationsAsLines[] = $this->getGeneratorType()->getVariablesDeclarations();
+		}
+
 
 		return implode(PHP_EOL, $variableDeclarationsAsLines);
 	}

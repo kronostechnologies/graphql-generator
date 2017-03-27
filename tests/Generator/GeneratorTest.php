@@ -10,6 +10,7 @@ use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\GeneratorLogger;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
@@ -63,7 +64,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
 		$this->_generator->setLogger($this->_logger);
 
 		$this->_interpreterMock = $this->createMock(ScalarInterpreter::class);
-		$this->_interpreterMock->method('generateType')->willReturn($this->createMock(Scalar::class));
+		$this->_interpreterMock->method('generateType')->willReturn($this->createMock(ScalarInterpretedType::class));
 	}
 
 	public function test_GivenContext_generateClasses_WillLog() {

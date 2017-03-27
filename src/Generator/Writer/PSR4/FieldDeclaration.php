@@ -4,7 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\SubTypes\Field;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 
 /**
  * PSR-4 helper for generating a field declaration, along with their variables.
@@ -14,7 +14,7 @@ use GraphQLGen\Generator\Types\SubTypes\Field;
  */
 class FieldDeclaration {
 	/**
-	 * @var Field
+	 * @var FieldInterpretedType
 	 */
 	protected $_field;
 
@@ -25,7 +25,7 @@ class FieldDeclaration {
 
 	/**
 	 * PSR4FieldDeclaration constructor.
-	 * @param Field $field
+	 * @param FieldInterpretedType $field
 	 * @param bool $showAnnotations
 	 */
 	public function __construct($field, $showAnnotations) {

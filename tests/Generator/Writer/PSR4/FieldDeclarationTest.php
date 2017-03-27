@@ -4,8 +4,8 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\FieldDeclaration;
 
 class FieldDeclarationTest extends \PHPUnit_Framework_TestCase {
@@ -71,58 +71,51 @@ class FieldDeclarationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenNullableField() {
-		return new Field(
-			self::FIELD_NAME,
-			null,
-			new TypeUsage(
-				self::TYPE_NAME,
-				true,
-				false,
-				false
-			),
-			[]
-		);
+		$type = new TypeUsageInterpretedType();
+		$type->setTypeName(self::TYPE_NAME);
+		$type->setIsTypeNullable(true);
+
+		$field = new FieldInterpretedType();
+		$field->setName(self::FIELD_NAME);
+		$field->setFieldType($type);
+
+		return $field;
 	}
 
 	protected function GivenNonNullableField() {
-		return new Field(
-			self::FIELD_NAME,
-			null,
-			new TypeUsage(
-				self::TYPE_NAME,
-				false,
-				false,
-				false
-			),
-			[]
-		);
+		$type = new TypeUsageInterpretedType();
+		$type->setTypeName(self::TYPE_NAME);
+
+		$field = new FieldInterpretedType();
+		$field->setName(self::FIELD_NAME);
+		$field->setFieldType($type);
+
+		return $field;
 	}
 
 	protected function GivenNullableListField() {
-		return new Field(
-			self::FIELD_NAME,
-			null,
-			new TypeUsage(
-				self::TYPE_NAME,
-				true,
-				true,
-				true
-			),
-			[]
-		);
+		$type = new TypeUsageInterpretedType();
+		$type->setTypeName(self::TYPE_NAME);
+		$type->setIsTypeNullable(true);
+		$type->setInList(true);
+		$type->setIsListNullable(true);
+
+		$field = new FieldInterpretedType();
+		$field->setName(self::FIELD_NAME);
+		$field->setFieldType($type);
+
+		return $field;
 	}
 
 	protected function GivenPrimaryTypedField() {
-		return new Field(
-			self::FIELD_NAME,
-			null,
-			new TypeUsage(
-				self::PRIMARY_FIELD_TYPE_OLD,
-				true,
-				false,
-				false
-			),
-			[]
-		);
+		$type = new TypeUsageInterpretedType();
+		$type->setTypeName(self::PRIMARY_FIELD_TYPE_OLD);
+		$type->setIsTypeNullable(true);
+
+		$field = new FieldInterpretedType();
+		$field->setName(self::FIELD_NAME);
+		$field->setFieldType($type);
+
+		return $field;
 	}
 }

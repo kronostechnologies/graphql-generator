@@ -5,6 +5,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
@@ -84,11 +86,17 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenOneTypeToImplement() {
-		$objectType = new ObjectType();
-		$objectType->setGeneratorType(new Type(self::TYPE_NAME, new StubFormatter(), [], []));
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$objectTypeClass = new ObjectType();
+		$objectTypeClass->setGeneratorType($objectTypeFragment);
 
 		$this->_typeStore->method('getTypesToImplement')->willReturn([
-			$objectType
+			$objectTypeClass
 		]);
 	}
 }

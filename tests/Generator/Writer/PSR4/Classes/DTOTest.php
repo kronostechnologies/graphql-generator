@@ -5,6 +5,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
@@ -35,11 +37,12 @@ class DTOTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenTypeGeneratorType() {
-		$this->_dto->setGeneratorType(new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[],
-			[]
-		));
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_dto->setGeneratorType($objectTypeFragment);
 	}
 }

@@ -5,6 +5,12 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
@@ -129,22 +135,36 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenScalarGeneratorType() {
-		$this->_objectTypeContent->setGeneratorType(new Scalar(
-			self::SCALAR_NAME,
-			new StubFormatter()
-		));
+		$scalarType = new ScalarInterpretedType();
+		$scalarType->setName(self::SCALAR_NAME);
+
+		$scalarTypeFragment = new ScalarFragmentGenerator();
+		$scalarTypeFragment->setScalarType($scalarType);
+		$scalarTypeFragment->setFormatter(new StubFormatter());
+
+		$this->_objectTypeContent->setGeneratorType($scalarTypeFragment);
 	}
 
 	protected function GivenEnumGeneratorType() {
-		$this->_objectTypeContent->setGeneratorType(new Enum(
-			self::ENUM_NAME, new StubFormatter(), []
-		));
+		$enumType = new EnumInterpretedType();
+		$enumType->setName(self::ENUM_NAME);
+
+		$enumTypeFragment = new EnumFragmentGenerator();
+		$enumTypeFragment->setEnumType($enumType);
+		$enumTypeFragment->setFormatter(new StubFormatter());
+
+		$this->_objectTypeContent->setGeneratorType($enumTypeFragment);
 	}
 
 	protected function GivenInterfaceGeneratorType() {
-		$this->_objectTypeContent->setGeneratorType(new InterfaceDeclaration(
-			self::INTERFACE_NAME, new StubFormatter(), []
-		));
+		$interfaceType = new InterfaceDeclarationInterpretedType();
+		$interfaceType->setName(self::INTERFACE_NAME);
+
+		$interfaceTypeFragment = new InterfaceFragmentGenerator();
+		$interfaceTypeFragment->setInterfaceType($interfaceType);
+		$interfaceTypeFragment->setFormatter(new StubFormatter());
+
+		$this->_objectTypeContent->setGeneratorType($interfaceTypeFragment);
 	}
 
 	protected function GivenObjectTypeClass() {

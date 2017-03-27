@@ -5,6 +5,10 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 use GraphQLGen\Generator\Types\Type;
@@ -124,60 +128,51 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenTypeGeneratorWithNoFields() {
-		$typeGenerator = new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[],
-			[]
-		);
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
 
-		$this->_dtoContent->setTypeGenerator($typeGenerator);
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeGeneratorWithOneField() {
-		$field1 = new Field(
-			self::FIELD_1_NAME,
-			self::FIELD_1_DESCRIPTION,
-			new TypeUsage(
-				self::FIELD_1_TYPE,
-				false,
-				false,
-				false
-			),
-			[]
-		);
+		$field1Type = new TypeUsageInterpretedType();
+		$field1Type->setTypeName(self::FIELD_1_TYPE);
 
-		$typeGenerator = new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[$field1],
-			[]
-		);
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_1_NAME);
+		$field1->setDescription(self::FIELD_1_DESCRIPTION);
+		$field1->setFieldType($field1Type);
 
-		$this->_dtoContent->setTypeGenerator($typeGenerator);
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+		$objectType->setFields([$field1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeGeneratorWithOneNonPrimaryField() {
-		$field1 = new Field(
-			self::FIELD_2_NAME,
-			self::FIELD_2_DESCRIPTION,
-			new TypeUsage(
-				self::FIELD_2_TYPE,
-				false,
-				false,
-				false
-			),
-			[]
-		);
+		$field1Type = new TypeUsageInterpretedType();
+		$field1Type->setTypeName(self::FIELD_2_TYPE);
 
-		$typeGenerator = new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[$field1],
-			[]
-		);
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_2_NAME);
+		$field1->setDescription(self::FIELD_2_DESCRIPTION);
+		$field1->setFieldType($field1Type);
 
-		$this->_dtoContent->setTypeGenerator($typeGenerator);
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+		$objectType->setFields([$field1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	protected function GivenClassMock() {

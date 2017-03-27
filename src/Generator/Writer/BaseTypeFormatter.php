@@ -66,13 +66,13 @@ abstract class BaseTypeFormatter {
 	}
 
 	/**
-	 * @param TypeUsage $fieldType
+	 * @param TypeUsageInterpretedType $fieldType
 	 * @return string
 	 */
 	public function resolveFieldTypeDocComment($fieldType) {
 		// Primary type check
-		if(isset(TypeUsage::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()])) {
-			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()];
+		if(isset(TypeUsageInterpretedType::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()])) {
+			$typeDeclaration = TypeUsageInterpretedType::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()];
 		}
 		else {
 			$typeDeclaration = $this->resolveFieldTypeDeclarationDocComment($fieldType->getTypeName());
