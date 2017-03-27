@@ -43,80 +43,138 @@ class ClassComposer {
 	}
 
 	/**
-	 * @param mixed $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
-	public function generateClassForGenerator($type) {
+	public function generateTypeDefinitionForFragmentGenerator($fragmentGenerator) {
 		// Create generator class
-		$generatorClass = $this->getFactory()->createObjectTypeClass($type);
-		$generatorClass->setNamespace($this->getClassMapper()->getNamespaceForGenerator($type));
-		$generatorClass->setParentClassName($this->getClassMapper()->getParentDependencyForGenerator($type));
-
-		// Add dependency to TypeStore
-		$this->getClassMapper()->getTypeStore()->addDependency($type->getName());
+		$typeDefinitionClass = $this->createConfiguredTypeDefinitionClass($fragmentGenerator);
 
 		// Add resolver dependency
-		if ($this->generatorTypeIsInputType($type) || $type instanceof UnionFragmentGenerator) {
-			$generatorClass->addDependency($type->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
+		$this->setupTypeDefinitionClassDependencies($typeDefinitionClass);
+
+		// Map class
+		$this->getClassMapper()->mapDependencyNameToClass($fragmentGenerator->getName(), $typeDefinitionClass);
+		$this->getClassMapper()->registerTypeStoreEntry($fragmentGenerator->getName(), $typeDefinitionClass);
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return Classes\ObjectType
+	 */
+	protected function createConfiguredTypeDefinitionClass($fragmentGenerator) {
+		$fragmentGeneratorNS = $this->getClassMapper()->getNamespaceForFragmentGenerator($fragmentGenerator);
+		$fragmentGeneratorParentDep = $this->getClassMapper()->getParentDependencyForFragmentGenerator($fragmentGenerator);
+
+		$typeDefinitionClass = $this->getFactory()->createObjectTypeClassWithFragmentGenerator($fragmentGenerator);
+		$typeDefinitionClass->setNamespace($fragmentGeneratorNS);
+		$typeDefinitionClass->setParentClassName($fragmentGeneratorParentDep);
+
+		return $typeDefinitionClass;
+	}
+
+	/**
+	 * @param Classes\ObjectType $typeDefinitionClass
+	 */
+	protected function setupTypeDefinitionClassDependencies($typeDefinitionClass) {
+		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
+
+		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator) {
+			$typeDefinitionClass->addDependency($fragmentGenerator->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
 		}
 
-		$generatorClass->addDependency(self::TYPE_STORE_CLASS_NAME);
-		$generatorClass->addDependency(self::TYPE_CLASS_NAME);
-		$generatorClass->addDependency($generatorClass->getParentClassName());
-
-		// Map class
-		$this->getClassMapper()->mapClass($type->getName(), $generatorClass, true);
+		$typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);
+		$typeDefinitionClass->addDependency(self::TYPE_CLASS_NAME);
+		$typeDefinitionClass->addDependency($typeDefinitionClass->getParentClassName());
 	}
 
-
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
-	public function generateResolverForGenerator(FragmentGeneratorInterface $type) {
+	public function generateResolverForFragmentGenerator(FragmentGeneratorInterface $fragmentGenerator) {
 		// Create resolver class
-		$resolverClass = $this->getFactory()->createResolverClass($type);
-		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($type));
+		$resolverClass = $this->createConfiguredResolverClass($fragmentGenerator);
 
 		// Map class
-		$this->getClassMapper()->mapClass($resolverClass->getClassName(), $resolverClass, false);
+		$this->getClassMapper()->mapDependencyNameToClass($resolverClass->getClassName(), $resolverClass);
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 *
+	 * @return Classes\Resolver
 	 */
-	public function generateDTOForGenerator(FragmentGeneratorInterface $type) {
+	protected function createConfiguredResolverClass(FragmentGeneratorInterface $fragmentGenerator) {
+		$resolverClass = $this->getFactory()->createResolverClassWithFragmentGenerator($fragmentGenerator);
+		$resolverClass->setNamespace($this->getClassMapper()->getResolverNamespaceFromGenerator($fragmentGenerator));
+
+		return $resolverClass;
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 */
+	public function generateDTOForFragmentGenerator(FragmentGeneratorInterface $fragmentGenerator) {
 		// Create DTO class
-		$dtoClass = $this->getFactory()->createDTOClass($type);
-		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($type));
+		$dtoClass = $this->createConfiguredDTOClass($fragmentGenerator);
 
 		// Fetches dependencies
-		if ($type instanceof DependentFragmentGeneratorInterface) {
-			foreach ($type->getDependencies() as $dependency) {
+		$this->setupDTOClassDependencies($dtoClass);
+
+		// Map class
+		$this->getClassMapper()->mapDependencyNameToClass($dtoClass->getClassName(), $dtoClass);
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return Classes\DTO
+	 */
+	protected function createConfiguredDTOClass(FragmentGeneratorInterface $fragmentGenerator) {
+		$dtoClass = $this->getFactory()->createDTOClassWithFragmentGenerator($fragmentGenerator);
+		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($fragmentGenerator));
+
+		return $dtoClass;
+	}
+
+	/**
+	 * @param Classes\DTO $dtoClass
+	 */
+	protected function setupDTOClassDependencies($dtoClass) {
+		$fragmentGenerator = $dtoClass->getGeneratorType();
+
+		if ($fragmentGenerator instanceof DependentFragmentGeneratorInterface) {
+			foreach ($fragmentGenerator->getDependencies() as $dependency) {
 				$dtoClass->addDependency($dependency);
 			}
 		}
-
-		// Map class
-		$this->getClassMapper()->mapClass($dtoClass->getClassName(), $dtoClass, false);
 	}
 
 	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return bool
 	 */
-	public function generatorTypeIsInputType(FragmentGeneratorInterface $type) {
+	public function isFragmentGeneratorForInputType($type) {
 		return in_array(get_class($type), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class]);
 	}
 
-	public function generateUniqueTypeStore() {
+	public function initializeTypeStore() {
 		// Create type store class
-		$typeStoreClass = $this->getFactory()->createTypeStoreClass();
-		$typeStoreClass->setNamespace($this->getClassMapper()->getBaseNamespace());
+		$typeStoreClass = $this->createConfiguredTypeStoreClass();
 
 		// Sets type store
 		$this->getClassMapper()->setTypeStore($typeStoreClass);
 
 		// Map class
-		$this->getClassMapper()->mapClass($typeStoreClass->getClassName(), $typeStoreClass, false);
+		$this->getClassMapper()->mapDependencyNameToClass($typeStoreClass->getClassName(), $typeStoreClass);
+	}
+
+	/**
+	 * @return Classes\TypeStore
+	 */
+	protected function createConfiguredTypeStoreClass() {
+		$typeStoreClass = $this->getFactory()->createTypeStoreClass();
+		$typeStoreClass->setNamespace($this->getClassMapper()->getBaseNamespace());
+
+		return $typeStoreClass;
 	}
 
 	/**

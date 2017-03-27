@@ -8,10 +8,10 @@ use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 
 interface GeneratorWriterInterface {
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 * @return string
 	 */
-	public function generateFileForTypeGenerator($type);
+	public function generateFileForTypeGenerator($fragmentGenerator);
 
 	public function initialize();
 

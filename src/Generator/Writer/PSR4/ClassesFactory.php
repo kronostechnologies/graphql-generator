@@ -12,25 +12,25 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class ClassesFactory {
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 * @return ObjectType
 	 */
-	public function createObjectTypeClass($type) {
+	public function createObjectTypeClassWithFragmentGenerator($fragmentGenerator) {
 		$generatorClass = new ObjectType();
-		$generatorClass->setClassName($type->getName() . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
-		$generatorClass->setGeneratorType($type);
+		$generatorClass->setClassName($fragmentGenerator->getName() . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
+		$generatorClass->setFragmentGenerator($fragmentGenerator);
 
 		return $generatorClass;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 * @return Resolver
 	 */
-	public function createResolverClass(FragmentGeneratorInterface $type) {
+	public function createResolverClassWithFragmentGenerator($fragmentGenerator) {
 		$resolverClass = new Resolver();
-		$resolverClass->setClassName($type->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX);
-		$resolverClass->setGeneratorType($type);
+		$resolverClass->setClassName($fragmentGenerator->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX);
+		$resolverClass->setFragmentGenerator($fragmentGenerator);
 
 		return $resolverClass;
 	}
@@ -82,13 +82,13 @@ class ClassesFactory {
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 * @return DTO
 	 */
-	public function createDTOClass($type) {
+	public function createDTOClassWithFragmentGenerator($fragmentGenerator) {
 		$dtoClass = new DTO();
-		$dtoClass->setClassName($type->getName() . ClassComposer::DTO_CLASS_NAME_SUFFIX);
-		$dtoClass->setGeneratorType($type);
+		$dtoClass->setClassName($fragmentGenerator->getName() . ClassComposer::DTO_CLASS_NAME_SUFFIX);
+		$dtoClass->setFragmentGenerator($fragmentGenerator);
 
 		return $dtoClass;
 	}

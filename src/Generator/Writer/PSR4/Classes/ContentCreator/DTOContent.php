@@ -54,8 +54,8 @@ class DTOContent extends BaseContentCreator {
 	public function getVariables() {
 		$content = "";
 
-		if ($this->getTypeGenerator() instanceof FieldsFetchableInterface) {
-			foreach ($this->getTypeGenerator()->getFields() as $field) {
+		if ($this->getFragmentGenerator() instanceof FieldsFetchableInterface) {
+			foreach ($this->getFragmentGenerator()->getFields() as $field) {
 				$content .= $this->getDocCommentFragment($field);
 				$content .= $this->getVariableFragment($field);
 			}
@@ -102,15 +102,15 @@ class DTOContent extends BaseContentCreator {
 	/**
 	 * @return FragmentGeneratorInterface|FieldsFetchableInterface
 	 */
-	public function getTypeGenerator() {
+	public function getFragmentGenerator() {
 		return $this->_typeGenerator;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface|FieldsFetchableInterface $typeGenerator
+	 * @param FragmentGeneratorInterface|FieldsFetchableInterface $fragmentGenerator
 	 */
-	public function setTypeGenerator($typeGenerator) {
-		$this->_typeGenerator = $typeGenerator;
+	public function setFragmentGenerator($fragmentGenerator) {
+		$this->_typeGenerator = $fragmentGenerator;
 	}
 
 

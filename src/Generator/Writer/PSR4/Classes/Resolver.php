@@ -22,7 +22,7 @@ class Resolver extends SingleClass {
 	public function getContentCreator() {
 		$resolverContent = new ResolverContent();
 		$resolverContent->setResolverClass($this);
-		$resolverContent->setTypeGenerator($this->getGeneratorType());
+		$resolverContent->setFragmentGenerator($this->getGeneratorType());
 
 		return $resolverContent;
 	}
@@ -37,7 +37,7 @@ class Resolver extends SingleClass {
 	/**
 	 * @param FragmentGeneratorInterface $generatorType
 	 */
-	public function setGeneratorType($generatorType) {
+	public function setFragmentGenerator($generatorType) {
 		$this->_generatorType = $generatorType;
 	}
 

@@ -31,7 +31,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	/**
 	 * @var FragmentGeneratorInterface|VariablesDefiningGeneratorInterface
 	 */
-	protected $_generatorType;
+	protected $_fragmentGenerator;
 
 	/**
 	 * @return ObjectType
@@ -52,19 +52,19 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function getContent() {
 		$contentAsLines = [];
-		$resolverName = $this->getGeneratorType()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
+		$resolverName = $this->getFragmentGenerator()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
 		$contentAsLines[] = "public function __construct() {";
-		if (in_array(get_class($this->getGeneratorType()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
+		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
 			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
 		}
 
-		if (get_class($this->getGeneratorType()) == ScalarFragmentGenerator::class) {
+		if (get_class($this->getFragmentGenerator()) == ScalarFragmentGenerator::class) {
 			$contentAsLines[] = 'parent::__construct();';
-			$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
+			$contentAsLines[] = $this->getFragmentGenerator()->generateTypeDefinition();
 		} else {
 			$contentAsLines[] = "parent::__construct(";
-			$contentAsLines[] = $this->getGeneratorType()->generateTypeDefinition();
+			$contentAsLines[] = $this->getFragmentGenerator()->generateTypeDefinition();
 			$contentAsLines[] = ");";
 		}
 
@@ -79,12 +79,12 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		if (in_array(get_class($this->getGeneratorType()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
+		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
 			$variableDeclarationsAsLines[] = "public \$resolver;";
 		}
 
-		if ($this->getGeneratorType() instanceof VariablesDefiningGeneratorInterface) {
-			$variableDeclarationsAsLines[] = $this->getGeneratorType()->getVariablesDeclarations();
+		if ($this->getFragmentGenerator() instanceof VariablesDefiningGeneratorInterface) {
+			$variableDeclarationsAsLines[] = $this->getFragmentGenerator()->getVariablesDeclarations();
 		}
 
 
@@ -108,15 +108,15 @@ class ObjectTypeContent extends BaseContentCreator {
 	/**
 	 * @return FragmentGeneratorInterface|VariablesDefiningGeneratorInterface
 	 */
-	public function getGeneratorType() {
-		return $this->_generatorType;
+	public function getFragmentGenerator() {
+		return $this->_fragmentGenerator;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface|VariablesDefiningGeneratorInterface $generatorType
+	 * @param FragmentGeneratorInterface|VariablesDefiningGeneratorInterface $fragmentGenerator
 	 */
-	public function setGeneratorType($generatorType) {
-		$this->_generatorType = $generatorType;
+	public function setFragmentGenerator($fragmentGenerator) {
+		$this->_fragmentGenerator = $fragmentGenerator;
 	}
 
 	/**

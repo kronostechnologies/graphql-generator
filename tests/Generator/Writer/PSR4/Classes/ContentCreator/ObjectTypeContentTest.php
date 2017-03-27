@@ -139,7 +139,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$scalarTypeFragment->setScalarType($scalarType);
 		$scalarTypeFragment->setFormatter(new StubFormatter());
 
-		$this->_objectTypeContent->setGeneratorType($scalarTypeFragment);
+		$this->_objectTypeContent->setFragmentGenerator($scalarTypeFragment);
 	}
 
 	protected function GivenEnumGeneratorType() {
@@ -150,7 +150,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$enumTypeFragment->setEnumType($enumType);
 		$enumTypeFragment->setFormatter(new StubFormatter());
 
-		$this->_objectTypeContent->setGeneratorType($enumTypeFragment);
+		$this->_objectTypeContent->setFragmentGenerator($enumTypeFragment);
 	}
 
 	protected function GivenInterfaceGeneratorType() {
@@ -161,7 +161,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$interfaceTypeFragment->setInterfaceType($interfaceType);
 		$interfaceTypeFragment->setFormatter(new StubFormatter());
 
-		$this->_objectTypeContent->setGeneratorType($interfaceTypeFragment);
+		$this->_objectTypeContent->setFragmentGenerator($interfaceTypeFragment);
 	}
 
 	protected function GivenObjectTypeClass() {

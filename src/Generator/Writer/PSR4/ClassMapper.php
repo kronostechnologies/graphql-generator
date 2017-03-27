@@ -52,13 +52,13 @@ class ClassMapper {
 	}
 
 	public function setInitialMappings() {
-		$this->resolveDependency("Type", 'GraphQL\Type\Definition\Type');
-		$this->resolveDependency("EnumType", 'GraphQL\Type\Definition\EnumType');
-		$this->resolveDependency("ScalarType", 'GraphQL\Type\Definition\ScalarType');
-		$this->resolveDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
-		$this->resolveDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
-		$this->resolveDependency("InputObjectType", 'GraphQL\Type\Definition\InputObjectType');
-		$this->resolveDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
+		$this->registerDependency("Type", 'GraphQL\Type\Definition\Type');
+		$this->registerDependency("EnumType", 'GraphQL\Type\Definition\EnumType');
+		$this->registerDependency("ScalarType", 'GraphQL\Type\Definition\ScalarType');
+		$this->registerDependency("ObjectType", 'GraphQL\Type\Definition\ObjectType');
+		$this->registerDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
+		$this->registerDependency("InputObjectType", 'GraphQL\Type\Definition\InputObjectType');
+		$this->registerDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
 	}
 
 	/**
@@ -80,7 +80,7 @@ class ClassMapper {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getNamespaceForGenerator(FragmentGeneratorInterface $type) {
+	public function getNamespaceForFragmentGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case TypeDeclarationFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
@@ -95,7 +95,7 @@ class ClassMapper {
 			case UnionFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Unions");
 			default:
-				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
+				throw new Exception("getNamespaceForFragmentGenerator not supported for type " . get_class($type));
 		}
 	}
 
@@ -123,7 +123,7 @@ class ClassMapper {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getParentDependencyForGenerator(FragmentGeneratorInterface $type) {
+	public function getParentDependencyForFragmentGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
 			case TypeDeclarationFragmentGenerator::class:
 				return "ObjectType";
@@ -138,7 +138,7 @@ class ClassMapper {
 			case UnionFragmentGenerator::class:
 				return "UnionObjectType";
 			default:
-				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));
+				throw new Exception("getParentDependencyForFragmentGenerator not supported for type " . get_class($type));
 		}
 	}
 
@@ -146,7 +146,7 @@ class ClassMapper {
 	 * @param SingleClass $class
 	 * @throws Exception
 	 */
-	public function addClass(SingleClass $class) {
+	public function registerClass(SingleClass $class) {
 		$similarClasses = array_filter($this->_classes, function (SingleClass $comparedAgainstClass) use ($class) {
 			return ($comparedAgainstClass->getClassName() === $class->getClassName());
 		});
@@ -169,7 +169,7 @@ class ClassMapper {
 	 * @param string $dependencyName
 	 * @param string $dependencyNamespace
 	 */
-	public function resolveDependency($dependencyName, $dependencyNamespace) {
+	public function registerDependency($dependencyName, $dependencyNamespace) {
 		$this->_resolvedDependencies[$dependencyName] = $dependencyNamespace;
 	}
 
@@ -210,16 +210,19 @@ class ClassMapper {
 	/**
 	 * @param string $dependencyName
 	 * @param SingleClass $class
-	 * @param bool $asTypeImplementation
 	 */
-	public function mapClass($dependencyName, SingleClass $class, $asTypeImplementation) {
-		$this->resolveDependency($dependencyName, $class->getFullQualifiedName());
-		$this->addClass($class);
+	public function mapDependencyNameToClass($dependencyName, $class) {
+		$this->registerDependency($dependencyName, $class->getFullQualifiedName());
+		$this->registerClass($class);
+	}
 
-		if($asTypeImplementation) {
-			/** @var ObjectType $class */
-			$this->getTypeStore()->addTypeImplementation($class);
-		}
+	/**
+	 * @param $dependencyName
+	 * @param ObjectType $class
+	 */
+	public function registerTypeStoreEntry($dependencyName, $class) {
+		$this->getTypeStore()->addTypeImplementation($class);
+		$this->getTypeStore()->addDependency($dependencyName);
 	}
 
 	/**
@@ -239,5 +242,9 @@ class ClassMapper {
 			default:
 				throw new Exception("getDTONamespaceFromGenerator not supported for type " . get_class($type));
 		}
+	}
+
+	public function addTypestoreDependency($dependencyName) {
+
 	}
 }

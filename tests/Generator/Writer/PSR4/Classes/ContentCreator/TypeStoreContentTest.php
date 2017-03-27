@@ -91,7 +91,7 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
 		$objectTypeClass = new ObjectType();
-		$objectTypeClass->setGeneratorType($objectTypeFragment);
+		$objectTypeClass->setFragmentGenerator($objectTypeFragment);
 
 		$this->_typeStore->method('getTypesToImplement')->willReturn([
 			$objectTypeClass

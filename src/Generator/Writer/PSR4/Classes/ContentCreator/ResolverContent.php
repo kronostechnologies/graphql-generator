@@ -25,7 +25,7 @@ class ResolverContent extends BaseContentCreator {
 	/**
 	 * @var FragmentGeneratorInterface
 	 */
-	protected $_typeGenerator;
+	protected $_fragmentGenerator;
 
 	/**
 	 * @return Resolver
@@ -48,13 +48,13 @@ class ResolverContent extends BaseContentCreator {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
 
-        if ($this->getTypeGenerator() instanceof UnionFragmentGenerator) {
+        if ($this->getFragmentGenerator() instanceof UnionFragmentGenerator) {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
         }
 
-		if($this->getTypeGenerator() instanceof FieldsFetchableInterface) {
+		if($this->getFragmentGenerator() instanceof FieldsFetchableInterface) {
 			/** @var InterfaceFragmentGenerator|TypeDeclarationFragmentGenerator $typeGenerator */
-			$typeGenerator = $this->getTypeGenerator();
+			$typeGenerator = $this->getFragmentGenerator();
 
 			foreach($typeGenerator->getFields() as $field) {
 				if ($field->getFieldType()->isPrimaryType()) {
@@ -93,15 +93,15 @@ class ResolverContent extends BaseContentCreator {
 	/**
 	 * @return FragmentGeneratorInterface
 	 */
-	public function getTypeGenerator() {
-		return $this->_typeGenerator;
+	public function getFragmentGenerator() {
+		return $this->_fragmentGenerator;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $typeGenerator
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
-	public function setTypeGenerator(FragmentGeneratorInterface $typeGenerator) {
-		$this->_typeGenerator = $typeGenerator;
+	public function setFragmentGenerator($fragmentGenerator) {
+		$this->_fragmentGenerator = $fragmentGenerator;
 	}
 
 	/**
@@ -109,11 +109,11 @@ class ResolverContent extends BaseContentCreator {
 	 * @throws Exception
 	 */
 	public function getTypeGeneratorClass() {
-		if ($this->getTypeGenerator() === null) {
+		if ($this->getFragmentGenerator() === null) {
 			throw new Exception("Internal Exception: Type generator is not defined for {$this->getResolverClass()->getClassName()}");
 		}
 
-		return get_class($this->_typeGenerator);
+		return get_class($this->_fragmentGenerator);
 	}
 
 	/**

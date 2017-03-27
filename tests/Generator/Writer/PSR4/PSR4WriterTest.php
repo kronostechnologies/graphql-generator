@@ -69,6 +69,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_factory = $this->createMock(ClassesFactory::class);
 		$this->_factory->method('createClassComposer')->willReturn($this->_classComposer);
 		$this->_factory->method('createTypeStoreClass')->willReturn($this->_typeStore);
+		$this->_factory->method('createClassMapper')->willReturn($this->_classMapper);
 		$this->_factory->method('createClassesWriter')->willReturn($this->_classesWriter);
 
 		$this->_psr4Writer = new PSR4Writer($this->_psr4WriterContext, $this->_factory);
@@ -92,7 +93,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenSettings_initialize_WillGenerateTypeStore() {
-		$this->_classComposer->expects($this->once())->method('generateUniqueTypeStore');
+		$this->_classComposer->expects($this->once())->method('initializeTypeStore');
 
 		$this->_psr4Writer->initialize();
 	}
@@ -100,7 +101,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGetProperStubFileName() {
 		$scalarType = $this->GivenScalarType();
 
-		$this->_classComposer->expects($this->once())->method('generateClassForGenerator')->with($scalarType);
+		$this->_classComposer->expects($this->once())->method('generateTypeDefinitionForFragmentGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
@@ -108,25 +109,25 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGenerateClass() {
 		$scalarType = $this->GivenScalarType();
 
-		$this->_classComposer->expects($this->once())->method('generateClassForGenerator')->with($scalarType);
+		$this->_classComposer->expects($this->once())->method('generateTypeDefinitionForFragmentGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateResolver() {
 		$scalarType = $this->GivenScalarType();
-		$this->_classComposer->method('generatorTypeIsInputType')->willReturn(true);
+		$this->_classComposer->method('isFragmentGeneratorForInputType')->willReturn(true);
 
-		$this->_classComposer->expects($this->once())->method('generateResolverForGenerator')->with($scalarType);
+		$this->_classComposer->expects($this->once())->method('generateResolverForFragmentGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateDTO() {
 		$scalarType = $this->GivenScalarType();
-		$this->_classComposer->method('generatorTypeIsInputType')->willReturn(true);
+		$this->_classComposer->method('isFragmentGeneratorForInputType')->willReturn(true);
 
-		$this->_classComposer->expects($this->once())->method('generateDTOForGenerator')->with($scalarType);
+		$this->_classComposer->expects($this->once())->method('generateDTOForFragmentGenerator')->with($scalarType);
 
 		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
 	}

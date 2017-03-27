@@ -47,7 +47,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->_classMapper->setBaseNamespace(self::BASE_NS_VALID);
 		$givenType = $this->GivenType();
 
-		$retVal = $this->_classMapper->getNamespaceForGenerator($givenType);
+		$retVal = $this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 
 		$this->assertStringStartsWith(self::BASE_NS_VALID, $retVal);
 	}
@@ -55,7 +55,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenType_getNamespaceForGenerator_WillEndWithTypes() {
 		$givenType = $this->GivenType();
 
-		$retVal = $this->_classMapper->getNamespaceForGenerator($givenType);
+		$retVal = $this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 
 		$this->assertStringEndsWith("Types", $retVal);
 	}
@@ -63,7 +63,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenScalar_getNamespaceForGenerator_WillEndWithScalars() {
 		$givenType = $this->GivenScalar();
 
-		$retVal = $this->_classMapper->getNamespaceForGenerator($givenType);
+		$retVal = $this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 
 		$this->assertStringEndsWith("Scalars", $retVal);
 	}
@@ -71,7 +71,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenEnum_getNamespaceForGenerator_WillEndWithEnums() {
 		$givenType = $this->GivenEnum();
 
-		$retVal = $this->_classMapper->getNamespaceForGenerator($givenType);
+		$retVal = $this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 
 		$this->assertStringEndsWith("Enums", $retVal);
 	}
@@ -79,7 +79,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenInterface_getNamespaceForGenerator_WillEndWithInterfaces() {
 		$givenType = $this->GivenInterface();
 
-		$retVal = $this->_classMapper->getNamespaceForGenerator($givenType);
+		$retVal = $this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 
 		$this->assertStringEndsWith("Interfaces", $retVal);
 	}
@@ -89,7 +89,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expectException(Exception::class);
 
-		$this->_classMapper->getNamespaceForGenerator($givenType);
+		$this->_classMapper->getNamespaceForFragmentGenerator($givenType);
 	}
 
 	public function test_GivenType_getResolverNamespaceFromGenerator_WillEndWithResolversType() {
@@ -119,7 +119,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenType_getParentDependencyForGenerator_WillReturnCorrectDependency() {
 		$givenType = $this->GivenType();
 
-		$retVal = $this->_classMapper->getParentDependencyForGenerator($givenType);
+		$retVal = $this->_classMapper->getParentDependencyForFragmentGenerator($givenType);
 
 		$this->assertEquals("ObjectType", $retVal);
 	}
@@ -127,7 +127,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenScalar_getParentDependencyForGenerator_WillReturnCorrectDependency() {
 		$givenType = $this->GivenScalar();
 
-		$retVal = $this->_classMapper->getParentDependencyForGenerator($givenType);
+		$retVal = $this->_classMapper->getParentDependencyForFragmentGenerator($givenType);
 
 		$this->assertEquals("ScalarType", $retVal);
 	}
@@ -135,7 +135,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenEnum_getParentDependencyForGenerator_WillReturnCorrectDependency() {
 		$givenType = $this->GivenEnum();
 
-		$retVal = $this->_classMapper->getParentDependencyForGenerator($givenType);
+		$retVal = $this->_classMapper->getParentDependencyForFragmentGenerator($givenType);
 
 		$this->assertEquals("EnumType", $retVal);
 	}
@@ -143,7 +143,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenInterface_getParentDependencyForGenerator_WillReturnCorrectDependency() {
 		$givenType = $this->GivenInterface();
 
-		$retVal = $this->_classMapper->getParentDependencyForGenerator($givenType);
+		$retVal = $this->_classMapper->getParentDependencyForFragmentGenerator($givenType);
 
 		$this->assertEquals("InterfaceType", $retVal);
 	}
@@ -153,23 +153,23 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expectException(Exception::class);
 
-		$this->_classMapper->getParentDependencyForGenerator($givenType);
+		$this->_classMapper->getParentDependencyForFragmentGenerator($givenType);
 	}
 
 	public function test_GivenTwiceSameClass_addClass_WillCollide() {
 		$givenClass = $this->GivenObjectClass();
 
-		$this->_classMapper->addClass($givenClass);
+		$this->_classMapper->registerClass($givenClass);
 
 		$this->expectException(Exception::class);
 
-		$this->_classMapper->addClass($givenClass);
+		$this->_classMapper->registerClass($givenClass);
 	}
 
 	public function test_GivenAddedClass_getClasses_WillContainClass() {
 		$givenClass = $this->GivenObjectClass();
 
-		$this->_classMapper->addClass($givenClass);
+		$this->_classMapper->registerClass($givenClass);
 		$retVal = $this->_classMapper->getClasses();
 
 		$this->assertContains($givenClass, $retVal);
@@ -182,7 +182,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenDependencyResolved_getResolvedDependency_WillReturnRightNS() {
-		$this->_classMapper->resolveDependency("LocalTest", "A\\Namespace");
+		$this->_classMapper->registerDependency("LocalTest", "A\\Namespace");
 		$retVal = $this->_classMapper->getResolvedDependency("LocalTest");
 
 		$this->assertEquals("A\\Namespace", $retVal);
@@ -191,13 +191,7 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenAsTypeImplementation_mapClass_WillAddToTypeStore() {
 		$this->_typeStore->expects($this->once())->method('addTypeImplementation');
 
-		$this->_classMapper->mapClass("", $this->GivenObjectClass(), true);
-	}
-
-	public function test_GivenNonTypeImplementation_mapClass_WontAddToTypeStore() {
-		$this->_typeStore->expects($this->never())->method('addTypeImplementation');
-
-		$this->_classMapper->mapClass("", $this->GivenObjectClass(), false);
+		$this->_classMapper->registerTypeStoreEntry("", $this->GivenObjectClass());
 	}
 
 	public function test_GivenNothing_setInitialMappings_WillSucceed() {

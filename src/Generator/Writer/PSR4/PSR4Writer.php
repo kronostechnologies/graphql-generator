@@ -41,33 +41,32 @@ class PSR4Writer implements GeneratorWriterInterface {
 	}
 
 	public function initialize() {
-		$this->_classComposer = $this->_factory->createClassComposer();
-		$this->_classComposer->setClassMapper($this->_factory->createClassMapper());
-		$this->_classComposer->getClassMapper()->setBaseNamespace($this->_context->namespace);
-		$this->_classComposer->getClassMapper()->setInitialMappings();
+		$classMapper = $this->getConfiguredClassMapper();
 
-		$this->_classComposer->generateUniqueTypeStore();
+		$this->setClassComposer($this->_factory->createClassComposer());
+		$this->getClassComposer()->setClassMapper($classMapper);
+
+		$this->getClassComposer()->initializeTypeStore();
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $type
-	 * @return string|void
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
-	public function generateFileForTypeGenerator($type) {
-		$this->_classComposer->generateClassForGenerator($type);
+	public function generateFileForTypeGenerator($fragmentGenerator) {
+		$this->getClassComposer()->generateTypeDefinitionForFragmentGenerator($fragmentGenerator);
 
-		if ($this->getClassComposer()->generatorTypeIsInputType($type) || $type instanceof UnionFragmentGenerator) {
-			$this->_classComposer->generateResolverForGenerator($type);
+		if ($this->getClassComposer()->isFragmentGeneratorForInputType($fragmentGenerator)) {
+			$this->getClassComposer()->generateDTOForFragmentGenerator($fragmentGenerator);
 		}
 
-		if ($this->getClassComposer()->generatorTypeIsInputType($type)) {
-			$this->_classComposer->generateDTOForGenerator($type);
+		if ($this->getClassComposer()->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator) {
+			$this->getClassComposer()->generateResolverForFragmentGenerator($fragmentGenerator);
 		}
 	}
 
 	public function finalize() {
 		$writer = $this->_factory->createClassesWriter();
-		$writer->setClassMapper($this->_classComposer->getClassMapper());
+		$writer->setClassMapper($this->getClassComposer()->getClassMapper());
 		$writer->setWriterContext($this->_context);
 		$writer->writeClasses();
 	}
@@ -84,5 +83,16 @@ class PSR4Writer implements GeneratorWriterInterface {
 	 */
 	public function setClassComposer($classComposer) {
 		$this->_classComposer = $classComposer;
+	}
+
+	/**
+	 * @return ClassMapper
+	 */
+	protected function getConfiguredClassMapper() {
+		$classMapper = $this->_factory->createClassMapper();
+		$classMapper->setBaseNamespace($this->_context->namespace);
+		$classMapper->setInitialMappings();
+
+		return $classMapper;
 	}
 }

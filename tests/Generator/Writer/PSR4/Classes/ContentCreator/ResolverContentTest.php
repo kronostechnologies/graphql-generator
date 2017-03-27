@@ -139,7 +139,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$scalarTypeFragment = new ScalarFragmentGenerator();
 		$scalarTypeFragment->setScalarType($scalarType);
 
-		$this->_resolverContent->setTypeGenerator($scalarTypeFragment);
+		$this->_resolverContent->setFragmentGenerator($scalarTypeFragment);
 	}
 
 	protected function GivenTypeNoFieldsGeneratorType() {
@@ -149,7 +149,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
+		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeWithFieldsGeneratorType() {
@@ -167,7 +167,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
+		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	private function GivenResolverClass() {
@@ -193,7 +193,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
+		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	private function GivenNonPrimaryType() {
@@ -211,6 +211,6 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
+		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
 }

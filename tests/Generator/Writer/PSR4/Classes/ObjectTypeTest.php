@@ -86,7 +86,7 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$enumTypeFragment = new EnumFragmentGenerator();
 		$enumTypeFragment->setEnumType($enumType);
 
-		$this->_objectType->setGeneratorType($enumTypeFragment);
+		$this->_objectType->setFragmentGenerator($enumTypeFragment);
 	}
 
 	protected function GivenTypeGeneratorType() {
@@ -96,7 +96,7 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_objectType->setGeneratorType($objectTypeFragment);
+		$this->_objectType->setFragmentGenerator($objectTypeFragment);
 	}
 
 	protected function GivenScalarGeneratorType() {
@@ -106,7 +106,7 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$scalarTypeFragment = new ScalarFragmentGenerator();
 		$scalarTypeFragment->setScalarType($scalarType);
 
-		$this->_objectType->setGeneratorType($scalarTypeFragment);
+		$this->_objectType->setFragmentGenerator($scalarTypeFragment);
 	}
 
 	protected function GivenInterfaceGeneratorType() {
@@ -116,10 +116,10 @@ class ObjectTypeTest extends \PHPUnit_Framework_TestCase {
 		$interfaceTypeFragment = new InterfaceFragmentGenerator();
 		$interfaceTypeFragment->setInterfaceType($interfaceType);
 
-		$this->_objectType->setGeneratorType($interfaceTypeFragment);
+		$this->_objectType->setFragmentGenerator($interfaceTypeFragment);
 	}
 
 	protected function GivenInvalidGeneratorType() {
-		$this->_objectType->setGeneratorType(new InvalidGeneratorType());
+		$this->_objectType->setFragmentGenerator(new InvalidGeneratorType());
 	}
 }

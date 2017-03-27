@@ -41,6 +41,6 @@ class DTOTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_dto->setGeneratorType($objectTypeFragment);
+		$this->_dto->setFragmentGenerator($objectTypeFragment);
 	}
 }

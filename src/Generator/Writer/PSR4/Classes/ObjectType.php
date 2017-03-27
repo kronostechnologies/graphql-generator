@@ -18,7 +18,7 @@ class ObjectType extends SingleClass {
 	/**
 	 * @var FragmentGeneratorInterface
 	 */
-	protected $_generatorType;
+	protected $_fragmentGenerator;
 
 	const ENUM_STUB = 'enum.stub';
 	const OBJECT_STUB = 'object.stub';
@@ -30,15 +30,15 @@ class ObjectType extends SingleClass {
 	/**
 	 * @return FragmentGeneratorInterface
 	 */
-	public function getGeneratorType() {
-		return $this->_generatorType;
+	public function getFragmentGenerator() {
+		return $this->_fragmentGenerator;
 	}
 
 	/**
 	 * @param FragmentGeneratorInterface $generatorType
 	 */
-	public function setGeneratorType($generatorType) {
-		$this->_generatorType = $generatorType;
+	public function setFragmentGenerator($generatorType) {
+		$this->_fragmentGenerator = $generatorType;
 	}
 
 	/**
@@ -47,7 +47,7 @@ class ObjectType extends SingleClass {
 	public function getContentCreator() {
 		$objectTypeContent = new ObjectTypeContent();
 		$objectTypeContent->setObjectTypeClass($this);
-		$objectTypeContent->setGeneratorType($this->getGeneratorType());
+		$objectTypeContent->setFragmentGenerator($this->getFragmentGenerator());
 
 		return $objectTypeContent;
 	}
@@ -57,7 +57,7 @@ class ObjectType extends SingleClass {
 	 * @throws Exception
 	 */
 	public function getStubFileName() {
-		switch(get_class($this->getGeneratorType())) {
+		switch(get_class($this->getFragmentGenerator())) {
 			case EnumFragmentGenerator::class:
 				return self::ENUM_STUB;
 			case TypeDeclarationFragmentGenerator::class:
@@ -71,7 +71,7 @@ class ObjectType extends SingleClass {
 			case UnionFragmentGenerator::class:
 				return self::UNION_STUB;
 			default:
-				throw new Exception("Stub not implemented for generator type " . get_class($this->getGeneratorType()));
+				throw new Exception("Stub not implemented for generator type " . get_class($this->getFragmentGenerator()));
 		}
 	}
 }

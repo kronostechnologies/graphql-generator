@@ -130,7 +130,7 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
+		$this->_dtoContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeGeneratorWithOneField() {
@@ -149,7 +149,7 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
+		$this->_dtoContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeGeneratorWithOneNonPrimaryField() {
@@ -168,7 +168,7 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$this->_dtoContent->setTypeGenerator($objectTypeFragment);
+		$this->_dtoContent->setFragmentGenerator($objectTypeFragment);
 	}
 
 	protected function GivenClassMock() {

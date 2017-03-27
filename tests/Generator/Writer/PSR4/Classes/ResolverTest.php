@@ -41,6 +41,6 @@ class ResolverTest extends \PHPUnit_Framework_TestCase {
 		$scalarTypeFragment = new ScalarFragmentGenerator();
 		$scalarTypeFragment->setScalarType($scalarType);
 
-		$this->_resolver->setGeneratorType($scalarTypeFragment);
+		$this->_resolver->setFragmentGenerator($scalarTypeFragment);
 	}
 }

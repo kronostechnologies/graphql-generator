@@ -22,7 +22,7 @@ class DTO extends SingleClass {
 	public function getContentCreator() {
 		$dtoContent = new DTOContent();
 		$dtoContent->setDTOClass($this);
-		$dtoContent->setTypeGenerator($this->getGeneratorType());
+		$dtoContent->setFragmentGenerator($this->getGeneratorType());
 
 		return $dtoContent;
 	}
@@ -44,7 +44,7 @@ class DTO extends SingleClass {
 	/**
 	 * @param FragmentGeneratorInterface $generatorType
 	 */
-	public function setGeneratorType($generatorType) {
+	public function setFragmentGenerator($generatorType) {
 		$this->_generatorType = $generatorType;
 	}
 
