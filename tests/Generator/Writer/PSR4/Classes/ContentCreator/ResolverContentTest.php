@@ -6,6 +6,12 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 use Exception;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Types\SubTypes\Field;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
@@ -86,7 +92,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$retVal = $this->_resolverContent->getTypeGeneratorClass();
 
-		$this->assertEquals(Scalar::class, $retVal);
+		$this->assertEquals(ScalarFragmentGenerator::class, $retVal);
 	}
 
 	public function test_GivenSetResolverClass_getResolverClass_WillReturnResolverClass() {
@@ -132,28 +138,41 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenScalarGeneratorType() {
-		$this->_resolverContent->setTypeGenerator(new Scalar(
-			self::SCALAR_NAME,
-			new StubFormatter()
-		));
+		$scalarType = new ScalarInterpretedType();
+		$scalarType->setName(self::SCALAR_NAME);
+
+		$scalarTypeFragment = new ScalarFragmentGenerator();
+		$scalarTypeFragment->setScalarType($scalarType);
+
+		$this->_resolverContent->setTypeGenerator($scalarTypeFragment);
 	}
 
 	protected function GivenTypeNoFieldsGeneratorType() {
-		$this->_resolverContent->setTypeGenerator(new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[],
-            []
-		));
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	protected function GivenTypeWithFieldsGeneratorType() {
-		$this->_resolverContent->setTypeGenerator(new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NAME_TYPE, false, false, false), [])],
-            []
-		));
+		$fieldType1 = new TypeUsageInterpretedType();
+		$fieldType1->setTypeName(self::FIELD_NAME_TYPE);
+
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_NAME);
+		$field1->setFieldType($fieldType1);
+
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+		$objectType->setFields([$field1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	private function GivenResolverClass() {
@@ -165,20 +184,38 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function GivenPrimaryType() {
-		$this->_resolverContent->setTypeGenerator(new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_PRIMARY_TYPE, false, false, false), [])],
-			[]
-		));
+		$fieldType1 = new TypeUsageInterpretedType();
+		$fieldType1->setTypeName(self::FIELD_PRIMARY_TYPE);
+
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_NAME);
+		$field1->setFieldType($fieldType1);
+
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+		$objectType->setFields([$field1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
 	}
 
 	private function GivenNonPrimaryType() {
-		$this->_resolverContent->setTypeGenerator(new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[ new Field(self::FIELD_NAME, null, new TypeUsage(self::FIELD_NON_PRIMARY_TYPE, false, false, false), [])],
-			[]
-		));
+		$fieldType1 = new TypeUsageInterpretedType();
+		$fieldType1->setTypeName(self::FIELD_NON_PRIMARY_TYPE);
+
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_NAME);
+		$field1->setFieldType($fieldType1);
+
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+		$objectType->setFields([$field1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_resolverContent->setTypeGenerator($objectTypeFragment);
 	}
 }

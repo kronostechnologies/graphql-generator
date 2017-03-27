@@ -5,6 +5,9 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
@@ -104,7 +107,7 @@ class ClassComposer {
 	 * @return bool
 	 */
 	public function generatorTypeIsInputType(FragmentGeneratorInterface $type) {
-		return in_array(get_class($type), [InterfaceDeclarationInterpretedType::class, TypeDeclarationInterpretedType::class, InputInterpretedType::class]);
+		return in_array(get_class($type), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class]);
 	}
 
 	public function generateUniqueTypeStore() {

@@ -5,6 +5,14 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\SubTypes\Field;
@@ -87,7 +95,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateClassForGenerator_WillCreateObjectTypeClass() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_factory
 			->expects($this->once())
@@ -97,7 +105,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateClassForGenerator_WillFetchNamespaceWithType() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper->expects($this->once())->method('getNamespaceForGenerator')->with($givenType);
 
@@ -105,7 +113,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateClassForGenerator_WillFetchParentDependenciesWithType() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper->expects($this->once())->method('getParentDependencyForGenerator')->with($givenType);
 
@@ -113,7 +121,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateClassForGenerator_WillAddCorrectDependencies() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_objTypeMock
 			->expects($this->exactly(4))
@@ -129,7 +137,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectTypeWithGeneratorClassReturned_generateClassForGenerator_WillAddTypeNameDependency() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_typeStore
 			->expects($this->any())
@@ -140,7 +148,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectTypeWithGeneratorClassReturned_generateClassForGenerator_ClassMapperWillMapClassNameToValueCorrectly() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper
 			->expects($this->once())
@@ -182,7 +190,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateResolverForGenerator_WillGenerateResolverClass() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_factory
 			->expects($this->once())
@@ -193,7 +201,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateResolverForGenerator_WillResolveNamespaceForClass() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper
 			->expects($this->once())
@@ -204,7 +212,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenObjectType_generateResolverForGenerator_ClassMapperWillMapClassNameToValueCorrectly() {
-		$givenType = $this->GivenObjectType();
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper
 			->expects($this->once())
@@ -249,7 +257,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenAnything_generateDTOForGenerator_WillCreateDTOClass() {
-		$givenObjectType = $this->GivenObjectType();
+		$givenObjectType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_factory
 			->expects($this->once())
@@ -259,7 +267,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenAnything_generateDTOForGenerator_WillSetNamespace() {
-		$givenObjectType = $this->GivenObjectType();
+		$givenObjectType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_dtoTypeMock
 			->expects($this->once())
@@ -279,7 +287,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function test_GivenAnything_generateDTOForGenerator_WillMapClass() {
-		$givenObjectType = $this->GivenObjectType();
+		$givenObjectType = $this->GivenObjectTypeFragmentGenerator();
 
 		$this->_classMapper
 			->expects($this->once())
@@ -289,24 +297,53 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->generateDTOForGenerator($givenObjectType);
 	}
 
-	protected function GivenObjectType() {
-		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [], [], self::OBJ_TYPE_DESC);
+	protected function GivenObjectTypeFragmentGenerator() {
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::OBJ_TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		return $objectTypeFragment;
 	}
 
 	protected function GivenObjectTypeWithDependencies() {
-		return new Type(self::OBJ_TYPE_NAME, new StubFormatter(), [
-			new Field("", "", new TypeUsage(
-				"ADep", false, false, false
-			), [])
-		], [], self::OBJ_TYPE_DESC);
+		$fieldType1 = new TypeUsageInterpretedType();
+		$fieldType1->setTypeName("ADep");
+
+		$objectTypeField1 = new FieldInterpretedType();
+		$objectTypeField1->setFieldType($fieldType1);
+
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::OBJ_TYPE_NAME);
+		$objectType->setFields([$objectTypeField1]);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		return $objectTypeFragment;
 	}
 
 	protected function GivenInterfaceObjectType() {
-		return new InterfaceDeclaration(self::IFACE_TYPE_NAME, new StubFormatter(), [], self::IFACE_TYPE_DESC);
+		$interfaceType = new InterfaceDeclarationInterpretedType();
+		$interfaceType->setName(self::IFACE_TYPE_NAME);
+		$interfaceType->setDescription(self::IFACE_TYPE_DESC);
+
+		$interfaceTypeFragment = new InterfaceFragmentGenerator();
+		$interfaceTypeFragment->setInterfaceType($interfaceType);
+
+		return $interfaceTypeFragment;
 	}
 
 	protected function GivenEnumObjectType() {
-		return new Enum(self::ENUM_NAME, new StubFormatter(), [], self::ENUM_DESC);
+		$enumType = new EnumInterpretedType();
+		$enumType->setName(self::ENUM_NAME);
+		$enumType->setDescription(self::ENUM_DESC);
+
+		$enumTypeFragment = new EnumFragmentGenerator();
+		$enumTypeFragment->setEnumType($enumType);
+
+		return $enumTypeFragment;
 	}
 
 }

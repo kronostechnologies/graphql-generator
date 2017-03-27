@@ -6,6 +6,9 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
@@ -44,12 +47,12 @@ class ResolverContent extends BaseContentCreator {
 		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
 
-        if (in_array($typeGeneratorClass, [Union::class])) {
+        if (in_array($typeGeneratorClass, [UnionFragmentGenerator::class])) {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
         }
 
-		if(in_array($typeGeneratorClass, [InterfaceDeclaration::class, Type::class])) {
-			/** @var InterfaceDeclaration|Type $typeGenerator */
+		if(in_array($typeGeneratorClass, [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class])) {
+			/** @var InterfaceFragmentGenerator|TypeDeclarationFragmentGenerator $typeGenerator */
 			$typeGenerator = $this->getTypeGenerator();
 
 			foreach($typeGenerator->getFields() as $field) {

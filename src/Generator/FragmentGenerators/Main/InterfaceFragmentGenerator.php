@@ -6,13 +6,15 @@ namespace GraphQLGen\Generator\FragmentGenerators\Main;
 
 use GraphQLGen\Generator\FragmentGenerators\DependentFragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\DescriptionFragmentTrait;
+use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\NameFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\Nested\InterfaceFieldFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 
-class InterfaceFragmentGenerator implements FragmentGeneratorInterface, DependentFragmentGeneratorInterface {
+class InterfaceFragmentGenerator implements FragmentGeneratorInterface, DependentFragmentGeneratorInterface, FieldsFetchableInterface {
 	use FormatterDependantGeneratorTrait, NameFragmentTrait, DescriptionFragmentTrait;
 
 	/**
@@ -95,5 +97,12 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 	 */
 	public function getName() {
 		return $this->getInterfaceType()->getName();
+	}
+
+	/**
+	 * @return FieldInterpretedType[]
+	 */
+	public function getFields() {
+		return $this->getInterfaceType()->getFields();
 	}
 }

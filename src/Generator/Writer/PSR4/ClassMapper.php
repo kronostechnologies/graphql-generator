@@ -6,6 +6,12 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
@@ -85,17 +91,17 @@ class ClassMapper {
 	 */
 	public function getNamespaceForGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
-			case TypeDeclarationInterpretedType::class:
+			case TypeDeclarationFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types");
-			case ScalarInterpretedType::class:
+			case ScalarFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Scalars");
-			case EnumInterpretedType::class:
+			case EnumFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Enums");
-			case InterfaceDeclarationInterpretedType::class:
+			case InterfaceFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Interfaces");
-			case InputInterpretedType::class:
+			case InputFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Input");
-			case UnionInterpretedType::class:
+			case UnionFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Types", "Unions");
 			default:
 				throw new Exception("getNamespaceForGenerator not supported for type " . get_class($type));
@@ -108,11 +114,11 @@ class ClassMapper {
 	 */
 	public function getResolverNamespaceFromGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
-			case TypeDeclarationInterpretedType::class:
+			case TypeDeclarationFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types");
-			case InterfaceDeclarationInterpretedType::class:
+			case InterfaceFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Interfaces");
-			case InputInterpretedType::class:
+			case InputFragmentGenerator::class:
 				return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers", "Types", "Inputs");
 			default:
 				throw new Exception("getResolverNamespaceFromGenerator not supported for type " . get_class($type));
@@ -124,19 +130,19 @@ class ClassMapper {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getParentDependencyForGenerator(BaseTypeGenerator $type) {
+	public function getParentDependencyForGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
-			case TypeDeclarationInterpretedType::class:
+			case TypeDeclarationFragmentGenerator::class:
 				return "ObjectType";
-			case ScalarInterpretedType::class:
+			case ScalarFragmentGenerator::class:
 				return "ScalarType";
-			case EnumInterpretedType::class:
+			case EnumFragmentGenerator::class:
 				return "EnumType";
-			case InterfaceDeclarationInterpretedType::class:
+			case InterfaceFragmentGenerator::class:
 				return "InterfaceType";
-			case InputInterpretedType::class:
+			case InputFragmentGenerator::class:
 				return "InputObjectType";
-			case UnionInterpretedType::class:
+			case UnionFragmentGenerator::class:
 				return "UnionObjectType";
 			default:
 				throw new Exception("getParentDependencyForGenerator not supported for type " . get_class($type));

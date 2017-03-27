@@ -5,6 +5,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
@@ -138,10 +140,13 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenScalarType() {
-		return new Scalar(
-			self::SCALAR_NAME,
-			new StubFormatter()
-		);
+		$scalarType = new ScalarInterpretedType();
+		$scalarType->setName(self::SCALAR_NAME);
+
+		$scalarTypeFragment = new ScalarFragmentGenerator();
+		$scalarTypeFragment->setScalarType($scalarType);
+
+		return $scalarTypeFragment;
 	}
 
 	protected function GivenAtLeastOneResolveToken() {

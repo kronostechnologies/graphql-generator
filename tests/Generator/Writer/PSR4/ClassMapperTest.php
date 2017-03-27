@@ -6,6 +6,14 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 use Exception;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Types\Enum;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Scalar;
@@ -214,31 +222,43 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenType() {
-		return new Type(
-			self::TYPE_NAME,
-			new StubFormatter(),
-			[],
-            []
-		);
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		return $objectTypeFragment;
 	}
 
 	protected function GivenScalar() {
-		return new Scalar(
-			self::SCALAR_NAME,
-			new StubFormatter()
-		);
+		$scalarType = new ScalarInterpretedType();
+		$scalarType->setName(self::SCALAR_NAME);
+
+		$scalarTypeFragment = new ScalarFragmentGenerator();
+		$scalarTypeFragment->setScalarType($scalarType);
+
+		return $scalarTypeFragment;
 	}
 
 	protected function GivenEnum() {
-		return new Enum(
-			self::ENUM_NAME, new StubFormatter(), []
-		);
+		$enumType = new EnumInterpretedType();
+		$enumType->setName(self::ENUM_NAME);
+
+		$enumTypeFragment = new EnumFragmentGenerator();
+		$enumTypeFragment->setEnumType($enumType);
+
+		return $enumTypeFragment;
 	}
 
 	protected function GivenInterface() {
-		return new InterfaceDeclaration(
-			self::INTERFACE_NAME, new StubFormatter(), []
-		);
+		$interfaceType = new InterfaceDeclarationInterpretedType();
+		$interfaceType->setName(self::INTERFACE_NAME);
+
+		$interfaceTypeGenerator = new InterfaceFragmentGenerator();
+		$interfaceTypeGenerator->setInterfaceType($interfaceType);
+
+		return $interfaceTypeGenerator;
 	}
 
 	protected function GivenInvalidGeneratorType() {

@@ -6,6 +6,12 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
@@ -65,17 +71,17 @@ class ObjectType extends SingleClass {
 	 */
 	public function getStubFileName() {
 		switch(get_class($this->getGeneratorType())) {
-			case EnumInterpretedType::class:
+			case EnumFragmentGenerator::class:
 				return self::ENUM_STUB;
-			case TypeDeclarationInterpretedType::class:
+			case TypeDeclarationFragmentGenerator::class:
 				return self::OBJECT_STUB;
-			case ScalarInterpretedType::class:
+			case ScalarFragmentGenerator::class:
 				return self::SCALAR_STUB;
-			case InterfaceDeclarationInterpretedType::class:
+			case InterfaceFragmentGenerator::class:
 				return self::INTERFACE_STUB;
-			case InputInterpretedType::class:
+			case InputFragmentGenerator::class:
 				return self::INPUT_STUB;
-			case UnionInterpretedType::class:
+			case UnionFragmentGenerator::class:
 				return self::UNION_STUB;
 			default:
 				throw new Exception("Stub not implemented for generator type " . get_class($this->getGeneratorType()));
