@@ -13,5 +13,7 @@ trait DefaultValueFragmentTrait {
 		if ($value !== null) {
 			return "'defaultValue' => '{$value}'";
 		}
+
+		return '';
 	}
 }

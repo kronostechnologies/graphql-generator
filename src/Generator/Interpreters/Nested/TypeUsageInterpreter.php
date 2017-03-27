@@ -10,7 +10,6 @@ use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\NonNullTypeNode;
 use GraphQL\Language\AST\TypeNode;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class TypeUsageInterpreter extends NestedTypeInterpreter {
 	/**

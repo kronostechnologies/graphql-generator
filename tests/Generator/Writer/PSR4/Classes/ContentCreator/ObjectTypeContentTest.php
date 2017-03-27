@@ -11,9 +11,6 @@ use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Types\Enum;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 

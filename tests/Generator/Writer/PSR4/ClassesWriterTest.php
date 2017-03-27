@@ -7,7 +7,6 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 use GraphQLGen\Generator\Formatters\ClassFormatter;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
 use GraphQLGen\Generator\Writer\PSR4\ClassesWriter;
 use GraphQLGen\Generator\Writer\PSR4\ClassMapper;

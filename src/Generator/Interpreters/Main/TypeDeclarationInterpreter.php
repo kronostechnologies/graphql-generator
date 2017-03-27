@@ -7,9 +7,8 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
-use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\Type;
 
 class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	/**
@@ -33,7 +32,7 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @return Field[]
+	 * @return FieldInterpretedType[]
 	 */
 	public function interpretFields() {
 		return array_map(function ($fieldNode) {

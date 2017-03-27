@@ -6,7 +6,6 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
 

@@ -12,19 +12,9 @@ use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\Enum;
-use GraphQLGen\Generator\Types\Input;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
@@ -88,6 +78,7 @@ class ClassMapper {
 	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getNamespaceForGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
@@ -126,7 +117,7 @@ class ClassMapper {
 	}
 
 	/**
-	 * @param BaseTypeGenerator $type
+	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
 	 */

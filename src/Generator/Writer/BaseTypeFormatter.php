@@ -13,8 +13,8 @@ abstract class BaseTypeFormatter {
 	 */
 	public function getFieldTypeDeclaration($fieldType) {
 		// Primary type check
-		if(isset(TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()])) {
-			$typeDeclaration = TypeUsage::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()];
+		if(isset(TypeUsageInterpretedType::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()])) {
+			$typeDeclaration = TypeUsageInterpretedType::$PRIMARY_TYPES_MAPPINGS[$fieldType->getTypeName()];
 		}
 		else {
 			$typeDeclaration = $this->getFieldTypeDeclarationNonPrimaryType($fieldType->getTypeName());

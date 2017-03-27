@@ -5,7 +5,6 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use Exception;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
@@ -14,10 +13,6 @@ use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Types\Enum;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 use GraphQLGen\Generator\Writer\PSR4\ClassMapper;

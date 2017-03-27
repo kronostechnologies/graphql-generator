@@ -5,7 +5,6 @@ namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Nested\EnumValueFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 

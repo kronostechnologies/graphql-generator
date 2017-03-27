@@ -10,11 +10,9 @@ use GraphQL\Language\AST\IntValueNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
-use GraphQLGen\Generator\Types\SubTypes\Field;
 
 
 class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {

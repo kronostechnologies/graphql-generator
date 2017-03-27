@@ -8,7 +8,6 @@ use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
 

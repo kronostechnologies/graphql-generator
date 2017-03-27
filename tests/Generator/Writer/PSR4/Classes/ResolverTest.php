@@ -4,11 +4,8 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 

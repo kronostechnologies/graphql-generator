@@ -18,7 +18,6 @@ use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
 use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
 use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
 
 class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**

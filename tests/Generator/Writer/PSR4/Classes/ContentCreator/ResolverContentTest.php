@@ -5,17 +5,12 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 

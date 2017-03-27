@@ -5,9 +5,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 /**
  * Writer entry point.

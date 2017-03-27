@@ -7,8 +7,6 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
-use GraphQLGen\Generator\Types\Enum;
-use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class EnumInterpreter extends MainTypeInterpreter {
 	/**

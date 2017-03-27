@@ -6,7 +6,6 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\NameNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
 

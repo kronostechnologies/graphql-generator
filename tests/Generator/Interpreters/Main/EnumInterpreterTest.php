@@ -7,11 +7,9 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
 use GraphQL\Language\AST\EnumValueDefinitionNode;
 use GraphQL\Language\AST\NameNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
-use GraphQLGen\Generator\Types\SubTypes\EnumValue;
 
 class EnumInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';

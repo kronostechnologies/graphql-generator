@@ -6,7 +6,6 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Types\Scalar;
 
 class ScalarInterpreter extends MainTypeInterpreter {
 	/**
@@ -17,7 +16,6 @@ class ScalarInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @param \GraphQLGen\Generator\Formatters\StubFormatter $formatter
 	 * @return ScalarInterpretedType
 	 */
 	public function generateType() {

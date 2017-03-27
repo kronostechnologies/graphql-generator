@@ -4,16 +4,6 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
-use Exception;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\Enum;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
-use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 use GraphQLGen\Generator\Writer\StubFile;
 
 /**
@@ -56,6 +46,9 @@ class ClassStubFile extends StubFile {
 		return $this->getLineWithText(self::VARIABLES_DECLARATION);
 	}
 
+	/**
+	 * @param string $namespaceValue
+	 */
 	public function writeNamespace($namespaceValue) {
 		$this->replaceTextInStub(ClassStubFile::DUMMY_NAMESPACE, $namespaceValue);
 	}

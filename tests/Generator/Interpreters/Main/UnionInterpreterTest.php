@@ -7,7 +7,6 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
 

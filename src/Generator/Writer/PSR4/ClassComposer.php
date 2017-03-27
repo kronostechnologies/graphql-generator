@@ -4,17 +4,11 @@
 namespace GraphQLGen\Generator\Writer\PSR4;
 
 
+use GraphQLGen\Generator\FragmentGenerators\DependentFragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\Input;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Type;
 
 /**
  * Generates individual classes entities.
@@ -94,8 +88,10 @@ class ClassComposer {
 		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($type));
 
 		// Fetches dependencies
-		foreach ($type->getDependencies() as $dependency) {
-			$dtoClass->addDependency($dependency);
+		if ($type instanceof DependentFragmentGeneratorInterface) {
+			foreach ($type->getDependencies() as $dependency) {
+				$dtoClass->addDependency($dependency);
+			}
 		}
 
 		// Map class

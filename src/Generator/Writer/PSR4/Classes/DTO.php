@@ -5,7 +5,6 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
 

@@ -7,7 +7,6 @@ namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 

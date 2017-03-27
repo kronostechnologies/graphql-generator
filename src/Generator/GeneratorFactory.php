@@ -13,6 +13,7 @@ use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQLGen\Generator\Formatters\StubFormatter;
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -60,7 +61,7 @@ class GeneratorFactory {
 	/**
 	 * @param StubFormatter $formatter
 	 * @param mixed $type
-	 * @return mixed
+	 * @return FragmentGeneratorInterface
 	 */
 	public function createFragmentGenerator($formatter, $type) {
 		switch(get_class($type)) {

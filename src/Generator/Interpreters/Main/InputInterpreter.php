@@ -5,11 +5,9 @@ namespace GraphQLGen\Generator\Interpreters\Main;
 
 
 use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\InputFieldInterpreter;
-use GraphQLGen\Generator\Types\Input;
-use GraphQLGen\Generator\Types\SubTypes\Field;
 
 class InputInterpreter extends MainTypeInterpreter {
 
@@ -33,7 +31,7 @@ class InputInterpreter extends MainTypeInterpreter {
 	}
 
 	/**
-	 * @return Field[]
+	 * @return InputFieldInterpretedType[]
 	 */
 	public function interpretFields() {
 		return array_map(function ($fieldNode) {

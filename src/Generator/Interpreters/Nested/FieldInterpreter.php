@@ -8,8 +8,6 @@ use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
 class FieldInterpreter extends NestedTypeInterpreter {
 	/**

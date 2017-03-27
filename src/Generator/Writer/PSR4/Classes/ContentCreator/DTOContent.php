@@ -4,10 +4,9 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\SubTypes\Field;
-use GraphQLGen\Generator\Types\Type;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
@@ -31,7 +30,7 @@ class DTOContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @param Field $field
+	 * @param FieldInterpretedType $field
 	 * @return string
 	 */
 	protected function getDocCommentFragment($field) {
@@ -42,7 +41,7 @@ class DTOContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @param Field $field
+	 * @param FieldInterpretedType $field
 	 * @return string
 	 */
 	protected function getVariableFragment($field) {
@@ -99,14 +98,14 @@ class DTOContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return FragmentGeneratorInterface
+	 * @return FragmentGeneratorInterface|FieldsFetchableInterface
 	 */
 	public function getTypeGenerator() {
 		return $this->_typeGenerator;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $typeGenerator
+	 * @param FragmentGeneratorInterface|FieldsFetchableInterface $typeGenerator
 	 */
 	public function setTypeGenerator($typeGenerator) {
 		$this->_typeGenerator = $typeGenerator;

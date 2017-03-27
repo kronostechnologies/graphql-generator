@@ -11,7 +11,6 @@ use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\StringValueNode;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
-use GraphQLGen\Generator\Types\SubTypes\FieldArgument;
 
 class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_FIELD_NAME = 'MyField';

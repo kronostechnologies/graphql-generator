@@ -12,10 +12,8 @@ use GraphQLGen\Generator\GeneratorFactory;
 use GraphQLGen\Generator\GeneratorLogger;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
-use GraphQLGen\Generator\Types\Scalar;
 use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
 use PHPUnit_Framework_MockObject_MockObject;
-use Psr\Log\LoggerAwareInterface;
 
 class GeneratorTest extends \PHPUnit_Framework_TestCase {
 	/**

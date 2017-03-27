@@ -6,7 +6,6 @@ namespace GraphQLGen\Generator\Formatters;
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
 
 class StubFormatter {
 	/**

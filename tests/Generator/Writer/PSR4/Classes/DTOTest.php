@@ -4,10 +4,8 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 

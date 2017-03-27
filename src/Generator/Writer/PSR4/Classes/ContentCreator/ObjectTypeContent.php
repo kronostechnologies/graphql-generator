@@ -29,7 +29,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	protected $_objectTypeClass;
 
 	/**
-	 * @var FragmentGeneratorInterface
+	 * @var FragmentGeneratorInterface|VariablesDefiningGeneratorInterface
 	 */
 	protected $_generatorType;
 
@@ -106,14 +106,14 @@ class ObjectTypeContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @return FragmentGeneratorInterface
+	 * @return FragmentGeneratorInterface|VariablesDefiningGeneratorInterface
 	 */
 	public function getGeneratorType() {
 		return $this->_generatorType;
 	}
 
 	/**
-	 * @param FragmentGeneratorInterface $generatorType
+	 * @param FragmentGeneratorInterface|VariablesDefiningGeneratorInterface $generatorType
 	 */
 	public function setGeneratorType($generatorType) {
 		$this->_generatorType = $generatorType;

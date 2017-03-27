@@ -7,7 +7,6 @@ namespace GraphQLGen\Generator\Interpreters\Nested;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\SubTypes\InputField;
 
 class InputFieldInterpreter extends NestedTypeInterpreter {
 	/**
