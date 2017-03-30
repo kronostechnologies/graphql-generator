@@ -10,7 +10,6 @@ use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
 
-// ToDo: Standardize
 class UnionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const UNION_DESC = 'A union description';
 	const UNION_NAME = 'AUnion';

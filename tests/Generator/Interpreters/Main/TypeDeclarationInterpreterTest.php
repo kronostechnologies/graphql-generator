@@ -96,7 +96,6 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @param $node
 	 */
 	protected function GivenNodeWithField($node) {
-		// ToDo: Mock away from here
 		$node->fields = [];
 
 		$dummyFieldDefinition = new FieldDefinitionNode([]);

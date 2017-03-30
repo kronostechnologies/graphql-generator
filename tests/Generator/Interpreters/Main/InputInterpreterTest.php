@@ -11,7 +11,6 @@ use GraphQL\Language\AST\NameNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
 
-// ToDo: Standardize test relative to other interpreter tests
 class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_DESC = 'A Description';
 	const TYPE_NAME = 'AType';

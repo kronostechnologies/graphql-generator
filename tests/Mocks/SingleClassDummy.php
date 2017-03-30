@@ -13,13 +13,13 @@ class SingleClassDummy extends SingleClass {
 	 * @return BaseContentCreator
 	 */
 	public function getContentCreator() {
-		// TODO: Implement getContentCreator() method.
+
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getStubFileName() {
-		// TODO: Implement getStubFileName() method.
+
 	}
 }

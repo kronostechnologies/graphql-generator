@@ -15,13 +15,13 @@ class InvalidGeneratorType implements FragmentGeneratorInterface {
 	 * @return string
 	 */
 	public function getName() {
-		// TODO: Implement getName() method.
+
 	}
 
 	/**
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
-		// TODO: Implement generateTypeDefinition() method.
+
 	}
 }
