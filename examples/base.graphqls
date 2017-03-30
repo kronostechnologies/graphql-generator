@@ -22,5 +22,5 @@ type Item implements Identifiable {
 
 type Query {
 	item(id: ID): Item!
-	items(page: Number, perPage: Number): [Item!]!
+	items(page: Int, perPage: Int): [Item!]!
 }

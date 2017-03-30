@@ -35,14 +35,6 @@ php graphqlgen generate-classes ./examples/base.graphqls ./base
 
 The output files will appear in the `base` directory.
 
-### Using different StubFiles
-
-```
-php graphqlgen generate-classes --stubs-dir=./examples/psr4-stubs ./examples/base.graphqls ./base
-```
-
-Specifying the PSR4 Stubs Path allows changing the templates used by the generator.
-
 
 ## Testing
 
