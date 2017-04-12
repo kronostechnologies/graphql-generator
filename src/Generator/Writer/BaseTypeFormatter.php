@@ -80,7 +80,8 @@ abstract class BaseTypeFormatter {
 			$typeDeclaration = TypeUsageInterpretedType::$PRIMARY_TYPES_DOCCOMMENTS[$fieldType->getTypeName()];
 		}
 		else {
-			$typeDeclaration = $this->resolveFieldTypeDeclarationDocComment($fieldType->getTypeName());
+			// Complex types, as relationships
+			$typeDeclaration = "mixed";
 		}
 
 		// Append array notation

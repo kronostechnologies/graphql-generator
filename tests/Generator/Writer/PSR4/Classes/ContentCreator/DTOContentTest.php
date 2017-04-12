@@ -23,7 +23,7 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_2_NAME = 'secondField';
 	const FIELD_2_DESCRIPTION = 'This is a description of the second field';
 	const FIELD_2_TYPE = 'CustomType';
-	const FIELD_2_TYPE_TRANSLATED = 'CustomType' . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX;
+	const FIELD_2_TYPE_TRANSLATED = 'mixed';
 
 	const CLASS_NAME = 'DTOAType';
 	const CLASS_NS = 'MyNS/DTO';
