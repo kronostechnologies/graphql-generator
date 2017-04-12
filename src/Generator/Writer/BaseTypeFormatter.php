@@ -63,14 +63,6 @@ abstract class BaseTypeFormatter {
     public abstract function getInterfaceResolveSnippet();
 
 	/**
-	 * @param string $typeName
-	 * @return string
-	 */
-	public function resolveFieldTypeDeclarationDocComment($typeName) {
-		return $typeName;
-	}
-
-	/**
 	 * @param TypeUsageInterpretedType $fieldType
 	 * @return string
 	 */
