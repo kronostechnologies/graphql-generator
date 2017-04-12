@@ -5,8 +5,10 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
@@ -73,6 +75,15 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains('resolve', $retVal);
 	}
+
+	public function test_GivenInterfaceGenerator_getContent_WillAlwaysContainResolveType() {
+		$this->GivenInterfaceFragmentGenerator();
+
+		$retVal = $this->_resolverContent->getContent();
+
+		$this->assertContains('resolveType', $retVal);
+	}
+
 
 	public function test_GivenNothing_getVariables_WillAlwaysBeEmpty() {
 		$this->GivenScalarGeneratorType();
@@ -212,5 +223,23 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
 		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
+	}
+
+	private function GivenInterfaceFragmentGenerator() {
+		$fieldType1 = new TypeUsageInterpretedType();
+		$fieldType1->setTypeName(self::FIELD_NON_PRIMARY_TYPE);
+
+		$field1 = new FieldInterpretedType();
+		$field1->setName(self::FIELD_NAME);
+		$field1->setFieldType($fieldType1);
+
+		$interfaceType = new InterfaceDeclarationInterpretedType();
+		$interfaceType->setName(self::TYPE_NAME);
+		$interfaceType->setFields([$field1]);
+
+		$interfaceTypeFragment = new InterfaceFragmentGenerator();
+		$interfaceTypeFragment->setInterfaceType($interfaceType);
+
+		$this->_resolverContent->setFragmentGenerator($interfaceTypeFragment);
 	}
 }

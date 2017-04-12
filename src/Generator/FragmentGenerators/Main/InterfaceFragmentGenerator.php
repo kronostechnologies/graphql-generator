@@ -32,8 +32,9 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 			$this->getInterfaceType()->getDescription()
 		);
 		$fields = $this->getFieldsDefinitions();
+		$resolveType = $this->getResolveType();
 
-		$vals = $this->getFormatter()->joinArrayFragments([$name, $formattedDescription, $fields]);
+		$vals = $this->getFormatter()->joinArrayFragments([$name, $formattedDescription, $fields, $resolveType]);
 
 		return "[ {$vals} ]";
 	}
@@ -77,6 +78,12 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 
 			return $enumValueGenerator;
 		}, $this->getInterfaceType()->getFields());
+	}
+
+	protected function getResolveType() {
+		$resolveTypeContent = $this->getFormatter()->getInterfaceResolveFragment();
+
+		return "'resolveType' => {$resolveTypeContent}";
 	}
 
 	/**

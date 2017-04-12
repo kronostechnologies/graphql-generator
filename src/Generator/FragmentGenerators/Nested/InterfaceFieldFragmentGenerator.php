@@ -7,11 +7,12 @@ namespace GraphQLGen\Generator\FragmentGenerators\Nested;
 use GraphQLGen\Generator\FragmentGenerators\DescriptionFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\ResolveFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\TypeDeclarationFragmentTrait;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 
 class InterfaceFieldFragmentGenerator implements FragmentGeneratorInterface  {
-	use FormatterDependantGeneratorTrait, DescriptionFragmentTrait, TypeDeclarationFragmentTrait;
+	use FormatterDependantGeneratorTrait, DescriptionFragmentTrait, TypeDeclarationFragmentTrait, ResolveFragmentTrait;
 
 	/**
 	 * @var FieldInterpretedType
@@ -27,9 +28,9 @@ class InterfaceFieldFragmentGenerator implements FragmentGeneratorInterface  {
 			$this->getInterfaceFieldType()->getDescription()
 		);
 		$typeDeclarationFragment = $this->getTypeDeclarationFragment($this->getFormatter(), $this->getInterfaceFieldType()->getFieldType());
-		$resolveFragment = $this->getFormatter()->getResolveFragment($this->getInterfaceFieldType()->getFieldType()->getTypeName());
+		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getInterfaceFieldType()->getFieldType(), $this->getName());
 
-		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolveFragment]);
+		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolver]);
 
 		return "'{$this->getInterfaceFieldType()->getName()}' => [ {$vals}]";
 	}

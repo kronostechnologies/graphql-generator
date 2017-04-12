@@ -24,7 +24,7 @@ class InterfaceFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_stubFormatter = $this->getMockBuilder(StubFormatter::class)
-			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment'])
+			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment', 'getInterfaceResolveFragment'])
 			->getMock();
 	}
 
@@ -72,6 +72,16 @@ class InterfaceFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains("'fields'", $retVal);
 	}
+
+	public function test_GivenInterfaceWithoutDescription_generateTypeDefinition_WillContainResolveType() {
+		$interface = $this->GivenInterfaceWithoutDescription();
+		$generator = $this->GivenInterfaceGenerator($interface);
+
+		$retVal = $generator->generateTypeDefinition();
+
+		$this->assertContains("'resolveType'", $retVal);
+	}
+
 
 	public function test_GivenInterfaceWithoutFields_getDependencies_WillBeEmpty() {
 		$interface = $this->GivenInterfaceWithoutFields();

@@ -45,8 +45,11 @@ class ResolverContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getContent() {
-		$typeGeneratorClass = $this->getTypeGeneratorClass();
 		$contentAsLines = [];
+
+		if ($this->getFragmentGenerator() instanceof InterfaceFragmentGenerator) {
+			$contentAsLines[] = "function resolveType(\$value) { /** ToDo: Implement */ }";
+		}
 
         if ($this->getFragmentGenerator() instanceof UnionFragmentGenerator) {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";

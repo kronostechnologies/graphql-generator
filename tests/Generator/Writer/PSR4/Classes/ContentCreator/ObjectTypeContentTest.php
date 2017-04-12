@@ -28,8 +28,15 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_objectTypeClass;
 
+	/**
+	 * @var StubFormatter|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_stubFormatter;
+
 	public function setUp() {
 		$this->_objectTypeClass = $this->createMock(ObjectType::class);
+
+		$this->_stubFormatter = $this->createMock(StubFormatter::class);
 
 		$this->_objectTypeContent = new ObjectTypeContent();
 	}
@@ -137,7 +144,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 
 		$scalarTypeFragment = new ScalarFragmentGenerator();
 		$scalarTypeFragment->setScalarType($scalarType);
-		$scalarTypeFragment->setFormatter(new StubFormatter());
+		$scalarTypeFragment->setFormatter($this->_stubFormatter);
 
 		$this->_objectTypeContent->setFragmentGenerator($scalarTypeFragment);
 	}
@@ -148,7 +155,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 
 		$enumTypeFragment = new EnumFragmentGenerator();
 		$enumTypeFragment->setEnumType($enumType);
-		$enumTypeFragment->setFormatter(new StubFormatter());
+		$enumTypeFragment->setFormatter($this->_stubFormatter);
 
 		$this->_objectTypeContent->setFragmentGenerator($enumTypeFragment);
 	}
@@ -159,7 +166,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 
 		$interfaceTypeFragment = new InterfaceFragmentGenerator();
 		$interfaceTypeFragment->setInterfaceType($interfaceType);
-		$interfaceTypeFragment->setFormatter(new StubFormatter());
+		$interfaceTypeFragment->setFormatter($this->_stubFormatter);
 
 		$this->_objectTypeContent->setFragmentGenerator($interfaceTypeFragment);
 	}

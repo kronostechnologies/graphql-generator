@@ -46,4 +46,11 @@ class TypeFormatter extends BaseTypeFormatter {
     {
         return "function (\$value, \$context, GraphQL\\Type\\Definition\\ResolveInfo \$info) { return \$this->resolver->resolve(\$value, \$context, \$info); }";
     }
+
+	/**
+	 * @return string
+	 */
+	public function getInterfaceResolveSnippet() {
+		return "function (\$value) { return \$this->resolver->resolveType(\$value); }";
+	}
 }

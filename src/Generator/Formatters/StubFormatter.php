@@ -5,7 +5,7 @@ namespace GraphQLGen\Generator\Formatters;
 
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
+use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 
 class StubFormatter {
 	/**
@@ -75,6 +75,10 @@ class StubFormatter {
 
 	public function getResolveFragmentForUnion() {
         return $this->_fieldTypeFormatter->getResolveSnippetForUnion();
+    }
+
+    public function getInterfaceResolveFragment() {
+		return $this->_fieldTypeFormatter->getInterfaceResolveSnippet();
     }
 
 	/**
