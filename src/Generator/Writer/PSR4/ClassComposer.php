@@ -117,9 +117,6 @@ class ClassComposer {
 		// Create DTO class
 		$dtoClass = $this->createConfiguredDTOClass($fragmentGenerator);
 
-		// Fetches dependencies
-		$this->setupDTOClassDependencies($dtoClass);
-
 		// Map class
 		$this->getClassMapper()->mapDependencyNameToClass($dtoClass->getClassName(), $dtoClass);
 	}
@@ -133,19 +130,6 @@ class ClassComposer {
 		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($fragmentGenerator));
 
 		return $dtoClass;
-	}
-
-	/**
-	 * @param Classes\DTO $dtoClass
-	 */
-	protected function setupDTOClassDependencies($dtoClass) {
-		$fragmentGenerator = $dtoClass->getGeneratorType();
-
-		if ($fragmentGenerator instanceof DependentFragmentGeneratorInterface) {
-			foreach ($fragmentGenerator->getDependencies() as $dependency) {
-				$dtoClass->addDependency($dependency);
-			}
-		}
 	}
 
 	/**
