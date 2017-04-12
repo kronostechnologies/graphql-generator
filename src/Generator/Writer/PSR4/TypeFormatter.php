@@ -36,7 +36,7 @@ class TypeFormatter extends BaseTypeFormatter {
     {
         $fieldNameUpperCased = ucwords($typeName);
 
-        return "function (\$root, \$args) { \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
+        return "function (\$root, \$args) { return \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
     }
 
     /**
