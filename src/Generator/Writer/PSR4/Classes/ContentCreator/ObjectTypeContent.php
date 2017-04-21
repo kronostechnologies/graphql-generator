@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
-use GraphQL\Type\Definition\ScalarType;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -12,13 +11,6 @@ use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\Input;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 
@@ -55,7 +47,7 @@ class ObjectTypeContent extends BaseContentCreator {
 		$resolverName = $this->getFragmentGenerator()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
 		$contentAsLines[] = "public function __construct() {";
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
+		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class])) {
 			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
 		}
 
@@ -79,7 +71,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
+		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class])) {
 			$variableDeclarationsAsLines[] = "public \$resolver;";
 		}
 

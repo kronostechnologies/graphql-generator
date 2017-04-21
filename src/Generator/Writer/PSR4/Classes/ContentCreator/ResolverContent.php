@@ -8,12 +8,9 @@ use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
 
 class ResolverContent extends BaseContentCreator {
@@ -53,6 +50,12 @@ class ResolverContent extends BaseContentCreator {
 
         if ($this->getFragmentGenerator() instanceof UnionFragmentGenerator) {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
+        }
+
+        if ($this->getFragmentGenerator() instanceof ScalarFragmentGenerator) {
+			$contentAsLines[] = "public function serialize(\$value) { /** ToDo: Implement */ }";
+			$contentAsLines[] = "public function parseValue(\$value) { /** ToDo: Implement */ }";
+			$contentAsLines[] = "public function parseLiteral(\$value) { /** ToDo: Implement */ }";
         }
 
 		if($this->getFragmentGenerator() instanceof FieldsFetchableInterface) {

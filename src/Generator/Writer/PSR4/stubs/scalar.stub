@@ -10,14 +10,14 @@ class ClassName extends ParentClass {
     // @generate:Content
 
     public function serialize($value) {
-        // ToDo: Implement
+        return $this->resolver->serialize($value);
     }
 
     public function parseValue($value) {
-        // ToDo: Implement
+        return $this->resolver->parseValue($value);
     }
 
     public function parseLiteral($value) {
-        // ToDo: Implement
+        return $this->resolver->parseLiteral($value);
     }
 }
