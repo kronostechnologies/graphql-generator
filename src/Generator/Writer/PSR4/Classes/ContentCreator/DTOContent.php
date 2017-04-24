@@ -6,7 +6,9 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
 
@@ -82,6 +84,18 @@ class DTOContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getParentClassName() {
+		if ($this->getFragmentGenerator() instanceof TypeDeclarationFragmentGenerator) {
+			/** @type TypeDeclarationFragmentGenerator $fragmentGenerator */
+			$fragmentGenerator = $this->getFragmentGenerator();
+			$interfaceNames = $fragmentGenerator->getTypeDeclaration()->getInterfacesNames();
+			$interfaceNamesWithDTO = array_map(function ($interfaceName) {
+				return $interfaceName . ClassComposer::DTO_CLASS_NAME_SUFFIX;
+			}, $interfaceNames);
+
+			return implode(", ", $interfaceNamesWithDTO);
+
+		}
+
 		return "";
 	}
 
