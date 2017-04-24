@@ -55,12 +55,10 @@ class ResolverFactoryContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('new ', $retVal);
 	}
 
-	public function test_GivenOneTypeToImplement_getClassName_WillBeResolverFactory() {
-		$this->GivenOneTypeToImplement();
+	public function test_GivenOneTypeToImplement_getClassName_WillProxyThroughClass() {
+		$this->_resolverFactory->expects($this->once())->method('getClassName');
 
-		$retVal = $this->_resolverFactoryContent->getClassName();
-
-		$this->assertEquals($retVal, ClassComposer::RESOLVER_FACTORY);
+		$this->_resolverFactoryContent->getClassName();
 	}
 
 	public function test_GivenOneTypeToImplement_getVariables_IsEmpty() {
@@ -90,11 +88,8 @@ class ResolverFactoryContentTest extends \PHPUnit_Framework_TestCase {
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
 
-		$objectTypeClass = new ObjectType();
-		$objectTypeClass->setFragmentGenerator($objectTypeFragment);
-
 		$this->_resolverFactory->method('getTypeResolversToAdd')->willReturn([
-			$objectTypeClass
+			$objectTypeFragment
 		]);
 	}
 }

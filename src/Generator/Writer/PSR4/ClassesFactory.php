@@ -98,7 +98,10 @@ class ClassesFactory {
 	 * @return ResolverFactory
 	 */
 	public function createResolverFactoryClass() {
+		$resolverFactoryClass = new ResolverFactory();
+		$resolverFactoryClass->setClassName(ClassComposer::RESOLVER_FACTORY);
 
+		return $resolverFactoryClass;
 	}
 
 }

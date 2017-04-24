@@ -25,6 +25,9 @@ class ClassComposer {
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';
 	const TYPE_STORE_CLASS_NAME = 'TypeStore';
 	const TYPE_CLASS_NAME = 'Type';
+	const RESOLVER_FACTORY_CONSTRUCTOR_NAME = '$resolverFactory';
+	const RESOLVER_FACTORY_CREATION = self::RESOLVER_FACTORY_CONSTRUCTOR_NAME . '->create%sResolver()';
+
 
 	/**
 	 * @var ClassMapper
@@ -154,7 +157,11 @@ class ClassComposer {
 	}
 
 	public function initializeResolverFactory() {
+		$resolverFactoryClass = $this->createConfiguredResolverFactoryClass();
 
+		$this->getClassMapper()->setResolverFactory($resolverFactoryClass);
+
+		$this->getClassMapper()->mapDependencyNameToClass($resolverFactoryClass->getClassName(), $resolverFactoryClass);
 	}
 
 	/**
@@ -171,7 +178,10 @@ class ClassComposer {
 	 * @return ResolverFactory
 	 */
 	protected function createConfiguredResolverFactoryClass() {
+		$resolverFactoryClass = $this->getFactory()->createResolverFactoryClass();
+		$resolverFactoryClass->setNamespace($this->getClassMapper()->getResolverRootNamespace());
 
+		return $resolverFactoryClass;
 	}
 
 	/**

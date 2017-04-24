@@ -47,6 +47,7 @@ class PSR4Writer implements GeneratorWriterInterface {
 		$this->getClassComposer()->setClassMapper($classMapper);
 
 		$this->getClassComposer()->initializeTypeStore();
+		$this->getClassComposer()->initializeResolverFactory();
 	}
 
 	/**

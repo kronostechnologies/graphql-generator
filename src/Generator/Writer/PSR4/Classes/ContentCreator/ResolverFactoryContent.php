@@ -4,6 +4,9 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterface;
+use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 
@@ -17,7 +20,13 @@ class ResolverFactoryContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getContent() {
-		// TODO: Implement getContent() method.
+		$lines = "";
+
+		foreach ($this->getResolverFactoryClass()->getTypeResolversToAdd() as $typeResolverToAdd) {
+			$lines .= $this->getResolveFunctionForType($typeResolverToAdd);
+		}
+
+		return $lines;
 	}
 
 	/**
@@ -56,11 +65,11 @@ class ResolverFactoryContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @param ObjectType $type
+	 * @param FragmentGeneratorInterface $type
+	 * @return string
 	 */
-	public function getResolveFunctionsForType($type) {
-		// Check if $type is a resolvable fragment
-		// Add resolver factory
+	public function getResolveFunctionForType($type) {
+		return "public function create{$type->getName()}Resolver() { return new {$type->getName()}Resolver(); }";
 	}
 
 	/**

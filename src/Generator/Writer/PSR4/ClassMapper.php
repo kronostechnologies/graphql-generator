@@ -47,6 +47,11 @@ class ClassMapper {
 	 */
 	protected $_resolvedDependencies;
 
+	/**
+	 * @var ResolverFactory
+	 */
+	protected $_resolverFactory;
+
 	public function __construct() {
 		$this->_classes = [];
 		$this->_resolvedDependencies = [];
@@ -80,14 +85,14 @@ class ClassMapper {
 	 * @return ResolverFactory
 	 */
 	public function getResolverFactory() {
-
+		return $this->_resolverFactory;
 	}
 
 	/**
 	 * @param ResolverFactory $resolverFactory
 	 */
 	public function setResolverFactory($resolverFactory) {
-
+		$this->_resolverFactory = $resolverFactory;
 	}
 
 	/**
@@ -112,6 +117,13 @@ class ClassMapper {
 			default:
 				throw new Exception("getNamespaceForFragmentGenerator not supported for type " . get_class($type));
 		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getResolverRootNamespace() {
+		return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers");
 	}
 
 	/**
@@ -264,6 +276,6 @@ class ClassMapper {
 	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
 	public function addResolverFactoryFragment($fragmentGenerator) {
-
+		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
 	}
 }
