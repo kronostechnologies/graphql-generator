@@ -5,9 +5,6 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterface;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 
 class ResolverFactoryContent extends BaseContentCreator {

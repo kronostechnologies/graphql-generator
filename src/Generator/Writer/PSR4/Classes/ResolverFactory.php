@@ -13,7 +13,7 @@ class ResolverFactory extends SingleClass {
 	/**
 	 * @var FragmentGeneratorInterface[]
 	 */
-	protected $_typeResolversToAdd;
+	protected $_typeResolversToAdd = [];
 
 	/**
 	 * @return ResolverFactoryContent

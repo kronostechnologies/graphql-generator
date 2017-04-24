@@ -84,7 +84,7 @@ class ClassComposer {
 		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
 
 		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator) {
-			$typeDefinitionClass->addDependency($fragmentGenerator->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
+			$this->getClassMapper()->addResolverFactoryFragment($fragmentGenerator);
 		}
 
 		$typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);

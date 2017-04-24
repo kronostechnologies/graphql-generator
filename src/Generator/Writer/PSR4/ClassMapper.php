@@ -277,5 +277,6 @@ class ClassMapper {
 	 */
 	public function addResolverFactoryFragment($fragmentGenerator) {
 		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
+		$this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
 	}
 }
