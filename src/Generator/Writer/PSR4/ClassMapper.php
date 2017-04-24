@@ -260,7 +260,10 @@ class ClassMapper {
 		}
 	}
 
-	public function addTypestoreDependency($dependencyName) {
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 */
+	public function addResolverFactoryFragment($fragmentGenerator) {
 
 	}
 }

@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes;
 
 
+use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverFactoryContent;
 
 class ResolverFactory extends SingleClass {
@@ -31,9 +32,9 @@ class ResolverFactory extends SingleClass {
 	}
 
 	/**
-	 * @param ObjectType $type
+	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
-	public function addResolveableTypeImplementation($type) {
+	public function addResolveableTypeImplementation($fragmentGenerator) {
 
 	}
 }

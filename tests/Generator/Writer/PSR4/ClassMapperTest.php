@@ -14,6 +14,7 @@ use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedTy
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
 use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
@@ -36,11 +37,19 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_typeStore;
 
+	/**
+	 * @var ResolverFactory|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_resolverFactory;
+
+
 	public function setUp() {
 		$this->_typeStore = $this->createMock(TypeStore::class);
+		$this->_resolverFactory = $this->createMock(ResolverFactory::class);
 
 		$this->_classMapper = new ClassMapper();
 		$this->_classMapper->setTypeStore($this->_typeStore);
+		$this->_classMapper->setResolverFactory($this->_resolverFactory);
 	}
 
 	public function test_GivenTypeAndBaseNamespace_getNamespaceForGenerator_WillStartWithBaseNamespace() {
@@ -192,6 +201,17 @@ class ClassMapperTest extends \PHPUnit_Framework_TestCase {
 		$this->_typeStore->expects($this->once())->method('addTypeImplementation');
 
 		$this->_classMapper->registerTypeStoreEntry("", $this->GivenObjectClass());
+	}
+
+	public function test_GivenInterface_addResolverFactoryFragment_WillAddTypeToResolverFactory() {
+		$givenType = $this->GivenInterface();
+
+		$this->_resolverFactory
+			->expects($this->once())
+			->method('addResolveableTypeImplementation')
+			->with($givenType);
+
+		$this->_classMapper->addResolverFactoryFragment($givenType);
 	}
 
 	public function test_GivenNothing_setInitialMappings_WillSucceed() {

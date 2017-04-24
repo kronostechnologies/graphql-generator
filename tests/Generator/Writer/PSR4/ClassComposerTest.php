@@ -16,6 +16,7 @@ use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
 use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
@@ -66,20 +67,26 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_dtoTypeMock;
 
+	/**
+	 * @var ResolverFactory|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $_resolverFactoryMock;
+
+
 	public function setUp() {
 		$this->_dtoTypeMock = $this->createMock(DTO::class);
 		$this->_objTypeMock = $this->createMock(ObjectType::class);
 		$this->_objTypeMock->method('getParentClassName')->willReturn(self::PARENT_CLASS_NAME);
 		$this->_resolverMock = $this->createMock(Resolver::class);
 		$this->_typeStoreMock = $this->createMock(TypeStore::class);
+		$this->_resolverFactoryMock = $this->createMock(ResolverFactory::class);
 
 		$this->_factory = $this->createMock(ClassesFactory::class);
 		$this->_factory->method('createDTOClassWithFragmentGenerator')->willReturn($this->_dtoTypeMock);
 		$this->_factory->method('createObjectTypeClassWithFragmentGenerator')->willReturn($this->_objTypeMock);
 		$this->_factory->method('createResolverClassWithFragmentGenerator')->willReturn($this->_resolverMock);
 		$this->_factory->method('createTypeStoreClass')->willReturn($this->_typeStoreMock);
-
-		$this->_typeStore = $this->createMock(TypeStore::class);
+		$this->_factory->method('createResolverFactoryClass')->willReturn($this->_resolverFactoryMock);
 
 		$this->_classMapper = $this->createMock(ClassMapper::class);
 		$this->_classMapper->method('getTypeStore')->willReturn($this->_typeStore);
@@ -134,10 +141,30 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 	public function test_GivenObjectTypeWithGeneratorClassReturned_generateClassForGenerator_WillAddTypeNameDependency() {
 		$givenType = $this->GivenObjectTypeFragmentGenerator();
 
-		$this->_typeStore
+		$this->_typeStoreMock
 			->expects($this->any())
 			->method('addDependency')
 			->with($givenType->getName());
+
+		$this->_classesComposer->generateTypeDefinitionForFragmentGenerator($givenType);
+	}
+
+	public function test_GivenObjectTypeWithGeneratorClassReturned_generateClassForGenerator_WillAddTypeToResolverFactory() {
+		$givenType = $this->GivenObjectTypeFragmentGenerator();
+
+		$this->_resolverFactoryMock
+			->expects($this->any())
+			->method('addResolveableTypeImplementation');
+
+		$this->_classesComposer->generateTypeDefinitionForFragmentGenerator($givenType);
+	}
+
+	public function test_GivenEnumTypeWithGeneratorClassReturned_generateClassForGenerator_WillAddTypeToResolverFactory() {
+		$givenType = $this->GivenEnumObjectType();
+
+		$this->_resolverFactoryMock
+			->expects($this->never())
+			->method('addResolveableTypeImplementation');
 
 		$this->_classesComposer->generateTypeDefinitionForFragmentGenerator($givenType);
 	}
@@ -218,7 +245,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->generateResolverForFragmentGenerator($givenType);
 	}
 
-	public function test_GivenAnything_generateUniqueTypeStore_WillGenerateTypeStoreClass() {
+	public function test_GivenAnything_initializeTypeStore_WillGenerateTypeStoreClass() {
 		$this->_factory
 			->expects($this->once())
 			->method('createTypeStoreClass');
@@ -226,7 +253,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->initializeTypeStore();
 	}
 
-	public function test_GivenAnything_generateUniqueTypeStore_WillFetchBaseClassMapperNamespace() {
+	public function test_GivenAnything_initializeTypeStore_WillFetchBaseClassMapperNamespace() {
 		$this->_classMapper
 			->expects($this->once())
 			->method('getBaseNamespace');
@@ -234,7 +261,7 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->initializeTypeStore();
 	}
 
-	public function test_GivenAnything_generateUniqueTypeStore_WillSetClassMapperTypeStore() {
+	public function test_GivenAnything_initializeTypeStore_WillSetClassMapperTypeStore() {
 		$this->_classMapper
 			->expects($this->once())
 			->method('setTypeStore')
@@ -243,13 +270,39 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->initializeTypeStore();
 	}
 
-	public function test_GivenAnything_generateUniqueTypeStore_ClassMapperWillMapClassNameToValueCorrectly() {
+	public function test_GivenAnything_initializeTypeStore_ClassMapperWillMapClassNameToValueCorrectly() {
 		$this->_classMapper
 			->expects($this->once())
 			->method('mapDependencyNameToClass')
 			->with($this->_typeStoreMock->getClassName(), $this->_typeStoreMock);
 
 		$this->_classesComposer->initializeTypeStore();
+	}
+
+	public function test_GivenAnything_initializeResolverFactory_WillGenerateResolverFactoryClass() {
+		$this->_factory
+			->expects($this->once())
+			->method('createResolverFactoryClass');
+
+		$this->_classesComposer->initializeResolverFactory();
+	}
+
+	public function test_GivenAnything_initializeResolverFactory_WillSetClassMapperResolverFactory() {
+		$this->_classMapper
+			->expects($this->once())
+			->method('setResolverFactory')
+			->with($this->_resolverFactoryMock);
+
+		$this->_classesComposer->initializeResolverFactory();
+	}
+
+	public function test_GivenAnything_initializeResolverFactory_ClassMapperWillMapClassNameToValueCorrectly() {
+		$this->_classMapper
+			->expects($this->once())
+			->method('mapDependencyNameToClass')
+			->with($this->_resolverFactoryMock->getClassName(), $this->_resolverFactoryMock);
+
+		$this->_classesComposer->initializeResolverFactory();
 	}
 
 	public function test_GivenAnything_generateDTOForGenerator_WillCreateDTOClass() {
@@ -341,5 +394,4 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 
 		return $enumTypeFragment;
 	}
-
 }
