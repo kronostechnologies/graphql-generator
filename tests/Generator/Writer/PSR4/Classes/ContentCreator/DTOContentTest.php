@@ -27,6 +27,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	const CLASS_NAME = 'DTOAType';
 	const CLASS_NS = 'MyNS/DTO';
+
+	const INTERFACE_TYPE_NAME = 'AnInterface';
 	/**
 	 * @var DTO|\PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -99,6 +101,14 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty($retVal);
 	}
 
+	public function test_GivenTypeGeneratorWithNoFieldsAndOneInterface_getParentClass_WillReturnInterfaceName() {
+		$this->GivenTypeGeneratorWithNoFieldsAndInterface();
+
+		$retVal = $this->_dtoContent->getParentClassName();
+
+		$this->assertEquals(self::INTERFACE_TYPE_NAME . ClassComposer::DTO_CLASS_NAME_SUFFIX, $retVal);
+	}
+
 	public function test_GivenClassMockAndName_getClassName_WillBeCorrect() {
 		$this->GivenClassMock();
 		$this->GivenClassName();
@@ -106,12 +116,6 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 		$retVal = $this->_dtoContent->getClassName();
 
 		$this->assertEquals(self::CLASS_NAME, $retVal);
-	}
-
-	public function test_GivenNothing_getParentClassName_WillAlwaysBeEmpty() {
-		$retVal = $this->_dtoContent->getParentClassName();
-
-		$this->assertEmpty($retVal);
 	}
 
 	public function test_GivenClassMockAndNamespace_getNamespace_WillBeCorrect() {
@@ -129,6 +133,18 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$this->_dtoContent->setFragmentGenerator($objectTypeFragment);
+	}
+
+	protected function GivenTypeGeneratorWithNoFieldsAndInterface() {
+		$objectType = new TypeDeclarationInterpretedType();
+		$objectType->setName(self::TYPE_NAME);
+
+		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
+		$objectTypeFragment->setTypeDeclaration($objectType);
+
+		$objectType->setInterfacesNames([self::INTERFACE_TYPE_NAME]);
 
 		$this->_dtoContent->setFragmentGenerator($objectTypeFragment);
 	}

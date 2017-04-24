@@ -75,6 +75,10 @@ class ClassStubFile extends StubFile {
 	 * @param string $className
 	 */
 	public function writeExtendsClassName($className) {
-		$this->replaceTextInStub(ClassStubFile::EXTENDS_CLASSNAME, $className);
+		if ($className === '') {
+			$this->replaceTextInStub("extends " . ClassStubFile::EXTENDS_CLASSNAME, "");
+		} else {
+			$this->replaceTextInStub("extends " . ClassStubFile::EXTENDS_CLASSNAME, "extends " . $className);
+		}
 	}
 }

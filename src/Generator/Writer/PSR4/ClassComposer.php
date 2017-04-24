@@ -117,6 +117,13 @@ class ClassComposer {
 		// Create DTO class
 		$dtoClass = $this->createConfiguredDTOClass($fragmentGenerator);
 
+		if ($fragmentGenerator instanceof TypeDeclarationFragmentGenerator) {
+			/** @type TypeDeclarationFragmentGenerator $fragmentGenerator */
+			foreach ($fragmentGenerator->getTypeDeclaration()->getInterfacesNames() as $interfaceName) {
+				$dtoClass->addDependency($interfaceName . self::DTO_CLASS_NAME_SUFFIX);
+			}
+		}
+
 		// Map class
 		$this->getClassMapper()->mapDependencyNameToClass($dtoClass->getClassName(), $dtoClass);
 	}
