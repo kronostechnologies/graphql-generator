@@ -8,6 +8,10 @@ use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 
 class ResolverFactoryContent extends BaseContentCreator {
+	/**
+	 * @var ResolverFactory
+	 */
+	protected $_resolverFactoryClass;
 
 	/**
 	 * @return string
@@ -20,35 +24,35 @@ class ResolverFactoryContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getVariables() {
-		// TODO: Implement getVariables() method.
+		return '';
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getNamespace() {
-		// TODO: Implement getNamespace() method.
+		return $this->getResolverFactoryClass()->getNamespace();
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getClassName() {
-		// TODO: Implement getClassName() method.
+		return $this->getResolverFactoryClass()->getClassName();
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getParentClassName() {
-		// TODO: Implement getParentClassName() method.
+		return '';
 	}
 
 	/**
 	 * @return ResolverFactory
 	 */
 	public function getResolverFactoryClass() {
-
+		return $this->_resolverFactoryClass;
 	}
 
 	/**
@@ -60,8 +64,9 @@ class ResolverFactoryContent extends BaseContentCreator {
 	}
 
 	/**
-	 * @param ResolverFactory $_resolverFactory
+	 * @param ResolverFactory $resolverFactory
 	 */
-	public function setResolverFactoryClass($_resolverFactory) {
+	public function setResolverFactoryClass($resolverFactory) {
+		$this->_resolverFactoryClass = $resolverFactory;
 	}
 }
