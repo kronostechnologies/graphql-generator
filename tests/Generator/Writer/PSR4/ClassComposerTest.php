@@ -126,10 +126,9 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_objTypeMock->method('getFragmentGenerator')->willReturn($givenType);
 		$this->_objTypeMock
-			->expects($this->exactly(4))
+			->expects($this->exactly(3))
 			->method('addDependency')
 			->with($this->logicalOr(
-				$givenType->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX,
 				ClassComposer::TYPE_STORE_CLASS_NAME,
 				ClassComposer::TYPE_CLASS_NAME,
 				$this->_objTypeMock->getParentClassName()
@@ -185,10 +184,9 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_objTypeMock->method('getFragmentGenerator')->willReturn($givenType);
 		$this->_objTypeMock
-			->expects($this->exactly(4))
+			->expects($this->exactly(3))
 			->method('addDependency')
 			->with($this->logicalOr(
-				$givenType->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX,
 				ClassComposer::TYPE_STORE_CLASS_NAME,
 				ClassComposer::TYPE_CLASS_NAME,
 				$this->_objTypeMock->getParentClassName()
