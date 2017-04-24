@@ -16,6 +16,7 @@ use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -76,6 +77,20 @@ class ClassMapper {
 	}
 
 	/**
+	 * @return ResolverFactory
+	 */
+	public function getResolverFactory() {
+
+	}
+
+	/**
+	 * @param ResolverFactory $resolverFactory
+	 */
+	public function setResolverFactory($resolverFactory) {
+
+	}
+
+	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
@@ -102,6 +117,7 @@ class ClassMapper {
 	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getResolverNamespaceFromGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {

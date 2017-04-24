@@ -10,6 +10,7 @@ use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 
 /**
  * Generates individual classes entities.
@@ -20,6 +21,7 @@ use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 class ClassComposer {
 	const DTO_CLASS_NAME_SUFFIX = 'DTO';
 	const RESOLVER_CLASS_NAME_SUFFIX = 'Resolver';
+	const RESOLVER_FACTORY = 'ResolverFactory';
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';
 	const TYPE_STORE_CLASS_NAME = 'TypeStore';
 	const TYPE_CLASS_NAME = 'Type';
@@ -151,6 +153,10 @@ class ClassComposer {
 		$this->getClassMapper()->mapDependencyNameToClass($typeStoreClass->getClassName(), $typeStoreClass);
 	}
 
+	public function initializeResolverFactory() {
+
+	}
+
 	/**
 	 * @return Classes\TypeStore
 	 */
@@ -159,6 +165,13 @@ class ClassComposer {
 		$typeStoreClass->setNamespace($this->getClassMapper()->getBaseNamespace());
 
 		return $typeStoreClass;
+	}
+
+	/**
+	 * @return ResolverFactory
+	 */
+	protected function createConfiguredResolverFactoryClass() {
+
 	}
 
 	/**
