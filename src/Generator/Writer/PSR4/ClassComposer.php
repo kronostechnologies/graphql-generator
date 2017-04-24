@@ -148,6 +148,7 @@ class ClassComposer {
 	public function initializeTypeStore() {
 		// Create type store class
 		$typeStoreClass = $this->createConfiguredTypeStoreClass();
+		$typeStoreClass->addDependency(self::RESOLVER_FACTORY);
 
 		// Sets type store
 		$this->getClassMapper()->setTypeStore($typeStoreClass);

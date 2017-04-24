@@ -279,6 +279,15 @@ class ClassComposerTest extends \PHPUnit_Framework_TestCase {
 		$this->_classesComposer->initializeTypeStore();
 	}
 
+	public function test_GivenAnything_initializeTypeStore_WillAddResolverFactoryDependency() {
+		$this->_typeStoreMock
+			->expects($this->once())
+			->method('addDependency')
+			->with(ClassComposer::RESOLVER_FACTORY);
+
+		$this->_classesComposer->initializeTypeStore();
+	}
+
 	public function test_GivenAnything_initializeResolverFactory_WillGenerateResolverFactoryClass() {
 		$this->_factory
 			->expects($this->once())
