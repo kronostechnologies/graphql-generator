@@ -143,6 +143,26 @@ class ClassMapper {
 	}
 
 	/**
+	 * @param FragmentGeneratorInterface $type
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getClassQualifierForFragmentGenerator(FragmentGeneratorInterface $type) {
+		switch(get_class($type)) {
+			case TypeDeclarationFragmentGenerator::class:
+			case ScalarFragmentGenerator::class:
+			case EnumFragmentGenerator::class:
+			case InputFragmentGenerator::class:
+			case UnionFragmentGenerator::class:
+				return 'class';
+			case InterfaceFragmentGenerator::class:
+				return 'trait';
+			default:
+				throw new Exception("getClassQualifierForFragmentGenerator not supported for type " . get_class($type));
+		}
+	}
+
+	/**
 	 * @param SingleClass $class
 	 * @throws Exception
 	 */
