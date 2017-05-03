@@ -127,6 +127,7 @@ class ClassComposer {
 
 			// Map base DTO class to trait
 			$dtoClass->addUsedTrait($traitDTOClass->getClassName());
+			$dtoClass->disableContent();
 
 			// Map trait class
 			$this->getClassMapper()->mapDependencyNameToClass($traitDTOClass->getClassName(), $traitDTOClass);
