@@ -20,6 +20,7 @@ use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
@@ -126,6 +127,13 @@ class GeneratorFactory {
 		$generator->setFormatter($formatter);
 
 		return $generator;
+	}
+
+	/**
+	 * @return InterpretedTypesStore
+	 */
+	public function createInterpretedTypesStore() {
+		return new InterpretedTypesStore();
 	}
 
 }

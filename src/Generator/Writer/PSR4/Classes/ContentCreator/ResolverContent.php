@@ -7,9 +7,13 @@ namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
@@ -60,7 +64,9 @@ class ResolverContent extends BaseContentCreator {
 			$typeGenerator = $this->getFragmentGenerator();
 
 			foreach($typeGenerator->getFields() as $field) {
-				if ($field->getFieldType()->isPrimaryType()) {
+
+				if ($field->getFieldType()->isPrimaryType() ||
+					$typeGenerator->getFormatter()->isScalarOrEnumType($field->getFieldType()->getTypeName())) {
 					continue;
 				}
 

@@ -20,7 +20,7 @@ class InterfaceFieldFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_stubFormatter = $this->getMockBuilder(StubFormatter::class)
-			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment'])
+			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment', 'isScalarOrEnumType'])
 			->getMock();
 	}
 
