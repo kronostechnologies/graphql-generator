@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\FragmentGenerators\DependentFragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
@@ -115,8 +116,6 @@ class ClassComposer {
 	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
 	public function generateDTOForFragmentGenerator(FragmentGeneratorInterface $fragmentGenerator) {
-
-
 		// Create DTO class
 		$dtoClass = $this->createConfiguredDTOClass($fragmentGenerator);
 		$dtoClass->setClassQualifier('class');
@@ -131,6 +130,17 @@ class ClassComposer {
 
 			// Map trait class
 			$this->getClassMapper()->mapDependencyNameToClass($traitDTOClass->getClassName(), $traitDTOClass);
+		}
+
+		// Add dependencies if normal class
+		if ($fragmentGenerator instanceof InterfacesDependableInterface) {
+			/** @var DependentFragmentGeneratorInterface $fragmentGenerator */
+			foreach ($fragmentGenerator->getInterfaces() as $interface) {
+				$traitClassName = $interface . ClassComposer::INTERFACE_TRAIT_SUFFIX;
+
+				$dtoClass->addUsedTrait($traitClassName);
+				$dtoClass->addDependency($traitClassName);
+			}
 		}
 
 		// Map class

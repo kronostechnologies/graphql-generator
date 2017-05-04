@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -49,6 +50,25 @@ class ClassMapper {
 	public function __construct() {
 		$this->_classes = [];
 		$this->_resolvedDependencies = [];
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return string[]
+	 */
+	public function getUsedTraitsForFragmentGenerator($fragmentGenerator) {
+		$usedTraits = [];
+
+		if ($fragmentGenerator instanceof InterfacesDependableInterface) {
+			/** @var InterfacesDependableInterface $fragmentGenerator */
+			$interfaces = array_map(function ($interfaceName) {
+				return $interfaceName . ClassComposer::INTERFACE_TRAIT_SUFFIX;
+			}, $fragmentGenerator->getInterfaces());
+
+			$usedTraits = array_merge($usedTraits, $interfaces);
+		}
+
+		return $usedTraits;
 	}
 
 	public function setInitialMappings() {
