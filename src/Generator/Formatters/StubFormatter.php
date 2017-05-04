@@ -20,6 +20,10 @@ class StubFormatter {
      * @var bool
      */
 	public $optimizeEnums;
+    /**
+     * @var bool
+     */
+	public $longFormEnums;
 	/**
 	 * @var int
 	 */
@@ -39,14 +43,16 @@ class StubFormatter {
 	 * @param string $descriptionLineMergeChars
 	 * @param BaseTypeFormatter|null $fieldTypeFormatter
 	 * @param bool $optimizeEnums
+	 * @param bool $longFormEnums
 	 */
-	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $optimizeEnums = false) {
+	public function __construct($useSpaces = true, $tabSize = 4, $descriptionLineMergeChars = ",", $fieldTypeFormatter = null, $optimizeEnums = false, $longFormEnums = false) {
 		$this->descriptionLineMergeChars = $descriptionLineMergeChars;
 		$this->useSpaces = $useSpaces;
 		$this->tabSize = $tabSize;
 		$this->_fieldTypeFormatter = $fieldTypeFormatter;
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
 		$this->optimizeEnums = $optimizeEnums;
+		$this->longFormEnums = $longFormEnums;
 	}
 
 	/**
