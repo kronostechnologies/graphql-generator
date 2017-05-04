@@ -51,6 +51,7 @@ class StubFormatter {
 		$this->_fieldTypeFormatter = $fieldTypeFormatter;
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
 		$this->optimizeEnums = $optimizeEnums;
+		$this->_interpretedTypesStore = new InterpretedTypesStore();
 	}
 
 	/**
