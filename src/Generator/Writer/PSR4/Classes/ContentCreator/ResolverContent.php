@@ -66,7 +66,7 @@ class ResolverContent extends BaseContentCreator {
 			foreach($typeGenerator->getFields() as $field) {
 
 				if ($field->getFieldType()->isPrimaryType() ||
-					$typeGenerator->getFormatter()->isScalarOrEnumType($field->getFieldType()->getTypeName())) {
+					$typeGenerator->getFormatter()->canInterpretedTypeSkipResolver($field->getFieldType()->getTypeName())) {
 					continue;
 				}
 

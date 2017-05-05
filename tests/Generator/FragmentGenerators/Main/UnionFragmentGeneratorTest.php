@@ -19,7 +19,7 @@ class UnionFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_stubFormatter = $this->getMockBuilder(StubFormatter::class)
-			->setMethods(['getFieldTypeDeclaration', 'getFieldTypeDeclarationNonPrimaryType', 'getResolveFragment', 'getResolveFragmentForUnion', 'isScalarOrEnumType'])
+			->setMethods(['getFieldTypeDeclaration', 'getFieldTypeDeclarationNonPrimaryType', 'getResolveFragment', 'getResolveFragmentForUnion', 'canInterpretedTypeSkipResolver'])
 			->getMock();
 	}
 

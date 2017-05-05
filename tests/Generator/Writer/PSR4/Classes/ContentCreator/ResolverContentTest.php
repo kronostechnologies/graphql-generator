@@ -9,6 +9,7 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
@@ -41,6 +42,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->_resolverContent = new ResolverContent();
 		$this->_formatter = new StubFormatter();
+		$this->_formatter->setInterpretedTypesStore($this->createMock(InterpretedTypesStore::class));
 	}
 
 	public function test_GivenScalarGeneratorType_getContent_WontContainResolve() {

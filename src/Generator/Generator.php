@@ -57,6 +57,7 @@ class Generator implements LoggerAwareInterface {
 		foreach($this->_context->ast->definitions as $astDefinition) {
 			$interpretedType = $this->getInterpretedTypeFromAST($astDefinition);
 			$this->_interpretedTypesStore->registerInterpretedType($interpretedType);
+			$this->logger->info("Acknowledged type {$interpretedType->getName()}");
 		}
 
 		foreach ($this->_interpretedTypesStore->getInterpretedTypes() as $interpretedType) {

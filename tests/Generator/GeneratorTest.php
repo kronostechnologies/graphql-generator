@@ -76,6 +76,8 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_interpreterMock = $this->createMock(ScalarInterpreter::class);
 		$this->_interpreterMock->method('generateType')->willReturn(new ScalarInterpretedType());
+
+		$this->_factory->method('getCorrectInterpreter')->willReturn($this->_interpreterMock);
 	}
 
 	public function test_GivenContext_generateClasses_WillLog() {

@@ -25,7 +25,7 @@ class TypeDeclarationFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_stubFormatter = $this->getMockBuilder(StubFormatter::class)
-			->setMethods(['getFieldTypeDeclaration', 'getFieldTypeDeclarationNonPrimaryType', 'getResolveFragment', 'isScalarOrEnumType'])
+			->setMethods(['getFieldTypeDeclaration', 'getFieldTypeDeclarationNonPrimaryType', 'getResolveFragment', 'canInterpretedTypeSkipResolver'])
 			->getMock();
 	}
 

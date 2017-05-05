@@ -153,7 +153,7 @@ class StubFormatter {
 	 * @param string $typeName
 	 * @return bool
 	 */
-	public function isScalarOrEnumType($typeName) {
+	public function canInterpretedTypeSkipResolver($typeName) {
 		$interpretedType = $this->getInterpretedTypeStore()->getInterpretedTypeByName($typeName);
 
 		return
