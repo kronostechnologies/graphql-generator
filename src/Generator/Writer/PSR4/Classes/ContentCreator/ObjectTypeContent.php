@@ -47,7 +47,7 @@ class ObjectTypeContent extends BaseContentCreator {
 		$resolverName = $this->getFragmentGenerator()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
 
 		$contentAsLines[] = "public function __construct() {";
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class])) {
+		if ($this->isResolverNecessary()) {
 			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
 		}
 
@@ -71,7 +71,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class])) {
+		if ($this->isResolverNecessary()) {
 			$variableDeclarationsAsLines[] = "public \$resolver;";
 		}
 
@@ -116,5 +116,9 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function getParentClassName() {
 		return $this->getObjectTypeClass()->getParentClassName();
+	}
+
+	protected function isResolverNecessary() {
+		return in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
 	}
 }
