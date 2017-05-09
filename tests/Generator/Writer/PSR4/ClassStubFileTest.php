@@ -11,12 +11,17 @@ use PHPUnit_Framework_MockObject_MockObject;
 class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 	const STUB_FILE_LINE_1 = "FirstLine;";
 	const STUB_FILE_LINE_2 = "namespace LocalNamespace;";
-	const STUB_FILE_LINE_3 = "class ClassName extends ParentClass {";
-	const STUB_FILE_LINE_4 = "// @generate:Variables";
+	const STUB_FILE_LINE_3 = "@ClassQualifier ClassName extends ParentClass {";
+	const STUB_FILE_LINE_4 = "// @generate:UsedTraits";
+	const STUB_FILE_LINE_5 = "// @generate:Variables";
 
 	const NAMESPACE_NEW = "TestNamespace";
 	const CLASS_NEW = "NewClass";
 	const EXTENDS_CLASS_NEW = "NewParentClass";
+	const CLASS_QUALIFIER_NEW = "class";
+
+	const USED_TRAIT_NEW_1 = "ATrait";
+	const USED_TRAIT_NEW_2 = "ASecondTrait";
 
 	const VARIABLES_DECLARATIONS = "var aVariable = 123;";
 
@@ -51,16 +56,28 @@ class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
 	}
 
+	public function test_GivenStubFile_getClassQualifierLine_WillReturnRightLine() {
+		$retVal = $this->_givenStubFile->getClassQualifierLine();
+
+		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
+	}
+
 	public function test_GivenStubFile_getExtendsClassNameLine_WillReturnRightLine() {
 		$retVal = $this->_givenStubFile->getExtendsClassNameLine();
 
 		$this->assertEquals(self::STUB_FILE_LINE_3, $retVal);
 	}
 
+	public function test_GivenStubFile_getUsedTraitsLine_WillReturnRightLine() {
+		$retVal = $this->_givenStubFile->getUsedTraitsLine();
+
+		$this->assertEquals(self::STUB_FILE_LINE_4, $retVal);
+	}
+
 	public function test_GivenStubFile_getVariablesDeclarationLine_WillReturnRightLine() {
 		$retVal = $this->_givenStubFile->getVariablesDeclarationLine();
 
-		$this->assertEquals(self::STUB_FILE_LINE_4, $retVal);
+		$this->assertEquals(self::STUB_FILE_LINE_5, $retVal);
 	}
 
 
@@ -85,11 +102,37 @@ class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(self::CLASS_NEW, $retVal);
 	}
 
+	public function test_GivenStubFile_writeClassQualifier_WillReplaceRightLine() {
+		$this->_givenStubFile->writeClassQualifier(self::CLASS_QUALIFIER_NEW);
+		$retVal = $this->_givenStubFile->getFileContent();
+
+		$this->assertContains(self::CLASS_QUALIFIER_NEW, $retVal);
+	}
+
 	public function test_GivenStubFile_writeExtendsClassName_WillReplaceRightLine() {
 		$this->_givenStubFile->writeExtendsClassName(self::EXTENDS_CLASS_NEW);
 		$retVal = $this->_givenStubFile->getFileContent();
 
 		$this->assertContains(self::EXTENDS_CLASS_NEW, $retVal);
+	}
+
+	public function test_GivenStubFileNoTrait_writeUsedTraits_WillReplaceRightLine() {
+		$givenTraits = [];
+
+		$this->_givenStubFile->writeUsedTraits($givenTraits);
+		$retVal = $this->_givenStubFile->getFileContent();
+
+		$this->assertNotContains(self::STUB_FILE_LINE_4, $retVal);
+	}
+
+	public function test_GivenStubFileTwoTraits_writeUsedTraits_WillReplaceRightLine() {
+		$givenTraits = [self::USED_TRAIT_NEW_1, self::USED_TRAIT_NEW_2];
+
+		$this->_givenStubFile->writeUsedTraits($givenTraits);
+		$retVal = $this->_givenStubFile->getFileContent();
+
+		$this->assertContains(self::USED_TRAIT_NEW_1, $retVal);
+		$this->assertContains(self::USED_TRAIT_NEW_2, $retVal);
 	}
 
 	public function test_GivenStubFile_writeVariablesDeclarations_WillReplaceRightLine() {

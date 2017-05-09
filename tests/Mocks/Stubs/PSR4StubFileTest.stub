@@ -1,4 +1,5 @@
 FirstLine;
 namespace LocalNamespace;
-class ClassName extends ParentClass {
+@ClassQualifier ClassName extends ParentClass {
+// @generate:UsedTraits
 // @generate:Variables

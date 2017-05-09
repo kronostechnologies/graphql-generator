@@ -45,7 +45,8 @@ class GenerateClassesCommand extends Command {
 			->addOption("formatter-use-tabs", "ft", null, "Optional. Output formatter will use tabs instead of spaces.")
 			->addOption("formatter-indent-spaces", "fi", InputArgument::OPTIONAL, "Optional. If formatter isn't using tabs, number of spaces per indent block.", 4)
 			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",")
-			->addOption("formatter-optimize-enums", null, null, "Optional. If enabled, enum constants will be assigned integer values instead of string values.");
+			->addOption("formatter-optimize-enums", null, null, "Optional. If enabled, enum constants will be assigned integer values instead of string values.")
+			->addOption("formatter-detailed-enums", null, null, "Optional. If enabled, enum values will be forcefully defined in their long form.");
 
 		foreach(self::getWriterMappings() as $mapping) {
 			/** @var WriterContext $context */
@@ -74,7 +75,8 @@ class GenerateClassesCommand extends Command {
 			$input->getOption('formatter-line-merge'),
 			$this->generateWriterTypeFormatter($writerName),
             true,
-            $input->getOption('formatter-optimize-enums')
+            $input->getOption('formatter-optimize-enums'),
+			$input->getOption('formatter-detailed-enums')
 		);
 		$writerContext->formatter = $genContext->formatter;
 		$genContext->writer = $this->generateWriter($writerName, $writerContext);
