@@ -45,6 +45,24 @@ class EnumValueFragmentGenerator implements FragmentGeneratorInterface, Variable
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
+		if ($this->getFormatter()->longFormEnums || !empty($this->getEnumValue()->getDescription())) {
+			return $this->getLongTypeDefinition();
+		}
+
+		return $this->getShortTypeDefinition();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getShortTypeDefinition() {
+		return "self::" . self::ENUM_VAL_PREFIX . $this->getName();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getLongTypeDefinition() {
 		$formattedDescription = $this->getDescriptionFragment(
 			$this->getFormatter(),
 			$this->getEnumValue()->getDescription()
