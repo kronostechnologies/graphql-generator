@@ -59,6 +59,12 @@ class ResolverContent extends BaseContentCreator {
             $contentAsLines[] = "function resolve(\$value, \$context, \$info) { /** ToDo: Implement */ }";
         }
 
+        if ($this->getFragmentGenerator() instanceof ScalarFragmentGenerator) {
+			$contentAsLines[] = "public function serialize(\$value) { /** ToDo: Implement */ }";
+			$contentAsLines[] = "public function parseValue(\$value) { /** ToDo: Implement */ }";
+			$contentAsLines[] = "public function parseLiteral(\$value) { /** ToDo: Implement */ }";
+        }
+
 		if($this->getFragmentGenerator() instanceof FieldsFetchableInterface) {
 			/** @var InterfaceFragmentGenerator|TypeDeclarationFragmentGenerator $typeGenerator */
 			$typeGenerator = $this->getFragmentGenerator();

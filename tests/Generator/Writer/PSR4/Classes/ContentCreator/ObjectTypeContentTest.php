@@ -94,7 +94,7 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 
 		$retVal = $this->_objectTypeContent->getContent();
 
-		$this->assertNotContains("\$this->resolver = \$resolverFactory->", $retVal);
+		$this->assertContains("\$this->resolver = \$resolverFactory->", $retVal);
 	}
 
 	public function test_GivenEnumGeneratorType_getContent_WillContainParentComplexConstructor() {

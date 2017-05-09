@@ -4,7 +4,6 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
-use GraphQL\Type\Definition\ScalarType;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -12,13 +11,6 @@ use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\Input;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Scalar;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Types\Union;
 use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 
@@ -54,11 +46,9 @@ class ObjectTypeContent extends BaseContentCreator {
 		$contentAsLines = [];
 		$resolverCreationFragment = sprintf(ClassComposer::RESOLVER_FACTORY_CREATION, $this->getFragmentGenerator()->getName());
 
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
-			$contentAsLines[] = "public function __construct(\$resolverFactory) {";
+		$contentAsLines[] = "public function __construct(\$resolverFactory) {";
+		if ($this->isResolverNecessary()) {
 			$contentAsLines[] = " \$this->resolver = {$resolverCreationFragment};";
-		} else {
-			$contentAsLines[] = "public function __construct() {";
 		}
 
 		if (get_class($this->getFragmentGenerator()) == ScalarFragmentGenerator::class) {
@@ -81,7 +71,7 @@ class ObjectTypeContent extends BaseContentCreator {
 	public function getVariables() {
 		$variableDeclarationsAsLines = [];
 
-		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
+		if ($this->isResolverNecessary()) {
 			$variableDeclarationsAsLines[] = "public \$resolver;";
 		}
 
@@ -126,5 +116,9 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function getParentClassName() {
 		return $this->getObjectTypeClass()->getParentClassName();
+	}
+
+	protected function isResolverNecessary() {
+		return in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
 	}
 }
