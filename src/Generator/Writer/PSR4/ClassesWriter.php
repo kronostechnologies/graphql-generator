@@ -56,6 +56,8 @@ class ClassesWriter {
 		$this->writeVariables($contentCreator, $classFormatter, $stubFile);
 		$this->writeDependencies($class, $stubFile);
 		$this->writeNamespace($contentCreator, $stubFile);
+		$this->writeClassQualifier($class, $stubFile);
+		$this->writeUsedTraits($class, $stubFile);
 
 		$stubFile->writeClassName($contentCreator->getClassName());
 		$stubFile->writeExtendsClassName($contentCreator->getParentClassName());
@@ -134,6 +136,22 @@ class ClassesWriter {
 		else {
 			$stubFile->writeNamespace($contentCreator->getNamespace());
 		}
+	}
+
+	/**
+	 * @param SingleClass $class
+	 * @param ClassStubFile $stubFile
+	 */
+	protected function writeClassQualifier(SingleClass $class, ClassStubFile $stubFile) {
+		$stubFile->writeClassQualifier($class->getClassQualifier());
+	}
+
+	/**
+	 * @param SingleClass SingleClass $class
+	 * @param ClassStubFile ClassStubFile $stubFile
+	 */
+	protected function writeUsedTraits(SingleClass $class, ClassStubFile $stubFile) {
+		$stubFile->writeUsedTraits($class->getUsedTraits());
 	}
 
 	/**

@@ -9,12 +9,13 @@ use GraphQLGen\Generator\FragmentGenerators\DescriptionFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\NameFragmentTrait;
 use GraphQLGen\Generator\FragmentGenerators\Nested\TypeDeclarationFieldFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 
-class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, DependentFragmentGeneratorInterface, FieldsFetchableInterface {
+class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, DependentFragmentGeneratorInterface, FieldsFetchableInterface, InterfacesDependableInterface {
 	use FormatterDependantGeneratorTrait, NameFragmentTrait, DescriptionFragmentTrait;
 
 	/**
@@ -43,10 +44,10 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 	 * @return string
 	 */
 	protected function getInterfacesFragment() {
-		if (!empty($this->getTypeDeclaration()->getInterfacesNames())) {
+		if (!empty($this->getInterfaces())) {
 			$interfaceNamesFormatted = array_map(function ($interfaceName) {
 				return $this->_formatter->getFieldTypeDeclarationNonPrimaryType($interfaceName);
-			}, $this->getTypeDeclaration()->getInterfacesNames());
+			}, $this->getInterfaces());
 
 			$joinedInterfaceNames = implode(", ", $interfaceNamesFormatted);
 
@@ -61,7 +62,7 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 	 * @return string[]
 	 */
 	public function getDependencies() {
-		$dependencies = $this->getTypeDeclaration()->getInterfacesNames();
+		$dependencies = $this->getInterfaces();
 
 		foreach($this->getTypeDeclaration()->getFields() as $field) {
 			$fieldDependencies = $field->getFieldType()->getDependencies();
@@ -130,5 +131,12 @@ class TypeDeclarationFragmentGenerator implements FragmentGeneratorInterface, De
 	 */
 	public function getFields() {
 		return $this->getTypeDeclaration()->getFields();
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getInterfaces() {
+		return $this->getTypeDeclaration()->getInterfacesNames();
 	}
 }

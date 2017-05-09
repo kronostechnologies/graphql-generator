@@ -15,6 +15,8 @@ use GraphQLGen\Generator\Writer\StubFile;
 class ClassStubFile extends StubFile {
 	const DUMMY_CLASSNAME = "ClassName";
 	const DUMMY_NAMESPACE = "LocalNamespace";
+	const CLASS_QUALIFIER = "@ClassQualifier";
+	const USED_TRAITS = "// @generate:UsedTraits";
 	const VARIABLES_DECLARATION = "// @generate:Variables";
 	const EXTENDS_CLASSNAME = "ParentClass";
 
@@ -47,6 +49,20 @@ class ClassStubFile extends StubFile {
 	}
 
 	/**
+	 * @return null|string
+	 */
+	public function getClassQualifierLine() {
+		return $this->getLineWithText(self::CLASS_QUALIFIER);
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getUsedTraitsLine() {
+		return $this->getLineWithText(self::USED_TRAITS);
+	}
+
+	/**
 	 * @param string $namespaceValue
 	 */
 	public function writeNamespace($namespaceValue) {
@@ -76,5 +92,20 @@ class ClassStubFile extends StubFile {
 	 */
 	public function writeExtendsClassName($className) {
 		$this->replaceTextInStub(ClassStubFile::EXTENDS_CLASSNAME, $className);
+	}
+
+	/**
+	 * @param string $classQualifier
+	 */
+	public function writeClassQualifier($classQualifier) {
+		$this->replaceTextInStub(ClassStubFile::CLASS_QUALIFIER, $classQualifier);
+	}
+
+	/**
+	 * @param string[] $usedTraits
+	 */
+	public function writeUsedTraits($usedTraits) {
+		$usedTraitsJoined = implode(", ", $usedTraits);
+		$this->replaceTextInStub(ClassStubFile::USED_TRAITS, ($usedTraitsJoined ? "use $usedTraitsJoined;" : ""));
 	}
 }

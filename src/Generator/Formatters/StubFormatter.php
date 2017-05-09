@@ -4,6 +4,10 @@
 namespace GraphQLGen\Generator\Formatters;
 
 
+use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
+use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 
@@ -53,6 +57,7 @@ class StubFormatter {
 		$this->arrayFormatter = new GeneratorArrayFormatter($useSpaces, $tabSize);
 		$this->optimizeEnums = $optimizeEnums;
 		$this->longFormEnums = $longFormEnums;
+		$this->_interpretedTypesStore = new InterpretedTypesStore();
 	}
 
 	/**
@@ -148,5 +153,36 @@ class StubFormatter {
 		$commaSplitVals = array_filter($fragments);
 
 		return implode(",", $commaSplitVals);
+	}
+
+	/**
+	 * @param string $typeName
+	 * @return bool
+	 */
+	public function canInterpretedTypeSkipResolver($typeName) {
+		$interpretedType = $this->getInterpretedTypeStore()->getInterpretedTypeByName($typeName);
+
+		return
+			($interpretedType instanceof ScalarInterpretedType) ||
+			($interpretedType instanceof EnumInterpretedType);
+	}
+
+	/**
+	 * @var InterpretedTypesStore
+	 */
+	protected $_interpretedTypesStore;
+
+	/**
+	 * @param InterpretedTypesStore $interpretedTypesStore
+	 */
+	public function setInterpretedTypesStore($interpretedTypesStore) {
+		$this->_interpretedTypesStore = $interpretedTypesStore;
+	}
+
+	/**
+	 * @return InterpretedTypesStore
+	 */
+	public function getInterpretedTypeStore() {
+		return $this->_interpretedTypesStore;
 	}
 }

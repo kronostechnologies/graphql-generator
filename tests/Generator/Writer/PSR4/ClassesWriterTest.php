@@ -16,7 +16,10 @@ use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 	const CLASS_NAME = 'ClassNameDummy';
+	const CLASS_QUALIFIER = 'class';
 	const PARENT_CLASS_NAME = 'AParentClass';
+	const USED_TRAIT_1 = 'FirstTrait';
+	const USED_TRAIT_2 = 'SecondTrait';
 	/**
 	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -70,6 +73,8 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_singleClassMock = $this->createMock(ObjectType::class);
 		$this->_singleClassMock->method('getContentCreator')->willReturn($this->_contentCreator);
 		$this->_singleClassMock->method('getDependencies')->willReturn([]);
+		$this->_singleClassMock->method('getClassQualifier')->willReturn(self::CLASS_QUALIFIER);
+		$this->_singleClassMock->method('getUsedTraits')->willReturn([self::USED_TRAIT_1, self::USED_TRAIT_2]);
 
 		$this->_classFormatter = $this->createMock(ClassFormatter::class);
 
@@ -177,6 +182,22 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 		$class = $this->GivenSingleClass();
 
 		$this->_stubFile->expects($this->once())->method('writeExtendsClassName')->with(self::PARENT_CLASS_NAME);
+
+		$this->_classesWriter->writeIndividualClass($class);
+	}
+
+	public function test_GivenSingleClass_writeIndividualClass_WillWriteUsedTraits() {
+		$class = $this->GivenSingleClass();
+
+		$this->_stubFile->expects($this->once())->method('writeUsedTraits')->with([self::USED_TRAIT_1, self::USED_TRAIT_2]);
+
+		$this->_classesWriter->writeIndividualClass($class);
+	}
+
+	public function test_GivenSingleClass_writeIndividualClass_WillWriteClassQualifier() {
+		$class = $this->GivenSingleClass();
+
+		$this->_stubFile->expects($this->once())->method('writeClassQualifier')->with(self::CLASS_QUALIFIER);
 
 		$this->_classesWriter->writeIndividualClass($class);
 	}
