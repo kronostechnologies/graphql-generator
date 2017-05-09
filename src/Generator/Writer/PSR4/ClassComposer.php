@@ -6,10 +6,12 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\FragmentGenerators\DependentFragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 
 /**
  * Generates individual classes entities.
@@ -20,9 +22,13 @@ use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 class ClassComposer {
 	const DTO_CLASS_NAME_SUFFIX = 'DTO';
 	const RESOLVER_CLASS_NAME_SUFFIX = 'Resolver';
+	const RESOLVER_FACTORY = 'ResolverFactory';
 	const TYPE_DEFINITION_CLASS_NAME_SUFFIX = 'Type';
 	const TYPE_STORE_CLASS_NAME = 'TypeStore';
 	const TYPE_CLASS_NAME = 'Type';
+	const RESOLVER_FACTORY_CONSTRUCTOR_NAME = '$resolverFactory';
+	const RESOLVER_FACTORY_CREATION = self::RESOLVER_FACTORY_CONSTRUCTOR_NAME . '->create%sResolver()';
+	const INTERFACE_TRAIT_SUFFIX = 'Trait';
 
 	/**
 	 * @var ClassMapper
@@ -79,7 +85,7 @@ class ClassComposer {
 		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
 
 		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator) {
-			$typeDefinitionClass->addDependency($fragmentGenerator->getName() . self::RESOLVER_CLASS_NAME_SUFFIX);
+			$this->getClassMapper()->addResolverFactoryFragment($fragmentGenerator);
 		}
 
 		$typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);
@@ -116,9 +122,45 @@ class ClassComposer {
 	public function generateDTOForFragmentGenerator(FragmentGeneratorInterface $fragmentGenerator) {
 		// Create DTO class
 		$dtoClass = $this->createConfiguredDTOClass($fragmentGenerator);
+		$dtoClass->setClassQualifier('class');
+
+		// Generate trait DTO for interface
+		if ($fragmentGenerator instanceof InterfaceFragmentGenerator) {
+			$traitDTOClass = $this->getTraitDTOForInterface($fragmentGenerator);
+
+			// Map base DTO class to trait
+			$dtoClass->addUsedTrait($traitDTOClass->getClassName());
+			$dtoClass->disableContent();
+
+			// Map trait class
+			$this->getClassMapper()->mapDependencyNameToClass($traitDTOClass->getClassName(), $traitDTOClass);
+		}
+
+		// Add dependencies if normal class
+		if ($fragmentGenerator instanceof InterfacesDependableInterface) {
+			/** @var DependentFragmentGeneratorInterface $fragmentGenerator */
+			foreach ($fragmentGenerator->getInterfaces() as $interface) {
+				$traitClassName = $interface . ClassComposer::INTERFACE_TRAIT_SUFFIX;
+
+				$dtoClass->addUsedTrait($traitClassName);
+				$dtoClass->addDependency($traitClassName);
+			}
+		}
 
 		// Map class
 		$this->getClassMapper()->mapDependencyNameToClass($dtoClass->getClassName(), $dtoClass);
+	}
+
+	/**
+	 * @param InterfaceFragmentGenerator $interfaceFragmentGenerator
+	 * @return Classes\DTO
+	 */
+	public function getTraitDTOForInterface(InterfaceFragmentGenerator $interfaceFragmentGenerator) {
+		// Create DTO class
+		$dtoClass = $this->createConfiguredTraitDTOClass($interfaceFragmentGenerator);
+		$dtoClass->setClassQualifier('trait');
+
+		return $dtoClass;
 	}
 
 	/**
@@ -127,6 +169,17 @@ class ClassComposer {
 	 */
 	protected function createConfiguredDTOClass(FragmentGeneratorInterface $fragmentGenerator) {
 		$dtoClass = $this->getFactory()->createDTOClassWithFragmentGenerator($fragmentGenerator);
+		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($fragmentGenerator));
+
+		return $dtoClass;
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return Classes\DTO
+	 */
+	protected function createConfiguredTraitDTOClass(FragmentGeneratorInterface $fragmentGenerator) {
+		$dtoClass = $this->getFactory()->createTraitDTOClassWithFragmentGenerator($fragmentGenerator);
 		$dtoClass->setNamespace($this->getClassMapper()->getDTONamespaceFromGenerator($fragmentGenerator));
 
 		return $dtoClass;
@@ -143,12 +196,21 @@ class ClassComposer {
 	public function initializeTypeStore() {
 		// Create type store class
 		$typeStoreClass = $this->createConfiguredTypeStoreClass();
+		$typeStoreClass->addDependency(self::RESOLVER_FACTORY);
 
 		// Sets type store
 		$this->getClassMapper()->setTypeStore($typeStoreClass);
 
 		// Map class
 		$this->getClassMapper()->mapDependencyNameToClass($typeStoreClass->getClassName(), $typeStoreClass);
+	}
+
+	public function initializeResolverFactory() {
+		$resolverFactoryClass = $this->createConfiguredResolverFactoryClass();
+
+		$this->getClassMapper()->setResolverFactory($resolverFactoryClass);
+
+		$this->getClassMapper()->mapDependencyNameToClass($resolverFactoryClass->getClassName(), $resolverFactoryClass);
 	}
 
 	/**
@@ -159,6 +221,16 @@ class ClassComposer {
 		$typeStoreClass->setNamespace($this->getClassMapper()->getBaseNamespace());
 
 		return $typeStoreClass;
+	}
+
+	/**
+	 * @return ResolverFactory
+	 */
+	protected function createConfiguredResolverFactoryClass() {
+		$resolverFactoryClass = $this->getFactory()->createResolverFactoryClass();
+		$resolverFactoryClass->setNamespace($this->getClassMapper()->getResolverRootNamespace());
+
+		return $resolverFactoryClass;
 	}
 
 	/**

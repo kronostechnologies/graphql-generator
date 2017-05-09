@@ -8,6 +8,7 @@ use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class ClassesFactory {
@@ -88,6 +89,28 @@ class ClassesFactory {
 	public function createDTOClassWithFragmentGenerator($fragmentGenerator) {
 		$dtoClass = new DTO();
 		$dtoClass->setClassName($fragmentGenerator->getName() . ClassComposer::DTO_CLASS_NAME_SUFFIX);
+		$dtoClass->setFragmentGenerator($fragmentGenerator);
+
+		return $dtoClass;
+	}
+
+	/**
+	 * @return ResolverFactory
+	 */
+	public function createResolverFactoryClass() {
+		$resolverFactoryClass = new ResolverFactory();
+		$resolverFactoryClass->setClassName(ClassComposer::RESOLVER_FACTORY);
+
+		return $resolverFactoryClass;
+  }
+  
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return DTO
+	 */
+	public function createTraitDTOClassWithFragmentGenerator($fragmentGenerator) {
+		$dtoClass = new DTO();
+		$dtoClass->setClassName($fragmentGenerator->getName() . ClassComposer::INTERFACE_TRAIT_SUFFIX);
 		$dtoClass->setFragmentGenerator($fragmentGenerator);
 
 		return $dtoClass;

@@ -29,8 +29,9 @@ class InterfaceFieldFragmentGenerator implements FragmentGeneratorInterface  {
 		);
 		$typeDeclarationFragment = $this->getTypeDeclarationFragment($this->getFormatter(), $this->getInterfaceFieldType()->getFieldType());
 		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getInterfaceFieldType()->getFieldType(), $this->getName());
+		$args = $this->getArgsFragment();
 
-		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolver]);
+		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclarationFragment, $descriptionFragment, $resolver, $args]);
 
 		return "'{$this->getInterfaceFieldType()->getName()}' => [ {$vals}]";
 	}
@@ -47,6 +48,37 @@ class InterfaceFieldFragmentGenerator implements FragmentGeneratorInterface  {
 	 */
 	public function setInterfaceFieldType($interfaceFieldType) {
 		$this->_interfaceFieldType = $interfaceFieldType;
+	}
+
+	/**
+	 * @return FieldArgumentFragmentGenerator[]
+	 */
+	protected function getFieldArgumentsGenerators() {
+		return array_map(function ($fieldArgument) {
+			$enumValueGenerator = new FieldArgumentFragmentGenerator();
+			$enumValueGenerator->setFormatter($this->getFormatter());
+			$enumValueGenerator->setFieldArgumentType($fieldArgument);
+
+			return $enumValueGenerator;
+		}, $this->getInterfaceFieldType()->getArguments());
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getArgsFragment() {
+		$args = $this->getFieldArgumentsGenerators();
+
+		if (empty($args)) {
+			return "";
+		}
+
+		$argsTypeDefinitions = array_map(function (FieldArgumentFragmentGenerator $argumentGenerator) {
+			return $argumentGenerator->generateTypeDefinition();
+		}, $args);
+		$argsTypeDefinitionsJoined = implode(",", $argsTypeDefinitions);
+
+		return "'args' => [{$argsTypeDefinitionsJoined}]";
 	}
 
 	/**

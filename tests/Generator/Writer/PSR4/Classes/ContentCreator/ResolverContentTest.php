@@ -5,9 +5,11 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
+use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
@@ -32,8 +34,15 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $_resolverContent;
 
+	/**
+	 * @var StubFormatter
+	 */
+	protected $_formatter;
+
 	public function setUp() {
 		$this->_resolverContent = new ResolverContent();
+		$this->_formatter = new StubFormatter();
+		$this->_formatter->setInterpretedTypesStore($this->createMock(InterpretedTypesStore::class));
 	}
 
 	public function test_GivenScalarGeneratorType_getContent_WontContainResolve() {
@@ -149,6 +158,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$scalarTypeFragment = new ScalarFragmentGenerator();
 		$scalarTypeFragment->setScalarType($scalarType);
+		$scalarTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($scalarTypeFragment);
 	}
@@ -159,6 +169,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
+		$objectTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
@@ -177,6 +188,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
+		$objectTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
@@ -203,6 +215,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
+		$objectTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
@@ -221,6 +234,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$objectTypeFragment = new TypeDeclarationFragmentGenerator();
 		$objectTypeFragment->setTypeDeclaration($objectType);
+		$objectTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($objectTypeFragment);
 	}
@@ -239,6 +253,7 @@ class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 
 		$interfaceTypeFragment = new InterfaceFragmentGenerator();
 		$interfaceTypeFragment->setInterfaceType($interfaceType);
+		$interfaceTypeFragment->setFormatter($this->_formatter);
 
 		$this->_resolverContent->setFragmentGenerator($interfaceTypeFragment);
 	}

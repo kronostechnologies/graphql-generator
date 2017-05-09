@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Writer\PSR4;
 
 use Exception;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -16,6 +17,7 @@ use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -46,9 +48,33 @@ class ClassMapper {
 	 */
 	protected $_resolvedDependencies;
 
+	/**
+	 * @var ResolverFactory
+	 */
+	protected $_resolverFactory;
+
 	public function __construct() {
 		$this->_classes = [];
 		$this->_resolvedDependencies = [];
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return string[]
+	 */
+	public function getUsedTraitsForFragmentGenerator($fragmentGenerator) {
+		$usedTraits = [];
+
+		if ($fragmentGenerator instanceof InterfacesDependableInterface) {
+			/** @var InterfacesDependableInterface $fragmentGenerator */
+			$interfaces = array_map(function ($interfaceName) {
+				return $interfaceName . ClassComposer::INTERFACE_TRAIT_SUFFIX;
+			}, $fragmentGenerator->getInterfaces());
+
+			$usedTraits = array_merge($usedTraits, $interfaces);
+		}
+
+		return $usedTraits;
 	}
 
 	public function setInitialMappings() {
@@ -76,6 +102,20 @@ class ClassMapper {
 	}
 
 	/**
+	 * @return ResolverFactory
+	 */
+	public function getResolverFactory() {
+		return $this->_resolverFactory;
+	}
+
+	/**
+	 * @param ResolverFactory $resolverFactory
+	 */
+	public function setResolverFactory($resolverFactory) {
+		$this->_resolverFactory = $resolverFactory;
+	}
+
+	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
@@ -100,8 +140,16 @@ class ClassMapper {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getResolverRootNamespace() {
+		return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers");
+	}
+
+	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getResolverNamespaceFromGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
@@ -141,6 +189,26 @@ class ClassMapper {
 				return "UnionObjectType";
 			default:
 				throw new Exception("getParentDependencyForFragmentGenerator not supported for type " . get_class($type));
+		}
+	}
+
+	/**
+	 * @param FragmentGeneratorInterface $type
+	 * @return string
+	 * @throws Exception
+	 */
+	public function getClassQualifierForFragmentGenerator(FragmentGeneratorInterface $type) {
+		switch(get_class($type)) {
+			case TypeDeclarationFragmentGenerator::class:
+			case ScalarFragmentGenerator::class:
+			case EnumFragmentGenerator::class:
+			case InputFragmentGenerator::class:
+			case UnionFragmentGenerator::class:
+				return 'class';
+			case InterfaceFragmentGenerator::class:
+				return 'trait';
+			default:
+				throw new Exception("getClassQualifierForFragmentGenerator not supported for type " . get_class($type));
 		}
 	}
 
@@ -246,7 +314,11 @@ class ClassMapper {
 		}
 	}
 
-	public function addTypestoreDependency($dependencyName) {
-
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 */
+	public function addResolverFactoryFragment($fragmentGenerator) {
+		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
+		$this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
 	}
 }

@@ -4,10 +4,18 @@
 namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
+use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
 class TypeStoreContent extends BaseContentCreator {
+	const RESOLVER_FACTORY_VAR = '$ResolverFactory';
+	const RESOLVER_FACTORY_SETTER_FUNC = 'public static function setResolverFactory($resolverFactory) { self::' . self::RESOLVER_FACTORY_VAR . ' = $resolverFactory; }';
+	const RESOLVER_FACTORY_GETTER_FUNC = 'public static function getResolverFactory() { return self::' . self::RESOLVER_FACTORY_VAR . '; }';
+
 	/**
 	 * @var TypeStore
 	 */
@@ -31,7 +39,7 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getContent() {
-		$lineSeparatedContent = [];
+		$lineSeparatedContent = [self::RESOLVER_FACTORY_GETTER_FUNC, self::RESOLVER_FACTORY_SETTER_FUNC];
 
 		foreach($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
 			$lineSeparatedContent[] = $this->getFunctionForType($typeToImplement);
@@ -44,7 +52,7 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getVariables() {
-		$lineSeparatedVariables = [];
+		$lineSeparatedVariables = [$this->getResolverFactoryVar()];
 
 		foreach($this->getTypeStoreClass()->getTypesToImplement() as $typeToImplement) {
 			$lineSeparatedVariables[] = $this->getVariableForType($typeToImplement);
@@ -68,11 +76,21 @@ class TypeStoreContent extends BaseContentCreator {
 	}
 
 	/**
+	 * @return string
+	 */
+	protected function getResolverFactoryVar() {
+		return "private static " . self::RESOLVER_FACTORY_VAR . ";";
+	}
+
+	/**
 	 * @param ObjectType $type
 	 * @return string
 	 */
 	protected function getFunctionForType(ObjectType $type) {
-		return "public static function {$type->getFragmentGenerator()->getName()}() { return self::\${$type->getFragmentGenerator()->getName()} ?: (self::\${$type->getFragmentGenerator()->getName()} = new {$type->getClassName()}()); }";
+		$requiresResolverFactory = in_array(get_class($type->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class]);
+		$constructorFragment = $requiresResolverFactory ? "self::" . self::RESOLVER_FACTORY_VAR : "";
+
+		return "public static function {$type->getFragmentGenerator()->getName()}() { return self::\${$type->getFragmentGenerator()->getName()} ?: (self::\${$type->getFragmentGenerator()->getName()} = new {$type->getClassName()}({$constructorFragment})); }";
 	}
 
 	/**

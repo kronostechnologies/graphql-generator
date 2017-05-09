@@ -17,6 +17,11 @@ class DTO extends SingleClass {
 	protected $_generatorType;
 
 	/**
+	 * @var bool
+	 */
+	protected $_renderContent = true;
+
+	/**
 	 * @return BaseContentCreator
 	 */
 	public function getContentCreator() {
@@ -46,6 +51,21 @@ class DTO extends SingleClass {
 	 */
 	public function setFragmentGenerator($generatorType) {
 		$this->_generatorType = $generatorType;
+	}
+
+	public function enableContent() {
+		$this->_renderContent = true;
+	}
+
+	public function disableContent() {
+		$this->_renderContent = false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function shouldRenderContent() {
+		return $this->_renderContent;
 	}
 
 }

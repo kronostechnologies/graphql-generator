@@ -52,6 +52,10 @@ class DTOContent extends BaseContentCreator {
 	 * @return string
 	 */
 	public function getVariables() {
+		if (!$this->getDTOClass()->shouldRenderContent()) {
+			return "";
+		}
+
 		$content = "";
 
 		if ($this->getFragmentGenerator() instanceof FieldsFetchableInterface) {
@@ -112,6 +116,4 @@ class DTOContent extends BaseContentCreator {
 	public function setFragmentGenerator($fragmentGenerator) {
 		$this->_typeGenerator = $fragmentGenerator;
 	}
-
-
 }

@@ -4,8 +4,7 @@ namespace LocalNamespace;
 
 // @generate:Dependencies
 
-class ClassName extends ParentClass {
-	// @generate:UsedTraits
+class ClassName {
     // @generate:Variables
 
     // @generate:Content

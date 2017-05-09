@@ -24,7 +24,7 @@ class InterfaceFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->_stubFormatter = $this->getMockBuilder(StubFormatter::class)
-			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment', 'getInterfaceResolveFragment'])
+			->setMethods(['getFieldTypeDeclaration', 'getResolveFragment', 'getInterfaceResolveFragment', 'canInterpretedTypeSkipResolver'])
 			->getMock();
 	}
 
