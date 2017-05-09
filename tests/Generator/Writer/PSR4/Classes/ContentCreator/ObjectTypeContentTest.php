@@ -49,14 +49,6 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('function __construct', $retVal);
 	}
 
-	public function test_GivenScalarGeneratorType_getContent_WillContainConstructorWithoutResolverFactory() {
-		$this->GivenScalarGeneratorType();
-
-		$retVal = $this->_objectTypeContent->getContent();
-
-		$this->assertNotContains('__construct($resolverFactory', $retVal);
-	}
-
 	public function test_GivenInterfaceGeneratorType_getContent_WillContainConstructorWithResolverFactory() {
 		$this->GivenInterfaceGeneratorType();
 

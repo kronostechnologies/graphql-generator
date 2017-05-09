@@ -9,6 +9,7 @@ use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\InterfacesDependableInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
@@ -84,7 +85,7 @@ class ClassComposer {
 	protected function setupTypeDefinitionClassDependencies($typeDefinitionClass) {
 		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
 
-		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator) {
+		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator) {
 			$this->getClassMapper()->addResolverFactoryFragment($fragmentGenerator);
 		}
 
