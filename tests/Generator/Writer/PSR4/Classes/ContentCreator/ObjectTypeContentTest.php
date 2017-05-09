@@ -49,6 +49,22 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('function __construct', $retVal);
 	}
 
+	public function test_GivenScalarGeneratorType_getContent_WillContainConstructorWithoutResolverFactory() {
+		$this->GivenScalarGeneratorType();
+
+		$retVal = $this->_objectTypeContent->getContent();
+
+		$this->assertNotContains('__construct($resolverFactory', $retVal);
+	}
+
+	public function test_GivenInterfaceGeneratorType_getContent_WillContainConstructorWithResolverFactory() {
+		$this->GivenInterfaceGeneratorType();
+
+		$retVal = $this->_objectTypeContent->getContent();
+
+		$this->assertContains('__construct($resolverFactory', $retVal);
+	}
+
 	public function test_GivenScalarGeneratorType_getContent_WillContainParentConstructor() {
 		$this->GivenScalarGeneratorType();
 
@@ -65,20 +81,20 @@ class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('parent::__construct();', $retVal);
 	}
 
-	public function test_GivenInterfaceGeneratorType_getContent_WillContainResolverNew() {
+	public function test_GivenInterfaceGeneratorType_getContent_WillContainInstanciation() {
 		$this->GivenInterfaceGeneratorType();
 
 		$retVal = $this->_objectTypeContent->getContent();
 
-		$this->assertContains("\$this->resolver = new", $retVal);
+		$this->assertContains("\$this->resolver = \$resolverFactory->", $retVal);
 	}
 
-	public function test_GivenScalarGeneratorType_getContent_WontContainResolverNew() {
+	public function test_GivenScalarGeneratorType_getContent_WontContainResolverInstanciation() {
 		$this->GivenScalarGeneratorType();
 
 		$retVal = $this->_objectTypeContent->getContent();
 
-		$this->assertNotContains("\$this->resolver = new", $retVal);
+		$this->assertNotContains("\$this->resolver = \$resolverFactory->", $retVal);
 	}
 
 	public function test_GivenEnumGeneratorType_getContent_WillContainParentComplexConstructor() {

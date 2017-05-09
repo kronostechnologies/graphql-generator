@@ -17,6 +17,7 @@ use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
 use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
 
@@ -46,6 +47,11 @@ class ClassMapper {
 	 * @var string[]
 	 */
 	protected $_resolvedDependencies;
+
+	/**
+	 * @var ResolverFactory
+	 */
+	protected $_resolverFactory;
 
 	public function __construct() {
 		$this->_classes = [];
@@ -96,6 +102,20 @@ class ClassMapper {
 	}
 
 	/**
+	 * @return ResolverFactory
+	 */
+	public function getResolverFactory() {
+		return $this->_resolverFactory;
+	}
+
+	/**
+	 * @param ResolverFactory $resolverFactory
+	 */
+	public function setResolverFactory($resolverFactory) {
+		$this->_resolverFactory = $resolverFactory;
+	}
+
+	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
 	 * @throws Exception
@@ -120,8 +140,16 @@ class ClassMapper {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getResolverRootNamespace() {
+		return PSR4Utils::joinAndStandardizeNamespaces($this->_baseNamespace, "Resolvers");
+	}
+
+	/**
 	 * @param FragmentGeneratorInterface $type
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getResolverNamespaceFromGenerator(FragmentGeneratorInterface $type) {
 		switch(get_class($type)) {
@@ -284,7 +312,11 @@ class ClassMapper {
 		}
 	}
 
-	public function addTypestoreDependency($dependencyName) {
-
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 */
+	public function addResolverFactoryFragment($fragmentGenerator) {
+		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
+		$this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
 	}
 }

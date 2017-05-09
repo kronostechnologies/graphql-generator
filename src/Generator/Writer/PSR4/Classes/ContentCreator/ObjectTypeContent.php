@@ -52,11 +52,13 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	public function getContent() {
 		$contentAsLines = [];
-		$resolverName = $this->getFragmentGenerator()->getName() . ClassComposer::RESOLVER_CLASS_NAME_SUFFIX;
+		$resolverCreationFragment = sprintf(ClassComposer::RESOLVER_FACTORY_CREATION, $this->getFragmentGenerator()->getName());
 
-		$contentAsLines[] = "public function __construct() {";
 		if (in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class])) {
-			$contentAsLines[] = " \$this->resolver = new {$resolverName}();";
+			$contentAsLines[] = "public function __construct(\$resolverFactory) {";
+			$contentAsLines[] = " \$this->resolver = {$resolverCreationFragment};";
+		} else {
+			$contentAsLines[] = "public function __construct() {";
 		}
 
 		if (get_class($this->getFragmentGenerator()) == ScalarFragmentGenerator::class) {

@@ -29,28 +29,12 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 		$this->_typeStoreContent->setTypeStoreClass($this->_typeStore);
 	}
 
-	public function test_GivenNoTypeToImplement_getContent_WillBeEmpty() {
-		$this->GivenNoTypeToImplement();
-
-		$retVal = $this->_typeStoreContent->getContent();
-
-		$this->assertEmpty($retVal);
-	}
-
 	public function test_GivenOneTypeToImplement_getContent_WillContainFunctionDefinition() {
 		$this->GivenOneTypeToImplement();
 
 		$retVal = $this->_typeStoreContent->getContent();
 
 		$this->assertContains("public static function", $retVal);
-	}
-
-	public function test_GivenNoTypeToImplement_getVariables_WillBeEmpty() {
-		$this->GivenNoTypeToImplement();
-
-		$retVal = $this->_typeStoreContent->getVariables();
-
-		$this->assertEmpty($retVal);
 	}
 
 	public function test_GivenNoTypeToImplement_getVariables_WillContainVariable() {
@@ -71,6 +55,30 @@ class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 		$this->_typeStore->expects($this->once())->method('getNamespace');
 
 		$this->_typeStoreContent->getNamespace();
+	}
+
+	public function test_GivenNoTypeToImplement_getVariables_WillContainResolverFactory() {
+		$this->GivenNoTypeToImplement();
+
+		$retVal = $this->_typeStoreContent->getVariables();
+
+		$this->assertContains(TypeStoreContent::RESOLVER_FACTORY_VAR, $retVal);
+	}
+
+	public function test_GivenNoTypeToImplement_getContent_WillContainResolverFactorySetter() {
+		$this->GivenNoTypeToImplement();
+
+		$retVal = $this->_typeStoreContent->getContent();
+
+		$this->assertContains(TypeStoreContent::RESOLVER_FACTORY_SETTER_FUNC, $retVal);
+	}
+
+	public function test_GivenNoTypeToImplement_getContent_WillContainResolverFactoryGetter() {
+		$this->GivenNoTypeToImplement();
+
+		$retVal = $this->_typeStoreContent->getContent();
+
+		$this->assertContains(TypeStoreContent::RESOLVER_FACTORY_GETTER_FUNC, $retVal);
 	}
 
 	public function test_GivenNothing_getParentClassName_WillBeEmpty() {

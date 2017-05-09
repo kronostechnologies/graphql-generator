@@ -98,6 +98,12 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_psr4Writer->initialize();
 	}
 
+	public function test_GivenSettings_initialize_WillGenerateResolverFactory() {
+		$this->_classComposer->expects($this->once())->method('initializeResolverFactory');
+
+		$this->_psr4Writer->initialize();
+	}
+
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGetProperStubFileName() {
 		$scalarType = $this->GivenScalarType();
 
