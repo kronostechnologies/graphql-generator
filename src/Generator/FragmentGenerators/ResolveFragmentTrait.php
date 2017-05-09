@@ -16,7 +16,7 @@ trait ResolveFragmentTrait {
 	 * @internal param InputFieldInterpretedType $field
 	 */
 	protected function getResolveFragment($formatter, $fieldType, $fieldName) {
-		if (!$fieldType->isPrimaryType()) {
+		if (!$fieldType->isPrimaryType() && !$formatter->canInterpretedTypeSkipResolver($fieldType->getTypeName())) {
 			return "'resolve' => " . $formatter->getResolveFragment($fieldName);
 		}
 
