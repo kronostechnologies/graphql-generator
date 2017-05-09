@@ -93,4 +93,16 @@ class ClassesFactory {
 		return $dtoClass;
 	}
 
+	/**
+	 * @param FragmentGeneratorInterface $fragmentGenerator
+	 * @return DTO
+	 */
+	public function createTraitDTOClassWithFragmentGenerator($fragmentGenerator) {
+		$dtoClass = new DTO();
+		$dtoClass->setClassName($fragmentGenerator->getName() . ClassComposer::INTERFACE_TRAIT_SUFFIX);
+		$dtoClass->setFragmentGenerator($fragmentGenerator);
+
+		return $dtoClass;
+	}
+
 }

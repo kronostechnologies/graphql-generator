@@ -4,7 +4,9 @@ namespace LocalNamespace;
 
 // @generate:Dependencies
 
-class ClassName {
+@ClassQualifier ClassName {
+	// @generate:UsedTraits
+	
     // @generate:Variables
 
     // @generate:Content

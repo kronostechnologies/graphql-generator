@@ -45,6 +45,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithNoFields_getVariables_WillBeEmpty() {
 		$this->GivenTypeGeneratorWithNoFields();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -53,6 +55,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithOneField_getVariables_WillContainDocComment() {
 		$this->GivenTypeGeneratorWithOneField();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -61,6 +65,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithOneField_getVariables_WillContainVariableDeclaration() {
 		$this->GivenTypeGeneratorWithOneField();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -69,6 +75,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithOneField_getVariables_WillContainFieldName() {
 		$this->GivenTypeGeneratorWithOneField();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -77,6 +85,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithOneField_getVariables_WillContainTranslatedType() {
 		$this->GivenTypeGeneratorWithOneField();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -85,6 +95,8 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_GivenTypeGeneratorWithOneNonPrimaryField_getVariables_WillContainType() {
 		$this->GivenTypeGeneratorWithOneNonPrimaryField();
+		$this->GivenClassMock();
+		$this->GivenContainsContent();
 
 		$retVal = $this->_dtoContent->getVariables();
 
@@ -173,6 +185,10 @@ class DTOContentTest extends \PHPUnit_Framework_TestCase {
 
 	protected function GivenClassMock() {
 		$this->_dtoContent->setDTOClass($this->_dtoClass);
+	}
+
+	protected function GivenContainsContent() {
+		$this->_dtoClass->method('shouldRenderContent')->willReturn(true);
 	}
 
 	protected function GivenClassName() {

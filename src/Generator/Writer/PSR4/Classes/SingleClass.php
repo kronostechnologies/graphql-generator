@@ -12,6 +12,11 @@ abstract class SingleClass {
 	/**
 	 * @var string
 	 */
+	protected $_classQualifier = 'class';
+
+	/**
+	 * @var string
+	 */
 	protected $_namespace;
 
 	/**
@@ -28,6 +33,11 @@ abstract class SingleClass {
 	 * @var string[]
 	 */
 	protected $_dependencies = [];
+
+	/**
+	 * @var string[]
+	 */
+	protected $_usedTraits = [];
 
 	/**
 	 * @var string[]
@@ -139,4 +149,48 @@ abstract class SingleClass {
 	 * @return string
 	 */
 	public abstract function getStubFileName();
+
+	/**
+	 * @return string
+	 */
+	public function getClassQualifier() {
+		return $this->_classQualifier;
+	}
+
+	/**
+	 * @param string $classQualifier
+	 */
+	public function setClassQualifier($classQualifier) {
+		$this->_classQualifier = $classQualifier;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getUsedTraits() {
+		return $this->_usedTraits;
+	}
+
+	/**
+	 * @param string[] $usedTraits
+	 */
+	public function setUsedTraits($usedTraits) {
+		$this->_usedTraits = $usedTraits;
+	}
+
+	/**
+	 * @param string $usedTrait
+	 */
+	public function addUsedTrait($usedTrait) {
+		$this->_usedTraits[] = $usedTrait;
+	}
+
+	/**
+	 * @param string $usedTrait
+	 */
+	public function removeUsedTrait($usedTrait) {
+		$this->_usedTraits = array_filter($this->_usedTraits, function ($currentUsedTrait) use ($usedTrait) {
+			return $currentUsedTrait !== $usedTrait;
+		});
+	}
 }
