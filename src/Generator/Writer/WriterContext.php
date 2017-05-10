@@ -72,6 +72,8 @@ class WriterContext {
 			strrpos($directory, "\\") !== strlen($directory) - 1) {
 			return $directory . "/";
 		}
+
+		return $directory;
 	}
 
 	/**
