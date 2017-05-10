@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\FragmentGenerators\DependentFragmentGeneratorInterface;
@@ -12,13 +12,13 @@ use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
 
 /**
  * Generates individual classes entities.
  *
  * Class ClassComposer
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
 class ClassComposer {
 	const DTO_CLASS_NAME_SUFFIX = 'DTO';

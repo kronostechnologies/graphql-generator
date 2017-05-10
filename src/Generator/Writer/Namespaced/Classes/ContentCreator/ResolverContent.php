@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 
 use Exception;
@@ -18,7 +18,7 @@ use GraphQLGen\Generator\Types\BaseTypeGenerator;
 use GraphQLGen\Generator\Types\InterfaceDeclaration;
 use GraphQLGen\Generator\Types\Type;
 use GraphQLGen\Generator\Types\Union;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
 
 class ResolverContent extends BaseContentCreator {
 	/**

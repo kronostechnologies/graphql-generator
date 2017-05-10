@@ -8,9 +8,9 @@ use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerato
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
+use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\DTOContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
 
 class DTOContentTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'AType';

@@ -7,13 +7,13 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
-use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
-use GraphQLGen\Generator\Writer\PSR4\ClassesWriter;
-use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
-use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
-use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Generator\Writer\Namespaced\ClassesWriter;
+use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
@@ -21,14 +21,14 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	const BASE_NS = 'A\\Base\\Namespace';
 
 	/**
-	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
+	 * @var NamespacedWriterContext|PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $_psr4WriterContext;
+	protected $_nsWriterContext;
 
 	/**
-	 * @var PSR4Writer
+	 * @var NamespacedWriter
 	 */
-	protected $_psr4Writer;
+	protected $_nsWriter;
 
 	/**
 	 * @var ClassComposer|PHPUnit_Framework_MockObject_MockObject
@@ -51,7 +51,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 	protected $_typeStore;
 
 	/**
-	 * @var PSR4Writer|PHPUnit_Framework_MockObject_MockObject
+	 * @var NamespacedWriter|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_classesWriter;
 
@@ -63,8 +63,8 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_classComposer = $this->createMock(ClassComposer::class);
 		$this->_classComposer->method('getClassMapper')->willReturn($this->_classMapper);
 
-		$this->_psr4WriterContext = $this->createMock(PSR4WriterContext::class);
-		$this->_psr4WriterContext->formatter = new StubFormatter();
+		$this->_nsWriterContext = $this->createMock(NamespacedWriterContext::class);
+		$this->_nsWriterContext->formatter = new StubFormatter();
 
 		$this->_factory = $this->createMock(ClassesFactory::class);
 		$this->_factory->method('createClassComposer')->willReturn($this->_classComposer);
@@ -72,36 +72,36 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 		$this->_factory->method('createClassMapper')->willReturn($this->_classMapper);
 		$this->_factory->method('createClassesWriter')->willReturn($this->_classesWriter);
 
-		$this->_psr4Writer = new PSR4Writer($this->_psr4WriterContext, $this->_factory);
-		$this->_psr4Writer->setClassComposer($this->_classComposer);
+		$this->_nsWriter = new NamespacedWriter($this->_nsWriterContext, $this->_factory);
+		$this->_nsWriter->setClassComposer($this->_classComposer);
 	}
 
 
 	public function test_GivenNothing_initialize_WillCreateDirectoryStructure() {
-		$this->_psr4WriterContext->expects($this->any())->method('createDirectoryIfNonExistant');
+		$this->_nsWriterContext->expects($this->any())->method('createDirectoryIfNonExistant');
 
-		$this->_psr4Writer->initialize();
+		$this->_nsWriter->initialize();
 	}
 
 	public function test_GivenSettings_initialize_WillSetClassMapper() {
-		$this->_psr4WriterContext->namespace = self::BASE_NS;
+		$this->_nsWriterContext->namespace = self::BASE_NS;
 
 		$this->_classMapper->expects($this->once())->method('setBaseNamespace')->with(self::BASE_NS);
 		$this->_classMapper->expects($this->once())->method('setInitialMappings');
 
-		$this->_psr4Writer->initialize();
+		$this->_nsWriter->initialize();
 	}
 
 	public function test_GivenSettings_initialize_WillGenerateTypeStore() {
 		$this->_classComposer->expects($this->once())->method('initializeTypeStore');
 
-		$this->_psr4Writer->initialize();
+		$this->_nsWriter->initialize();
 	}
 
 	public function test_GivenSettings_initialize_WillGenerateResolverFactory() {
 		$this->_classComposer->expects($this->once())->method('initializeResolverFactory');
 
-		$this->_psr4Writer->initialize();
+		$this->_nsWriter->initialize();
 	}
 
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGetProperStubFileName() {
@@ -109,7 +109,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_classComposer->expects($this->once())->method('generateTypeDefinitionForFragmentGenerator')->with($scalarType);
 
-		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
+		$this->_nsWriter->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenScalarType_generateFileForTypeGenerator_WillGenerateClass() {
@@ -117,7 +117,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_classComposer->expects($this->once())->method('generateTypeDefinitionForFragmentGenerator')->with($scalarType);
 
-		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
+		$this->_nsWriter->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateResolver() {
@@ -126,7 +126,7 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_classComposer->expects($this->once())->method('generateResolverForFragmentGenerator')->with($scalarType);
 
-		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
+		$this->_nsWriter->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenScalarTypeAndGeneratorSupportsResolver_generateFileForTypeGenerator_WillGenerateDTO() {
@@ -135,13 +135,13 @@ class PSR4WriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_classComposer->expects($this->once())->method('generateDTOForFragmentGenerator')->with($scalarType);
 
-		$this->_psr4Writer->generateFileForTypeGenerator($scalarType);
+		$this->_nsWriter->generateFileForTypeGenerator($scalarType);
 	}
 
 	public function test_GivenNothing_finalize_WillWriteClasses() {
 		$this->_classesWriter->expects($this->once())->method('writeClasses');
 
-		$this->_psr4Writer->finalize();
+		$this->_nsWriter->finalize();
 	}
 
 	protected function GivenScalarType() {

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\TypeStoreContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\TypeStoreContent;
 
 class TypeStore extends SingleClass {
 	const STUB_FILE = 'typestore.stub';

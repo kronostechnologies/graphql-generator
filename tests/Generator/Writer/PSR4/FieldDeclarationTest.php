@@ -6,7 +6,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\FieldDeclaration;
+use GraphQLGen\Generator\Writer\Namespaced\FieldDeclaration;
 
 class FieldDeclarationTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_NAME = "AFieldName";

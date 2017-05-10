@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
@@ -13,11 +13,11 @@ use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
  * Writer entry point.
  *
  * Class PSR4Writer
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
-class PSR4Writer implements GeneratorWriterInterface {
+class NamespacedWriter implements GeneratorWriterInterface {
 	/**
-	 * @var PSR4WriterContext
+	 * @var NamespacedWriterContext
 	 */
 	protected $_context;
 
@@ -33,10 +33,10 @@ class PSR4Writer implements GeneratorWriterInterface {
 
 	/**
 	 * PSR4Writer constructor.
-	 * @param PSR4WriterContext $context
+	 * @param NamespacedWriterContext $context
 	 * @param ClassesFactory $factory
 	 */
-	public function __construct(PSR4WriterContext $context, $factory = null) {
+	public function __construct(NamespacedWriterContext $context, $factory = null) {
 		$this->_context = $context;
 		$this->_factory = $factory ?: new ClassesFactory();
 	}

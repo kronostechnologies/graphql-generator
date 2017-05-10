@@ -1,15 +1,15 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
 
 class ClassesFactory {
 	/**

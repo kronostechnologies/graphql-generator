@@ -6,7 +6,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
+use GraphQLGen\Generator\Writer\Namespaced\TypeFormatter;
 
 class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'TypeName';

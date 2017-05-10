@@ -11,8 +11,8 @@ use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
 
 class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';

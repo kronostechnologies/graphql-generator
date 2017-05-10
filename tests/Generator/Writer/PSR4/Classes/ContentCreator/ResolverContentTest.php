@@ -15,8 +15,8 @@ use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
 
 class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';

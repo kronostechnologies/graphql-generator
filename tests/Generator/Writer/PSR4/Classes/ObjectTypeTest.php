@@ -13,8 +13,8 @@ use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
 use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
 
 class ObjectTypeTest extends \PHPUnit_Framework_TestCase {

@@ -5,7 +5,7 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 
 class PSR4WriterContextTest extends \PHPUnit_Framework_TestCase {
 	const FORMATTER_USE_SPACES = true;
@@ -13,12 +13,12 @@ class PSR4WriterContextTest extends \PHPUnit_Framework_TestCase {
 	const STUB_FILE_NAME = 'AStubFile.stub';
 
 	/**
-	 * @var PSR4WriterContext
+	 * @var NamespacedWriterContext
 	 */
 	protected $_writerContext;
 
 	public function setUp() {
-		$this->_writerContext = new PSR4WriterContext();
+		$this->_writerContext = new NamespacedWriterContext();
 	}
 
 	public function test_GivenStubFileName_getStubFilePath_WillContainStubDirectory() {

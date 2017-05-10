@@ -14,7 +14,7 @@ use GraphQLGen\Generator\GeneratorLogger;
 use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
-use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
 use phpDocumentor\Reflection\Types\Scalar;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -45,7 +45,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
 	protected $_logger;
 
 	/**
-	 * @var PSR4Writer|PHPUnit_Framework_MockObject_MockObject
+	 * @var NamespacedWriter|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_writer;
 
@@ -55,7 +55,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase {
 	protected $_interpreterMock;
 
 	public function setUp() {
-		$this->_writer = $this->createMock(PSR4Writer::class);
+		$this->_writer = $this->createMock(NamespacedWriter::class);
 
 		$this->_interpretedTypesStore = $this->createMock(InterpretedTypesStore::class);
 		$this->_interpretedTypesStore->method('getInterpretedTypes')->willReturn([]);

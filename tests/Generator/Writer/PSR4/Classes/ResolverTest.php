@@ -6,8 +6,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
 
 class ResolverTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'ScalarName';

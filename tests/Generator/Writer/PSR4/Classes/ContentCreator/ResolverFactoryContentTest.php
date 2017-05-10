@@ -6,10 +6,10 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverFactoryContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
+use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverFactoryContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
 
 class ResolverFactoryContentTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'AType';

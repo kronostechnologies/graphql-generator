@@ -5,13 +5,13 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
 use GraphQLGen\Generator\Formatters\ClassFormatter;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
-use GraphQLGen\Generator\Writer\PSR4\ClassesWriter;
-use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
-use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
-use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Generator\Writer\Namespaced\ClassesWriter;
+use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
+use GraphQLGen\Generator\Writer\Namespaced\ClassStubFile;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
@@ -21,7 +21,7 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 	const USED_TRAIT_1 = 'FirstTrait';
 	const USED_TRAIT_2 = 'SecondTrait';
 	/**
-	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
+	 * @var NamespacedWriterContext|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_writerContext;
 
@@ -78,7 +78,7 @@ class ClassesWriterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->_classFormatter = $this->createMock(ClassFormatter::class);
 
-		$this->_writerContext = $this->createMock(PSR4WriterContext::class);
+		$this->_writerContext = $this->createMock(NamespacedWriterContext::class);
 		$this->_writerContext->method('getConfiguredClassFormatter')->willReturn($this->_classFormatter);
 
 		$this->_classMapper = $this->createMock(ClassMapper::class);

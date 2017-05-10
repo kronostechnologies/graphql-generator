@@ -4,9 +4,9 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
 
 class TypeStoreTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'ScalarName';

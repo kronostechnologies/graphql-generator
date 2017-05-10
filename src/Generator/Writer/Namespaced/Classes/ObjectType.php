@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
 use Exception;
@@ -12,7 +12,7 @@ use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
 
 class ObjectType extends SingleClass {
 	/**

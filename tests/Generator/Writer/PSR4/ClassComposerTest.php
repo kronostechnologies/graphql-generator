@@ -12,14 +12,14 @@ use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedTy
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\Resolver;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
-use GraphQLGen\Generator\Writer\PSR4\ClassesFactory;
-use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
+use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassComposerTest extends \PHPUnit_Framework_TestCase {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
@@ -10,7 +10,7 @@ use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
  * PSR-4 helper for generating a field declaration, along with their variables.
  *
  * Class FieldDeclaration
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
 class FieldDeclaration {
 	/**

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverContent;
 
 class Resolver extends SingleClass {
 

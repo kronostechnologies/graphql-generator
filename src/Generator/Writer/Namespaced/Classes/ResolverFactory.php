@@ -1,11 +1,11 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\ResolverFactoryContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverFactoryContent;
 
 class ResolverFactory extends SingleClass {
 	const STUB_FILE = 'resolver-factory.stub';

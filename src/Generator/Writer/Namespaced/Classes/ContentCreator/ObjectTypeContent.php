@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
@@ -11,8 +11,8 @@ use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
-use GraphQLGen\Generator\Writer\PSR4\ClassComposer;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
 
 class ObjectTypeContent extends BaseContentCreator {
 	/**

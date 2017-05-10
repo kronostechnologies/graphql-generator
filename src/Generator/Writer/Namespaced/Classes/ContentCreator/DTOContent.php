@@ -1,14 +1,14 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
-use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
+use GraphQLGen\Generator\Writer\Namespaced\TypeFormatter;
 
 class DTOContent extends BaseContentCreator {
 

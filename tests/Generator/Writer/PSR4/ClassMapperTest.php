@@ -13,10 +13,10 @@ use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ResolverFactory;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
-use GraphQLGen\Generator\Writer\PSR4\ClassMapper;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
 use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
 
 class ClassMapperTest extends \PHPUnit_Framework_TestCase {

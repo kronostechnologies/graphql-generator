@@ -1,15 +1,15 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\TypeStore;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
 
 class TypeStoreContent extends BaseContentCreator {
 	const RESOLVER_FACTORY_VAR = '$ResolverFactory';

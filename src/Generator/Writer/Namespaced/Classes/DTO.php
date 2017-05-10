@@ -1,12 +1,12 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\DTOContent;
 
 class DTO extends SingleClass {
 	const STUB_FILE = 'dto.stub';

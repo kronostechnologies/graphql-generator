@@ -1,12 +1,12 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4\Classes;
+namespace GraphQLGen\Generator\Writer\Namespaced\Classes;
 
 
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
-use GraphQLGen\Generator\Writer\PSR4\PSR4Utils;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\ClassStubFile;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedUtils;
 
 abstract class SingleClass {
 	/**
@@ -74,14 +74,14 @@ abstract class SingleClass {
 	 * @param string $namespace
 	 */
 	public function setNamespace($namespace) {
-		$this->_namespace = PSR4Utils::joinAndStandardizeNamespaces($namespace);
+		$this->_namespace = NamespacedUtils::joinAndStandardizeNamespaces($namespace);
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getFullQualifiedName() {
-		return PSR4Utils::joinAndStandardizeNamespaces($this->_namespace, $this->_className);
+		return NamespacedUtils::joinAndStandardizeNamespaces($this->_namespace, $this->_className);
 	}
 
 	/**

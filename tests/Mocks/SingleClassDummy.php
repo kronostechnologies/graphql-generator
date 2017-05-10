@@ -4,8 +4,8 @@
 namespace GraphQLGen\Tests\Mocks;
 
 
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\SingleClass;
 
 class SingleClassDummy extends SingleClass {
 

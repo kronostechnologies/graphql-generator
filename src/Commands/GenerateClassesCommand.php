@@ -12,9 +12,9 @@ use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorLogger;
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
-use GraphQLGen\Generator\Writer\PSR4\TypeFormatter;
-use GraphQLGen\Generator\Writer\PSR4\PSR4Writer;
-use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use GraphQLGen\Generator\Writer\Namespaced\TypeFormatter;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 use GraphQLGen\Generator\Writer\WriterContext;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,9 +27,9 @@ class GenerateClassesCommand extends Command {
 	 */
 	public static function getWriterMappings() {
 		return [
-			'psr4' => [
-				'writer' => PSR4Writer::class,
-				'context' => PSR4WriterContext::class,
+			'namespaced' => [
+				'writer' => NamespacedWriter::class,
+				'context' => NamespacedWriterContext::class,
 				'type-formatter' => TypeFormatter::class
 			]
 		];
@@ -41,7 +41,7 @@ class GenerateClassesCommand extends Command {
 			->setDescription("Generates PHP classes for a GraphQL schema.")
 			->setHelp("Generates PHP classes for a GraphQL schema.")
 			->addArgument("input", InputArgument::REQUIRED, "Input GraphQL file")
-			->addOption("writer", "w", InputArgument::OPTIONAL, "Optional. Classes used for generating the output files. [psr4] Default: psr4", "psr4")
+			->addOption("writer", "w", InputArgument::OPTIONAL, "Optional. Classes used for generating the output files. [namespaced] Default: namespaced", "namespaced")
 			->addOption("formatter-use-tabs", "ft", null, "Optional. Output formatter will use tabs instead of spaces.")
 			->addOption("formatter-indent-spaces", "fi", InputArgument::OPTIONAL, "Optional. If formatter isn't using tabs, number of spaces per indent block.", 4)
 			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",")

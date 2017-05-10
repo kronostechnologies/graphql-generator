@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 
@@ -9,7 +9,7 @@ use GraphQLGen\Generator\Writer\BaseTypeFormatter;
  * Required formatter for PSR-4 standards.
  *
  * Class TypeFormatter
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
 class TypeFormatter extends BaseTypeFormatter {
 	/**

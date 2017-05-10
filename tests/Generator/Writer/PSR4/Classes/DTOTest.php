@@ -6,8 +6,8 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\DTOContent;
-use GraphQLGen\Generator\Writer\PSR4\Classes\DTO;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\DTOContent;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
 
 class DTOTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'AType';

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\Writer\StubFile;
@@ -10,7 +10,7 @@ use GraphQLGen\Generator\Writer\StubFile;
  * StubFile with special PSR-4 annotations.
  *
  * Class ClassStubFile
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
 class ClassStubFile extends StubFile {
 	const DUMMY_CLASSNAME = "ClassName";

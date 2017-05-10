@@ -1,15 +1,15 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 /**
  * Static utility methods which remain testable without mocking.
  *
  * Class PSR4Utils
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
-class PSR4Utils {
+class NamespacedUtils {
 	/**
 	 * @param string[] ...$namespaceParts
 	 * @return string

@@ -4,8 +4,8 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Writer\PSR4\ClassStubFile;
-use GraphQLGen\Generator\Writer\PSR4\PSR4WriterContext;
+use GraphQLGen\Generator\Writer\Namespaced\ClassStubFile;
+use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
@@ -32,12 +32,12 @@ class ClassStubFileTest extends \PHPUnit_Framework_TestCase {
 	protected $_givenStubFile;
 
 	/**
-	 * @var PSR4WriterContext|PHPUnit_Framework_MockObject_MockObject
+	 * @var NamespacedWriterContext|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $_context;
 
 	public function setUp() {
-		$this->_context = $this->createMock(PSR4WriterContext::class);
+		$this->_context = $this->createMock(NamespacedWriterContext::class);
 
 		$this->_givenStubFile = new ClassStubFile($this->_context);
 		$stubContent = file_get_contents(getcwd() . '/tests/Mocks/Stubs/PSR4StubFileTest.stub');

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 
 use GraphQLGen\Generator\Formatters\ClassFormatter;
@@ -15,9 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Writer configuration.
  *
  * Class PSR4WriterContext
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
-class PSR4WriterContext extends WriterContext {
+class NamespacedWriterContext extends WriterContext {
 	/**
 	 * @var string
 	 */
@@ -30,7 +30,7 @@ class PSR4WriterContext extends WriterContext {
 		parent::configureCLI($cmd);
 
 		$cmd
-			->addOption('psr4-namespace', null, InputArgument::OPTIONAL, "Optional. PSR4 base namespace.", "\\");
+			->addOption('namespaced-target-namespace', null, InputArgument::OPTIONAL, "Optional. Namespaced base namespace.", "\\");
 	}
 
 	/**
@@ -40,7 +40,7 @@ class PSR4WriterContext extends WriterContext {
 	public function executeCLI(InputInterface $input, OutputInterface $output) {
 		parent::executeCLI($input, $output);
 
-		$this->namespace = $input->getOption('psr4-namespace');
+		$this->namespace = $input->getOption('namespaced-target-namespace');
 	}
 
 	/**

@@ -1,18 +1,18 @@
 <?php
 
 
-namespace GraphQLGen\Generator\Writer\PSR4;
+namespace GraphQLGen\Generator\Writer\Namespaced;
 
 use GraphQLGen\Generator\Formatters\ClassFormatter;
-use GraphQLGen\Generator\Writer\PSR4\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\PSR4\Classes\SingleClass;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Generator\Writer\Namespaced\Classes\SingleClass;
 
 
 /**
  * Takes care of writing classes to stub files, then to disk through the context. Also resolves PSR-4 namespaces to filenames.
  *
  * Class ClassesWriter
- * @package GraphQLGen\Generator\Writer\PSR4
+ * @package GraphQLGen\Generator\Writer\Namespaced
  */
 class ClassesWriter {
 	/**
@@ -21,7 +21,7 @@ class ClassesWriter {
 	protected $_classMapper;
 
 	/**
-	 * @var PSR4WriterContext
+	 * @var NamespacedWriterContext
 	 */
 	protected $_writerContext;
 
@@ -155,14 +155,14 @@ class ClassesWriter {
 	}
 
 	/**
-	 * @return PSR4WriterContext
+	 * @return NamespacedWriterContext
 	 */
 	public function getWriterContext() {
 		return $this->_writerContext;
 	}
 
 	/**
-	 * @param PSR4WriterContext $writerContext
+	 * @param NamespacedWriterContext $writerContext
 	 */
 	public function setWriterContext($writerContext) {
 		$this->_writerContext = $writerContext;
@@ -189,7 +189,7 @@ class ClassesWriter {
 	 */
 	protected function mapFQNToFilePath($fqn) {
 		// Standardize FQN
-		$standardizedFQN = PSR4Utils::joinAndStandardizeNamespaces($fqn);
+		$standardizedFQN = NamespacedUtils::joinAndStandardizeNamespaces($fqn);
 
 		// Removes base namespace part
 		$baseNSStandardized = $this->getWriterContext()->namespace;
