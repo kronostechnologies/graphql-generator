@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
@@ -87,7 +88,7 @@ class TypeStoreContent extends BaseContentCreator {
 	 * @return string
 	 */
 	protected function getFunctionForType(ObjectType $type) {
-		$requiresResolverFactory = in_array(get_class($type->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class]);
+		$requiresResolverFactory = in_array(get_class($type->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
 		$constructorFragment = $requiresResolverFactory ? "self::" . self::RESOLVER_FACTORY_VAR : "";
 
 		return "public static function {$type->getFragmentGenerator()->getName()}() { return self::\${$type->getFragmentGenerator()->getName()} ?: (self::\${$type->getFragmentGenerator()->getName()} = new {$type->getClassName()}({$constructorFragment})); }";
