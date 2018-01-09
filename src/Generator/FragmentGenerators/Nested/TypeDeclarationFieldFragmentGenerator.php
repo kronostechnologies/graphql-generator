@@ -24,9 +24,11 @@ class TypeDeclarationFieldFragmentGenerator implements FragmentGeneratorInterfac
 	 * @return string
 	 */
 	public function generateTypeDefinition() {
+		$fieldHasArguments = !empty($this->getTypeDeclarationFieldType()->getArguments());
+
 		$typeDeclaration = $this->getTypeDeclarationFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType());
 		$formattedDescription = $this->getDescriptionFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getDescription());
-		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType(), $this->getName());
+		$resolver = $this->getResolveFragment($this->getFormatter(), $this->getTypeDeclarationFieldType()->getFieldType(), $this->getName(), $fieldHasArguments);
 		$args = $this->getArgsFragment();
 
 		$vals = $this->getFormatter()->joinArrayFragments([$typeDeclaration, $formattedDescription, $args, $resolver]);

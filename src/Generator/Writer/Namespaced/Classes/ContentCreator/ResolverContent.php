@@ -14,10 +14,7 @@ use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerato
 use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
 use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
-use GraphQLGen\Generator\Types\InterfaceDeclaration;
-use GraphQLGen\Generator\Types\Type;
-use GraphQLGen\Generator\Types\Union;
+use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
 
 class ResolverContent extends BaseContentCreator {
@@ -70,9 +67,10 @@ class ResolverContent extends BaseContentCreator {
 			$typeGenerator = $this->getFragmentGenerator();
 
 			foreach($typeGenerator->getFields() as $field) {
-
-				if ($field->getFieldType()->isPrimaryType() ||
-					$typeGenerator->getFormatter()->canInterpretedTypeSkipResolver($field->getFieldType()->getTypeName())) {
+				$typeHasArguments = ($field instanceof FieldInterpretedType) && !empty($field->getArguments());
+				if (!$typeHasArguments &&
+					($field->getFieldType()->isPrimaryType() ||
+					$typeGenerator->getFormatter()->canInterpretedTypeSkipResolver($field->getFieldType()->getTypeName()))) {
 					continue;
 				}
 
