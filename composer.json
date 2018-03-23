@@ -20,8 +20,21 @@
       "GraphQLGen\\Tests\\": "tests/"
     }
   },
-  "require-dev": {
-    "phpunit/phpunit": "^5.7"
+  "repositories": {
+	  "kronostechnologies/crm-api": {
+		  "type": "vcs",
+		  "url": "git@github.com:kronostechnologies/crm-api.git"
+	  }
   },
-  "version": "0.2.2"
+  "require-dev": {
+    "phpunit/phpunit": "^5.7",
+    "squizlabs/php_codesniffer": "^3.2",
+	"kronostechnologies/crm-api": "dev-dev/v1-mutations"
+  },
+  "version": "0.2.2",
+  "scripts": {
+"build": "rm -rf ./generated && php graphqlgen generate-classes --namespaced-target-namespace Kronos\\CRM\\GraphQL\\Schema ../crm-api/crm.graphqls ./generated && ./vendor/bin/phpcbf --standard=./kronos_ruleset.xml ./generated",
+	  "phpcs": "phpcs --standard=./kronos_ruleset.xml ./generated",
+	  "phpcbf": "phpcbf --standard=./kronos_ruleset.xml ./generated"
+  }
 }
