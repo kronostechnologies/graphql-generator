@@ -33,8 +33,8 @@
   },
   "version": "0.2.2",
   "scripts": {
-"build": "rm -rf ./generated && php graphqlgen generate-classes --namespaced-target-namespace Kronos\\CRM\\GraphQL\\Schema ../crm-api/crm.graphqls ./generated && ./vendor/bin/phpcbf --standard=./kronos_ruleset.xml ./generated",
-	  "phpcs": "phpcs --standard=./kronos_ruleset.xml ./generated",
-	  "phpcbf": "phpcbf --standard=./kronos_ruleset.xml ./generated"
+"build": "rm -rf ./build && php graphqlgen generate-classes --namespaced-target-namespace Kronos\\CRM\\GraphQL\\Schema ../crm-api/crm.graphqls ./build && ./vendor/bin/phpcbf --standard=./kronos_ruleset.xml ./build",
+	  "phpcs": "phpcs --standard=./kronos_ruleset.xml ./build",
+	  "phpcbf": "phpcbf --standard=./kronos_ruleset.xml ./build"
   }
 }
