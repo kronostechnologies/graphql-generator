@@ -12,7 +12,7 @@ use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorLogger;
 use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
-use GraphQLGen\Generator\Writer\Namespaced\TypeFormatter;
+use GraphQLGen\Generator\Writer\Namespaced\WithResolverFormatter;
 use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
 use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
 use GraphQLGen\Generator\Writer\WriterContext;
@@ -30,7 +30,7 @@ class GenerateClassesCommand extends Command {
 			'namespaced' => [
 				'writer' => NamespacedWriter::class,
 				'context' => NamespacedWriterContext::class,
-				'type-formatter' => TypeFormatter::class
+				'type-formatter' => WithResolverFormatter::class
 			]
 		];
 	}
@@ -46,7 +46,8 @@ class GenerateClassesCommand extends Command {
 			->addOption("formatter-indent-spaces", "fi", InputArgument::OPTIONAL, "Optional. If formatter isn't using tabs, number of spaces per indent block.", 4)
 			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",")
 			->addOption("formatter-optimize-enums", null, null, "Optional. If enabled, enum constants will be assigned integer values instead of string values.")
-			->addOption("formatter-detailed-enums", null, null, "Optional. If enabled, enum values will be forcefully defined in their long form.");
+			->addOption("formatter-detailed-enums", null, null, "Optional. If enabled, enum values will be forcefully defined in their long form.")
+			->addOption("mode", null, InputArgument::IS_ARRAY, "Optional. Specifies the generation mode. If set to resolvers, it will generate a TypeStore & Resolver. With types, it will only generate the Types & DTOs.");
 
 		foreach(self::getWriterMappings() as $mapping) {
 			/** @var WriterContext $context */

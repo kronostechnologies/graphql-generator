@@ -8,10 +8,10 @@ use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 /**
  * Required formatter for PSR-4 standards.
  *
- * Class TypeFormatter
+ * Class WithResolverFormatter
  * @package GraphQLGen\Generator\Writer\Namespaced
  */
-class TypeFormatter extends BaseTypeFormatter {
+class WithResolverFormatter extends BaseTypeFormatter {
 	/**
 	 * @param string $typeName
 	 * @return string
@@ -29,12 +29,12 @@ class TypeFormatter extends BaseTypeFormatter {
 	}
 
     /**
-     * @param string $typeName
+     * @param string $fieldName
      * @return string
      */
-	public function getResolveSnippet($typeName)
+	public function getResolveSnippet($fieldName)
     {
-        $fieldNameUpperCased = ucwords($typeName);
+        $fieldNameUpperCased = ucwords($fieldName);
 
         return "function (\$root, \$args) { return \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
     }

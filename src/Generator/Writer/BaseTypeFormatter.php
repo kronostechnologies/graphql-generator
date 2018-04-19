@@ -47,10 +47,11 @@ abstract class BaseTypeFormatter {
 	}
 
 	/**
+	 * @param string $fieldName
 	 * @param string $typeName
 	 * @return string
 	 */
-	public abstract function getResolveSnippet($typeName);
+	public abstract function getResolveSnippet($fieldName, $typeName);
 
     /**
      * @return string

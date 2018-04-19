@@ -8,7 +8,7 @@ use GraphQLGen\Generator\FragmentGenerators\FieldsFetchableInterface;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
-use GraphQLGen\Generator\Writer\Namespaced\TypeFormatter;
+use GraphQLGen\Generator\Writer\Namespaced\WithResolverFormatter;
 
 class DTOContent extends BaseContentCreator {
 
@@ -34,7 +34,7 @@ class DTOContent extends BaseContentCreator {
 	 * @return string
 	 */
 	protected function getDocCommentFragment($field) {
-		$typeFormatter = new TypeFormatter();
+		$typeFormatter = new WithResolverFormatter();
 		$fieldDeclaration = $typeFormatter->resolveFieldTypeDocComment($field->getFieldType());
 
 		return "/** @type {$fieldDeclaration} */";
