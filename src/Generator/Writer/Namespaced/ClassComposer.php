@@ -85,7 +85,7 @@ class ClassComposer {
 	protected function setupTypeDefinitionClassDependencies($typeDefinitionClass) {
 		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
 
-		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator) {
+		if (($fragmentGenerator !== null) && ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator)) {
 			$this->getClassMapper()->addResolverFactoryFragment($fragmentGenerator);
 		}
 
