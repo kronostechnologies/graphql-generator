@@ -32,7 +32,7 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 			$this->getInterfaceType()->getDescription()
 		);
 		$fields = $this->getFieldsDefinitions();
-		$resolveType = $this->getResolveType();
+		$resolveType = $this->getResolveType($this->getName());
 
 		$vals = $this->getFormatter()->joinArrayFragments([$name, $formattedDescription, $fields, $resolveType]);
 
@@ -80,8 +80,8 @@ class InterfaceFragmentGenerator implements FragmentGeneratorInterface, Dependen
 		}, $this->getInterfaceType()->getFields());
 	}
 
-	protected function getResolveType() {
-		$resolveTypeContent = $this->getFormatter()->getInterfaceResolveFragment();
+	protected function getResolveType($typeName) {
+		$resolveTypeContent = $this->getFormatter()->getInterfaceResolveFragment($typeName);
 
 		return "'resolveType' => {$resolveTypeContent}";
 	}
