@@ -41,12 +41,18 @@ class ClassComposer {
 	 */
 	protected $_factory;
 
+    /**
+     * @var bool
+     */
+	protected $_skipResolver;
+
 	/**
 	 * ClassComposer constructor.
 	 * @param ClassesFactory $factory
 	 */
-	public function __construct($factory = null) {
+	public function __construct($factory = null, $skipResolver = false) {
 		$this->_factory = $factory ?: new ClassesFactory();
+		$this->_skipResolver = $skipResolver;
 	}
 
 	/**
@@ -72,7 +78,7 @@ class ClassComposer {
 		$fragmentGeneratorNS = $this->getClassMapper()->getNamespaceForFragmentGenerator($fragmentGenerator);
 		$fragmentGeneratorParentDep = $this->getClassMapper()->getParentDependencyForFragmentGenerator($fragmentGenerator);
 
-		$typeDefinitionClass = $this->getFactory()->createObjectTypeClassWithFragmentGenerator($fragmentGenerator);
+		$typeDefinitionClass = $this->getFactory()->createObjectTypeClassWithFragmentGenerator($fragmentGenerator, $this->_skipResolver);
 		$typeDefinitionClass->setNamespace($fragmentGeneratorNS);
 		$typeDefinitionClass->setParentClassName($fragmentGeneratorParentDep);
 

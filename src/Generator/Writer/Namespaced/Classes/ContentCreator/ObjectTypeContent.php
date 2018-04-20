@@ -25,7 +25,19 @@ class ObjectTypeContent extends BaseContentCreator {
 	 */
 	protected $_fragmentGenerator;
 
-	/**
+    /**
+     * @var bool
+     */
+	protected $_useInstancedTypeStore;
+
+    /**
+     * @param bool $useInstancedTypeStore
+     */
+	public function __construct($useInstancedTypeStore = false) {
+        $this->_useInstancedTypeStore = $useInstancedTypeStore;
+    }
+
+    /**
 	 * @return ObjectType
 	 */
 	public function getObjectTypeClass() {
@@ -46,12 +58,16 @@ class ObjectTypeContent extends BaseContentCreator {
 		$contentAsLines = [];
 		$resolverCreationFragment = sprintf(ClassComposer::RESOLVER_FACTORY_CREATION, $this->getFragmentGenerator()->getName());
 
-		if ($this->isResolverNecessary()) {
-			$contentAsLines[] = "public function __construct(\$resolverFactory) {";
-			$contentAsLines[] = " \$this->resolver = {$resolverCreationFragment};";
-		} else {
-			$contentAsLines[] = "public function __construct() {";
-		}
+		if ($this->_useInstancedTypeStore) {
+		    $contentAsLines[] = "public function __construct(\$typeRegistry, \$queryResolver) {";
+        } else {
+            if ($this->isResolverNecessary()) {
+                $contentAsLines[] = "public function __construct(\$resolverFactory) {";
+                $contentAsLines[] = " \$this->resolver = {$resolverCreationFragment};";
+            } else {
+                $contentAsLines[] = "public function __construct() {";
+            }
+        }
 
 		if (get_class($this->getFragmentGenerator()) == ScalarFragmentGenerator::class) {
 			$contentAsLines[] = 'parent::__construct();';
@@ -121,6 +137,6 @@ class ObjectTypeContent extends BaseContentCreator {
 	}
 
 	protected function isResolverNecessary() {
-		return in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
+		return !$this->_useInstancedTypeStore && in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
 	}
 }

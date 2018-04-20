@@ -12,12 +12,13 @@ use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
 use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
 
 class ClassesFactory {
-	/**
-	 * @param FragmentGeneratorInterface $fragmentGenerator
-	 * @return ObjectType
-	 */
-	public function createObjectTypeClassWithFragmentGenerator($fragmentGenerator) {
-		$generatorClass = new ObjectType();
+    /**
+     * @param FragmentGeneratorInterface $fragmentGenerator
+     * @param bool $skipResolver
+     * @return ObjectType
+     */
+	public function createObjectTypeClassWithFragmentGenerator($fragmentGenerator, $skipResolver) {
+		$generatorClass = new ObjectType($skipResolver);
 		$generatorClass->setClassName($fragmentGenerator->getName() . ClassComposer::TYPE_DEFINITION_CLASS_NAME_SUFFIX);
 		$generatorClass->setFragmentGenerator($fragmentGenerator);
 
@@ -55,11 +56,12 @@ class ClassesFactory {
 		return $stubFile;
 	}
 
-	/**
-	 * @return ClassComposer
-	 */
-	public function createClassComposer() {
-		$classComposer = new ClassComposer($this);
+    /**
+     * @param bool $skipResolver
+     * @return ClassComposer
+     */
+	public function createClassComposer($skipResolver) {
+		$classComposer = new ClassComposer($this, $skipResolver);
 
 		return $classComposer;
 	}

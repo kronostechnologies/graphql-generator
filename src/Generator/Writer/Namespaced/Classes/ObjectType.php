@@ -20,6 +20,8 @@ class ObjectType extends SingleClass {
 	 */
 	protected $_fragmentGenerator;
 
+	protected $_useInstancedTypeStore;
+
 	const ENUM_STUB = 'enum.stub';
 	const OBJECT_STUB = 'object.stub';
 	const SCALAR_STUB = 'scalar.stub';
@@ -27,7 +29,15 @@ class ObjectType extends SingleClass {
 	const INPUT_STUB = 'input.stub';
 	const UNION_STUB = 'union.stub';
 
-	/**
+    /**
+     * @param bool $useInstancedTypeStore
+     */
+	public function __construct($useInstancedTypeStore = false)
+    {
+        $this->_useInstancedTypeStore = $useInstancedTypeStore;
+    }
+
+    /**
 	 * @return FragmentGeneratorInterface
 	 */
 	public function getFragmentGenerator() {
@@ -45,7 +55,7 @@ class ObjectType extends SingleClass {
 	 * @return ObjectTypeContent
 	 */
 	public function getContentCreator() {
-		$objectTypeContent = new ObjectTypeContent();
+		$objectTypeContent = new ObjectTypeContent($this->_useInstancedTypeStore);
 		$objectTypeContent->setObjectTypeClass($this);
 		$objectTypeContent->setFragmentGenerator($this->getFragmentGenerator());
 

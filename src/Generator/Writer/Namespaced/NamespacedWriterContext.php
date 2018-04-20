@@ -23,6 +23,11 @@ class NamespacedWriterContext extends WriterContext {
 	 */
 	public $namespace;
 
+    /**
+     * @var bool
+     */
+	public $skipResolver;
+
 	/**
 	 * @param Command $cmd
 	 */
@@ -41,6 +46,7 @@ class NamespacedWriterContext extends WriterContext {
 		parent::executeCLI($input, $output);
 
 		$this->namespace = $input->getOption('namespaced-target-namespace');
+		$this->skipResolver = $input->getOption('mode') === 'types';
 	}
 
 	/**
