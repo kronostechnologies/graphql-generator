@@ -10,8 +10,9 @@ use GraphQLGen\Generator\Formatters\StubFormatter;
 use GraphQLGen\Generator\Generator;
 use GraphQLGen\Generator\GeneratorContext;
 use GraphQLGen\Generator\GeneratorLogger;
-use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
+use GraphQLGen\Generator\Writer\BaseTypeFormatter;
 use GraphQLGen\Generator\Writer\GeneratorWriterInterface;
+use GraphQLGen\Generator\Writer\Namespaced\WithoutResolverFormatter;
 use GraphQLGen\Generator\Writer\Namespaced\WithResolverFormatter;
 use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
 use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
@@ -47,7 +48,7 @@ class GenerateClassesCommand extends Command {
 			->addOption("formatter-line-merge", "fm", InputArgument::OPTIONAL, "Optional. In case descriptions are splitted on multiple lines, specify the separator to use between each ones.", ",")
 			->addOption("formatter-optimize-enums", null, null, "Optional. If enabled, enum constants will be assigned integer values instead of string values.")
 			->addOption("formatter-detailed-enums", null, null, "Optional. If enabled, enum values will be forcefully defined in their long form.")
-			->addOption("mode", null, InputArgument::IS_ARRAY, "Optional. Specifies the generation mode. If set to resolvers, it will generate a TypeStore & Resolver. With types, it will only generate the Types & DTOs.");
+			->addOption("mode", null, InputArgument::IS_ARRAY, "Optional. Specifies the generation mode. If set to resolvers, it will generate a TypeStore & Resolver. With types, it will only generate the Types & DTOs.", "");
 
 		foreach(self::getWriterMappings() as $mapping) {
 			/** @var WriterContext $context */
@@ -59,6 +60,7 @@ class GenerateClassesCommand extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		// Writer name
 		$writerName = $input->getOption('writer');
+		$mode = $input->getOption('mode');
 
 		// Writer context (only necessary class to pre-init)
 		$writerContext = $this->generateWriterContext($writerName);
@@ -74,7 +76,7 @@ class GenerateClassesCommand extends Command {
 			!$input->getOption('formatter-use-tabs'),
 			$input->getOption('formatter-indent-spaces'),
 			$input->getOption('formatter-line-merge'),
-			$this->generateWriterTypeFormatter($writerName),
+			$this->generateWriterTypeFormatter($writerName, $mode),
             true,
             $input->getOption('formatter-optimize-enums'),
 			$input->getOption('formatter-detailed-enums')
@@ -110,14 +112,19 @@ class GenerateClassesCommand extends Command {
 		return new $writerMappings[$writerName]['writer']($writerContext);
 	}
 
-	/**
-	 * @param string $writerName
-	 * @return BaseTypeFormatter
-	 */
-	protected function generateWriterTypeFormatter($writerName) {
+    /**
+     * @param string $writerName
+     * @param string $mode
+     * @return BaseTypeFormatter
+     */
+	protected function generateWriterTypeFormatter($writerName, $mode) {
 		$writerMappings = self::getWriterMappings();
 
-		return new $writerMappings[$writerName]['type-formatter']();
+		if ($mode === 'types') {
+            return new WithoutResolverFormatter();
+        } else {
+            return new $writerMappings[$writerName]['type-formatter']();
+        }
 	}
 
 	/**
