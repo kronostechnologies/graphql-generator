@@ -291,8 +291,10 @@ class ClassMapper {
 	 * @param ObjectType $class
 	 */
 	public function registerTypeStoreEntry($dependencyName, $class) {
-		$this->getTypeStore()->addTypeImplementation($class);
-		$this->getTypeStore()->addDependency($dependencyName);
+	    if ($this->getTypeStore() !== null) {
+            $this->getTypeStore()->addTypeImplementation($class);
+            $this->getTypeStore()->addDependency($dependencyName);
+        }
 	}
 
 	/**
@@ -318,7 +320,9 @@ class ClassMapper {
 	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
 	public function addResolverFactoryFragment($fragmentGenerator) {
-		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
-		$this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
+	    if ($this->getTypeStore() !== null) {
+            $this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
+            $this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
+        }
 	}
 }

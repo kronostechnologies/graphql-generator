@@ -61,7 +61,7 @@ class NamespacedWriter implements GeneratorWriterInterface {
 			$this->getClassComposer()->generateDTOForFragmentGenerator($fragmentGenerator);
 		}
 
-		if ($this->getClassComposer()->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator) {
+		if (!$this->_context->skipResolver && $this->getClassComposer()->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator) {
 			$this->getClassComposer()->generateResolverForFragmentGenerator($fragmentGenerator);
 		}
 	}
