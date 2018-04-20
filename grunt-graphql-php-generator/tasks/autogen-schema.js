@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         const shouldRun = grunt.config('autogen-schema.options.runPHPCSFixer');
 
         if (shouldRun) {
-            childProcess.exec("php " + path.join(__dirname, "php-cs-fixer") + " fix " + destination, function (err, stdout, stderr) {
+            childProcess.exec("php " + path.join(__dirname, "..", "bin", "php-cs-fixer") + " fix " + destination, function (err, stdout, stderr) {
                 if (err) {
                     grunt.log.error(err);
 
@@ -21,7 +21,7 @@ module.exports = function (grunt) {
                 }
 
                 if (stdout) {
-                    grunt.log.writeln("PHPCSFixer ran on generated Schema & fixes applied!");
+                    grunt.log.writeln("PHPCSFixer ran on generated Schema & fixes applied.");
                 }
             });
         }
@@ -54,13 +54,14 @@ module.exports = function (grunt) {
         }
 
         // Generate schema
+        grunt.log.writeln("Generating GraphQL Schema classes...");
         childProcess.exec("php " + generatorCmdPath + " generate-classes --mode types --namespaced-target-namespace \"" + namespace + "\" " + source + " " + destination, function (err, stdout, stderr) {
             if (err) {
                 grunt.log.error(err);
             }
 
             if (stdout) {
-                grunt.log.write(stdout);
+                grunt.log.writeln("Generated classes successfully.");
             }
 
             if (stderr) {
@@ -73,10 +74,10 @@ module.exports = function (grunt) {
         });
     }
 
-    grunt.registerTask("autogen-schema", function () {
+    grunt.registerTask("autogen-schema", 'Auto-generates a GraphQL Schema', function () {
         // Is PHP installed?
         this.async();
-        return childProcess.exec("php -v", function (err, stdout, stderr) {
+        childProcess.exec("php -v", function (err, stdout, stderr) {
             if (err) {
                 grunt.log.error("PHP is not installed.");
             } else {
