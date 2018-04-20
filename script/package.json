@@ -1,5 +1,5 @@
 {
-  "name": "graphql-generator-grunt",
+  "name": "graphql-php-generator-grunt",
   "version": "1.0.0",
   "main": "autogen-schema.js",
   "author": "Kronos Technologies",
