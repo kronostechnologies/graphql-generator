@@ -12,7 +12,8 @@ class WithoutResolverFormatter extends BaseTypeFormatter {
 	 * @return string
 	 */
 	public function getFieldTypeDeclarationNonPrimaryType($typeName) {
-		return ClassComposer::TYPE_STORE_CLASS_NAME . '::' . $typeName . '()';
+	    // ToDo: Circular reference check goes here
+		return "\$typeRegistry->getTypeByName('{$typeName}')";
 	}
 
 	/**
@@ -30,9 +31,7 @@ class WithoutResolverFormatter extends BaseTypeFormatter {
 	 */
 	public function getResolveSnippet($fieldName, $typeName)
 	{
-		$fieldNameUpperCased = ucwords($fieldName);
-
-		return "function (\$root, \$args) use (\$queryResolver) { return \$this->resolver->resolve{$fieldNameUpperCased}(\$root, \$args); }";
+		return "function (\$root, \$args) use (\$queryResolver) { return \$queryResolver->resolveFieldOfType(\$root, \$args, '{$typeName}', '{$fieldName}'); }";
 	}
 
 	/**
@@ -40,13 +39,15 @@ class WithoutResolverFormatter extends BaseTypeFormatter {
 	 */
 	public function getResolveSnippetForUnion()
 	{
+	    // ToDo: Not necessary for now
 		return "function (\$value, \$context, GraphQL\\Type\\Definition\\ResolveInfo \$info) { return \$this->resolver->resolve(\$value, \$context, \$info); }";
 	}
 
 	/**
+     * @param string $typeName
 	 * @return string
 	 */
-	public function getInterfaceResolveSnippet() {
-		return "function (\$value) { return \$this->resolver->resolveType(\$value); }";
+	public function getInterfaceResolveSnippet($typeName) {
+		return "function (\$value) use (\$queryResolver) { return \$queryResolver->resolveInterfaceType(\$value, '{$typeName}'); }";
 	}
 }

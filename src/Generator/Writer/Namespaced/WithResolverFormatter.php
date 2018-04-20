@@ -30,9 +30,10 @@ class WithResolverFormatter extends BaseTypeFormatter {
 
     /**
      * @param string $fieldName
+     * @param string $typeName
      * @return string
      */
-	public function getResolveSnippet($fieldName)
+	public function getResolveSnippet($fieldName, $typeName)
     {
         $fieldNameUpperCased = ucwords($fieldName);
 
@@ -47,10 +48,11 @@ class WithResolverFormatter extends BaseTypeFormatter {
         return "function (\$value, \$context, GraphQL\\Type\\Definition\\ResolveInfo \$info) { return \$this->resolver->resolve(\$value, \$context, \$info); }";
     }
 
-	/**
-	 * @return string
-	 */
-	public function getInterfaceResolveSnippet() {
+    /**
+     * @param string $typeName
+     * @return string
+     */
+	public function getInterfaceResolveSnippet($typeName) {
 		return "function (\$value) { return \$this->resolver->resolveType(\$value); }";
 	}
 }
