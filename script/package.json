@@ -1,0 +1,10 @@
+{
+  "name": "graphql-generator-grunt",
+  "version": "1.0.0",
+  "main": "autogen-schema.js",
+  "author": "Kronos Technologies",
+  "license": "MIT",
+  "dependencies": {
+    "rimraf": "^2.6.2"
+  }
+}
