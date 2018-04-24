@@ -29,12 +29,13 @@ abstract class Interpreter {
 		return $this->_astNode->name->value;
 	}
 
-	protected function mapFieldsNodes(Closure $callback){
-        return iterator_to_array($this->getNodeListMapIterator($callback, $this->_astNode->fields));
-    }
-
-    protected function mapInterfacesNodes(Closure $callback){
-        return iterator_to_array($this->getNodeListMapIterator($callback, $this->_astNode->interfaces));
+    /**
+     * @param Closure $callback
+     * @param NodeList|array $nodeList
+     * @return array
+     */
+    protected function mapNodeList(Closure $callback, $nodeList){
+        return iterator_to_array($this->getNodeListMapIterator($callback, $nodeList));
     }
 
     /**

@@ -37,7 +37,7 @@ class UnionInterpreter extends MainTypeInterpreter {
 	 * @return TypeUsageInterpretedType[]
 	 */
 	public function interpretTypes() {
-		return array_map(function ($typeNode) {
+		return $this->mapNodeList(function ($typeNode) {
 			$typeUsageInterpreter = new TypeUsageInterpreter($typeNode);
 
 			return $typeUsageInterpreter->generateType();

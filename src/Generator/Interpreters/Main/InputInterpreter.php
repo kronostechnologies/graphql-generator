@@ -34,11 +34,11 @@ class InputInterpreter extends MainTypeInterpreter {
 	 * @return InputFieldInterpretedType[]
 	 */
 	public function interpretFields() {
-        return $this->mapFieldsNodes(function ($fieldNode) {
+        return $this->mapNodeList(function ($fieldNode) {
             $fieldInterpreter = new InputFieldInterpreter($fieldNode);
 
             return $fieldInterpreter->generateType();
-        });
+        }, $this->_astNode->fields);
 	}
 
 }

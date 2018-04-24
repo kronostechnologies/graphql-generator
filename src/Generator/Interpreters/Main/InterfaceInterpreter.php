@@ -33,10 +33,10 @@ class InterfaceInterpreter extends MainTypeInterpreter {
 	 * @return FieldInterpretedType[]
 	 */
 	public function interpretFields() {
-        return $this->mapFieldsNodes(function ($fieldNode) {
+        return $this->mapNodeList(function ($fieldNode) {
             $fieldInterpreter = new FieldInterpreter($fieldNode);
 
             return $fieldInterpreter->generateType();
-        });
+        }, $this->_astNode->fields);
 	}
 }

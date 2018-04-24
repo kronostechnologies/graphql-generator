@@ -34,7 +34,7 @@ class FieldInterpreter extends NestedTypeInterpreter {
 	 * @return FieldArgumentInterpretedType[]
 	 */
 	public function interpretArguments() {
-		return array_map(function ($argumentNode) {
+		return $this->mapNodeList(function ($argumentNode) {
 			$argumentInterpreter = new FieldArgumentInterpreter($argumentNode);
 
 			return $argumentInterpreter->generateType();
