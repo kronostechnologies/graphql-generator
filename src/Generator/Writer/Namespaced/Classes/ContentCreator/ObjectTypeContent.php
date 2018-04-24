@@ -4,6 +4,7 @@
 namespace GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator;
 
 
+use function get_class;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
 use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
@@ -60,6 +61,10 @@ class ObjectTypeContent extends BaseContentCreator {
 
 		if ($this->_useInstancedTypeStore) {
 		    $contentAsLines[] = "public function __construct(AutomatedTypeRegistry \$typeRegistry, Resolver \$queryResolver) {";
+
+		    if (get_class($this->getFragmentGenerator()) === ScalarFragmentGenerator::class) {
+				$contentAsLines[] = " \$this->resolver = \$queryResolver;";
+			}
         } else {
             if ($this->isResolverNecessary()) {
                 $contentAsLines[] = "public function __construct(\$resolverFactory) {";
@@ -137,6 +142,12 @@ class ObjectTypeContent extends BaseContentCreator {
 	}
 
 	protected function isResolverNecessary() {
-		return !$this->_useInstancedTypeStore && in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
+		$retVal =
+			!$this->_useInstancedTypeStore &&
+			in_array(get_class($this->getFragmentGenerator()), [InterfaceFragmentGenerator::class, TypeDeclarationFragmentGenerator::class, InputFragmentGenerator::class, UnionFragmentGenerator::class, ScalarFragmentGenerator::class]);
+
+		$retVal = ($retVal || get_class($this->getFragmentGenerator()) === ScalarFragmentGenerator::class);
+
+		return $retVal;
 	}
 }
