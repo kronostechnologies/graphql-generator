@@ -48,6 +48,6 @@ class WithoutResolverFormatter extends BaseTypeFormatter {
 	 * @return string
 	 */
 	public function getInterfaceResolveSnippet($typeName) {
-		return "function (\$value) use (\$queryResolver) { return \$queryResolver->resolveInterfaceType(\$value, '{$typeName}'); }";
+		return "function (\$value) use (\$queryResolver) { return \$queryResolver->resolveInterfaceType('{$typeName}', \$value); }";
 	}
 }
