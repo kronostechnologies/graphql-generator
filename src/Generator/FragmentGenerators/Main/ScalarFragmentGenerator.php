@@ -6,6 +6,7 @@ namespace GraphQLGen\Generator\FragmentGenerators\Main;
 
 use GraphQLGen\Generator\FragmentGenerators\FormatterDependantGeneratorTrait;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Generator\FragmentGenerators\VariablesDefiningGeneratorInterface;
 use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 
 class ScalarFragmentGenerator implements FragmentGeneratorInterface {
@@ -22,8 +23,9 @@ class ScalarFragmentGenerator implements FragmentGeneratorInterface {
 	public function generateTypeDefinition() {
 		$nameFragment = $this->getNameFragment($this->getName());
 		$descriptionFragment = $this->getDescriptionFragment($this->getScalarType()->getDescription());
+        $resolverFragment = "\$this->resolver = \$resolver";
 
-		return "{$nameFragment}{$descriptionFragment}";
+		return "{$nameFragment}{$descriptionFragment}{$resolverFragment}";
 	}
 
 	/**
