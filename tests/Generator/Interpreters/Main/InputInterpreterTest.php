@@ -8,6 +8,7 @@ use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
 
@@ -81,7 +82,7 @@ class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenTypeWithNoFields(InputObjectTypeDefinitionNode $node) {
-		$node->fields = [];
+		$node->fields = new NodeList([]);
 	}
 
 	protected function GivenTypeWithFields(InputObjectTypeDefinitionNode $node) {
@@ -95,7 +96,7 @@ class InputInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$field2->type = new NamedTypeNode([]);
 		$field2->type->name = new NameNode([]);
 
-		$node->fields = [$field1, $field2];
+		$node->fields = new NodeList([$field1, $field2]);
 	}
 
 	protected function GivenInterpreter(InputObjectTypeDefinitionNode $node) {

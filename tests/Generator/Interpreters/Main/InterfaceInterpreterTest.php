@@ -8,6 +8,7 @@ use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
@@ -77,7 +78,7 @@ class InterfaceInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenNodeWithOneField($node) {
-		$node->fields = [];
+
 
 		$dummyFieldDefinition = new FieldDefinitionNode([]);
 		$dummyFieldDefinition->name = new NameNode([]);
@@ -86,6 +87,6 @@ class InterfaceInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$dummyFieldDefinition->arguments = [];
 
-		$node->fields[] = $dummyFieldDefinition;
+        $node->fields = new NodeList([$dummyFieldDefinition]);
 	}
 }
