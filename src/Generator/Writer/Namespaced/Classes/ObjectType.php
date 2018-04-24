@@ -25,6 +25,7 @@ class ObjectType extends SingleClass {
 	const ENUM_STUB = 'enum.stub';
 	const OBJECT_STUB = 'object.stub';
 	const SCALAR_STUB = 'scalar.stub';
+	const SCALAR_STUB_TYPES = 'scalar-types.stub';
 	const INTERFACE_STUB = 'interface.stub';
 	const INPUT_STUB = 'input.stub';
 	const UNION_STUB = 'union.stub';
@@ -73,7 +74,11 @@ class ObjectType extends SingleClass {
 			case TypeDeclarationFragmentGenerator::class:
 				return self::OBJECT_STUB;
 			case ScalarFragmentGenerator::class:
-				return self::SCALAR_STUB;
+				if ($this->_useInstancedTypeStore) {
+					return self::SCALAR_STUB_TYPES;
+				} else {
+					return self::SCALAR_STUB;
+				}
 			case InterfaceFragmentGenerator::class:
 				return self::INTERFACE_STUB;
 			case InputFragmentGenerator::class:
