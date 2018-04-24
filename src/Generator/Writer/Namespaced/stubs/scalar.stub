@@ -7,11 +7,6 @@ namespace LocalNamespace;
 class ClassName extends ParentClass {
     // @generate:Variables
 
-    /**
-     * @var Resolver
-     */
-    protected $resolver;
-
     // @generate:Content
 
     public function serialize($value) {
