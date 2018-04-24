@@ -59,7 +59,7 @@ class ObjectTypeContent extends BaseContentCreator {
 		$resolverCreationFragment = sprintf(ClassComposer::RESOLVER_FACTORY_CREATION, $this->getFragmentGenerator()->getName());
 
 		if ($this->_useInstancedTypeStore) {
-		    $contentAsLines[] = "public function __construct(\$typeRegistry, \$queryResolver) {";
+		    $contentAsLines[] = "public function __construct(AutomatedTypeRegistry \$typeRegistry, Resolver \$queryResolver) {";
         } else {
             if ($this->isResolverNecessary()) {
                 $contentAsLines[] = "public function __construct(\$resolverFactory) {";

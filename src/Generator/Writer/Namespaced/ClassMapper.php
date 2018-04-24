@@ -85,6 +85,8 @@ class ClassMapper {
 		$this->registerDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
 		$this->registerDependency("InputObjectType", 'GraphQL\Type\Definition\InputObjectType');
 		$this->registerDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
+		$this->registerDependency("Resolver", 'Kronos\GraphQLFramework\Resolver\Resolver');
+		$this->registerDependency("AutomatedTypeRegistry", 'Kronos\GraphQLFramework\TypeRegistry\AutomatedTypeRegistry');
 	}
 
 	/**

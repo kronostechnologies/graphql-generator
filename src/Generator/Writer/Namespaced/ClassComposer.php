@@ -30,6 +30,8 @@ class ClassComposer {
 	const RESOLVER_FACTORY_CONSTRUCTOR_NAME = '$resolverFactory';
 	const RESOLVER_FACTORY_CREATION = self::RESOLVER_FACTORY_CONSTRUCTOR_NAME . '->create%sResolver()';
 	const INTERFACE_TRAIT_SUFFIX = 'Trait';
+    const RESOLVER_CLASS_NAME = 'Resolver';
+    const AUTOMATED_TYPE_REGISTRY_CLASS_NAME = 'AutomatedTypeRegistry';
 
 	/**
 	 * @var ClassMapper
@@ -97,6 +99,10 @@ class ClassComposer {
 
 		if (!$this->_skipResolver) {
             $typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);
+        }
+        else {
+            $typeDefinitionClass->addDependency(self::AUTOMATED_TYPE_REGISTRY_CLASS_NAME);
+            $typeDefinitionClass->addDependency(self::RESOLVER_CLASS_NAME);
         }
 
         $typeDefinitionClass->addDependency(self::TYPE_CLASS_NAME);
