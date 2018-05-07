@@ -35,18 +35,18 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	 * @return FieldInterpretedType[]
 	 */
 	public function interpretFields() {
-		return array_map(function ($fieldNode) {
-			$fieldInterpreter = new FieldInterpreter($fieldNode);
+        return $this->mapNodeList(function ($fieldNode) {
+            $fieldInterpreter = new FieldInterpreter($fieldNode);
 
-			return $fieldInterpreter->generateType();
-		}, $this->_astNode->fields ?: []);
+            return $fieldInterpreter->generateType();
+        }, $this->_astNode->fields);
 	}
 
 	/**
 	 * @return string[]
 	 */
 	public function interpretInterfacesNames() {
-	    return array_map(function (NamedTypeNode $interfaceNameNode) {
+	    return $this->mapNodeList(function (NamedTypeNode $interfaceNameNode) {
             return $interfaceNameNode->name->value;
         }, $this->_astNode->interfaces);
     }

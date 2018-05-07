@@ -8,6 +8,7 @@ use GraphQL\Language\AST\FieldDefinitionNode;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedType;
 use GraphQL\Language\AST\NameNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\AST\StringValueNode;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
 use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
@@ -103,7 +104,7 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function GivenNodeWithArgumentsDeclared($node) {
-		$node->arguments = [];
+		$node->arguments = new NodeList([]);
 	}
 
 	protected function GivenNodeWithAdditionalArgument($node) {
@@ -115,7 +116,8 @@ class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$argNode->type = new NamedType([]);
 		$argNode->type->name = new NameNode([]);
 
-		$node->arguments[] = $argNode;
+		// base library ofsetSet is broken
+		$node->arguments[count($node->arguments)] = $argNode;
 	}
 
 }

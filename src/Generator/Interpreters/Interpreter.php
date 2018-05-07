@@ -4,9 +4,10 @@
 namespace GraphQLGen\Generator\Interpreters;
 
 
+use Closure;
+use Generator;
 use GraphQL\Language\AST\Node;
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Types\BaseTypeGenerator;
+use GraphQL\Language\AST\NodeList;
 
 abstract class Interpreter {
 	/**
@@ -27,4 +28,26 @@ abstract class Interpreter {
 	public function interpretName() {
 		return $this->_astNode->name->value;
 	}
+
+    /**
+     * @param Closure $callback
+     * @param NodeList|array $nodeList
+     * @return array
+     */
+    protected function mapNodeList(Closure $callback, $nodeList){
+        return iterator_to_array($this->getNodeListMapIterator($callback, $nodeList));
+    }
+
+    /**
+     * @param Closure $callback
+     * @param NodeList|array $nodeList
+     * @return Generator
+     */
+	private function getNodeListMapIterator(Closure $callback, $nodeList){
+	    if($nodeList instanceof NodeList){
+	        foreach($nodeList as $node){
+	            yield $callback($node);
+            }
+        }
+    }
 }

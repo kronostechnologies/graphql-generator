@@ -85,6 +85,8 @@ class ClassMapper {
 		$this->registerDependency("InterfaceType", 'GraphQL\Type\Definition\InterfaceType');
 		$this->registerDependency("InputObjectType", 'GraphQL\Type\Definition\InputObjectType');
 		$this->registerDependency("UnionObjectType", 'GraphQL\Type\Definition\UnionObjectType');
+		$this->registerDependency("Resolver", 'Kronos\GraphQLFramework\Resolver\Resolver');
+		$this->registerDependency("AutomatedTypeRegistry", 'Kronos\GraphQLFramework\TypeRegistry\AutomatedTypeRegistry');
 	}
 
 	/**
@@ -291,8 +293,10 @@ class ClassMapper {
 	 * @param ObjectType $class
 	 */
 	public function registerTypeStoreEntry($dependencyName, $class) {
-		$this->getTypeStore()->addTypeImplementation($class);
-		$this->getTypeStore()->addDependency($dependencyName);
+	    if ($this->getTypeStore() !== null) {
+            $this->getTypeStore()->addTypeImplementation($class);
+            $this->getTypeStore()->addDependency($dependencyName);
+        }
 	}
 
 	/**
@@ -318,7 +322,9 @@ class ClassMapper {
 	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
 	public function addResolverFactoryFragment($fragmentGenerator) {
-		$this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
-		$this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
+	    if ($this->getTypeStore() !== null) {
+            $this->getResolverFactory()->addResolveableTypeImplementation($fragmentGenerator);
+            $this->getResolverFactory()->addDependency($fragmentGenerator->getName() . "Resolver");
+        }
 	}
 }

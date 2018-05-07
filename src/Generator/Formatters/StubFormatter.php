@@ -77,19 +77,19 @@ class StubFormatter {
 	}
 
 	/**
-	 * @param string $typeName
+	 * @param string $fieldName
 	 * @return string
 	 */
-	public function getResolveFragment($typeName) {
-		return $this->_fieldTypeFormatter->getResolveSnippet($typeName);
+	public function getResolveFragment($typeName, $fieldName) {
+		return $this->_fieldTypeFormatter->getResolveSnippet($typeName, $fieldName);
 	}
 
 	public function getResolveFragmentForUnion() {
         return $this->_fieldTypeFormatter->getResolveSnippetForUnion();
     }
 
-    public function getInterfaceResolveFragment() {
-		return $this->_fieldTypeFormatter->getInterfaceResolveSnippet();
+    public function getInterfaceResolveFragment($typeName) {
+		return $this->_fieldTypeFormatter->getInterfaceResolveSnippet($typeName);
     }
 
 	/**

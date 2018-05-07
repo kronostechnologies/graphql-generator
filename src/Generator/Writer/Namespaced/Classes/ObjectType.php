@@ -20,14 +20,25 @@ class ObjectType extends SingleClass {
 	 */
 	protected $_fragmentGenerator;
 
+	protected $_useInstancedTypeStore;
+
 	const ENUM_STUB = 'enum.stub';
 	const OBJECT_STUB = 'object.stub';
 	const SCALAR_STUB = 'scalar.stub';
+	const SCALAR_STUB_TYPES = 'scalar-types.stub';
 	const INTERFACE_STUB = 'interface.stub';
 	const INPUT_STUB = 'input.stub';
 	const UNION_STUB = 'union.stub';
 
-	/**
+    /**
+     * @param bool $useInstancedTypeStore
+     */
+	public function __construct($useInstancedTypeStore = false)
+    {
+        $this->_useInstancedTypeStore = $useInstancedTypeStore;
+    }
+
+    /**
 	 * @return FragmentGeneratorInterface
 	 */
 	public function getFragmentGenerator() {
@@ -45,7 +56,7 @@ class ObjectType extends SingleClass {
 	 * @return ObjectTypeContent
 	 */
 	public function getContentCreator() {
-		$objectTypeContent = new ObjectTypeContent();
+		$objectTypeContent = new ObjectTypeContent($this->_useInstancedTypeStore);
 		$objectTypeContent->setObjectTypeClass($this);
 		$objectTypeContent->setFragmentGenerator($this->getFragmentGenerator());
 
@@ -63,7 +74,11 @@ class ObjectType extends SingleClass {
 			case TypeDeclarationFragmentGenerator::class:
 				return self::OBJECT_STUB;
 			case ScalarFragmentGenerator::class:
-				return self::SCALAR_STUB;
+				if ($this->_useInstancedTypeStore) {
+					return self::SCALAR_STUB_TYPES;
+				} else {
+					return self::SCALAR_STUB;
+				}
 			case InterfaceFragmentGenerator::class:
 				return self::INTERFACE_STUB;
 			case InputFragmentGenerator::class:

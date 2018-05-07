@@ -11,6 +11,7 @@ use GraphQL\Language\AST\Node;
 use GraphQL\Language\AST\NodeKind;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
+use GraphQL\Language\AST\SchemaDefinitionNode;
 use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
 use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
 use GraphQLGen\Generator\InterpretedTypes\NamedTypeTrait;
@@ -55,9 +56,11 @@ class Generator implements LoggerAwareInterface {
 		$this->initializeClassesGeneration();
 
 		foreach($this->_context->ast->definitions as $astDefinition) {
-			$interpretedType = $this->getInterpretedTypeFromAST($astDefinition);
-			$this->_interpretedTypesStore->registerInterpretedType($interpretedType);
-			$this->logger->info("Acknowledged type {$interpretedType->getName()}");
+			if (!$astDefinition instanceof SchemaDefinitionNode) {
+				$interpretedType = $this->getInterpretedTypeFromAST($astDefinition);
+				$this->_interpretedTypesStore->registerInterpretedType($interpretedType);
+				$this->logger->info("Acknowledged type {$interpretedType->getName()}");
+			}
 		}
 
 		foreach ($this->_interpretedTypesStore->getInterpretedTypes() as $interpretedType) {

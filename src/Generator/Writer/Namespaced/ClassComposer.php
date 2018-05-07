@@ -30,6 +30,8 @@ class ClassComposer {
 	const RESOLVER_FACTORY_CONSTRUCTOR_NAME = '$resolverFactory';
 	const RESOLVER_FACTORY_CREATION = self::RESOLVER_FACTORY_CONSTRUCTOR_NAME . '->create%sResolver()';
 	const INTERFACE_TRAIT_SUFFIX = 'Trait';
+    const RESOLVER_CLASS_NAME = 'Resolver';
+    const AUTOMATED_TYPE_REGISTRY_CLASS_NAME = 'AutomatedTypeRegistry';
 
 	/**
 	 * @var ClassMapper
@@ -41,12 +43,18 @@ class ClassComposer {
 	 */
 	protected $_factory;
 
+    /**
+     * @var bool
+     */
+	protected $_skipResolver;
+
 	/**
 	 * ClassComposer constructor.
 	 * @param ClassesFactory $factory
 	 */
-	public function __construct($factory = null) {
+	public function __construct($factory = null, $skipResolver = false) {
 		$this->_factory = $factory ?: new ClassesFactory();
+		$this->_skipResolver = $skipResolver;
 	}
 
 	/**
@@ -61,7 +69,7 @@ class ClassComposer {
 
 		// Map class
 		$this->getClassMapper()->mapDependencyNameToClass($fragmentGenerator->getName(), $typeDefinitionClass);
-		$this->getClassMapper()->registerTypeStoreEntry($fragmentGenerator->getName(), $typeDefinitionClass);
+        $this->getClassMapper()->registerTypeStoreEntry($fragmentGenerator->getName(), $typeDefinitionClass);
 	}
 
 	/**
@@ -72,7 +80,7 @@ class ClassComposer {
 		$fragmentGeneratorNS = $this->getClassMapper()->getNamespaceForFragmentGenerator($fragmentGenerator);
 		$fragmentGeneratorParentDep = $this->getClassMapper()->getParentDependencyForFragmentGenerator($fragmentGenerator);
 
-		$typeDefinitionClass = $this->getFactory()->createObjectTypeClassWithFragmentGenerator($fragmentGenerator);
+		$typeDefinitionClass = $this->getFactory()->createObjectTypeClassWithFragmentGenerator($fragmentGenerator, $this->_skipResolver);
 		$typeDefinitionClass->setNamespace($fragmentGeneratorNS);
 		$typeDefinitionClass->setParentClassName($fragmentGeneratorParentDep);
 
@@ -85,12 +93,19 @@ class ClassComposer {
 	protected function setupTypeDefinitionClassDependencies($typeDefinitionClass) {
 		$fragmentGenerator = $typeDefinitionClass->getFragmentGenerator();
 
-		if ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator) {
+		if (($fragmentGenerator !== null) && ($this->isFragmentGeneratorForInputType($fragmentGenerator) || $fragmentGenerator instanceof UnionFragmentGenerator || $fragmentGenerator instanceof ScalarFragmentGenerator)) {
 			$this->getClassMapper()->addResolverFactoryFragment($fragmentGenerator);
 		}
 
-		$typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);
-		$typeDefinitionClass->addDependency(self::TYPE_CLASS_NAME);
+		if (!$this->_skipResolver) {
+            $typeDefinitionClass->addDependency(self::TYPE_STORE_CLASS_NAME);
+        }
+        else {
+            $typeDefinitionClass->addDependency(self::AUTOMATED_TYPE_REGISTRY_CLASS_NAME);
+            $typeDefinitionClass->addDependency(self::RESOLVER_CLASS_NAME);
+        }
+
+        $typeDefinitionClass->addDependency(self::TYPE_CLASS_NAME);
 		$typeDefinitionClass->addDependency($typeDefinitionClass->getParentClassName());
 	}
 
@@ -98,11 +113,13 @@ class ClassComposer {
 	 * @param FragmentGeneratorInterface $fragmentGenerator
 	 */
 	public function generateResolverForFragmentGenerator(FragmentGeneratorInterface $fragmentGenerator) {
-		// Create resolver class
-		$resolverClass = $this->createConfiguredResolverClass($fragmentGenerator);
+	    if (!$this->_skipResolver) {
+            // Create resolver class
+            $resolverClass = $this->createConfiguredResolverClass($fragmentGenerator);
 
-		// Map class
-		$this->getClassMapper()->mapDependencyNameToClass($resolverClass->getClassName(), $resolverClass);
+            // Map class
+            $this->getClassMapper()->mapDependencyNameToClass($resolverClass->getClassName(), $resolverClass);
+        }
 	}
 
 	/**
@@ -195,23 +212,28 @@ class ClassComposer {
 	}
 
 	public function initializeTypeStore() {
-		// Create type store class
-		$typeStoreClass = $this->createConfiguredTypeStoreClass();
-		$typeStoreClass->addDependency(self::RESOLVER_FACTORY);
+        if (!$this->_skipResolver) {
+            // Create type store class
+            $typeStoreClass = $this->createConfiguredTypeStoreClass();
+            $typeStoreClass->addDependency(self::RESOLVER_FACTORY);
 
-		// Sets type store
-		$this->getClassMapper()->setTypeStore($typeStoreClass);
+            // Sets type store
+            $this->getClassMapper()->setTypeStore($typeStoreClass);
 
-		// Map class
-		$this->getClassMapper()->mapDependencyNameToClass($typeStoreClass->getClassName(), $typeStoreClass);
+            // Map class
+            $this->getClassMapper()->mapDependencyNameToClass($typeStoreClass->getClassName(), $typeStoreClass);
+        }
 	}
 
 	public function initializeResolverFactory() {
-		$resolverFactoryClass = $this->createConfiguredResolverFactoryClass();
+	    if (!$this->_skipResolver) {
+            $resolverFactoryClass = $this->createConfiguredResolverFactoryClass();
 
-		$this->getClassMapper()->setResolverFactory($resolverFactoryClass);
+            $this->getClassMapper()->setResolverFactory($resolverFactoryClass);
 
-		$this->getClassMapper()->mapDependencyNameToClass($resolverFactoryClass->getClassName(), $resolverFactoryClass);
+            $this->getClassMapper()->mapDependencyNameToClass($resolverFactoryClass->getClassName(),
+                $resolverFactoryClass);
+        }
 	}
 
 	/**

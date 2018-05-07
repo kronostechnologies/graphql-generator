@@ -18,7 +18,7 @@ trait ResolveFragmentTrait {
 	 */
 	protected function getResolveFragment($formatter, $fieldType, $fieldName, $forceResolve = false) {
 		if ($forceResolve || (!$fieldType->isPrimaryType() && !$formatter->canInterpretedTypeSkipResolver($fieldType->getTypeName()))) {
-			return "'resolve' => " . $formatter->getResolveFragment($fieldName);
+			return "'resolve' => " . $formatter->getResolveFragment($fieldType->getTypeName(), $fieldName);
 		}
 
 		return "";

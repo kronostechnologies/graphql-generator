@@ -9,6 +9,7 @@ use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\IntValueNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
 use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
@@ -89,14 +90,14 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$interfaceNode->name = new NameNode([]);
 		$interfaceNode->name->value = self::INTERFACE_NODE;
 
-		$node->interfaces[] = $interfaceNode;
+		$node->interfaces = new NodeList([$interfaceNode]);
 	}
 
 	/**
 	 * @param $node
 	 */
 	protected function GivenNodeWithField($node) {
-		$node->fields = [];
+
 
 		$dummyFieldDefinition = new FieldDefinitionNode([]);
 		$dummyFieldDefinition->name = new NameNode([]);
@@ -111,6 +112,6 @@ class TypeDeclarationInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$dummyFieldDefinition->arguments = [$dummyDescriptionNode];
 
-		$node->fields[] = $dummyFieldDefinition;
+        $node->fields = new NodeList([$dummyFieldDefinition]);
 	}
 }

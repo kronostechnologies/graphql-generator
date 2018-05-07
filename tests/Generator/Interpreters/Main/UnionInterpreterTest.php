@@ -6,6 +6,7 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
 use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
@@ -93,7 +94,7 @@ class UnionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$type2->type = new NamedTypeNode([]);
 		$type2->type->name = new NameNode([]);
 
-		$node->types = [$type1, $type2];
+		$node->types = new NodeList([$type1, $type2]);
 	}
 
 	protected function GivenUnionInterpreter(UnionTypeDefinitionNode $node) {

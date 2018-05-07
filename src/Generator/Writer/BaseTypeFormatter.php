@@ -47,20 +47,22 @@ abstract class BaseTypeFormatter {
 	}
 
 	/**
+	 * @param string $fieldName
 	 * @param string $typeName
 	 * @return string
 	 */
-	public abstract function getResolveSnippet($typeName);
+	public abstract function getResolveSnippet($fieldName, $typeName);
 
     /**
      * @return string
      */
     public abstract function getResolveSnippetForUnion();
 
-	/**
-	 * @return string
-	 */
-    public abstract function getInterfaceResolveSnippet();
+    /**
+     * @param string $typeName
+     * @return string
+     */
+    public abstract function getInterfaceResolveSnippet($typeName);
 
 	/**
 	 * @param TypeUsageInterpretedType $fieldType

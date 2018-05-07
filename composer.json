@@ -10,10 +10,13 @@
   ],
   "license": "MIT",
   "require": {
-    "webonyx/graphql-php": "^0.9",
-    "symfony/console": "^3.2",
+    "webonyx/graphql-php": "^0.11",
+    "symfony/console": "^2.2",
     "psr/log": "^1.0"
   },
+  "bin": [
+    "graphqlgen"
+  ],
   "autoload": {
     "psr-4": {
       "GraphQLGen\\": "src/",
