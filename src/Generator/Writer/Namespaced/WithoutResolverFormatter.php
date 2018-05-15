@@ -31,7 +31,7 @@ class WithoutResolverFormatter extends BaseTypeFormatter {
 	 */
 	public function getResolveSnippet($fieldName, $typeName)
 	{
-		return "function (\$root, \$args) use (\$queryResolver) { return \$queryResolver->resolveFieldOfType(\$root, \$args, '{$typeName}', '{$fieldName}'); }";
+		return "function (\$root, \$args) use (\$queryResolver) { return \$queryResolver->resolveFieldOfType(\$root, \$args, '{{TypeName}}', '{$typeName}'); }";
 	}
 
 	/**

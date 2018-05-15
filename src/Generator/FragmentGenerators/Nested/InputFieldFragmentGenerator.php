@@ -32,7 +32,7 @@ class InputFieldFragmentGenerator implements FragmentGeneratorInterface {
 			$this->getFormatter(),
 			$this->getInputFieldType()->getFieldType(),
 			$this->getInputFieldType()->getName()
-		);
+        );
 
 		$vals = $this->getFormatter()->joinArrayFragments([
 			$typeDeclaration,

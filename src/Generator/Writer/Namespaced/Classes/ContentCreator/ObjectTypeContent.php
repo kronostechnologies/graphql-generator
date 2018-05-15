@@ -76,10 +76,10 @@ class ObjectTypeContent extends BaseContentCreator {
 
 		if (get_class($this->getFragmentGenerator()) == ScalarFragmentGenerator::class) {
 			$contentAsLines[] = 'parent::__construct();';
-			$contentAsLines[] = $this->getFragmentGenerator()->generateTypeDefinition();
+			$contentAsLines[] = str_replace("{{TypeName}}", $this->getFragmentGenerator()->getName(), $this->getFragmentGenerator()->generateTypeDefinition());;
 		} else {
 			$contentAsLines[] = "parent::__construct(";
-			$contentAsLines[] = $this->getFragmentGenerator()->generateTypeDefinition();
+			$contentAsLines[] = str_replace("{{TypeName}}", $this->getFragmentGenerator()->getName(), $this->getFragmentGenerator()->generateTypeDefinition());
 			$contentAsLines[] = ");";
 		}
 
