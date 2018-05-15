@@ -1,7 +1,7 @@
 {
   "name": "kronostechnologies/graphql-generator",
   "description": "GraphQL classes generator based on Webonyx library",
-  "type": "project",
+  "type": "library",
   "authors": [
     {
       "name": "Marc-Andre Boily",
