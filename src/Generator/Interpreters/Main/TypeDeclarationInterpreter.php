@@ -46,7 +46,7 @@ class TypeDeclarationInterpreter extends MainTypeInterpreter {
 	 * @return string[]
 	 */
 	public function interpretInterfacesNames() {
-	    return $this->mapNodeList(function (NamedTypeNode $interfaceNameNode) {
+	    return array_map(function (NamedTypeNode $interfaceNameNode) {
             return $interfaceNameNode->name->value;
         }, $this->_astNode->interfaces);
     }
