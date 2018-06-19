@@ -12,7 +12,13 @@ class FileSystemHelper
      */
     public function getFileContent($fileName)
     {
+        $content = file_get_contents($fileName);
 
+        if ($content === false) {
+            return false;
+        }
+
+        return $content;
     }
 
     /**
@@ -21,7 +27,7 @@ class FileSystemHelper
      */
     public function isFileReadable($fileName)
     {
-
+        return is_file($fileName);
     }
 
     /**
@@ -30,6 +36,6 @@ class FileSystemHelper
      */
     public function isDirectoryWritable($directoryPath)
     {
-
+        return is_dir($directoryPath);
     }
 }
