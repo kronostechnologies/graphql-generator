@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Formatters;
 
 
-use GraphQLGen\Generator\Formatters\ClassFormatter;
+use GraphQLGen\Old\Generator\Formatters\ClassFormatter;
 
 
 class ClassFormatterTest extends \PHPUnit_Framework_TestCase {

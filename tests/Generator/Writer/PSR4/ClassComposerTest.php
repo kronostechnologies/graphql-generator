@@ -4,22 +4,22 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ResolverFactory;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
-use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
-use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\DTO;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\Resolver;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ResolverFactory;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassMapper;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassComposerTest extends \PHPUnit_Framework_TestCase {

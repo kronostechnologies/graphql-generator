@@ -5,18 +5,18 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
 use Exception;
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverContent;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\Resolver;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\InterpretedTypesStore;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\ResolverContent;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\Resolver;
 
 class ResolverContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';

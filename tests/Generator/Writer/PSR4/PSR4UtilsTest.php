@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Writer\Namespaced\NamespacedUtils;
+use GraphQLGen\Old\Generator\Writer\Namespaced\NamespacedUtils;
 
 class PSR4UtilsTest extends \PHPUnit_Framework_TestCase {
 	const TRAIL_SLASH_NS = "\\TrailSlash\\NS\\";

@@ -9,9 +9,9 @@ use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NodeList;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Main\InterfaceInterpreter;
 
 class InterfaceInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const INTERFACE_DESCRIPTION = 'Description of this interface';

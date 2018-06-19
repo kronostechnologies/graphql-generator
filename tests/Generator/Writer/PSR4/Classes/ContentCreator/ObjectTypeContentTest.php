@@ -4,15 +4,15 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ObjectType;
 
 class ObjectTypeContentTest extends \PHPUnit_Framework_TestCase {
 	const SCALAR_NAME = 'AScalarType';

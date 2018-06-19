@@ -5,16 +5,16 @@ namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
 use Exception;
-use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
-use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\InterfaceFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\BaseContentCreator;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ObjectType;
 use GraphQLGen\Tests\Mocks\InvalidGeneratorType;
 
 class ObjectTypeTest extends \PHPUnit_Framework_TestCase {

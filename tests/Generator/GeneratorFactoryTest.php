@@ -11,13 +11,13 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\ObjectTypeDefinitionNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
-use GraphQLGen\Generator\GeneratorFactory;
-use GraphQLGen\Generator\Interpreters\Main\EnumInterpreter;
-use GraphQLGen\Generator\Interpreters\Main\InputInterpreter;
-use GraphQLGen\Generator\Interpreters\Main\InterfaceInterpreter;
-use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
-use GraphQLGen\Generator\Interpreters\Main\TypeDeclarationInterpreter;
-use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
+use GraphQLGen\Old\Generator\GeneratorFactory;
+use GraphQLGen\Old\Generator\Interpreters\Main\EnumInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Main\InputInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Main\InterfaceInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Main\ScalarInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Main\TypeDeclarationInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Main\UnionInterpreter;
 
 class GeneratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	/**

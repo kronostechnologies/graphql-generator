@@ -4,8 +4,8 @@
 namespace GraphQLGen\Tests\Generator\Writer;
 
 
-use GraphQLGen\Generator\Writer\StubFile;
-use GraphQLGen\Generator\Writer\WriterContext;
+use GraphQLGen\Old\Generator\Writer\StubFile;
+use GraphQLGen\Old\Generator\Writer\WriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class StubFileTest extends \PHPUnit_Framework_TestCase {

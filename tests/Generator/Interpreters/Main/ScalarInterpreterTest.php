@@ -6,8 +6,8 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Main;
 
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Main\ScalarInterpreter;
 
 class ScalarInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_DESCRIPTION = 'TestDescription';

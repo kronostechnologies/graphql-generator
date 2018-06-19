@@ -7,8 +7,8 @@ namespace GraphQLGen\Tests\Generator\Interpreters\Nested;
 use GraphQL\Language\AST\InputValueDefinitionNode;
 use GraphQL\Language\AST\NamedType;
 use GraphQL\Language\AST\NameNode;
-use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
-use GraphQLGen\Generator\Interpreters\Nested\InputFieldInterpreter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Nested\InputFieldInterpreter;
 
 class InputFieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const INPUT_FIELD_DESC = 'Description of an input field';

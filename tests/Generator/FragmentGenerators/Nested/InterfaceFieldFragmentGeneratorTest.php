@@ -4,10 +4,10 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Nested\InterfaceFieldFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Nested\InterfaceFieldFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class InterfaceFieldFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const FIELD_DESCRIPTION = 'Description for the field';

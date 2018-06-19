@@ -6,15 +6,15 @@ namespace GraphQLGen\Tests\Generator;
 
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\AST\ScalarTypeDefinitionNode;
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\Generator;
-use GraphQLGen\Generator\GeneratorContext;
-use GraphQLGen\Generator\GeneratorFactory;
-use GraphQLGen\Generator\GeneratorLogger;
-use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Interpreters\Main\ScalarInterpreter;
-use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\Generator;
+use GraphQLGen\Old\Generator\GeneratorContext;
+use GraphQLGen\Old\Generator\GeneratorFactory;
+use GraphQLGen\Old\Generator\GeneratorLogger;
+use GraphQLGen\Old\Generator\InterpretedTypes\InterpretedTypesStore;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Main\ScalarInterpreter;
+use GraphQLGen\Old\Generator\Writer\Namespaced\NamespacedWriter;
 use phpDocumentor\Reflection\Types\Scalar;
 use PHPUnit_Framework_MockObject_MockObject;
 

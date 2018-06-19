@@ -4,14 +4,14 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Formatters\ClassFormatter;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
-use GraphQLGen\Generator\Writer\Namespaced\ClassesWriter;
-use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
-use GraphQLGen\Generator\Writer\Namespaced\ClassStubFile;
-use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
+use GraphQLGen\Old\Generator\Formatters\ClassFormatter;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\ObjectTypeContent;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassesWriter;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassMapper;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassStubFile;
+use GraphQLGen\Old\Generator\Writer\Namespaced\NamespacedWriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class ClassesWriterTest extends \PHPUnit_Framework_TestCase {

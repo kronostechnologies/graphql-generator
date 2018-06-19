@@ -4,10 +4,10 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Nested\InputFieldFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Nested\InputFieldFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class InputFieldFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const INPUT_FIELD_DESC = 'Description of an input';

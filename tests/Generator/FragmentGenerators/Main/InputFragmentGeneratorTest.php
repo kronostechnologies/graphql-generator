@@ -4,11 +4,11 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\InputFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\InputFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\InputFieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class InputFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const INPUT_DESC = 'A Short Description';

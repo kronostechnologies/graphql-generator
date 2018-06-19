@@ -4,13 +4,13 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
-use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\DTOContent;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\DTO;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\DTOContent;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\DTO;
 
 class DTOContentTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'AType';

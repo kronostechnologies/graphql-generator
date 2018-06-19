@@ -4,14 +4,14 @@
 namespace GraphQLGen\Tests\Generator\Formatters;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\NamedTypeTrait;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\UnionInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\NamedTypeTrait;
 
 class StubFormatterTest extends \PHPUnit_Framework_TestCase {
 	const DUMMY_TYPE_NAME = 'AType';

@@ -4,10 +4,10 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Nested\FieldArgumentFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Nested\FieldArgumentFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class FieldArgumentFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const ARG_DEFAULT_VALUE = '123123123';

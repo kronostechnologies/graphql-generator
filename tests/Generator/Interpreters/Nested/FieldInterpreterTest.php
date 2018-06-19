@@ -10,8 +10,8 @@ use GraphQL\Language\AST\NamedType;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\AST\StringValueNode;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
-use GraphQLGen\Generator\Interpreters\Nested\FieldInterpreter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Nested\FieldInterpreter;
 
 class FieldInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const VALID_FIELD_NAME = 'MyField';

@@ -5,13 +5,13 @@ namespace GraphQLGen\Tests\Generator\InterpretedTypes;
 
 
 use Exception;
-use GraphQLGen\Generator\InterpretedTypes\InterpretedTypesStore;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InputInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\InterpretedTypesStore;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InputInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\InterfaceDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\UnionInterpretedType;
 
 class InterpretedTypesStoreTest extends \PHPUnit_Framework_TestCase {
 	const ENUM_DEC_NAME = 'Enumeration';

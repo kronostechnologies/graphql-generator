@@ -8,8 +8,8 @@ use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NodeList;
 use GraphQL\Language\AST\UnionTypeDefinitionNode;
-use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
-use GraphQLGen\Generator\Interpreters\Main\UnionInterpreter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\UnionInterpretedType;
+use GraphQLGen\Old\Generator\Interpreters\Main\UnionInterpreter;
 
 class UnionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const UNION_DESC = 'A union description';

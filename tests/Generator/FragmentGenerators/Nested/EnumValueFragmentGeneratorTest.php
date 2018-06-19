@@ -4,9 +4,9 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Nested\EnumValueFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Nested\EnumValueFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 
 class EnumValueFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const ENUM_VALUE_DESC = 'A Description';

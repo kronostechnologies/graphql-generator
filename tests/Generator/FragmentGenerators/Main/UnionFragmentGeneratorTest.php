@@ -4,10 +4,10 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\UnionInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\UnionFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\UnionInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class UnionFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const UNION_DESCRIPTION = 'A short description';

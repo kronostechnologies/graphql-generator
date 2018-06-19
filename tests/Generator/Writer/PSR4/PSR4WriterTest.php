@@ -4,16 +4,16 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\ClassComposer;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
-use GraphQLGen\Generator\Writer\Namespaced\ClassesFactory;
-use GraphQLGen\Generator\Writer\Namespaced\ClassesWriter;
-use GraphQLGen\Generator\Writer\Namespaced\ClassMapper;
-use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriter;
-use GraphQLGen\Generator\Writer\Namespaced\NamespacedWriterContext;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassComposer;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassesFactory;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassesWriter;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassMapper;
+use GraphQLGen\Old\Generator\Writer\Namespaced\NamespacedWriter;
+use GraphQLGen\Old\Generator\Writer\Namespaced\NamespacedWriterContext;
 use PHPUnit_Framework_MockObject_MockObject;
 
 class PSR4WriterTest extends \PHPUnit_Framework_TestCase {

@@ -4,11 +4,11 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Nested;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Nested\TypeDeclarationFieldFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\FieldInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Nested\TypeDeclarationFieldFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldArgumentInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\FieldInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
 
 class TypeDeclarationFieldFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const ARG_1_NAME = 'FirstArgument';

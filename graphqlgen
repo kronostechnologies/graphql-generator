@@ -23,8 +23,8 @@ if (!defined('GRAPHQLGEN_COMPOSER_INSTALL')) {
 
 require GRAPHQLGEN_COMPOSER_INSTALL;
 
-use GraphQLGen\Commands\DescribeCommand;
-use GraphQLGen\Commands\GenerateClassesCommand;
+use GraphQLGen\Old\Commands\DescribeCommand;
+use GraphQLGen\Old\Commands\GenerateClassesCommand;
 use Symfony\Component\Console\Application;
 
 $cli = new Application();

@@ -9,7 +9,7 @@ use GraphQL\Language\AST\ListTypeNode;
 use GraphQL\Language\AST\NamedTypeNode;
 use GraphQL\Language\AST\NameNode;
 use GraphQL\Language\AST\NonNullTypeNode;
-use GraphQLGen\Generator\Interpreters\Nested\TypeUsageInterpreter;
+use GraphQLGen\Old\Generator\Interpreters\Nested\TypeUsageInterpreter;
 
 class TypeUsageInterpreterTest extends \PHPUnit_Framework_TestCase {
 	const NODE_NAME = 'TARGET_NAME';

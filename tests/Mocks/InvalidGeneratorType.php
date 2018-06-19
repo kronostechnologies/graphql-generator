@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Mocks;
 
 
-use GraphQLGen\Generator\FragmentGenerators\FragmentGeneratorInterface;
+use GraphQLGen\Old\Generator\FragmentGenerators\FragmentGeneratorInterface;
 
 /**
  * Used for testing thrown exceptions by various type testing methods.

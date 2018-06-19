@@ -4,10 +4,10 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\EnumInterpretedType;
-use GraphQLGen\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\EnumFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\EnumInterpretedType;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\EnumValueInterpretedType;
 
 class EnumFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const ENUM_VALUE_NAME_1 = 'VAL1';

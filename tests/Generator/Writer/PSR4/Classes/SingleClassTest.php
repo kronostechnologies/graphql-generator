@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes;
 
 
-use GraphQLGen\Generator\Writer\Namespaced\ClassStubFile;
+use GraphQLGen\Old\Generator\Writer\Namespaced\ClassStubFile;
 use GraphQLGen\Tests\Mocks\SingleClassDummy;
 
 class SingleClassTest extends \PHPUnit_Framework_TestCase {

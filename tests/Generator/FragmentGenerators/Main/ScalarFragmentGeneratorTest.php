@@ -4,9 +4,9 @@
 namespace GraphQLGen\Tests\Generator\FragmentGenerators\Main;
 
 
-use GraphQLGen\Generator\Formatters\StubFormatter;
-use GraphQLGen\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\ScalarInterpretedType;
+use GraphQLGen\Old\Generator\Formatters\StubFormatter;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\ScalarFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\ScalarInterpretedType;
 
 class ScalarFragmentGeneratorTest extends \PHPUnit_Framework_TestCase {
 	const VALID_NAME = 'ScalarDate';

@@ -4,11 +4,11 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4\Classes\ContentCreator;
 
 
-use GraphQLGen\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
-use GraphQLGen\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ContentCreator\TypeStoreContent;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\ObjectType;
-use GraphQLGen\Generator\Writer\Namespaced\Classes\TypeStore;
+use GraphQLGen\Old\Generator\FragmentGenerators\Main\TypeDeclarationFragmentGenerator;
+use GraphQLGen\Old\Generator\InterpretedTypes\Main\TypeDeclarationInterpretedType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ContentCreator\TypeStoreContent;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\ObjectType;
+use GraphQLGen\Old\Generator\Writer\Namespaced\Classes\TypeStore;
 
 class TypeStoreContentTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'ATypeName';

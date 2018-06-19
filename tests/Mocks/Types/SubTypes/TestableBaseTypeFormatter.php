@@ -4,7 +4,7 @@
 namespace GraphQLGen\Tests\Mocks\Types\SubTypes;
 
 
-use GraphQLGen\Generator\Types\SubTypes\BaseTypeFormatter;
+use GraphQLGen\Old\Generator\Types\SubTypes\BaseTypeFormatter;
 
 class TestableBaseTypeFormatter extends BaseTypeFormatter {
 

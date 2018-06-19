@@ -4,9 +4,9 @@
 namespace GraphQLGen\Tests\Generator\Writer\PSR4;
 
 
-use GraphQLGen\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
-use GraphQLGen\Generator\Types\SubTypes\TypeUsage;
-use GraphQLGen\Generator\Writer\Namespaced\WithResolverFormatter;
+use GraphQLGen\Old\Generator\InterpretedTypes\Nested\TypeUsageInterpretedType;
+use GraphQLGen\Old\Generator\Types\SubTypes\TypeUsage;
+use GraphQLGen\Old\Generator\Writer\Namespaced\WithResolverFormatter;
 
 class TypeFormatterTest extends \PHPUnit_Framework_TestCase {
 	const TYPE_NAME = 'TypeName';
