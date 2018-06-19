@@ -28,5 +28,6 @@ use GraphQLGen\Old\Commands\GenerateClassesCommand;
 use Symfony\Component\Console\Application;
 
 $cli = new Application();
-$cli->add(new GenerateClassesCommand());
+$cli->add(new \GraphQLGen\MainCommand());
+$cli->setDefaultCommand('generate-classes', true);
 $cli->run();
