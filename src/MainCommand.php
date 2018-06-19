@@ -12,18 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MainCommand extends Command
 {
-    /**
-     * @var FileSystemHelper
-     */
-    protected $fileSystemHelper;
-
-    public function __construct(FileSystemHelper $fileSystemHelper = null)
-    {
-        parent::__construct();
-
-        $this->fileSystemHelper = $fileSystemHelper;
-    }
-
     protected function configure()
     {
         $this
@@ -35,7 +23,12 @@ class MainCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $inputFileName = $input->getArgument("input");
-        $outputDirectory = $input->getArgument("output");
+        $config = new ClassesGeneratorConfig(
+            $input->getArgument('input'),
+            $input->getArgument('output')
+        );
+
+        $generator = new ClassesGenerator($config);
+        $generator->execute();
     }
 }

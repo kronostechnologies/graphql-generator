@@ -29,5 +29,4 @@ use Symfony\Component\Console\Application;
 
 $cli = new Application();
 $cli->add(new \GraphQLGen\MainCommand());
-$cli->setDefaultCommand('generate-classes', true);
 $cli->run();
